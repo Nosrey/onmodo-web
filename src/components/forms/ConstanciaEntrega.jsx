@@ -29,6 +29,10 @@ function ConstanciaEntrega() {
     return (
         <div>
             <div className={styles.form}>
+                <div className={styles.titleContainer}>
+                    <h3 className={styles.title}>Constancia de Entrega de Ropa de Trabajo y de E.P.P</h3>
+                    <h4 className={styles.formNumber}> HS-01-R01</h4>
+                </div>
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Apellido y nombre" variant="outlined" />
                     <TextField id="outlined-basic" label="Contrato" variant="outlined" />
@@ -40,7 +44,7 @@ function ConstanciaEntrega() {
                     <TextField id="outlined-basic" label="CP" variant="outlined" />
                     <TextField id="outlined-basic" label="Provincia" variant="outlined" />
                 </div>
-                <div className={styles.personal}>
+                <div className={styles.personalText}>
                     <TextField fullWidth id="outlined-basic" label="Descripcion breve de las tareas a realizar" variant="outlined" />
                 </div>
                 <div className={styles.personal}>
@@ -66,12 +70,12 @@ function ConstanciaEntrega() {
                         <TextField id="outlined-basic" name="textField" variant="outlined" label="Otros" />
                     )}
                 </div>
-                <div>
+                <div className={styles.tableSection}>
                     {Array(replicas)
                         .fill(0)
                         .map((_, index) => (
-                            <div className={styles.personal} key={index}>
-                                <p className={styles.index}>{index + 1} -</p>
+                            <div className={styles.tableRow} key={index}>
+                                <p className={styles.index}>{index + 1} </p>
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
