@@ -1,0 +1,22 @@
+
+.personal{
+display: flex;
+justify-content: space-around;
+margin-bottom: 5vh;
+
+}
+
+.index{
+    font-weight: bold;
+}
+
+.icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn{
+    display: flex;
+    justify-content: center;
+}
