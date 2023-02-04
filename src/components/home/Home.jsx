@@ -14,6 +14,7 @@ import FlashReporteIncidente from '../forms/PC/FlashReporteIncidente';
 import SaludManipuladores from '../forms/PC/SaludManipuladores';
 import RegistroCapacitacion from '../forms/PC/RegistroCapacitación';
 import RegistroSimulacro from '../forms/PC/RegistroSimulacro';
+import ControlVidrios from '../forms/Phone/ControlVidrios';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -123,10 +124,10 @@ function Home() {
                     </Accordion>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel8'} onChange={handleChange('panel8')}>
                         <AccordionSummary aria-controls="panel8d-content" id="panel8d-header">
-                            <Typography>Nombre form</Typography>
+                            <Typography>Control de Vidrios</Typography>
                         </AccordionSummary>
                         <AccordionDetails className={styles.accordion}>
-                            <EntregaBidonesAceiteUsado/>
+                            <ControlVidrios/>
                         </AccordionDetails>
                     </Accordion>
 
