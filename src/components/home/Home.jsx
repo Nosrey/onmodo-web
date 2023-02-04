@@ -10,6 +10,7 @@ import styles from './Home.module.css'
 import ConstanciaEntrega from '../forms/ConstanciaEntrega';
 import AlergenosComida from '../forms/AlergenosComida';
 import EntregaBidonesAceiteUsado from '../forms/EntregaBidonesAceiteUsado';
+import FlashReporteIncidente from '../forms/FlashReporteIncidente';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -85,6 +86,47 @@ function Home() {
                             <EntregaBidonesAceiteUsado/>
                         </AccordionDetails>
                     </Accordion>
+                    <Accordion className={styles.accordion} expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+                        <AccordionSummary aria-controls="panel4d-content" id="panel4d-header">
+                            <Typography>Flash Reporte de Incidente</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails className={styles.accordion}>
+                            <FlashReporteIncidente/>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion className={styles.accordion} expanded={expanded === 'panel5'} onChange={handleChange('panel5')}>
+                        <AccordionSummary aria-controls="panel5d-content" id="panel5d-header">
+                            <Typography>Nombre form</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails className={styles.accordion}>
+                            <EntregaBidonesAceiteUsado/>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion className={styles.accordion} expanded={expanded === 'panel6'} onChange={handleChange('panel6')}>
+                        <AccordionSummary aria-controls="panel6d-content" id="panel6d-header">
+                            <Typography>Nombre form</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails className={styles.accordion}>
+                            <EntregaBidonesAceiteUsado/>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion className={styles.accordion} expanded={expanded === 'panel7'} onChange={handleChange('panel7')}>
+                        <AccordionSummary aria-controls="panel7d-content" id="panel7d-header">
+                            <Typography>Nombre form</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails className={styles.accordion}>
+                            <EntregaBidonesAceiteUsado/>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion className={styles.accordion} expanded={expanded === 'panel8'} onChange={handleChange('panel8')}>
+                        <AccordionSummary aria-controls="panel8d-content" id="panel8d-header">
+                            <Typography>Nombre form</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails className={styles.accordion}>
+                            <EntregaBidonesAceiteUsado/>
+                        </AccordionDetails>
+                    </Accordion>
+
                 </div>
             </div>
         </div>
