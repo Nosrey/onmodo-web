@@ -15,6 +15,7 @@ import SaludManipuladores from '../forms/PC/SaludManipuladores';
 import RegistroCapacitacion from '../forms/PC/RegistroCapacitación';
 import RegistroSimulacro from '../forms/PC/RegistroSimulacro';
 import ControlVidrios from '../forms/Phone/ControlVidrios';
+import DespachoProduccion from '../forms/Phone/DespachoProduccion';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -128,6 +129,14 @@ function Home() {
                         </AccordionSummary>
                         <AccordionDetails className={styles.accordion}>
                             <ControlVidrios/>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion className={styles.accordion} expanded={expanded === 'panel9'} onChange={handleChange('panel9')}>
+                        <AccordionSummary aria-controls="panel9d-content" id="panel9d-header">
+                            <Typography>Planilla de Despacho a Producción</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails className={styles.accordion}>
+                            <DespachoProduccion/>
                         </AccordionDetails>
                     </Accordion>
 
