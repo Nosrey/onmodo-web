@@ -1,6 +1,7 @@
-import { Button, Chip, TextField } from '@mui/material'
+import { Button,  TextField } from '@mui/material'
 import React, { useState } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import styles from './RegistroDeDecomiso.module.css'
 
 function RegistroDeDecomiso() {
     const [inputs] = useState([
@@ -34,8 +35,8 @@ function RegistroDeDecomiso() {
                     <h4 className="formNumber">Q/SOP-03-R02</h4>
                 </div>
 
-                <div style={{display:'flex', justifyContent:'center'}}>
-                    <Chip label="Causa de decomiso" />
+                <div className={styles.subtituloTable}>
+                    <p>Causa de decomiso</p>
                 </div>
                 <div className="tableSection">
                     {Array(replicas)
