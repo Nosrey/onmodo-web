@@ -8,6 +8,7 @@ import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import styles from './Home.module.css'
 import ConstanciaEntrega from '../forms/ConstanciaEntrega';
+import AlergenosComida from '../forms/AlergenosComida';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -69,15 +70,10 @@ function Home() {
                     </Accordion>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
                         <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-                            <Typography>Collapsible Group Item #2</Typography>
+                            <Typography>Control de Alérgenos en las Comidas</Typography>
                         </AccordionSummary>
                         <AccordionDetails className={styles.accordion}>
-                            <Typography>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                                malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-                                sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                                sit amet blandit leo lobortis eget.
-                            </Typography>
+                            <AlergenosComida/>
                         </AccordionDetails>
                     </Accordion>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
