@@ -1,0 +1,49 @@
+
+.personal, .personalText {
+    display: flex;
+    column-gap: 16px;
+    margin-bottom: 5vh;
+    }
+
+    .personalText {
+        width: 61vw;
+        min-width: 300px;
+    }
+    
+    
+.subtitleCont {
+    border-bottom: 2px solid rgb(37, 35, 35);
+    margin-bottom: 24px;
+}
+
+.listContainer {
+    display: flex;
+    flex-direction: column;
+    padding-left: 24px;
+    margin-bottom: 32px;
+}
+.listItem {
+    width: 40%;
+    min-width: 300px;
+}
+
+.subtitle {
+    font-weight: bold;
+    font-size: 15px;
+    color: rgb(37, 35, 35);
+}
+
+.tableLabel {
+    font-weight: 500;
+    display: block;
+    width: 250px;
+}
+
+.responsableCont {
+    margin-bottom: 80px;
+}
+
+.half {
+    width: 35%;
+    min-width: 300px;
+}
