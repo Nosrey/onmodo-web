@@ -1,0 +1,9 @@
+.menu {
+    flex-direction: column;
+    background-color: #e6e0e085;
+    width: 290px;
+    height: fit-content;
+    min-height: 92vh;
+    padding-top: 30px;
+    padding-bottom: 20px;
+}

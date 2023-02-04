@@ -1,5 +1,4 @@
 import React from 'react'
-import Header from '../Header/Header'
 import { styled } from '@mui/material/styles';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
 import MuiAccordion from '@mui/material/Accordion';
@@ -69,9 +68,8 @@ function Home() {
 
     return (
         <div>
-            <Header />
             <div className={styles.main}>
-                <div className={styles.container}>
+               <div className={styles.container}>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
                         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
                             <Typography>Constancia de Entrega de Ropa de Trabajo y de E.P.P</Typography>

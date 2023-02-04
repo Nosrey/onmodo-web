@@ -1,0 +1,11 @@
+.containerPlaceholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 40px;
+}
+.caption {
+    cursor: default;
+    color: rgb(40, 39, 39);
+}
