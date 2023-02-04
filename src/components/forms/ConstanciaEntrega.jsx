@@ -4,7 +4,7 @@ import styles from './ConstanciaEntrega.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 function ConstanciaEntrega() {
-    const [inputs, setInputs] = useState([
+    const [inputs] = useState([
         { id: 1, label: 'Producto' },
         { id: 2, label: 'Tipo/modelo' },
         { id: 3, label: 'Marca' },

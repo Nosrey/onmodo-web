@@ -13,8 +13,8 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import userActions, { validateUser } from '../../redux/actions/userActions';
-import { connect, useDispatch } from 'react-redux';
+import { validateUser } from '../../redux/actions/userActions';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 
