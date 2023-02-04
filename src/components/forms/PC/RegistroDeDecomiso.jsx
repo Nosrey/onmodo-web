@@ -1,6 +1,5 @@
 import { Button, Chip, TextField } from '@mui/material'
 import React, { useState } from 'react'
-import styles from './ControlDeCloro.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 function RegistroDeDecomiso() {

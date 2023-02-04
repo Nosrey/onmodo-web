@@ -7,13 +7,16 @@ import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import styles from './Home.module.css'
-import ConstanciaEntrega from '../forms/ConstanciaEntrega';
-import AlergenosComida from '../forms/AlergenosComida';
-import EntregaBidonesAceiteUsado from '../forms/EntregaBidonesAceiteUsado';
-import FlashReporteIncidente from '../forms/FlashReporteIncidente';
-import SaludManipuladores from '../forms/SaludManipuladores';
-import ControlDeCloro from '../forms/ControlDeCloro';
-import RegistroDeDecomiso from '../forms/RegistroDeDecomiso';
+import ConstanciaEntrega from '../forms/PC/ConstanciaEntrega';
+import AlergenosComida from '../forms/PC/AlergenosComida';
+import EntregaBidonesAceiteUsado from '../forms/PC/EntregaBidonesAceiteUsado';
+import FlashReporteIncidente from '../forms/PC/FlashReporteIncidente';
+import SaludManipuladores from '../forms/PC/SaludManipuladores';
+import RegistroCapacitacion from '../forms/PC/RegistroCapacitación';
+import RegistroSimulacro from '../forms/PC/RegistroSimulacro';
+import ControlVidrios from '../forms/Phone/ControlVidrios';
+import ControlDeCloro from '../forms/Phone/ControlDeCloro';
+import RegistroDeDecomiso from '../forms/PC/RegistroDeDecomiso';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -107,26 +110,26 @@ function Home() {
                     </Accordion>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel6'} onChange={handleChange('panel6')}>
                         <AccordionSummary aria-controls="panel6d-content" id="panel6d-header">
-                            <Typography>Nombre form</Typography>
+                            <Typography>Registro de Capacitación</Typography>
                         </AccordionSummary>
                         <AccordionDetails className={styles.accordion}>
-                            <EntregaBidonesAceiteUsado/>
+                            <RegistroCapacitacion/>
                         </AccordionDetails>
                     </Accordion>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel7'} onChange={handleChange('panel7')}>
                         <AccordionSummary aria-controls="panel7d-content" id="panel7d-header">
-                            <Typography>Nombre form</Typography>
+                            <Typography>Registro de Simulacro</Typography>
                         </AccordionSummary>
                         <AccordionDetails className={styles.accordion}>
-                            <EntregaBidonesAceiteUsado/>
+                            <RegistroSimulacro/>
                         </AccordionDetails>
                     </Accordion>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel8'} onChange={handleChange('panel8')}>
                         <AccordionSummary aria-controls="panel8d-content" id="panel8d-header">
-                            <Typography>Nombre form</Typography>
+                            <Typography>Control de Vidrios</Typography>
                         </AccordionSummary>
                         <AccordionDetails className={styles.accordion}>
-                            <EntregaBidonesAceiteUsado/>
+                            <ControlVidrios/>
                         </AccordionDetails>
                     </Accordion>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel9'} onChange={handleChange('panel9')}>

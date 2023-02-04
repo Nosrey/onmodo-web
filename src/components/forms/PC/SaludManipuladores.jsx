@@ -1,21 +1,9 @@
 import { Button, TextField , Checkbox, FormControlLabel } from '@mui/material'
-import React, { useState } from 'react'
+import React from 'react'
 import styles from './SaludManipuladores.module.css'
 
 
 function SaludManipuladores() {
-    const [inputs] = useState([
-        { id: 1, label: 'Fecha' },
-        { id: 2, label: 'Nombre Comensal' },
-        { id: 3, label: 'Preparación' },
-        { id: 4, label: 'Listado de ingredientes' },
-        { id: 5, label: 'Responsable' },
-    ]);
-    const [replicas, setReplicas] = useState(1);
-
-    const handleClick = () => {
-        setReplicas(replicas + 1);
-    };
 
     return (
         <div>

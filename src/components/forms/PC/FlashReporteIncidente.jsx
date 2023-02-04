@@ -1,11 +1,8 @@
-import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import { Button, TextField } from '@mui/material'
+import React from 'react'
 import styles from './FlashReporteIncidente.module.css'
-import AddBoxIcon from '@mui/icons-material/AddBox';
 
 function FlashReporteIncidente() {
-
-
 
     return (
         <div>

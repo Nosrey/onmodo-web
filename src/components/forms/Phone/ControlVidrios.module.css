@@ -1,0 +1,12 @@
+
+.personal, .personalText {
+    display: flex;
+    column-gap: 16px;
+    margin-bottom: 5vh;
+    }
+
+    .personalText {
+        width: 61vw;
+        min-width: 300px;
+    }
+    
