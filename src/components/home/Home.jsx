@@ -18,6 +18,7 @@ import ControlVidrios from '../forms/Phone/ControlVidrios';
 import DespachoProduccion from '../forms/Phone/DespachoProduccion';
 import ControlDeCloro from '../forms/Phone/ControlDeCloro';
 import RegistroDeDecomiso from '../forms/PC/RegistroDeDecomiso';
+import RecuperacionProducto from '../forms/Phone/RecuperacionProducto';
 
 
 const Accordion = styled((props) => (
@@ -156,6 +157,14 @@ function Home() {
                         </AccordionSummary>
                         <AccordionDetails className={styles.accordion}>
                             <DespachoProduccion/>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion className={styles.accordion} expanded={expanded === 'panel12'} onChange={handleChange('panel12')}>
+                        <AccordionSummary aria-controls="panel12d-content" id="panel12d-header">
+                            <Typography>Recuperación de Producto (Recall)</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails className={styles.accordion}>
+                            <RecuperacionProducto/>
                         </AccordionDetails>
                     </Accordion>
 
