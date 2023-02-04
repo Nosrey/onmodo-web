@@ -7,11 +7,12 @@ import MuiAccordionSummary from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import styles from './Home.module.css'
-import ConstanciaEntrega from '../forms/ConstanciaEntrega';
-import AlergenosComida from '../forms/AlergenosComida';
-import EntregaBidonesAceiteUsado from '../forms/EntregaBidonesAceiteUsado';
-import FlashReporteIncidente from '../forms/FlashReporteIncidente';
-import SaludManipuladores from '../forms/SaludManipuladores';
+import ConstanciaEntrega from '../forms/PC/ConstanciaEntrega';
+import AlergenosComida from '../forms/PC/AlergenosComida';
+import EntregaBidonesAceiteUsado from '../forms/PC/EntregaBidonesAceiteUsado';
+import FlashReporteIncidente from '../forms/PC/FlashReporteIncidente';
+import SaludManipuladores from '../forms/PC/SaludManipuladores';
+import RegistroCapacitacion from '../forms/PC/RegistroCapacitación';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -105,10 +106,10 @@ function Home() {
                     </Accordion>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel6'} onChange={handleChange('panel6')}>
                         <AccordionSummary aria-controls="panel6d-content" id="panel6d-header">
-                            <Typography>Nombre form</Typography>
+                            <Typography>Registro de Capacitación</Typography>
                         </AccordionSummary>
                         <AccordionDetails className={styles.accordion}>
-                            <EntregaBidonesAceiteUsado/>
+                            <RegistroCapacitacion/>
                         </AccordionDetails>
                     </Accordion>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel7'} onChange={handleChange('panel7')}>

@@ -1,0 +1,58 @@
+
+.personal, .personalText, .personalRight, .firma {
+    display: flex;
+    column-gap: 16px;
+    margin-bottom: 5vh;
+}
+
+.personalRight {
+    justify-content: end;
+}
+
+.personalText {
+    width: 61vw;
+    min-width: 300px;
+}
+
+.subtitleCont {
+    border-bottom: 2px solid rgb(37, 35, 35);
+    margin-bottom: 24px;
+}
+
+.subtitle {
+    font-weight: bold;
+    font-size: 15px;
+    color: rgb(37, 35, 35);
+}
+
+.listTitle {
+    display: flex;
+    align-items: baseline;
+}
+
+
+.listTitle > p{
+    margin-left: 20px;
+    font-size: 12px;
+}
+
+.listContainer {
+    display: flex;
+    flex-direction: column;
+    padding-left: 24px;
+    margin-bottom: 32px;
+}
+
+.listItem {
+    width: 40%;
+    min-width: 300px;
+}
+
+.matDidacticoSection {
+    display: flex;
+    gap: 10%;
+}
+
+.firma {
+    margin-bottom: 80px;
+}
