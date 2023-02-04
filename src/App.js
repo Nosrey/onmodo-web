@@ -4,24 +4,79 @@ import './index.css'
 import Login from './components/login/Login'
 import Register from './components/register/Register'
 import Home from './components/home/Home';
+import Menu from './components/Menu/Menu';
+import Header from './components/Header/Header';
+import AlergenosComida from './components/forms/PC/AlergenosComida';
+import ConstanciaEntrega from './components/forms/PC/ConstanciaEntrega';
+import EntregaBidonesAceiteUsado from './components/forms/PC/EntregaBidonesAceiteUsado';
+import FlashReporteIncidente from './components/forms/PC/FlashReporteIncidente';
+import InformeInternoAccidente from './components/forms/PC/InformeInternoAccidente';
+import RegistroCapacitacion from './components/forms/PC/RegistroCapacitación';
+import RegistroDeDecomiso from './components/forms/PC/RegistroDeDecomiso';
+import RegistroSimulacro from './components/forms/PC/RegistroSimulacro';
+import SaludManipuladores from './components/forms/PC/SaludManipuladores';
+import ControlDeCloro from './components/forms/Phone/ControlDeCloro';
+import ControlVidrios from './components/forms/Phone/ControlVidrios';
+import DespachoProduccion from './components/forms/Phone/DespachoProduccion';
+import RecuperacionProducto from './components/forms/Phone/RecuperacionProducto';
+import Placeholder from './components/Placeholder/Placeholder';
+import { useLocation } from "react-router-dom"
+
 
 function App() {
+  console.log(window.location.pathname)
   return (
     <div className="App">
       <>
-      <Router>
+      {
+        window.location.pathname !== '/login' && window.location.pathname !== '/register' ? (
+          <Header/>
+        )
+        : null
+      }
+     
+      <div className='mainContainer'>
+        {
+          window.location.pathname !== '/login' && window.location.pathname !== '/register' ? (
+            <Menu/> 
+          )
+          : null
+        }
+        
+        <div className='mainContent'>
+          <Router>
+            <Routes>
+              <Route path="/" element={ <Placeholder/> } />
 
-      <Routes>
-        <Route path='/home' element={<Home/>}>
-        </Route>
-        <Route path="/login" element={ <Login/> } />
+              {/* <Route path='/home' element={<Home/>}>
+              </Route> */}
+              <Route path="/login" element={ <Login/> } />
 
-        <Route path='/register' component={<Register/>}>
-        </Route>
-        {/* <Route path='/admin' element={<Admin/>}>
-        </Route> */}
-      </Routes>
-      </Router>
+              <Route path='/register' component={<Register/>}>
+              </Route>
+
+              {/* Forms */}
+              <Route path="/control-alergenos" element={ <AlergenosComida/> } />
+              <Route path="/ropa-de-trabajo" element={ <ConstanciaEntrega/> } />
+              <Route path="/bidones-de-aceite" element={ <EntregaBidonesAceiteUsado/> } />
+              <Route path="/reporte-incidente" element={ <FlashReporteIncidente/> } />
+              <Route path="/informe-accidente" element={ <InformeInternoAccidente/> } />
+              <Route path="/registro-de-capacitacion" element={ <RegistroCapacitacion/> } />
+              <Route path="/registro-decomisos-mp" element={ <RegistroDeDecomiso/> } />
+              <Route path="/registro-simulacro" element={ <RegistroSimulacro/> } />
+              <Route path="/salud-manipuladores" element={ <SaludManipuladores/> } />
+              <Route path="/control-cloro" element={ <ControlDeCloro/> } />
+              <Route path="/control-vidrios" element={ <ControlVidrios/> } />
+              <Route path="/despacho-produccion" element={ <DespachoProduccion/> } />
+              <Route path="/recuperacion-de-producto" element={ <RecuperacionProducto/> } />
+
+              {/* <Route path='/admin' element={<Admin/>}>
+              </Route> */}
+            </Routes>
+          </Router>
+        </div>
+      </div>
+      
       </>
 
 
