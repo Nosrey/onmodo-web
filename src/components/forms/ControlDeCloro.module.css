@@ -1,0 +1,25 @@
+.chipContainer{
+    display: flex;
+    justify-content: space-between;
+}
+
+.chipIntern{
+    display: flex;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+   
+}
+
+.chipAction{
+    display: flex;
+    flex-direction: column;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+}
+.chipOnly{
+    margin-bottom: 1vh;
+}
+
+.verified{
+    margin-bottom: 5vh;
+}

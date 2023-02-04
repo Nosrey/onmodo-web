@@ -12,6 +12,8 @@ import AlergenosComida from '../forms/AlergenosComida';
 import EntregaBidonesAceiteUsado from '../forms/EntregaBidonesAceiteUsado';
 import FlashReporteIncidente from '../forms/FlashReporteIncidente';
 import SaludManipuladores from '../forms/SaludManipuladores';
+import ControlDeCloro from '../forms/ControlDeCloro';
+import RegistroDeDecomiso from '../forms/RegistroDeDecomiso';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -125,6 +127,22 @@ function Home() {
                         </AccordionSummary>
                         <AccordionDetails className={styles.accordion}>
                             <EntregaBidonesAceiteUsado/>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion className={styles.accordion} expanded={expanded === 'panel9'} onChange={handleChange('panel9')}>
+                        <AccordionSummary aria-controls="panel9d-content" id="panel9d-header">
+                            <Typography>Control de cloro activo residual</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails className={styles.accordion}>
+                            <ControlDeCloro/>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion className={styles.accordion} expanded={expanded === 'panel10'} onChange={handleChange('panel10')}>
+                        <AccordionSummary aria-controls="panel10d-content" id="panel10d-header">
+                            <Typography>Registros de decomisos de materias primas</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails className={styles.accordion}>
+                            <RegistroDeDecomiso/>
                         </AccordionDetails>
                     </Accordion>
 
