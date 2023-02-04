@@ -21,6 +21,7 @@ import DespachoProduccion from './components/forms/Phone/DespachoProduccion';
 import RecuperacionProducto from './components/forms/Phone/RecuperacionProducto';
 import Placeholder from './components/Placeholder/Placeholder';
 import { useLocation } from "react-router-dom"
+import PlanillaDeArmadoFraccionamiento from './components/forms/PC/PlanillaDeArmadoFraccionamiento';
 
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
               <Route path="/control-vidrios" element={ <ControlVidrios/> } />
               <Route path="/despacho-produccion" element={ <DespachoProduccion/> } />
               <Route path="/recuperacion-de-producto" element={ <RecuperacionProducto/> } />
+              <Route path="/armado-fraccionamiento" element={ <PlanillaDeArmadoFraccionamiento/> } />
 
               {/* <Route path='/admin' element={<Admin/>}>
               </Route> */}
