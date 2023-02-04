@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import styles from './Home.module.css'
 import ConstanciaEntrega from '../forms/ConstanciaEntrega';
 import AlergenosComida from '../forms/AlergenosComida';
+import EntregaBidonesAceiteUsado from '../forms/EntregaBidonesAceiteUsado';
 
 const Accordion = styled((props) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -78,15 +79,10 @@ function Home() {
                     </Accordion>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
                         <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                            <Typography>Collapsible Group Item #3</Typography>
+                            <Typography>Entrega de Bidones de Aceite Usado</Typography>
                         </AccordionSummary>
                         <AccordionDetails className={styles.accordion}>
-                            <Typography>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-                                malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum dolor
-                                sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
-                                sit amet blandit leo lobortis eget.
-                            </Typography>
+                            <EntregaBidonesAceiteUsado/>
                         </AccordionDetails>
                     </Accordion>
                 </div>

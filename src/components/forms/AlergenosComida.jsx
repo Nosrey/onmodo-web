@@ -20,21 +20,21 @@ function AlergenosComida() {
 
     return (
         <div>
-            <div className={styles.form}>
-                <div className={styles.titleContainer}>
-                    <h3 className={styles.title}>Control de Alérgenos en las Comidas</h3>
-                    <h4 className={styles.formNumber}>Q/SOP-10-R02</h4>
+            <div className="form">
+                <div className="titleContainer">
+                    <h3 className="title">Control de Alérgenos en las Comidas</h3>
+                    <h4 className="formNumber">Q/SOP-10-R02</h4>
                 </div>
                 <div className={styles.personal}>
                     <TextField fullWidth id="outlined-basic" label="Comedor" variant="outlined" />
                 </div>
 
-                <div className={styles.tableSection}>
+                <div className="tableSection">
                     {Array(replicas)
                         .fill(0)
                         .map((_, index) => (
-                            <div className={styles.tableRow} key={index}>
-                                <p className={styles.index}>{index + 1} </p>
+                            <div className="tableRow" key={index}>
+                                <p className="index">{index + 1} </p>
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
@@ -42,7 +42,7 @@ function AlergenosComida() {
 
                                     </div>
                                 ))}
-                                <div className={styles.icon}>
+                                <div className="icon">
                                     <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                                 </div>
                             </div>
@@ -53,9 +53,8 @@ function AlergenosComida() {
                     <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
                     <TextField id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
-                <div className={styles.btn}>
+                <div className="btn">
                     <Button variant="contained">Generar PDF</Button>
-
                 </div>
 
             </div>

@@ -1,8 +1,8 @@
 
 .personal, .personalText {
-display: flex;
-column-gap: 16px;
-margin-bottom: 5vh;
+    display: flex;
+    column-gap: 16px;
+    margin-bottom: 5vh;
 }
 
 .personalText {
