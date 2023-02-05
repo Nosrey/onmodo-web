@@ -1,0 +1,76 @@
+.subtituloTable {
+    display: flex;
+    justify-content: center;
+    background-color: rgba(221, 210, 210, 0.639);
+    border-radius: 2px;
+    width: 45%;   /** como hay 11 campos , cada campo ocupa el 9% , 9% x los 5 campos que abarca = 45%*/
+    margin-left: 36%; /** 9% x los 4 campos que no abarca es decir cuan corrido a la derecha tiene que ir **/
+
+}
+
+.subtitleCont {
+    border-bottom: 2px solid rgb(37, 35, 35);
+    margin-bottom: 24px;
+
+}
+
+.subtitle {
+    font-weight: bold;
+    font-size: 15px;
+    color: rgb(37, 35, 35);
+}
+
+.containerProcesoColumn {
+    display: flex;
+    flex-direction: column;
+}
+
+.containerProcesoSubColumn {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tableRow {
+    display: grid;
+    grid-template-columns: 0.25fr 0.5fr 1fr 2fr 2fr 1fr 0.25fr;
+    border:rgb(184, 172, 172) 1px solid;
+    padding: 16px;
+    border-radius: 16px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+    column-gap: 16px;
+}
+
+.inputSubColumnLeft{
+    padding-right: 16px;
+}
+
+.personal {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.sectionsContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.inputRow {
+    display: flex;
+    gap: 16px;
+    margin: 16px 0;
+}
+
+.inputRow p {
+    width: 200px;
+}
+
+.sectionTitle {
+    font-size: 1.25rem;
+    text-align: center;
+    background-color: #ccc;
+    padding: 16px 32px;
+    margin: 16px auto;
+}
