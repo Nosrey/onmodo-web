@@ -21,6 +21,7 @@ import RegistroDeDecomiso from '../forms/PC/RegistroDeDecomiso';
 import PlanillaDeArmadoFraccionamiento from '../forms/PC/PlanillaDeArmadoFraccionamiento';
 import RecuperacionProducto from '../forms/Phone/RecuperacionProducto';
 import InformeInternoAccidente from '../forms/PC/InformeInternoAccidente';
+import ReporteDeRechazoDevolucionMaterias from '../forms/PC/ReporteDeRechazoDevolucionMaterias';
 
 
 const Accordion = styled((props) => (
@@ -178,11 +179,19 @@ function Home() {
                         </AccordionDetails>
                     </Accordion>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel14'} onChange={handleChange('panel14')}>
-                        <AccordionSummary aria-controls="panel13d-content" id="panel13d-header">
+                        <AccordionSummary aria-controls="panel14d-content" id="panel14d-header">
                             <Typography>Informe Interno de Accidente</Typography>
                         </AccordionSummary>
                         <AccordionDetails className={styles.accordion}>
                             <InformeInternoAccidente/>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion className={styles.accordion} expanded={expanded === 'panel15'} onChange={handleChange('panel15')}>
+                        <AccordionSummary aria-controls="panel15d-content" id="panel15d-header">
+                            <Typography>Reporte de Rechazo/Devolución de Materias Primas</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails className={styles.accordion}>
+                            <ReporteDeRechazoDevolucionMaterias/>
                         </AccordionDetails>
                     </Accordion>
 
