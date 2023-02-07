@@ -19,7 +19,9 @@ function Menu() {
             <Nav.Link eventKey="link-10" href="/control-vidrios">Control de Vidrios</Nav.Link>
             <Nav.Link eventKey="link-11" href="/despacho-produccion">Despacho a Producción</Nav.Link>
             <Nav.Link eventKey="link-12" href="/recuperacion-de-producto">Recuperación de Producto</Nav.Link>
-            <Nav.Link eventKey="link-12" href="/armado-fraccionamiento">Armado/Fraccionamiento</Nav.Link>
+            <Nav.Link eventKey="link-13" href="/armado-fraccionamiento">Armado/Fraccionamiento</Nav.Link>
+            <Nav.Link eventKey="link-14" href="/equipos-frio">Control de Equipos de Frío</Nav.Link>
+
 
         </Nav>
     )
