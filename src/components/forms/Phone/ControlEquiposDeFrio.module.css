@@ -1,0 +1,39 @@
+
+.personal, .personalText {
+    display: flex;
+    column-gap: 16px;
+    margin-bottom: 5vh;
+}
+.personalNro {
+    display: flex;
+    flex-direction: column;
+    column-gap: 16px;
+    margin-bottom: 5vh;
+    width: 270px;
+}
+.personalSelects {
+    display: flex;
+    column-gap: 16px;
+    margin-bottom: 5vh;
+    width: 50%;
+    min-width: 300px;
+}
+.personalText {
+    width: 61vw;
+    min-width: 300px;
+}
+
+.subtitleCont {
+    border-bottom: 2px solid rgb(37, 35, 35);
+    margin-bottom: 24px;
+}
+
+.subtitle {
+    font-weight: bold;
+    font-size: 15px;
+    color: rgb(37, 35, 35);
+}
+
+.responsableCont {
+    margin-bottom: 80px;
+}
