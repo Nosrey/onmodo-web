@@ -22,6 +22,9 @@ function Menu() {
             <Nav.Link eventKey="link-13" href="/armado-fraccionamiento">Armado/Fraccionamiento</Nav.Link>
             <Nav.Link eventKey="link-14" href="/equipos-frio">Control de Equipos de Frío</Nav.Link>
             <Nav.Link eventKey="link-15" href="/servicios-en-linea">Servicios en Línea</Nav.Link>
+            <Nav.Link eventKey="link-16" href="/distribucion-expedicion">Planilla de Distribución/Expedición</Nav.Link>
+
+            
 
 
         </Nav>
