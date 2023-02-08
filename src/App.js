@@ -23,6 +23,7 @@ import Placeholder from './components/Placeholder/Placeholder';
 import { useLocation } from "react-router-dom"
 import PlanillaDeArmadoFraccionamiento from './components/forms/PC/PlanillaDeArmadoFraccionamiento';
 import ControlEquiposDeFrio from './components/forms/Phone/ControlEquiposDeFrio';
+import ServiciosEnLinea from './components/forms/Phone/ServiciosEnLinea';
 
 
 function App() {
@@ -73,6 +74,7 @@ function App() {
               <Route path="/recuperacion-de-producto" element={ <RecuperacionProducto/> } />
               <Route path="/armado-fraccionamiento" element={ <PlanillaDeArmadoFraccionamiento/> } />
               <Route path="/equipos-frio" element={ <ControlEquiposDeFrio/> } />
+              <Route path="/servicios-en-linea" element={ <ServiciosEnLinea/> } />
 
               {/* <Route path='/admin' element={<Admin/>}>
               </Route> */}
