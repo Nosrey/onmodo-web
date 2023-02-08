@@ -1,7 +1,7 @@
 .subtituloTable {
     display: flex;
     justify-content: center;
-    background-color: rgba(221, 210, 210, 0.639);
+    background-color: rgba(229, 224, 224, 0.772);
     border-radius: 2px;
     width: 45%;   /** como hay 11 campos , cada campo ocupa el 9% , 9% x los 5 campos que abarca = 45%*/
     margin-left: 36%; /** 9% x los 4 campos que no abarca es decir cuan corrido a la derecha tiene que ir **/
