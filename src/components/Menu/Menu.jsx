@@ -23,9 +23,9 @@ function Menu() {
             <Nav.Link eventKey="link-14" href="/equipos-frio">Control de Equipos de Frío</Nav.Link>
             <Nav.Link eventKey="link-15" href="/servicios-en-linea">Servicios en Línea</Nav.Link>
             <Nav.Link eventKey="link-16" href="/distribucion-expedicion">Distribución/Expedición</Nav.Link>
-            <Nav.Link eventKey="link-16" href="/verificacion-balanza">Verificación de Instrumentos de Medición Balanzas</Nav.Link>
+            <Nav.Link eventKey="link-17" href="/verificacion-balanza">Verificación de Instrumentos de Medición Balanzas</Nav.Link>
+            <Nav.Link eventKey="link-18" href="/recepcion">Recepción</Nav.Link>
 
-            
 
 
         </Nav>
