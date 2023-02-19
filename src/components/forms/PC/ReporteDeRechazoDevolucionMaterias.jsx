@@ -117,7 +117,7 @@ function ReporteDeRechazoDevolucionMaterias() {
           </p>
         </div>
         <div className="tableSection">
-          <div>
+          <div className={styles.personal}>
             <TextField id="outlined-basic" label="DÍA" variant="outlined" />
             <TextField
               id="outlined-basic"
@@ -135,6 +135,8 @@ function ReporteDeRechazoDevolucionMaterias() {
               variant="outlined"
             />
           </div>
+          <br />
+          <br />
           <div>
             <h2 className={styles.sectionTitle}>Posibles no conformidades</h2>
             <p>
@@ -146,7 +148,7 @@ function ReporteDeRechazoDevolucionMaterias() {
               .map((_, index) => (
                 <div className={styles.sectionsContainer} key={index}>
                   {inputs.map((section) => (
-                    <div>
+                    <div >
                       <div className={styles.subtitleCont} key={section}>
                         <p className={styles.subtitle}>
                           {Object.keys(section)}
@@ -158,7 +160,7 @@ function ReporteDeRechazoDevolucionMaterias() {
                             label={`${value.label}`}
                             key={value.label}
                           />
-                          <p>{value.label}</p>
+                          <p className={styles.itemText}>{value.label}</p>
                           <TextField
                             id={`sectionInput-${value.id}-${index}`}
                             name={`sectionInput-${value.id}-${index}`}
@@ -174,6 +176,9 @@ function ReporteDeRechazoDevolucionMaterias() {
                 </div>
               ))}
           </div>
+
+          <br />
+          <br />
           <div>
             <h2 className={styles.sectionTitle}>MEDIDAS TOMADAS</h2>
             <div>
@@ -201,6 +206,9 @@ function ReporteDeRechazoDevolucionMaterias() {
             </div>
           </div>
         </div>
+        <br />
+        <br />
+        <br />
         <div className={styles.personal}>
           <TextField
             id="outlined-basic"

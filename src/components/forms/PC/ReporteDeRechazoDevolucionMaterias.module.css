@@ -61,6 +61,8 @@
     display: flex;
     gap: 16px;
     margin: 16px 0;
+    justify-content: center;
+    align-items: center;
 }
 
 .inputRow p {
@@ -73,4 +75,8 @@
     background-color: #ccc;
     padding: 16px 32px;
     margin: 16px auto;
+}
+
+.itemText {
+    margin: 0;
 }

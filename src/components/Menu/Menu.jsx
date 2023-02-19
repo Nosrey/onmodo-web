@@ -26,6 +26,7 @@ function Menu() {
             <Nav.Link eventKey="link-17" href="/verificacion-balanza">Verificación de Instrumentos de Medición Balanzas</Nav.Link>
             <Nav.Link eventKey="link-18" href="/recepcion">Recepción</Nav.Link>
             <Nav.Link eventKey="link-19" href="/descongelamiento">Descongelamiento</Nav.Link>
+            <Nav.Link eventKey="link-20" href="/rechazo-mp">Reporte de Rechazo/ Devolución de Materias Primas</Nav.Link>
 
 
 

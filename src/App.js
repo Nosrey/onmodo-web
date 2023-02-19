@@ -28,6 +28,7 @@ import DistribucionExpedicion from './components/forms/Phone/DistribucionExpedic
 import VerificacionBalanza from './components/forms/VerificacionBalanza';
 import Recepcion from './components/forms/Phone/Recepcion';
 import Descongelamiento from './components/forms/Phone/Descongelamiento';
+import ReporteDeRechazoDevolucionMaterias from './components/forms/PC/ReporteDeRechazoDevolucionMaterias';
 
 
 function App() {
@@ -83,6 +84,7 @@ function App() {
               <Route path="/verificacion-balanza" element={ <VerificacionBalanza/> } />
               <Route path="/recepcion" element={ <Recepcion/> } />
               <Route path="/descongelamiento" element={ <Descongelamiento/> } />
+              <Route path="/rechazo-mp" element={ <ReporteDeRechazoDevolucionMaterias/> } />
 
               {/* <Route path='/admin' element={<Admin/>}>
               </Route> */}
