@@ -63,14 +63,26 @@ code {
   margin-right: auto;
 }
 
+.table {
+  width: 75vw;
+  box-shadow:inset -7px 0 9px -7px rgba(117, 114, 114, 0.4);
+  overflow-x: scroll;
+  margin-bottom: 100px;
+  margin-top: 64px;
+  height: fit-content;
+  position: relative;
+}
 .tableSection {
   margin-top: 24px;
-  margin-bottom: 100px;
+  width: 100%;
+}
+.input {
+  width: 130px ;
 }
 
 .tableRow {
   display: flex;
-  column-gap: 16px;
+  column-gap: 0px;
   margin-bottom: 5vh;
   align-items: center;
 }

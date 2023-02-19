@@ -48,44 +48,46 @@ function DistribucionExpedicion() {
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
+                <div className="table">
+                    <div className={styles.contTitTabla}>
+                        <div className={styles.subtituloTable}>
+                            <div>
+                                <p style={{textAlign: 'center', fontWeight:'bold'}}>Distribución/Expedición </p>
+                            </div>
+                            <div className={styles.subtituloTable2}>
+                                <p className={styles.subtituloTableText}>Despacho</p>
+                                <p className={styles.subtituloTableText}>Recepción</p>
+                            </div>
+                        </div>
+                        
+                        <div className={styles.subtituloTableDerecha}>
+                            <div>
+                                <p style={{textAlign: 'center', fontWeight:'bold'}}>En caso de desvíos </p>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div className="tableSection">
+                        {Array(replicas)
+                            .fill(0)
+                            .map((_, index) => (
+                                <div className="tableRow" key={index}>
+                                    <p className="index">{index + 1} </p>
 
-                <div className={styles.contTitTabla}>
-                    <div className={styles.subtituloTable}>
-                        <div>
-                            <p style={{textAlign: 'center', fontWeight:'bold'}}>Distribución/Expedición </p>
-                        </div>
-                        <div className={styles.subtituloTable2}>
-                            <p className={styles.subtituloTableText}>Despacho</p>
-                            <p className={styles.subtituloTableText}>Recepción</p>
-                        </div>
+                                    {inputs.map((input) => (
+                                        <div key={input.id}>
+                                            <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+
+                                        </div>
+                                    ))}
+                                    <div className="icon">
+                                        <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                                    </div>
+                                </div>
+                            ))}
+
                     </div>
                     
-                    <div className={styles.subtituloTableDerecha}>
-                        <div>
-                            <p style={{textAlign: 'center', fontWeight:'bold'}}>En caso de desvíos </p>
-                        </div>
-                    </div>
-                </div>
-             
-                <div className="tableSection">
-                    {Array(replicas)
-                        .fill(0)
-                        .map((_, index) => (
-                            <div className="tableRow" key={index}>
-                                <p className="index">{index + 1} </p>
-
-                                {inputs.map((input) => (
-                                    <div key={input.id}>
-                                        <TextField id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
-
-                                    </div>
-                                ))}
-                                <div className="icon">
-                                    <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
-                                </div>
-                            </div>
-                        ))}
-
                 </div>
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Verificado por" variant="outlined" />

@@ -49,7 +49,7 @@ function Recepcion() {
                 <br />
                 <br />
                 <br />
-
+                <div className="table">
                 <div className={styles.contTitTabla}>
                     <div className={styles.subtituloTable}>
                         <div>
@@ -82,7 +82,7 @@ function Recepcion() {
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
-                                        <TextField id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                        <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                     </div>
                                 ))}
@@ -93,6 +93,8 @@ function Recepcion() {
                         ))}
 
                 </div>
+                </div>
+               
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
                     <TextField id="outlined-basic" label="Fecha/hora" variant="outlined" />

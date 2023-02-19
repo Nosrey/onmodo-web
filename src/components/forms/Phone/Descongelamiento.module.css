@@ -1,0 +1,44 @@
+
+.personal, .personalText {
+    display: flex;
+    column-gap: 16px;
+    margin-bottom: 5vh;
+}
+
+.subtituloTable {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba(229, 224, 224, 0.772);
+    border-radius: 2px;
+    padding-top: 4px;
+    width: 280px ;   
+}
+
+
+.contTitTabla {
+    display: flex;
+    gap: 10px;
+    width: 1168px ;
+    margin-left: 620px; 
+}
+
+.subtitleCont {
+    border-bottom: 2px solid rgb(37, 35, 35);
+    margin-bottom: 24px;
+}
+
+.subtitle {
+    font-weight: bold;
+    font-size: 15px;
+    color: rgb(37, 35, 35);
+}
+
+.limites {
+    display: flex;
+    height: 400px;
+}
+.limitesImg {
+    width: 50%;
+    max-width: 350px;
+}
