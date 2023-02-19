@@ -30,6 +30,7 @@ import Recepcion from './components/forms/Phone/Recepcion';
 import Descongelamiento from './components/forms/Phone/Descongelamiento';
 import ReporteDeRechazoDevolucionMaterias from './components/forms/PC/ReporteDeRechazoDevolucionMaterias';
 import ControlProcesos from './components/forms/Phone/ControlProcesos';
+import CargaRecepcion from './components/forms/Phone/CargaRecepcion';
 
 
 function App() {
@@ -87,6 +88,7 @@ function App() {
               <Route path="/descongelamiento" element={ <Descongelamiento/> } />
               <Route path="/rechazo-mp" element={ <ReporteDeRechazoDevolucionMaterias/> } />
               <Route path="/control-procesos" element={ <ControlProcesos/> } />
+              <Route path="/carga-recepcion" element={ <CargaRecepcion/> } />
 
               {/* <Route path='/admin' element={<Admin/>}>
               </Route> */}
