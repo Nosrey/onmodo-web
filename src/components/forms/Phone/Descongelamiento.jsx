@@ -1,18 +1,29 @@
 import { Button,  TextField } from '@mui/material'
 import React, { useState } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import styles from './VerificacionBalanza.module.css'
+import styles from './Descongelamiento.module.css'
+import imageCrudos from "../../../assets/img/forms/crudos.png";
+import imageCrudosCocidos from "../../../assets/img/forms/crudoscocidos.png";
+import imageMicroondas from "../../../assets/img/forms/micro.png";
+import imageLimite from "../../../assets/img/forms/interna.png";
+import imageAcciones from "../../../assets/img/forms/correccion.png";
 
-function VerificacionBalanza() {
+function Descongelamiento() {
     const [inputs] = useState([
-        { id: 1, label: 'Código' },
-        { id: 2, label: 'Tipo (BP/BR)' },
-        { id: 3, label: 'Responsable del uso' },
-        { id: 4, label: 'Área' },
-        { id: 5, label: 'Peso Masa ref/Pto balanza' },
-        { id: 6, label: 'Peso real' },
-        { id: 7, label: 'Desvío' },
-        { id: 8, label: 'Acciones de corrección' },
+        { id: 1, label: 'Fecha' },
+        { id: 2, label: 'Alimento' },
+        { id: 3, label: 'Nro. lote' },
+        { id: 4, label: 'Método* (C/A/M)' },
+        { id: 5, label: 'Fecha/ Hora' },
+        { id: 6, label: 'Temp' },
+        { id: 7, label: 'Fecha/ Hora' },
+        { id: 8, label: 'Temp' },
+        { id: 9, label: 'Fecha/ Hora' },
+        { id: 10, label: 'Temp' },
+        { id: 11, label: 'Fecha/ Hora' },
+        { id: 12, label: 'Temp' },
+        { id: 13, label: 'Acciones de correción' },
+        { id: 14, label: 'Responsable' },
     ]);
     const [replicas, setReplicas] = useState(1);
 
@@ -24,47 +35,46 @@ function VerificacionBalanza() {
         <div>
             <div className="form">
                 <div className="titleContainer">
-                    <h3 className="title">Verificación de Instrumentos de Medición Balanzas</h3>
+                    <h3 className="title">Descongelamiento</h3>
                 </div>
 
                 <br />
                 <div className={styles.subtitleCont}>
                     <p className={styles.subtitle}>PROCEDIMIENTO</p>
                 </div>
-                <p>Se tara la balanza y se coloca una masa patrón de 1 kg.(puede utilizarse algún producto envasado-lentejas,   azúcar)   en   cada   uno   de   los   puntos establecidos.</p>
-                <p>Para  comedores  certificados,  usar  las  masas  de referencias.</p>
-                <br />
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>DESVÍO PERMITIDO</p>
+                <div className={styles.limites}>
+                    <img src={imageCrudosCocidos} className={styles.limitesImg} />
+                    <img src={imageCrudos}  className={styles.limitesImg} />
+                    <img src={imageMicroondas} className={styles.limitesImg} />
                 </div>
-                <p>Balanza de producción:±10 gramos.</p>
-                <p>Báscula de recepción:±200 gramos.</p>
                 <br />
-
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>ACCIONES DE CORRECCIÓN</p>
+                <br />
+                <div className={styles.limites}>
+                    <img src={imageLimite} className={styles.limitesImg} />
+                    <img src={imageAcciones}  className={styles.limitesImg} />
                 </div>
-                <p>Si  alguno  de  los  puntos  supera  el  desvío,  la balanza se debe enviar a calibrar.</p>
-                <br />
-
-                <b>FRECUENCIA: ANUAL</b>
-
-
                 <br />
                 <br />
-                <br />
-                <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Fecha" variant="outlined" />
-                    <TextField id="outlined-basic" label="Responsable de validación" variant="outlined" />
-                    <TextField id="outlined-basic" label="Balanza/Báscula" variant="outlined" />
-
-                </div>
-
                 <div className="table">
                     <div className={styles.contTitTabla}>
                         <div className={styles.subtituloTable}>
                             <div>
-                                <p style={{textAlign: 'center', fontWeight:'bold'}}>Identificación Balanza </p>
+                                <p style={{textAlign: 'center', fontWeight:'bold'}}>Inicio</p>
+                            </div>
+                        </div>
+                        <div className={styles.subtituloTable}>
+                            <div>
+                                <p style={{textAlign: 'center', fontWeight:'bold'}}>Monitoreo 1</p>
+                            </div>
+                        </div>
+                        <div className={styles.subtituloTable}>
+                            <div>
+                                <p style={{textAlign: 'center', fontWeight:'bold'}}>Monitoreo 2</p>
+                            </div>
+                        </div>
+                        <div className={styles.subtituloTable}>
+                            <div>
+                                <p style={{textAlign: 'center', fontWeight:'bold'}}>Final</p>
                             </div>
                         </div>
                     </div>
@@ -90,6 +100,7 @@ function VerificacionBalanza() {
 
                     </div>
                 </div>
+
                 
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
@@ -104,4 +115,4 @@ function VerificacionBalanza() {
     )
 }
 
-export default VerificacionBalanza
+export default Descongelamiento

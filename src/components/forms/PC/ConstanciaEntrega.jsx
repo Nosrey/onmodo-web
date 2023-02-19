@@ -70,26 +70,29 @@ function ConstanciaEntrega() {
                         <TextField id="outlined-basic" name="textField" variant="outlined" label="Otros" />
                     )}
                 </div>
-                <div className="tableSection">
-                    {Array(replicas)
-                        .fill(0)
-                        .map((_, index) => (
-                            <div className="tableRow" key={index}>
-                                <p className="index">{index + 1} </p>
+                <div className="table">
+                    <div className="tableSection">
+                        {Array(replicas)
+                            .fill(0)
+                            .map((_, index) => (
+                                <div className="tableRow" key={index}>
+                                    <p className="index">{index + 1} </p>
 
-                                {inputs.map((input) => (
-                                    <div key={input.id}>
-                                        <TextField id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                    {inputs.map((input) => (
+                                        <div key={input.id}>
+                                            <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
+                                        </div>
+                                    ))}
+                                    <div className="icon">
+                                        <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                                     </div>
-                                ))}
-                                <div className="icon">
-                                    <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                                 </div>
-                            </div>
-                        ))}
+                            ))}
 
+                    </div>
                 </div>
+                
                 <div className={styles.personal}>
                     <TextField fullWidth id="outlined-basic" label="Informacion adicional" variant="outlined" />
                 </div>

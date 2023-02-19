@@ -40,7 +40,7 @@ function ControlVidrios() {
                 <p>Registro de envases de vidrio y roturas</p>
 
 
-
+                <div className="table">
                 <div className="tableSection">
                     {Array(replicas2)
                         .fill(0)
@@ -61,7 +61,9 @@ function ControlVidrios() {
                         ))}
 
                 </div>
-
+                </div>
+                
+                <div className="table">
                 <div className="tableSection">
                     {Array(replicas2)
                         .fill(0)
@@ -82,6 +84,8 @@ function ControlVidrios() {
                         ))}
 
                 </div>
+                </div>
+            
 
 
                  <div className={styles.personal}>

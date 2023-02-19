@@ -12,7 +12,7 @@
     background-color: rgba(229, 224, 224, 0.772);
     border-radius: 2px;
     padding-top: 4px;
-    width: 82%;   
+    width: 598px;   
 }
 
 .subtituloTableDerecha {
@@ -44,9 +44,8 @@
 
 .contTitTabla {
     display: flex;
-    width: 57% ;
-    margin-left: 2%; 
-    margin-top: 64px;
+    width: 568px ;
+    margin-left: 40px; 
 }
 
 .subtitleCont {

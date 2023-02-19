@@ -28,7 +28,7 @@ function AlergenosComida() {
                 <div className={styles.personal}>
                     <TextField fullWidth id="outlined-basic" label="Comedor" variant="outlined" />
                 </div>
-
+                <div className="table">
                 <div className="tableSection">
                     {Array(replicas)
                         .fill(0)
@@ -49,6 +49,9 @@ function AlergenosComida() {
                         ))}
 
                 </div>
+
+                </div>
+               
                  <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
                     <TextField id="outlined-basic" label="Fecha" variant="outlined" />

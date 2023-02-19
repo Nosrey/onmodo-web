@@ -57,7 +57,7 @@ function ControlDeCloro() {
 
                     </div>
                 </div>
-
+                <div className="table">
                 <div className="tableSection">
                     {Array(replicas)
                         .fill(0)
@@ -67,7 +67,7 @@ function ControlDeCloro() {
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
-                                        <TextField id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                        <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                     </div>
                                 ))}
@@ -78,6 +78,8 @@ function ControlDeCloro() {
                         ))}
 
                 </div>
+                </div>
+              
 
                 <div className={styles.verified}>
                     <TextField fullWidth id="outlined-basic" label="Verificado por:" variant="outlined" />
