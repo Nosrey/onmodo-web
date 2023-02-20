@@ -1,19 +1,23 @@
 import { Button, TextField , Checkbox} from '@mui/material'
 import React, { useState } from 'react'
-import styles from './UsoCambioAceite.module.css'
+import styles from './EPP.module.css'
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 
-function UsoCambioAceite() {
+function EPP() {
     const [month, setMonth] = React.useState('');
     const [renglones] = useState([
-        { id: 1, label: 'Uso' },
-        { id: 2, label: 'Filtración' },
-        { id: 3, label: 'Cambio Aceite' },
-        { id: 4, label: 'Limpieza de freidora' },
-        { id: 5, label: 'Responsable' },
+        { id: 1, label: 'Ropa de trabajo' },
+        { id: 2, label: 'Calzado de Seguridad' },
+        { id: 3, label: 'Guantes' },
+        { id: 4, label: 'Protección Ocular' },
+        { id: 5, label: 'Protección facial' },
+        { id: 6, label: 'Protección auditiva' },
+        { id: 7, label: 'Protección Respiratoria' },
+        { id: 8, label: 'Protección de tronco' },
+        { id: 9, label: 'Otro' },
     ]);
     const [checks] = useState([
         { id: 1, label: '1' },
@@ -55,8 +59,7 @@ function UsoCambioAceite() {
         <div>
             <div className="form">
                 <div className="titleContainer">
-                    <h3 className="title">Uso y Cambio de Aceite de Freidora</h3>
-                    {/* <h4 className="formNumber"> HSEQ-07-R01</h4> */}
+                    <h3 className="title">Lista para chequeo de uso E.P.P</h3>
                 </div>
 
 
@@ -64,23 +67,12 @@ function UsoCambioAceite() {
                     <div className={styles.subtitleCont}>
                         <p className={styles.subtitle}>Instrucciones</p>
                     </div>
-                    <p>Tildar las actividades realizadas diariamente.Los Responsables deben aclarar su Apellido y Nombre con sus iniciales.</p>
-                </div>
-                
-                <div className={styles.responsableCont}>
-                    <div className={styles.subtitleCont}>
-                        <p className={styles.subtitle}>Precauciones</p>
-                    </div>
-                    <ul>
-                    <li>No sobrecalentar las grasas y aceites por encima de los 180 °C.</li>
-                    <li>Filtrar las grasas y aceites luego de su uso.</li>
-                    <li>Verificar la calidad de las grasas y aceites en forma regular.</li>
-                    <li>Desechar las grasas y aceites con cambios evidentes de color, olor y sabor.</li>
-                    <li>No utilizar el aceite más de 5 veces (el Registro permite llevar cuenta del uso de la freidora).</li>
-                    </ul>                    
+                    <p>Tildar el uso de EPP de cada empleado según los que corresponden con su puesto de trabajo.</p>
+                    <p>El incumplimiento en el uso de EPP genera la observación proactiva al empleado y su posterior registro STOP.</p>
+
                 </div>
 
-                <div className={styles.personal}>
+                <div className={styles.personalMonth}>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Mes</InputLabel>
                         <Select
@@ -105,6 +97,11 @@ function UsoCambioAceite() {
                         </Select>
                     </FormControl>
                 </div>
+                <div className={styles.personal}>
+                    <TextField id="outlined-basic" label="Nombre Del Empleado" variant="outlined" />
+                    <TextField id="outlined-basic" label="Sector" variant="outlined" />
+                    <TextField id="outlined-basic" label="Puesto" variant="outlined" />
+                </div>
 
                 <div className='contMonthTable'>
                     <div className='optionList'>
@@ -112,19 +109,31 @@ function UsoCambioAceite() {
                             <p></p>
                         </div>
                         <div className='optionTable'>
-                            <p>Uso</p>
+                            <p>Ropa de trabajo</p>
                         </div>
                         <div className='optionTable'>
-                            <p>Filtración</p>
+                            <p>Calzado de Seguridad</p>
                         </div>
                         <div className='optionTable'>
-                            <p>Cambio Aceite</p>
+                            <p>Guantes</p>
                         </div>
                         <div className='optionTable'>
-                            <p>Limpieza de freidora</p>
+                            <p>Protección Ocular</p>
                         </div>
                         <div className='optionTable'>
-                            <p>Responsable</p>
+                            <p>Protección Facial</p>
+                        </div>
+                        <div className='optionTable'>
+                            <p>Protección Auditiva</p>
+                        </div>
+                        <div className='optionTable'>
+                            <p>Protección Respiratoria</p>
+                        </div>
+                        <div className='optionTable'>
+                            <p>Protección de Tronco</p>
+                        </div>
+                        <div className='optionTable'>
+                            <p>Otro</p>
                         </div>
                     </div>
                     <div className="tableSectionCheck">
@@ -162,6 +171,11 @@ function UsoCambioAceite() {
                         rows={4}
                     />                
                 </div>
+                <br />
+                <br />
+                <div className={styles.personal}>
+                    <TextField id="outlined-basic" label="Firma Responsable Comedor" variant="outlined" />
+                </div>
 
                 <div className="btn">
                     <Button variant="contained">Generar PDF</Button>
@@ -173,4 +187,4 @@ function UsoCambioAceite() {
     )
 }
 
-export default UsoCambioAceite
+export default EPP
