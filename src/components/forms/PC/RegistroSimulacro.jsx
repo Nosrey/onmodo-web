@@ -21,7 +21,7 @@ function RegistroSimulacro() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Registro de Simulacro</h3>
-                    <h4 className="formNumber"> HS-02-R01</h4>
+                    {/* <h4 className="formNumber"> HS-02-R01</h4> */}
                 </div>
 
                 <div className={styles.personal}>

@@ -23,7 +23,7 @@ function AlergenosComida() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Control de Alérgenos en las Comidas</h3>
-                    <h4 className="formNumber">Q/SOP-10-R02</h4>
+                    {/* <h4 className="formNumber">Q/SOP-10-R02</h4> */}
                 </div>
                 <div className={styles.personal}>
                     <TextField fullWidth id="outlined-basic" label="Comedor" variant="outlined" />

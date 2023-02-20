@@ -22,7 +22,7 @@ function DespachoProduccion() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Planilla de Despacho a Producción</h3>
-                    <h4 className="formNumber">Q/SOP-12-R01</h4>
+                    {/* <h4 className="formNumber">Q/SOP-12-R01</h4> */}
                 </div>
 
                 <p>Los productos que deben registrarse en la siguiente planilla son:</p>

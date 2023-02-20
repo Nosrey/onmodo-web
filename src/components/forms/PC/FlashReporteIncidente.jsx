@@ -9,7 +9,7 @@ function FlashReporteIncidente() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Flash Reporte de Incidente</h3>
-                    <h4 className="formNumber"> HSEQ-07-R01</h4>
+                    {/* <h4 className="formNumber"> HSEQ-07-R01</h4> */}
                 </div>
 
                 <div className={styles.personal}>

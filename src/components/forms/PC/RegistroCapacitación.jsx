@@ -35,7 +35,7 @@ function RegistroCapacitacion() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Registro de Capacitación</h3>
-                    <h4 className="formNumber">HSEQ-04-R02</h4>
+                    {/* <h4 className="formNumber">HSEQ-04-R02</h4> */}
                 </div>
                 <div className={styles.personalRight}>
                     <TextField id="outlined-basic" label="Fecha" variant="outlined" />
