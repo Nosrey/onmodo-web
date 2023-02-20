@@ -8,9 +8,13 @@ function PlanillaDeArmadoFraccionamiento() {
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Producto' },
-        { id: 3, label: 'Proceso de Armado/Fraccionamiento' },
-        { id: 4, label: 'Acciones de corrección tomadas' },
-        { id: 5, label: 'Responsable' },
+        { id: 3, label: 'Hora' },
+        { id: 4, label: 'Temp. Interna' },
+        { id: 5, label: 'Hora' },
+        { id: 6, label: 'Temp. Interna' },
+        { id: 7, label: 'Acciones Correcion' },
+        { id: 8, label: 'Responsable' },
+
     ]);
     const [replicas, setReplicas] = useState(1);
 
@@ -37,44 +41,42 @@ function PlanillaDeArmadoFraccionamiento() {
                     <p className={styles.subtitle}>ACCIONES DE CORRECCIÓN</p>
                     <p>Si la temperatura interna del alimento:<br/>-Está entre 13ºC y 15ºC, refrigerar el lote inmediatamente.<br/>-Supera los 15ºC, desechar el lote.</p>
                 </div>
+                <div className="table">
+                    <div className={styles.contTitTabla}>
 
-            <div className="tableSection">
-                    {Array(replicas)
-                        .fill(0)
-                        .map((_, index) => (
-                            <div className={styles.tableRow} key={index}>
-                                <p className="index">{index + 1} </p>
-
-                                {inputs.map((input) => (
-                                    input.label !== 'Proceso de Armado/Fraccionamiento' ? 
-                                    <div key={input.id}>
-                                        <p className={styles.subtitle}>{input.label}</p>
-                                        <TextField id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" fullWidth />
-                                    </div> :
-                                    <div key={input.id} className={styles.containerProcesoColumn}>
-                                        <p className={styles.subtitle}>{input.label}</p>
-                                        <div className={styles.containerProcesoSubColumn}>
-                                            <div className={styles.inputSubColumnLeft}>
-                                                <div>                                           <TextField id={`input-${input.id}-${index}`} name= {`input-${input.id}-${index}`} label='Inicio'    variant="outlined" />
-                                                </div>
-                                                <div>                                           <TextField id={`input-${input.id}-${index}`} name= {`input-${input.id}-${index}`} label='Temp.  Interna' variant="outlined" />
-                                                </div>
-                                            </div>
-                                            <div className={styles.inputSubColumnRigth}>
-                                                <div>                                           <TextField id={`input-${input.id}-${index}`} name= {`input-${input.id}-${index}`} label='Final'    variant="outlined" />
-                                                </div>
-                                                <div>                                           <TextField id={`input-${input.id}-${index}`} name= {`input-${input.id}-${index}`} label='Temp.  Interna' variant="outlined" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                                <div className="icon">
-                                    <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
-                                </div>
+                        <div className={styles.subtituloTableCuadruple}>
+                            <div>
+                                <p style={{textAlign: 'center', fontWeight:'bold'}}>PROCESO DE ARMADO/FRACCIONAMIENTO</p>
                             </div>
-                        ))}
+                            <div className={styles.subtituloTable2}>
+                                <p className={styles.subtituloTableTextDoble}>INICIO</p>
+                                <p className={styles.subtituloTableTextDoble}>FINAL</p>
+                            </div>
+                        </div>
 
+                    </div>
+                
+                    <div className="tableSection">
+                        {Array(replicas)
+                            .fill(0)
+                            .map((_, index) => (
+                                <div className="tableRow" key={index}>
+                                    <p className="index">{index + 1} </p>
+
+                                    {inputs.map((input) => (
+                                        <div key={input.id}>
+                                            <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+
+                                        </div>
+                                    ))}
+                                    <div className="icon">
+                                        <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                                    </div>
+                                </div>
+                            ))}
+
+                    </div>
+                    
                 </div>
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
