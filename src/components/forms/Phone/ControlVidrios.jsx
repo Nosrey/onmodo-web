@@ -42,7 +42,7 @@ function ControlVidrios() {
 
                 <div className="table">
                 <div className="tableSection">
-                    {Array(replicas2)
+                    {Array(replicas1)
                         .fill(0)
                         .map((_, index) => (
                             <div className="tableRow" key={index}>
