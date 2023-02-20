@@ -34,7 +34,7 @@ function ControlVidrios() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Control de Vidrios</h3>
-                    <h4 className="formNumber">Q/SOP-02-R01</h4>
+                    {/* <h4 className="formNumber">Q/SOP-02-R01</h4> */}
                 </div>
 
                 <p>Registro de envases de vidrio y roturas</p>

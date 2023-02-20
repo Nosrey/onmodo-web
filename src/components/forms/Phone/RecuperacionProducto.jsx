@@ -8,7 +8,7 @@ function RecuperacionProducto() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Recuperación de Producto (Recall)</h3>
-                    <h4 className="formNumber">Q/SOP-11-R01</h4>
+                    {/* <h4 className="formNumber">Q/SOP-11-R01</h4> */}
                 </div>
 
                 <div className={styles.subtitleCont}>

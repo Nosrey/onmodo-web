@@ -23,7 +23,7 @@ function PlanillaDeArmadoFraccionamiento() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Planilla de Armado/Fraccionamiento</h3>
-                    <h4 className="formNumber"> Q/CCP-06-R01</h4>
+                    {/* <h4 className="formNumber"> Q/CCP-06-R01</h4> */}
                 </div>
                 <div>
                     <p className={styles.subtitle}>LÍMITE CRÍTICO</p>

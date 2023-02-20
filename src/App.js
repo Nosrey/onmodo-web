@@ -33,6 +33,7 @@ import ControlProcesos from './components/forms/Phone/ControlProcesos';
 import CargaRecepcion from './components/forms/Phone/CargaRecepcion';
 import VerificacionTermometros from './components/forms/VerificacionTermometros';
 import Sanitizacion from './components/forms/Phone/Sanitizacion';
+import UsoCambioAceite from './components/forms/Phone/UsoCambioAceite';
 
 
 function App() {
@@ -93,6 +94,7 @@ function App() {
               <Route path="/control-procesos" element={ <ControlProcesos/> } />
               <Route path="/carga-recepcion" element={ <CargaRecepcion/> } />
               <Route path="/sanitizacion" element={ <Sanitizacion/> } />
+              <Route path="/cambio-aceite" element={ <UsoCambioAceite/> } />
 
               {/* <Route path='/admin' element={<Admin/>}>
               </Route> */}

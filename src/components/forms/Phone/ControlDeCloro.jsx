@@ -27,7 +27,7 @@ function ControlDeCloro() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Control de cloro activo residual</h3>
-                    <h4 className="formNumber">Q/SOP-07-R02</h4>
+                    {/* <h4 className="formNumber">Q/SOP-07-R02</h4> */}
                 </div>
 
                 <div className={styles.chipContainer}>

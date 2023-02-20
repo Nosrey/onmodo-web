@@ -107,7 +107,7 @@ function ControlEquiposDeFrio() {
                 </div>
 
                 <div className={styles.personalSelects}> 
-                <FormControl fullWidth>
+                    <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Mes</InputLabel>
                         <Select
                         labelId="demo-simple-select-label"

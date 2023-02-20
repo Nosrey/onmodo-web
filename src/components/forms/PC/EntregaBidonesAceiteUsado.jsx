@@ -21,7 +21,7 @@ function EntregaBidonesAceiteUsado() {
         <div className="form">
             <div className="titleContainer">
                 <h3 className="title">Entrega de Bidones de Aceite Usado</h3>
-                <h4 className="formNumber">E-02-R02</h4>
+                {/* <h4 className="formNumber">E-02-R02</h4> */}
             </div>
             <div className="table">
                 <div className="tableSection">

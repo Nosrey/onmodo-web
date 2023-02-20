@@ -31,7 +31,7 @@ function ConstanciaEntrega() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Constancia de Entrega de Ropa de Trabajo y de E.P.P</h3>
-                    <h4 className="formNumber"> HS-01-R01</h4>
+                    {/* <h4 className="formNumber"> HS-01-R01</h4> */}
                 </div>
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Apellido y nombre" variant="outlined" />

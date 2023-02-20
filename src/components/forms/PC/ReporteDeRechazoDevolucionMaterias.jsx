@@ -62,7 +62,7 @@ function ReporteDeRechazoDevolucionMaterias() {
           <h3 className="title">
             Reporte de Rechazo/Devolución de Materias Primas
           </h3>
-          <h4 className="formNumber">Q/CCP-01-R02</h4>
+          {/* <h4 className="formNumber">Q/CCP-01-R02</h4> */}
         </div>
         <p className={styles.subtitle}>Procedimiento</p>
         <div>
