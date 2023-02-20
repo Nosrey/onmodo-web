@@ -24,7 +24,7 @@ function VerificacionBalanza() {
         <div>
             <div className="form">
                 <div className="titleContainer">
-                    <h3 className="title">Verificación de Instrumentos de Medición Balanzas</h3>
+                    <h3 className="title">Verificación de Instrumentos de Medición: Balanzas</h3>
                 </div>
 
                 <br />
@@ -90,7 +90,9 @@ function VerificacionBalanza() {
 
                     </div>
                 </div>
-                
+                <span><b>*</b> BP(Balanza de producción) - BR (Balanza de recepción)</span>
+                <br />
+                <br />
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
                     <TextField id="outlined-basic" label="Fecha/hora" variant="outlined" />

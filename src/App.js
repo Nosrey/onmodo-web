@@ -31,6 +31,7 @@ import Descongelamiento from './components/forms/Phone/Descongelamiento';
 import ReporteDeRechazoDevolucionMaterias from './components/forms/PC/ReporteDeRechazoDevolucionMaterias';
 import ControlProcesos from './components/forms/Phone/ControlProcesos';
 import CargaRecepcion from './components/forms/Phone/CargaRecepcion';
+import VerificacionTermometros from './components/forms/VerificacionTermometros';
 
 
 function App() {
@@ -84,6 +85,7 @@ function App() {
               <Route path="/servicios-en-linea" element={ <ServiciosEnLinea/> } />
               <Route path="/distribucion-expedicion" element={ <DistribucionExpedicion/> } />
               <Route path="/verificacion-balanza" element={ <VerificacionBalanza/> } />
+              <Route path="/verificacion-termometro" element={ <VerificacionTermometros/> } />
               <Route path="/recepcion" element={ <Recepcion/> } />
               <Route path="/descongelamiento" element={ <Descongelamiento/> } />
               <Route path="/rechazo-mp" element={ <ReporteDeRechazoDevolucionMaterias/> } />
