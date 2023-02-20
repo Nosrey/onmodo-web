@@ -32,6 +32,7 @@ import ReporteDeRechazoDevolucionMaterias from './components/forms/PC/ReporteDeR
 import ControlProcesos from './components/forms/Phone/ControlProcesos';
 import CargaRecepcion from './components/forms/Phone/CargaRecepcion';
 import VerificacionTermometros from './components/forms/VerificacionTermometros';
+import Sanitizacion from './components/forms/Phone/Sanitizacion';
 
 
 function App() {
@@ -91,6 +92,7 @@ function App() {
               <Route path="/rechazo-mp" element={ <ReporteDeRechazoDevolucionMaterias/> } />
               <Route path="/control-procesos" element={ <ControlProcesos/> } />
               <Route path="/carga-recepcion" element={ <CargaRecepcion/> } />
+              <Route path="/sanitizacion" element={ <Sanitizacion/> } />
 
               {/* <Route path='/admin' element={<Admin/>}>
               </Route> */}
