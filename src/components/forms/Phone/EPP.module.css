@@ -1,5 +1,5 @@
 
-.personal, .personalText {
+.personal, .personalText, .personalMonth {
     display: flex;
     column-gap: 16px;
     margin-bottom: 5vh;
@@ -9,7 +9,7 @@
     width: 61vw;
     min-width: 300px;
 }
-.personal {
+.personalMonth {
     width: 300px;
 }
 

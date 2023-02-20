@@ -32,6 +32,7 @@ function Menu() {
             <Nav.Link eventKey="link-23" href="/carga-recepcion">Carga/Recepción</Nav.Link>
             <Nav.Link eventKey="link-24" href="/sanitizacion">Sanitización</Nav.Link>
             <Nav.Link eventKey="link-25" href="/cambio-aceite">Uso y Cambio de Aceite de Freidora</Nav.Link>
+            <Nav.Link eventKey="link-26" href="/uso-epp">Chequeo de uso E.P.P</Nav.Link>
 
 
 

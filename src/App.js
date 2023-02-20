@@ -34,6 +34,7 @@ import CargaRecepcion from './components/forms/Phone/CargaRecepcion';
 import VerificacionTermometros from './components/forms/VerificacionTermometros';
 import Sanitizacion from './components/forms/Phone/Sanitizacion';
 import UsoCambioAceite from './components/forms/Phone/UsoCambioAceite';
+import EPP from './components/forms/Phone/EPP';
 
 
 function App() {
@@ -95,6 +96,8 @@ function App() {
               <Route path="/carga-recepcion" element={ <CargaRecepcion/> } />
               <Route path="/sanitizacion" element={ <Sanitizacion/> } />
               <Route path="/cambio-aceite" element={ <UsoCambioAceite/> } />
+              <Route path="/uso-epp" element={ <EPP/> } />
+
 
               {/* <Route path='/admin' element={<Admin/>}>
               </Route> */}
