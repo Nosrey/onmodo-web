@@ -22,7 +22,7 @@ function DespachoProduccion() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Planilla de Despacho a Producción</h3>
-                    <h4 className="formNumber">Q/SOP-12-R01</h4>
+                    {/* <h4 className="formNumber">Q/SOP-12-R01</h4> */}
                 </div>
 
                 <p>Los productos que deben registrarse en la siguiente planilla son:</p>
@@ -42,7 +42,7 @@ function DespachoProduccion() {
                     <TextField id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
                 
-
+                <div className="table">
                 <div className="tableSection">
                     {Array(replicas)
                         .fill(0)
@@ -52,7 +52,7 @@ function DespachoProduccion() {
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
-                                        <TextField id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                        <TextField className='' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                     </div>
                                 ))}
@@ -63,6 +63,8 @@ function DespachoProduccion() {
                         ))}
 
                 </div>
+                </div>
+              
                 
                 <div className="btn">
                     <Button variant="contained">Generar PDF</Button>

@@ -23,6 +23,18 @@ import Placeholder from './components/Placeholder/Placeholder';
 import { useLocation } from "react-router-dom"
 import PlanillaDeArmadoFraccionamiento from './components/forms/PC/PlanillaDeArmadoFraccionamiento';
 import ControlEquiposDeFrio from './components/forms/Phone/ControlEquiposDeFrio';
+import ServiciosEnLinea from './components/forms/Phone/ServiciosEnLinea';
+import DistribucionExpedicion from './components/forms/Phone/DistribucionExpedicion';
+import VerificacionBalanza from './components/forms/VerificacionBalanza';
+import Recepcion from './components/forms/Phone/Recepcion';
+import Descongelamiento from './components/forms/Phone/Descongelamiento';
+import ReporteDeRechazoDevolucionMaterias from './components/forms/PC/ReporteDeRechazoDevolucionMaterias';
+import ControlProcesos from './components/forms/Phone/ControlProcesos';
+import CargaRecepcion from './components/forms/Phone/CargaRecepcion';
+import VerificacionTermometros from './components/forms/VerificacionTermometros';
+import Sanitizacion from './components/forms/Phone/Sanitizacion';
+import UsoCambioAceite from './components/forms/Phone/UsoCambioAceite';
+import EPP from './components/forms/Phone/EPP';
 
 
 function App() {
@@ -73,6 +85,19 @@ function App() {
               <Route path="/recuperacion-de-producto" element={ <RecuperacionProducto/> } />
               <Route path="/armado-fraccionamiento" element={ <PlanillaDeArmadoFraccionamiento/> } />
               <Route path="/equipos-frio" element={ <ControlEquiposDeFrio/> } />
+              <Route path="/servicios-en-linea" element={ <ServiciosEnLinea/> } />
+              <Route path="/distribucion-expedicion" element={ <DistribucionExpedicion/> } />
+              <Route path="/verificacion-balanza" element={ <VerificacionBalanza/> } />
+              <Route path="/verificacion-termometro" element={ <VerificacionTermometros/> } />
+              <Route path="/recepcion" element={ <Recepcion/> } />
+              <Route path="/descongelamiento" element={ <Descongelamiento/> } />
+              <Route path="/rechazo-mp" element={ <ReporteDeRechazoDevolucionMaterias/> } />
+              <Route path="/control-procesos" element={ <ControlProcesos/> } />
+              <Route path="/carga-recepcion" element={ <CargaRecepcion/> } />
+              <Route path="/sanitizacion" element={ <Sanitizacion/> } />
+              <Route path="/cambio-aceite" element={ <UsoCambioAceite/> } />
+              <Route path="/uso-epp" element={ <EPP/> } />
+
 
               {/* <Route path='/admin' element={<Admin/>}>
               </Route> */}

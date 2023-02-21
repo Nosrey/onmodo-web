@@ -10,7 +10,7 @@ function SaludManipuladores() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Formulario de Salud para Manipuladores</h3>
-                    <h4 className="formNumber">Q/SOP-04-R01</h4>
+                    {/* <h4 className="formNumber">Q/SOP-04-R01</h4> */}
                 </div>
                 <div className={styles.personalText}>
                     <TextField fullWidth id="outlined-basic" label="Nombre del empleado" variant="outlined" />

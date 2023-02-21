@@ -63,14 +63,73 @@ code {
   margin-right: auto;
 }
 
+.table {
+  width: 75vw;
+  box-shadow:inset -7px 0 9px -7px rgba(117, 114, 114, 0.4);
+  overflow-x: scroll;
+  margin-bottom: 100px;
+  margin-top: 64px;
+  height: fit-content;
+  position: relative;
+}
 .tableSection {
   margin-top: 24px;
-  margin-bottom: 100px;
+  width: 100%;
+}
+.tableSectionCheck {
+  width: 75vw;
+  overflow-x: scroll;
+}
+.input {
+  width: 130px ;
 }
 
 .tableRow {
   display: flex;
-  column-gap: 16px;
+  column-gap: 0px;
   margin-bottom: 5vh;
   align-items: center;
+}
+
+.tableRowCheck, .tableRowCheckTitle {
+  display: flex;
+  column-gap: 0px;
+  align-items: center;
+  height: 65px;
+}
+.tableRowCheckTitle {
+  height: 30px;
+  width: 1302px;
+}
+.dayTitle {
+  font-weight: bold;
+  display: block;
+  width: 42px !important;
+  font-size: 16px;
+  text-align: center;
+  border: 1px solid grey;
+  transform: translateY(-3px);
+  line-height: 35px;
+}
+
+.contMonthTable {
+  display: flex;
+  border: 1px solid grey;
+  border-radius: 4px;
+}
+.optionList{
+  width: 15%;
+}
+.optionTable, .optionTableTitle{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 65px;
+  font-weight: bold;
+  text-align: center;
+  border: 0.5px solid grey;
+}
+.optionTableTitle{
+  height: 30px;
+  background-color: rgb(216, 213, 213);
 }

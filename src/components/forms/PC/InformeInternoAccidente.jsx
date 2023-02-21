@@ -24,7 +24,7 @@ function InformeInternoAccidente() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Informe Interno de Accidente</h3>
-                    <h4 className="formNumber"> HS-01-R04</h4>
+                    {/* <h4 className="formNumber"> HS-01-R04</h4> */}
                 </div>
 
                 <div className={styles.personal}>

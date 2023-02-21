@@ -21,6 +21,19 @@ function Menu() {
             <Nav.Link eventKey="link-12" href="/recuperacion-de-producto">Recuperación de Producto</Nav.Link>
             <Nav.Link eventKey="link-13" href="/armado-fraccionamiento">Armado/Fraccionamiento</Nav.Link>
             <Nav.Link eventKey="link-14" href="/equipos-frio">Control de Equipos de Frío</Nav.Link>
+            <Nav.Link eventKey="link-15" href="/servicios-en-linea">Servicios en Línea</Nav.Link>
+            <Nav.Link eventKey="link-16" href="/distribucion-expedicion">Distribución/Expedición</Nav.Link>
+            <Nav.Link eventKey="link-17" href="/verificacion-balanza">Verificación de Balanzas</Nav.Link>
+            <Nav.Link eventKey="link-18" href="/verificacion-termometro">Verificación de Termómetros</Nav.Link>
+            <Nav.Link eventKey="link-19" href="/recepcion">Recepción</Nav.Link>
+            <Nav.Link eventKey="link-20" href="/descongelamiento">Descongelamiento</Nav.Link>
+            <Nav.Link eventKey="link-21" href="/rechazo-mp">Reporte de Rechazo/ Devolución de Materias Primas</Nav.Link>
+            <Nav.Link eventKey="link-22" href="/control-procesos">Control de Procesos</Nav.Link>
+            <Nav.Link eventKey="link-23" href="/carga-recepcion">Carga/Recepción</Nav.Link>
+            <Nav.Link eventKey="link-24" href="/sanitizacion">Sanitización</Nav.Link>
+            <Nav.Link eventKey="link-25" href="/cambio-aceite">Uso y Cambio de Aceite de Freidora</Nav.Link>
+            <Nav.Link eventKey="link-26" href="/uso-epp">Chequeo de uso E.P.P</Nav.Link>
+
 
 
         </Nav>

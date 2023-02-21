@@ -32,11 +32,11 @@ function RegistroDeDecomiso() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Registros de decomisos de materias primas</h3>
-                    <h4 className="formNumber">Q/SOP-03-R02</h4>
+                    {/* <h4 className="formNumber">Q/SOP-03-R02</h4> */}
                 </div>
-
+                <div className="table">
                 <div className={styles.subtituloTable}>
-                    <p>Causa de decomiso</p>
+                    <p style={{textAlign: 'center', fontWeight:'bold'}}>Causa de decomiso</p>
                 </div>
                 <div className="tableSection">
                     {Array(replicas)
@@ -47,7 +47,7 @@ function RegistroDeDecomiso() {
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
-                                        <TextField id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                        <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                     </div>
                                 ))}
@@ -58,6 +58,8 @@ function RegistroDeDecomiso() {
                         ))}
 
                 </div>
+                 </div>
+                
 
                 <div className="btn">
                     <Button variant="contained">Generar PDF</Button>

@@ -107,7 +107,7 @@ function ControlEquiposDeFrio() {
                 </div>
 
                 <div className={styles.personalSelects}> 
-                <FormControl fullWidth>
+                    <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Mes</InputLabel>
                         <Select
                         labelId="demo-simple-select-label"
@@ -148,8 +148,8 @@ function ControlEquiposDeFrio() {
                </div>
             
                     
-               
-                <div className="tableSection">
+               <div className="table">
+               <div className="tableSection">
                     {Array(replicas)
                         .fill(0)
                         .map((_, index) => (
@@ -158,7 +158,7 @@ function ControlEquiposDeFrio() {
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
-                                        <TextField id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                        <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                     </div>
                                 ))}
@@ -169,6 +169,8 @@ function ControlEquiposDeFrio() {
                         ))}
 
                 </div>
+               </div>
+                
 
 
                  <div className={styles.personal}>

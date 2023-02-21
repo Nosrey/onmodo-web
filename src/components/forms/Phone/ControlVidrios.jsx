@@ -34,15 +34,15 @@ function ControlVidrios() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Control de Vidrios</h3>
-                    <h4 className="formNumber">Q/SOP-02-R01</h4>
+                    {/* <h4 className="formNumber">Q/SOP-02-R01</h4> */}
                 </div>
 
                 <p>Registro de envases de vidrio y roturas</p>
 
 
-
+                <div className="table">
                 <div className="tableSection">
-                    {Array(replicas2)
+                    {Array(replicas1)
                         .fill(0)
                         .map((_, index) => (
                             <div className="tableRow" key={index}>
@@ -61,7 +61,9 @@ function ControlVidrios() {
                         ))}
 
                 </div>
-
+                </div>
+                
+                <div className="table">
                 <div className="tableSection">
                     {Array(replicas2)
                         .fill(0)
@@ -82,6 +84,8 @@ function ControlVidrios() {
                         ))}
 
                 </div>
+                </div>
+            
 
 
                  <div className={styles.personal}>

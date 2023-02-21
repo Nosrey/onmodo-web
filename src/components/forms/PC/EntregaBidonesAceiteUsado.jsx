@@ -21,29 +21,32 @@ function EntregaBidonesAceiteUsado() {
         <div className="form">
             <div className="titleContainer">
                 <h3 className="title">Entrega de Bidones de Aceite Usado</h3>
-                <h4 className="formNumber">E-02-R02</h4>
+                {/* <h4 className="formNumber">E-02-R02</h4> */}
             </div>
+            <div className="table">
+                <div className="tableSection">
+                    {Array(replicas)
+                        .fill(0)
+                        .map((_, index) => (
+                            <div className="tableRow" key={index}>
+                                <p className="index">{index + 1} </p>
 
-            <div className="tableSection">
-                {Array(replicas)
-                    .fill(0)
-                    .map((_, index) => (
-                        <div className="tableRow" key={index}>
-                            <p className="index">{index + 1} </p>
+                                {inputs.map((input) => (
+                                    <div key={input.id}>
+                                        <TextField id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
-                            {inputs.map((input) => (
-                                <div key={input.id}>
-                                    <TextField id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
-
+                                    </div>
+                                ))}
+                                <div className="icon">
+                                    <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                                 </div>
-                            ))}
-                            <div className="icon">
-                                <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                             </div>
-                        </div>
-                    ))}
+                        ))}
 
+                </div>
             </div>
+
+            
             
             <div className="btn">
                 <Button variant="contained">Generar PDF</Button>
