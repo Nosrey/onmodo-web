@@ -2,9 +2,8 @@ import { Button,  TextField } from '@mui/material'
 import React, { useState } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './ControlProcesos.module.css'
-import imageCoccion from "../../../assets/img/forms/coccion.png";
-import imageEnfriamiento from "../../../assets/img/forms/enfriamiento.png";
-import imageRegeneracion from "../../../assets/img/forms/regeneracion.png";
+import Modal from '../../shared/Modal';
+import ProcesosInfo from '../../modales/Proceso';
 
 function ControlProcesos() {
     const [inputs] = useState([
@@ -25,6 +24,7 @@ function ControlProcesos() {
         { id: 15, label: 'Responsable' },
     ]);
     const [replicas, setReplicas] = useState(1);
+    const [showModal, setShowModal] = useState(false);
 
     const handleClick = () => {
         setReplicas(replicas + 1);
@@ -36,15 +36,22 @@ function ControlProcesos() {
                 <div className="titleContainer">
                     <h3 className="title">Planilla de Control de Procesos</h3>
                 </div>
-
-                <div className={styles.limites}>
-                    <img src={imageCoccion} className={styles.limitesImg} />
-                    <img src={imageEnfriamiento}  className={styles.limitesImg} />
-                </div>
-                <br />
-                <div className={styles.limites}>
-                    <img src={imageRegeneracion} className={styles.limitesImg} />
-                </div>
+                { showModal ? (
+                    <Modal
+                    content={<ProcesosInfo/>}
+                    closeModal={() => setShowModal(false)}
+                    />
+                
+                    )
+                    : (
+                    <div className='cont-btn'>
+                        <Button  size="small" onClick={() => setShowModal(true)}>
+                            <i class="ri-information-line" style={{marginRight: "8px", fontSize:"22px"}}></i> Ver Más
+                        </Button>
+                    </div>
+                    )
+                }
+       
 
                 <div className="table">
                     <div className={styles.contTitTabla}>

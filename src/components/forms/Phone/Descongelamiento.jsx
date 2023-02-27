@@ -2,11 +2,8 @@ import { Button,  TextField } from '@mui/material'
 import React, { useState } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './Descongelamiento.module.css'
-import imageCrudos from "../../../assets/img/forms/crudos.png";
-import imageCrudosCocidos from "../../../assets/img/forms/crudoscocidos.png";
-import imageMicroondas from "../../../assets/img/forms/micro.png";
-import imageLimite from "../../../assets/img/forms/interna.png";
-import imageAcciones from "../../../assets/img/forms/correccion.png";
+import Modal from '../../shared/Modal';
+import DescongelamientoInfo from '../../modales/DescongelamientoInfo';
 
 function Descongelamiento() {
     const [inputs] = useState([
@@ -26,6 +23,7 @@ function Descongelamiento() {
         { id: 14, label: 'Responsable' },
     ]);
     const [replicas, setReplicas] = useState(1);
+    const [showModal, setShowModal] = useState(false);
 
     const handleClick = () => {
         setReplicas(replicas + 1);
@@ -37,24 +35,22 @@ function Descongelamiento() {
                 <div className="titleContainer">
                     <h3 className="title">Descongelamiento</h3>
                 </div>
-
-                <br />
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>PROCEDIMIENTO</p>
-                </div>
-                <div className={styles.limites}>
-                    <img src={imageCrudosCocidos} className={styles.limitesImg} />
-                    <img src={imageCrudos}  className={styles.limitesImg} />
-                    <img src={imageMicroondas} className={styles.limitesImg} />
-                </div>
-                <br />
-                <br />
-                <div className={styles.limites}>
-                    <img src={imageLimite} className={styles.limitesImg} />
-                    <img src={imageAcciones}  className={styles.limitesImg} />
-                </div>
-                <br />
-                <br />
+                { showModal ? (
+                    <Modal
+                    content={<DescongelamientoInfo/>}
+                    closeModal={() => setShowModal(false)}
+                    />
+                
+                    )
+                    : (
+                    <div className='cont-btn'>
+                        <Button  size="small" onClick={() => setShowModal(true)}>
+                            <i class="ri-information-line" style={{marginRight: "8px", fontSize:"22px"}}></i> Ver Más
+                        </Button>
+                    </div>
+                    )
+                }
+               
                 <div className="table">
                     <div className={styles.contTitTabla}>
                         <div className={styles.subtituloTable}>

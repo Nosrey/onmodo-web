@@ -5,9 +5,12 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import EppInfo from '../../modales/Epp';
+import Modal from '../../shared/Modal';
 
 function EPP() {
     const [month, setMonth] = React.useState('');
+    const [showModal, setShowModal] = useState(false);
     const [renglones] = useState([
         { id: 1, label: 'Ropa de trabajo' },
         { id: 2, label: 'Calzado de Seguridad' },
@@ -62,15 +65,22 @@ function EPP() {
                     <h3 className="title">Lista para chequeo de uso E.P.P</h3>
                 </div>
 
-
-                <div className={styles.responsableCont}>
-                    <div className={styles.subtitleCont}>
-                        <p className={styles.subtitle}>Instrucciones</p>
+                { showModal ? (
+                    <Modal
+                    content={<EppInfo/>}
+                    closeModal={() => setShowModal(false)}
+                    />
+                
+                    )
+                    : (
+                    <div className='cont-btn'>
+                        <Button  size="small" onClick={() => setShowModal(true)}>
+                            <i class="ri-information-line" style={{marginRight: "8px", fontSize:"22px"}}></i> Ver Más
+                        </Button>
                     </div>
-                    <p>Tildar el uso de EPP de cada empleado según los que corresponden con su puesto de trabajo.</p>
-                    <p>El incumplimiento en el uso de EPP genera la observación proactiva al empleado y su posterior registro STOP.</p>
+                    )
+                }
 
-                </div>
 
                 <div className={styles.personalMonth}>
                     <FormControl fullWidth>

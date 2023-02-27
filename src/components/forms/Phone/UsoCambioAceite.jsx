@@ -5,9 +5,12 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-
+import Modal from '../../shared/Modal';
+import CambioAceiteInfo from '../../modales/CambioAceiteInfo';
 function UsoCambioAceite() {
     const [month, setMonth] = React.useState('');
+    const [showModal, setShowModal] = useState(false);
+
     const [renglones] = useState([
         { id: 1, label: 'Uso' },
         { id: 2, label: 'Filtración' },
@@ -56,29 +59,24 @@ function UsoCambioAceite() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Uso y Cambio de Aceite de Freidora</h3>
-                    {/* <h4 className="formNumber"> HSEQ-07-R01</h4> */}
                 </div>
-
-
-                <div className={styles.responsableCont}>
-                    <div className={styles.subtitleCont}>
-                        <p className={styles.subtitle}>Instrucciones</p>
-                    </div>
-                    <p>Tildar las actividades realizadas diariamente.Los Responsables deben aclarar su Apellido y Nombre con sus iniciales.</p>
-                </div>
+                { showModal ? (
+                    <Modal
+                    content={<CambioAceiteInfo/>}
+                    closeModal={() => setShowModal(false)}
+                    />
                 
-                <div className={styles.responsableCont}>
-                    <div className={styles.subtitleCont}>
-                        <p className={styles.subtitle}>Precauciones</p>
+                    )
+                    : (
+                    <div className='cont-btn'>
+                        <Button  size="small" onClick={() => setShowModal(true)}>
+                            <i class="ri-information-line" style={{marginRight: "8px", fontSize:"22px"}}></i> Ver Más
+                        </Button>
                     </div>
-                    <ul>
-                    <li>No sobrecalentar las grasas y aceites por encima de los 180 °C.</li>
-                    <li>Filtrar las grasas y aceites luego de su uso.</li>
-                    <li>Verificar la calidad de las grasas y aceites en forma regular.</li>
-                    <li>Desechar las grasas y aceites con cambios evidentes de color, olor y sabor.</li>
-                    <li>No utilizar el aceite más de 5 veces (el Registro permite llevar cuenta del uso de la freidora).</li>
-                    </ul>                    
-                </div>
+                    )
+                }
+
+              
 
                 <div className={styles.personal}>
                     <FormControl fullWidth>

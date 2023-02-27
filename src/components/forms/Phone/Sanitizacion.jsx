@@ -2,9 +2,8 @@ import { Button,  TextField } from '@mui/material'
 import React, { useState } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './Sanitizacion.module.css'
-import imageProcedimientos from "../../../assets/img/forms/procedimiento.png";
-import imageCorreccion from "../../../assets/img/forms/correccionSanitizacion.png";
-import imageLimite from "../../../assets/img/forms/critico.png";
+import Modal from '../../shared/Modal';
+import SanitizacionInfo from '../../modales/SanitizacionInfo';
 
 function Sanitizacion() {
     const [inputs] = useState([
@@ -21,6 +20,7 @@ function Sanitizacion() {
         { id: 11, label: 'Responsable' },
     ]);
     const [replicas, setReplicas] = useState(1);
+    const [showModal, setShowModal] = useState(false);
 
     const handleClick = () => {
         setReplicas(replicas + 1);
@@ -32,33 +32,21 @@ function Sanitizacion() {
                 <div className="titleContainer">
                     <h3 className="title">Planilla de Sanitización </h3>
                 </div>
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>PROCEDIMIENTO</p>
-                </div>
-                <ol>
-                    <li>Seleccionar las unidades/hojas que no cuenten con características organolépticas acordes alproducto.</li>
-                    <li>Lavado inicial: sumergir y remover los productos en una bacha con agua potable durante 5 minutos (Paso esencial para disminuir carga orgánica).</li>
-                    <li>Sanitización: Colocar los vegetales/frutas previamente lavados en solución clorada durante 10 minutosde exposiciónpara vegetales.Recambiar la solución clorada en cada operación.</li>
-                    <li>Enjuague final: todos los vegetales y frutas deben ser enjuagados durante 5 minutos.</li>
-                    <li>Acondicionamiento post-sanitización:se deben disponer en recipientes limpios (canastos o bolsas cristal), rotulados y protegidos. Los vegetales,una vez sanitizados, deben ser tratados como alimentos listos para consumo, refrigerados <b> a menos de 5ºC</b>(4ºC para contratos certificados con IRAM BPM)y con vida útil <b>máxima de 24 horas</b>. </li>
-                    <li>Deben registrarse en esta planilla2 vegetales por turno:el primer producto que se sanitiza, previo a su control con tiras reactivas de cloroy otro al azar seleccionado en el turno.</li>
-                </ol>
-                <br />
-                <div className={styles.limites}>
-                    <img src={imageLimite} className={styles.limitesImg} />
-                </div>
-                <br />
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>ACCIONES DE CORRECCIÓN</p>
-                </div>
-
-                <p>Verificar   el   correcto   funcionamiento   de   equipos   dosificadores   con   el proveedor.</p>
-                <p>Si la concentración es mayor, diluir con agua potable hasta llegar a la concentración deseada.</p>
-                <p>Si la concentración es menor, dosificar manualmente con un medidor establecido en relación al volumen de la bacha.</p>
-                <ul>
-                    <li>Para XY12, 1ml/ lt de agua.</li>
-                </ul>
-
+                { showModal ? (
+                    <Modal
+                    content={<SanitizacionInfo/>}
+                    closeModal={() => setShowModal(false)}
+                    />
+                
+                    )
+                    : (
+                    <div className='cont-btn'>
+                        <Button  size="small" onClick={() => setShowModal(true)}>
+                            <i class="ri-information-line" style={{marginRight: "8px", fontSize:"22px"}}></i> Ver Más
+                        </Button>
+                    </div>
+                    )
+                }
                 <div className="table">
                     <div className={styles.contTitTabla}>
                          <div className={styles.subtituloTable}>
