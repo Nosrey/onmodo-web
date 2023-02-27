@@ -2,6 +2,8 @@ import { Button,  TextField } from '@mui/material'
 import React, { useState } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionBalanza.module.css'
+import Modal from '../shared/Modal';
+import Balanzas from '../modales/Balanzas';
 
 function VerificacionBalanza() {
     const [inputs] = useState([
@@ -15,6 +17,7 @@ function VerificacionBalanza() {
         { id: 8, label: 'Acciones de corrección' },
     ]);
     const [replicas, setReplicas] = useState(1);
+    const [showModal, setShowModal] = useState(false);
 
     const handleClick = () => {
         setReplicas(replicas + 1);
@@ -26,33 +29,21 @@ function VerificacionBalanza() {
                 <div className="titleContainer">
                     <h3 className="title">Verificación de Instrumentos de Medición: Balanzas</h3>
                 </div>
-
-                <br />
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>PROCEDIMIENTO</p>
-                </div>
-                <p>Se tara la balanza y se coloca una masa patrón de 1 kg.(puede utilizarse algún producto envasado-lentejas,   azúcar)   en   cada   uno   de   los   puntos establecidos.</p>
-                <p>Para  comedores  certificados,  usar  las  masas  de referencias.</p>
-                <br />
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>DESVÍO PERMITIDO</p>
-                </div>
-                <p>Balanza de producción:±10 gramos.</p>
-                <p>Báscula de recepción:±200 gramos.</p>
-                <br />
-
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>ACCIONES DE CORRECCIÓN</p>
-                </div>
-                <p>Si  alguno  de  los  puntos  supera  el  desvío,  la balanza se debe enviar a calibrar.</p>
-                <br />
-
-                <b>FRECUENCIA: ANUAL</b>
-
-
-                <br />
-                <br />
-                <br />
+                { showModal ? (
+                    <Modal
+                    content={<Balanzas/>}
+                    closeModal={() => setShowModal(false)}
+                    />
+                
+                    )
+                    : (
+                    <div className='cont-btn'>
+                        <Button  size="small" onClick={() => setShowModal(true)}>
+                            <i class="ri-information-line" style={{marginRight: "8px", fontSize:"22px"}}></i> Ver Más
+                        </Button>
+                    </div>
+                    )
+                }
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Fecha" variant="outlined" />
                     <TextField id="outlined-basic" label="Responsable de validación" variant="outlined" />

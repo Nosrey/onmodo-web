@@ -2,7 +2,8 @@ import { Button,  TextField } from '@mui/material'
 import React, { useState } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './DistribucionExpedicion.module.css'
-
+import Modal from '../../shared/Modal';
+import DisrtibucionExp from '../../modales/DisrtibucionExp';
 function DistribucionExpedicion() {
     const [inputs] = useState([
         { id: 1, label: 'Servicio' },
@@ -15,6 +16,7 @@ function DistribucionExpedicion() {
         { id: 8, label: 'Responsable' },
     ]);
     const [replicas, setReplicas] = useState(1);
+    const [showModal, setShowModal] = useState(false);
 
     const handleClick = () => {
         setReplicas(replicas + 1);
@@ -26,25 +28,22 @@ function DistribucionExpedicion() {
                 <div className="titleContainer">
                     <h3 className="title">Planilla de Distribución/Expedición</h3>
                 </div>
-
-                <p>Llegado al punto de distribución los alimentos deben consumirse <b>dentro de las 2 horas de entrega</b> o mantenerse en refrigeración hasta el momento de su regeneración.</p>
-                <br />
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>ALIMENTOS CALIENTES</p>
-                </div>
-                <p>Las preparaciones calientes deben mantenerse a temperaturas mayores a 65ºC durante el transporte y la recepción.</p>
+                { showModal ? (
+                    <Modal
+                    content={<DisrtibucionExp/>}
+                    closeModal={() => setShowModal(false)}
+                    />
                 
-                <br />
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>ALIMENTOS FRÍOS</p>
-                </div>
-                <p>Las preparaciones servidas en frio, entradas, postres y ensaladas deben mantenerse a temperaturas inferiores  a 10ºC</p>
-                <p>Contratos certificados con IRAM BPM: mantener a menos de 4ºC-Veladero: mantener a menos de 5ºC.</p>
+                    )
+                    : (
+                    <div className='cont-btn'>
+                        <Button  size="small" onClick={() => setShowModal(true)}>
+                            <i class="ri-information-line" style={{marginRight: "8px", fontSize:"22px"}}></i> Ver Más
+                        </Button>
+                    </div>
+                    )
+                }
 
-
-
-                <br />
-                <br />
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>

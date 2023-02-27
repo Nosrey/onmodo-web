@@ -2,7 +2,8 @@ import { Button,  TextField } from '@mui/material'
 import React, { useState } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionTermometros.module.css'
-import imageCoccion from "../../assets/img/forms/temometros.png";
+import Termometros from '../modales/Termometros';
+import Modal from '../shared/Modal';
 
 function VerificacionTermometros() {
     const [inputs] = useState([
@@ -27,6 +28,7 @@ function VerificacionTermometros() {
     ]);
     const [replicas, setReplicas] = useState(1);
     const [replicas2, setReplicas2] = useState(1);
+    const [showModal, setShowModal] = useState(false);
 
     const handleClick = () => {
         setReplicas(replicas + 1);
@@ -42,20 +44,21 @@ function VerificacionTermometros() {
                     <h3 className="title">Verificación de Instrumentos de Medición: Termometros</h3>
                 </div>
 
-                <br />
-
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>PROCEDIMIENTO</p>
-                </div>
-
-                <br />
-
-                <div className={styles.limites}>
-                    <img src={imageCoccion} className={styles.limitesImg} />
-                </div>
-
-                <br />
-                <br />
+                { showModal ? (
+                    <Modal
+                    content={<Termometros/>}
+                    closeModal={() => setShowModal(false)}
+                    />
+                
+                    )
+                    : (
+                    <div className='cont-btn'>
+                        <Button  size="small" onClick={() => setShowModal(true)}>
+                            <i class="ri-information-line" style={{marginRight: "8px", fontSize:"22px"}}></i> Ver Más
+                        </Button>
+                    </div>
+                    )
+                }
 
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Fecha" variant="outlined" />
@@ -101,8 +104,7 @@ function VerificacionTermometros() {
                     </div>
                 </div>
 
-<span><b>*</b> PIN(Termómetro de pinche) - IR (Termómetro infrarrojo)</span>
-<br />
+
                 <br />
                 <br />
                 <div className={styles.subtitleCont}>
@@ -142,7 +144,7 @@ function VerificacionTermometros() {
 
                     </div>
                 </div>
-                
+    
 
                 <br />
                 <br />
@@ -151,6 +153,8 @@ function VerificacionTermometros() {
                     <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
                     <TextField id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
+                <span><b>*</b> PIN(Termómetro de pinche) - IR (Termómetro infrarrojo)</span>
+
                 <div className="btn">
                     <Button variant="contained">Generar PDF</Button>
                 </div>

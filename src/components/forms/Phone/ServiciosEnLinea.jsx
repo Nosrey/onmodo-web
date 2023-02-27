@@ -46,9 +46,6 @@ function ServiciosEnLinea() {
                     )
                 }
 
-<br />
-
-                <br />
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>

@@ -2,9 +2,8 @@ import { Button,  TextField } from '@mui/material'
 import React, { useState } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './Recepcion.module.css'
-import imageTemp from "../../../assets/img/forms/temperatura.png";
-import imageAd from "../../../assets/img/forms/adherencia.png";
-import imageProcedim from "../../../assets/img/forms/procedim.png";
+import Modal from '../../shared/Modal';
+import RecepcionInfo from '../../modales/Recepcion';
 
 function Recepcion() {
     const [inputs] = useState([
@@ -22,6 +21,7 @@ function Recepcion() {
         { id: 12, label: 'Motivo del rechazo' },
     ]);
     const [replicas, setReplicas] = useState(1);
+    const [showModal, setShowModal] = useState(false);
 
     const handleClick = () => {
         setReplicas(replicas + 1);
@@ -34,21 +34,22 @@ function Recepcion() {
                     <h3 className="title">Recepción</h3>
                 </div>
 
-                <br />
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>LÍMITES CRÍTICOS PARA EL INGRESO DE MERCADERÍAS</p>
-                </div>
-                <div className={styles.limites}>
-                    <img src={imageTemp} className={styles.limitesImg} />
-                    <img src={imageAd}  className={styles.limitesImg} />
-                </div>
-                <br />
-                <div className={styles.limites}>
-                    <img src={imageProcedim} className={styles.limitesImg} />
-                </div>
-                <br />
-                <br />
-                <br />
+                { showModal ? (
+                    <Modal
+                    content={<RecepcionInfo/>}
+                    closeModal={() => setShowModal(false)}
+                    />
+                
+                    )
+                    : (
+                    <div className='cont-btn'>
+                        <Button  size="small" onClick={() => setShowModal(true)}>
+                            <i class="ri-information-line" style={{marginRight: "8px", fontSize:"22px"}}></i> Ver Más
+                        </Button>
+                    </div>
+                    )
+                }
+
                 <div className="table">
                 <div className={styles.contTitTabla}>
                     <div className={styles.subtituloTable}>
