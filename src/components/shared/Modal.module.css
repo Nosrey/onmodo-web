@@ -1,0 +1,39 @@
+.modal {
+    width: 60vw;
+    min-width: 300px;
+    border-radius: 10px;
+    position: relative;
+    margin-left: auto;
+    background-color: white;
+    margin-right: auto;
+    padding: 40px 60px;
+    box-shadow: 2px 3px 18px;
+    height: fit-content;
+    max-height: 70vh;
+
+}
+.bg {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    z-index: 32325;
+    background-color: rgba(0, 0, 0, 0.137);
+    width: 99vw;
+    height: fit-content;
+    min-height: 100vh;
+}
+.close {
+    position: absolute;
+    right: 25px;
+    top: 20px;
+    font-size: 25px;
+    cursor: pointer;
+}
+.contInfo {
+    height: fit-content;
+    max-height: 58vh;
+    overflow-y: scroll;
+}

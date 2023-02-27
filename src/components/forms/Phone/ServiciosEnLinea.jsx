@@ -2,7 +2,8 @@ import { Button,  TextField } from '@mui/material'
 import React, { useState } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './ServiciosEnLinea.module.css'
-
+import Modal from '../../shared/Modal';
+import ServEnLinea from '../../modales/ServEnLinea';
 function ServiciosEnLinea() {
     const [inputs] = useState([
         { id: 1, label: 'Servicio' },
@@ -17,6 +18,7 @@ function ServiciosEnLinea() {
         { id: 10, label: 'Responsable' },
     ]);
     const [replicas, setReplicas] = useState(1);
+    const [showModal, setShowModal] = useState(false);
 
     const handleClick = () => {
         setReplicas(replicas + 1);
@@ -27,27 +29,25 @@ function ServiciosEnLinea() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Planilla de Servicio en Línea </h3>
-                    {/* <h4 className="formNumber">Q/SOP-03-R02</h4> */}
                 </div>
-
-
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>SERVICIO LÍNEA CALIENTE</p>
-                </div>
-                <p>Las preparaciones calientes deben mantenerse a temperaturas mayores a 65ºC, por un tiempo máximo de 2 horas.</p>
-                <p>Los productos sobrantes deberán ser eliminados si fueron presentados en la línea.</p>
+            { showModal ? (
+                    <Modal
+                    content={<ServEnLinea/>}
+                    closeModal={() => setShowModal(false)}
+                    />
                 
-                <br />
-                <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>SERVICIO LÍNEA FRIA</p>
-                </div>
-                <p>Las preparaciones servidas en frio, entradas, postres y ensaladas deben mantenerse a temperaturas inferiores a 10ºCpor un máximo de 2 horas.</p>
-                <p>Los productos sobrantes deberán ser eliminados si fueron presentados en la línea.</p>
+                    )
+                    : (
+                    <div className='cont-btn'>
+                        <Button  size="small" onClick={() => setShowModal(true)}>
+                            <i class="ri-information-line" style={{marginRight: "8px", fontSize:"22px"}}></i> Ver Más
+                        </Button>
+                    </div>
+                    )
+                }
 
-                <p>Contratos certificados con IRAM BPM: mantener a menos de 4ºC.</p>
+<br />
 
-
-                <br />
                 <br />
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Fecha" variant="outlined" />

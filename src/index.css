@@ -133,3 +133,8 @@ code {
   height: 30px;
   background-color: rgb(216, 213, 213);
 }
+
+.cont-btn {
+  display: flex;
+  justify-content: end;
+}

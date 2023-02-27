@@ -7,7 +7,7 @@ import { applyMiddleware } from "redux"
 import { createStore } from 'redux'
 import thunk from "redux-thunk"
 import rootReducer from './redux/reducers/rootReducer'
-
+import 'remixicon/fonts/remixicon.css'
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
