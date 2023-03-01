@@ -7,7 +7,10 @@ function EquipoFrio() {
         
         <><div className={styles.subtitleCont}>
             <p className={styles.subtitle}>Límite de control</p>
-        </div><b>Temperaturas de cámaras:</b><p>menor a 5ºC.</p><b>Temperatura de ante-cámaras y heladeras  para  descongelamiento  o  de tránsito  (menor  a  4 horas)  o  expositora:</b><p>menor a  10ºC.</p><b>Temperaturas de freezer:</b><p>Menor a -18ºC.</p><b>Contratos    certificados    con    IRAM    BPM: </b><p>Temperatura  de  equipos  de  frío  refrigerados menor a 4ºC.</p><p>Según   los   turnos   de   producciónse   debe controlar   la   temperatura   de   cámaras   y heladeras, distando entre un control y el otro entre 8 y 10 horas(mínimo 2 veces).</p><p>Un alimento correspondiente a cada cámara, seleccionado  al  azar,  debe  ser  registrado. Alimentos críticos: postres, productos cocidos, vegetales desinfectados.</p><br /><br /><div className={styles.subtitleCont}>
+        </div>
+        <b>Temperaturas de cámaras:</b>
+        <p>menor a 5ºC.</p>
+        <b>Temperatura de ante-cámaras y heladeras  para  descongelamiento  o  de tránsito  (menor  a  4 horas)  o  expositora:</b><p>menor a  10ºC.</p><b>Temperaturas de freezer:</b><p>Menor a -18ºC.</p><b>Contratos    certificados    con    IRAM    BPM: </b><p>Temperatura  de  equipos  de  frío  refrigerados menor a 4ºC.</p><p>Según   los   turnos   de   producciónse   debe controlar   la   temperatura   de   cámaras   y heladeras, distando entre un control y el otro entre 8 y 10 horas(mínimo 2 veces).</p><p>Un alimento correspondiente a cada cámara, seleccionado  al  azar,  debe  ser  registrado. Alimentos críticos: postres, productos cocidos, vegetales desinfectados.</p><br /><br /><div className={styles.subtitleCont}>
                 <p className={styles.subtitle}>Acciones de corrección</p>
             </div><b>Equipos refrigerados:</b><ol>
                 <li>Sila T° de los equipos supera el límite, controlar la temperatura de alimentos en distintas zonas del equipo. Re chequear la temperatura de los alimentos habiendo mantenido cerrada la puerta de cámara.</li>

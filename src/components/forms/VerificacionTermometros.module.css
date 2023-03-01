@@ -58,4 +58,6 @@ span {
 }
 .limitesImg {
     width: 100%;
+    min-width: 700px;
+    min-height: 250px;
 }

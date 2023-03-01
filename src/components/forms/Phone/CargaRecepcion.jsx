@@ -51,6 +51,30 @@ function CargaRecepcion() {
                     </div>
                     )
                 }
+                        <div className={styles.subtitleCont}>
+                    <p className={styles.subtitle}>DATOS TRANSPORTE</p>
+                </div>
+               <p>Estado sanitario: Cumple/no cumple.</p>
+               <div className={styles.personal}>
+                    <TextField id="outlined-basic" label="Patente del térmico" variant="outlined" />
+                    <TextField id="outlined-basic" label="Habilitación SENASA" variant="outlined" />
+                    <TextField id="outlined-basic" label="Nº Precinto lateral" variant="outlined" />
+                    <TextField id="outlined-basic" label="Nº Precinto trasero" variant="outlined" />
+                </div>
+                <div className={styles.personal}>
+                    <TextField id="outlined-basic" label="Resp. control precintos" variant="outlined" />
+                    <TextField fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
+                    
+                </div>
+            
+               <p>Termógrafo:   SI     NO</p>
+               <div className={styles.personal}>
+                    <TextField id="outlined-basic" label="Resp. lectura termógrafo" variant="outlined" />
+                    <TextField fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
+                    
+                </div>
+               <br />
+               <br />
 
                 <div className="table">
                     <div className={styles.contTitTabla}>
