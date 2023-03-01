@@ -17,6 +17,16 @@
     border-right: 1px solid rgb(139, 133, 133);
 
 }
+.subtitleCont {
+    border-bottom: 2px solid rgb(37, 35, 35);
+    margin-bottom: 24px;
+}
+
+.subtitle {
+    font-weight: bold;
+    font-size: 15px;
+    color: rgb(37, 35, 35);
+}
 
 .subtituloTableCuadruple {
     display: flex;
@@ -73,10 +83,12 @@
 }
 .limites {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 30px;
     max-height: 410px;
 }
 .limitesImg {
-    width: 50%;
-    max-width: 500px;
+    width: 60%;
+    max-width: 600px;
 }
