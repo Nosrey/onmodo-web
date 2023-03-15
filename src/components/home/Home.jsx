@@ -82,7 +82,7 @@ function Home() {
                     </Accordion>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
                         <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-                            <Typography>Control de Alérgenos en las Comidas</Typography>
+                            <Typography>Control de comensales con dietas especiales</Typography>
                         </AccordionSummary>
                         <AccordionDetails className={styles.accordion}>
                             <AlergenosComida/>

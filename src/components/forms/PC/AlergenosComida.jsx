@@ -2,13 +2,15 @@ import { Button, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import styles from './AlergenosComida.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
+
 
 
 function AlergenosComida() {
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Nombre Comensal' },
-        { id: 3, label: 'Preparación' },
+        { id: 3, label: 'Diagnóstico' },
         { id: 4, label: 'Listado de ingredientes' },
         { id: 5, label: 'Responsable' },
     ]);
@@ -18,12 +20,15 @@ function AlergenosComida() {
         setReplicas(replicas + 1);
     };
 
+    const handleClickRemove = () => {
+        setReplicas(replicas - 1);
+    }
+
     return (
         <div>
             <div className="form">
                 <div className="titleContainer">
-                    <h3 className="title">Control de Alérgenos en las Comidas</h3>
-                    {/* <h4 className="formNumber">Q/SOP-10-R02</h4> */}
+                    <h3 className="title">Control de comensales con dietas especiales</h3>
                 </div>
                 <div className={styles.personal}>
                     <TextField fullWidth id="outlined-basic" label="Comedor" variant="outlined" />
@@ -43,7 +48,12 @@ function AlergenosComida() {
                                     </div>
                                 ))}
                                 <div className="icon">
-                                    <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                                    {
+                                        (index == 0 || index > Array(replicas).fill(0).length) ? 
+                                        <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                                        :  <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={handleClickRemove} />
+                                    }
+                                   
                                 </div>
                             </div>
                         ))}
