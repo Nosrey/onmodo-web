@@ -1,5 +1,5 @@
 import { Button, Chip, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './ControlDeCloro.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
@@ -13,13 +13,52 @@ function ControlDeCloro() {
         { id: 6, label: 'Mayor a 0,8 (Valor ppm)' },
         { id: 7, label: 'Acciones de correcion' },
         { id: 8, label: 'Responsable' },
-
-
     ]);
+
     const [replicas, setReplicas] = useState(1);
+    const [values,setValues] = useState({
+        inputsValues : [{
+        }],
+        verificado: "",
+    })
+    const [objValues,setObjValues] = useState({fecha:"", puntoToma:"", "menor0,2":"", "0,2-0,5":"", "0,5-0,8":"", "mayor0,8":"", acciones:"", responsable:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
+
+    useEffect(()=>{
+        if(replicas === 1 && objValues.fecha !== "" && objValues.puntoToma !== "" && objValues['menor0,2'] !== "" && objValues["0,2-0,5"] !== "" && objValues["0,5-0,8"] !== "" && objValues["mayor0,8"] !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.fecha !== "" && objValues.puntoToma !== "" && objValues['menor0,2'] !== "" && objValues["0,2-0,5"] !== "" && objValues["0,5-0,8"] !== "" && objValues["mayor0,8"] !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+
+    useEffect(()=>{
+        if (objValues.fecha !== "" && objValues.puntoToma !== "" && objValues['menor0,2'] !== "" && objValues["0,2-0,5"] !== "" && objValues["0,5-0,8"] !== "" && objValues["mayor0,8"] !== "" && objValues.responsable !== ""){
+            setTrigger(true)
+        }
+    },[objValues])
+
+    const inputsValuesConstructor = (id,label,index) => {
+        const inputTarget = document.getElementById(id)
+        label === 'Fecha' ?  setObjValues({...objValues,fecha:inputTarget.value, id:index}) :
+        label === 'Punto de toma de agua evaluado' ? setObjValues({...objValues,puntoToma:inputTarget.value}) :
+        label === 'Menor 0,2 (Valor ppm)' ? setObjValues({...objValues,"menor0,2":inputTarget.value}):
+        label === '0,2 - 0,5 (Valor ppm)' ? setObjValues({...objValues,"0,2-0,5":inputTarget.value}):
+        label === '0,5 - 0,8 (Valor ppm)' ? setObjValues({...objValues,"0,5-0,8":inputTarget.value}):
+        label === 'Mayor a 0,8 (Valor ppm)' ? setObjValues({...objValues,"mayor0,8":inputTarget.value}):
+        label === 'Acciones de correcion' ? setObjValues({...objValues,acciones:inputTarget.value}):
+        label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
+    }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({fecha:"", puntoToma:"", "menor0,2":"", "0,2-0,5":"", "0,5-0,8":"", "mayor0,8":"", acciones:"", responsable:""})
+        setTrigger(false)
     };
 
     return (
@@ -67,7 +106,9 @@ function ControlDeCloro() {
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
-                                        <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                        <TextField onKeyUp={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index);
+                                            }} className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                     </div>
                                 ))}
@@ -82,11 +123,12 @@ function ControlDeCloro() {
               
 
                 <div className={styles.verified}>
-                    <TextField fullWidth id="outlined-basic" label="Verificado por:" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} fullWidth id="outlined-basic" label="Verificado por:" variant="outlined" />
                 </div>
 
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
