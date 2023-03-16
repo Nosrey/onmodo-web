@@ -18,15 +18,31 @@ function AlergenosComida() {
         inputsValues : [{
         }],
         verificado: "",
-        fecha: ""
+        fecha: "",
+        id:""
     })
     const [objValues,setObjValues] = useState({fecha:"",nombre:"",preparacion:"",listado:"",responsable:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
     useEffect(()=>{
-        setValues({...values,inputsValues:[objValues]})
+        if(replicas === 1 && objValues.fecha !== "" && objValues.nombre !== "" && objValues.preparacion !== "" && objValues.listado !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.fecha !== "" && objValues.nombre !== "" && objValues.preparacion !== "" && objValues.listado !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+    useEffect(()=>{
+        if (objValues.fecha !== "" && objValues.nombre !== "" && objValues.preparacion !== "" && objValues.listado !== "" && objValues.responsable !== ""){
+            setTrigger(true)
+        }
     },[objValues])
-    const inputsValuesConstructor = (id,label) => {
+   
+    const inputsValuesConstructor = (id,label,index) => {
         const inputTarget = document.getElementById(id)
-        label === 'Fecha' ?  setObjValues({...objValues,fecha:inputTarget.value}) :
+        label === 'Fecha' ?  setObjValues({...objValues,fecha:inputTarget.value, id:index}) :
         label === 'Nombre Comensal' ? setObjValues({...objValues,nombre:inputTarget.value}) :
         label === 'Diagnóstico' ? setObjValues({...objValues,preparacion:inputTarget.value}):
         label === 'Listado de ingredientes' ? setObjValues({...objValues,listado:inputTarget.value}):
@@ -34,8 +50,13 @@ function AlergenosComida() {
     }
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({fecha:"",nombre:"",preparacion:"",listado:"",responsable:""})
+        setTrigger(false)
     };
-    const handleClickRemove = () => {
+    const handleClickRemove = (index) => {
+        /* const inputsArrFiltered = inputValues.filter(inputs=>inputs.id !== index) */ //dejo comentado esperando respuestas de los audios jeje
+        const inputsArrFiltered = inputValues.filter(input=>input.id !== replicas - 1)
+        setInputValues(inputsArrFiltered)
         setReplicas(replicas - 1);
     }
 
@@ -58,14 +79,16 @@ function AlergenosComida() {
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
-                                        <TextField onBlur={(e)=>{inputsValuesConstructor(`input-${input.id}-${index}`,input.label)}} id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                        <TextField onBlur={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index);
+                                            }} id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
                                     </div>
                                 ))}
                                 <div className="icon">
                                     {
                                         (index == 0 || index > Array(replicas).fill(0).length) ? 
                                         <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
-                                        :  <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={handleClickRemove} />
+                                        :  <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={()=>{handleClickRemove(index)}} />
                                     }
                                 </div>
                             </div>
@@ -79,7 +102,8 @@ function AlergenosComida() {
                     }} id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button onClick={()=>{console.log(values)}} variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
