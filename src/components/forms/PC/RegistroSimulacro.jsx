@@ -1,5 +1,5 @@
 import { Button, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './RegistroSimulacro.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
@@ -10,10 +10,48 @@ function RegistroSimulacro() {
         { id: 3, label: 'Firma' },
     ]);
     const [replicas, setReplicas] = useState(1);
+    const [values,setValues] = useState({
+        razonSocial:"",
+        ubicacion:"",
+        localidad:"",
+        fecha:"",
+        inputsValues : [{
+        }],
+        firmaInstructor:""
+    })
+    const [objValues,setObjValues] = useState({nombreCompleto:"",dni:"",firma:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
 
+    useEffect(()=>{
+        if(replicas === 1 && objValues.nombreCompleto !== "" && objValues.dni !== "" && objValues.firma !== "" ) {
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.nombreCompleto !== "" && objValues.dni !== "" && objValues.firma !== "" ) {
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+
+    useEffect(()=>{
+        if (objValues.nombreCompleto !== "" && objValues.dni !== "" && objValues.firma !== ""){
+            setTrigger(true)
+        }
+    },[objValues])
+
+    const inputsValuesConstructor = (id,label,index) => {
+        const inputTarget = document.getElementById(id)
+        label === 'Apellido y Nombre' ?  setObjValues({...objValues,nombreCompleto:inputTarget.value, id:index}) :
+        label === 'Nro DNI' ? setObjValues({...objValues,dni:inputTarget.value}) :
+        label === 'Firma' && setObjValues({...objValues,firma:inputTarget.value})
+    }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({nombreCompleto:"",dni:"",firma:""})
+        setTrigger(false)
     };
 
     return (
@@ -28,13 +66,13 @@ function RegistroSimulacro() {
                     <p>Curso: Manejo Extintores –Plan Emergencia y Evacuación –Simulacro Evacuación“Según Ley 1346/04” –Sistema de alarma y señal de evacuación.</p>
                 </div>
                 <div className={styles.personalText}>
-                    <TextField fullWidth id="outlined-basic" label="Razón Social" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,razonSocial:e.target.value})}} fullWidth id="outlined-basic" label="Razón Social" variant="outlined" />
                 </div>
 
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Ubicación" variant="outlined" />
-                    <TextField id="outlined-basic" label="Localidad" variant="outlined" />
-                    <TextField id="outlined-basic" label="Fecha:" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,ubicacion:e.target.value})}} id="outlined-basic" label="Ubicación" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,localidad:e.target.value})}} id="outlined-basic" label="Localidad" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha:" variant="outlined" />
                 </div>
         
              
@@ -48,7 +86,9 @@ function RegistroSimulacro() {
 
                                     {inputs.map((input) => (
                                         <div key={input.id}>
-                                            <TextField id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            <TextField onKeyUp={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index);
+                                            }} id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
@@ -90,10 +130,11 @@ function RegistroSimulacro() {
 
     
                 <div className={styles.personal}>
-                    <TextField  id="outlined-basic" label="Firma del Instructor" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,firmaInstructor:e.target.value})}} id="outlined-basic" label="Firma del Instructor" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
 
                 </div>
 
