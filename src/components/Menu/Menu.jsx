@@ -5,8 +5,8 @@ import styles from './Menu.module.css'
 function Menu() {
 
     return (
-        <Nav defaultActiveKey="/control-alergenos" className={styles.menu}>
-            <Nav.Link href="/control-alergenos">Control de Alérgenos</Nav.Link>
+        <Nav defaultActiveKey="/dietas-especiales" className={styles.menu}>
+            <Nav.Link href="/dietas-especiales">Control de comensales con dietas especiales</Nav.Link>
             <Nav.Link eventKey="link-1"  href="/ropa-de-trabajo">Entrega de Ropa de Trabajo y E.P.P</Nav.Link>
             <Nav.Link eventKey="link-2" href="/bidones-de-aceite">Entrega de Bidones de Aceite Usado</Nav.Link>
             <Nav.Link eventKey="link-3" href="/reporte-incidente">Flash Reporte de Incidente</Nav.Link>

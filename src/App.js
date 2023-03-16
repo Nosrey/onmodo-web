@@ -70,7 +70,7 @@ function App() {
               </Route>
 
               {/* Forms */}
-              <Route path="/control-alergenos" element={ <AlergenosComida/> } />
+              <Route path="/dietas-especiales" element={ <AlergenosComida/> } />
               <Route path="/ropa-de-trabajo" element={ <ConstanciaEntrega/> } />
               <Route path="/bidones-de-aceite" element={ <EntregaBidonesAceiteUsado/> } />
               <Route path="/reporte-incidente" element={ <FlashReporteIncidente/> } />
