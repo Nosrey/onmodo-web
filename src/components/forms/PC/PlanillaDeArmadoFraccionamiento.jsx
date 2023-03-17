@@ -1,5 +1,5 @@
 import { Button, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './PlanillaDeArmadoFraccionamiento.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Modal from '../../shared/Modal';
@@ -19,8 +19,53 @@ function PlanillaDeArmadoFraccionamiento() {
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
+    const [values,setValues] = useState({
+        inputsValues : [{
+        }],
+        verificado: "",
+        fecha: "",
+    })
+    const [objValues,setObjValues] = useState({fecha:"",producto:"",horaInicio:"",tempInternaInicio:"",horaFinal:"",tempInternaFinal:"",accionesCorreccion:"",responsable:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
+
+    useEffect(()=>{
+        console.log("QUE PASAAAAA")
+        if(replicas === 1 && objValues.fecha !== "" && objValues.producto !== "" && objValues.horaInicio !== "" && objValues.tempInternaInicio !== "" && objValues.horaFinal !== "" && objValues.tempInternaFinal !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            console.log("entro?")
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.fecha !== "" && objValues.producto !== "" && objValues.horaInicio !== "" && objValues.tempInternaInicio !== "" && objValues.horaFinal !== "" && objValues.tempInternaFinal !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            console.log("entro2?")
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+    useEffect(()=>{
+        if (objValues.fecha !== "" && objValues.producto !== "" && objValues.horaInicio !== "" && objValues.tempInternaInicio !== "" && objValues.horaFinal !== "" && objValues.tempInternaFinal !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== ""){
+            console.log("asdasdasdasd")
+            setTrigger(true)
+        }
+    },[objValues])
+
+    const inputsValuesConstructor = (id,label,index,inputID) => {
+        console.log(typeof inputID, inputID)
+        const inputTarget = document.getElementById(id)
+        label === 'Fecha' ?  setObjValues({...objValues,fecha:inputTarget.value, id:index}) :
+        label === 'Producto' ? setObjValues({...objValues,producto:inputTarget.value}) :
+        (label === 'Hora' && inputID === 3) ? setObjValues({...objValues,horaInicio:inputTarget.value}):
+        (label === 'Temp. Interna' && inputID === 4) ? setObjValues({...objValues,tempInternaInicio:inputTarget.value}):
+        (label === 'Hora' && inputID === 5) ? setObjValues({...objValues,horaFinal:inputTarget.value}):
+        (label === 'Temp. Interna' && inputID === 6) ? setObjValues({...objValues,tempInternaFinal:inputTarget.value}):
+        label === 'Acciones Correcion' ? setObjValues({...objValues,accionesCorreccion:inputTarget.value}):
+        label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
+    }
+    console.log(objValues)
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({fecha:"",producto:"",horaInicio:"",tempInternaInicio:"",horaFinal:"",tempInternaFinal:"",accionesCorreccion:"",responsable:""})
+        setTrigger(false)
     };
 
     return (
@@ -49,7 +94,7 @@ function PlanillaDeArmadoFraccionamiento() {
                     : (
                     <div className='cont-btn'>
                         <Button  size="small" onClick={() => setShowModal(true)}>
-                            <i class="ri-information-line" style={{marginRight: "8px", fontSize:"22px"}}></i> Ver Más
+                            <i className="ri-information-line" style={{marginRight: "8px", fontSize:"22px"}}></i> Ver Más
                         </Button>
                     </div>
                     )
@@ -80,7 +125,9 @@ function PlanillaDeArmadoFraccionamiento() {
 
                                     {inputs.map((input) => (
                                         <div key={input.id}>
-                                            <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            <TextField onKeyUp={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index,input.id);
+                                            }} className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
@@ -94,11 +141,12 @@ function PlanillaDeArmadoFraccionamiento() {
                     
                 </div>
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField id="outlined-basic" label="Fecha" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
                 </div>
                 </div>
             <div>
