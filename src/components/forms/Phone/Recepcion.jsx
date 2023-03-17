@@ -1,5 +1,5 @@
 import { Button,  TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './Recepcion.module.css'
 import Modal from '../../shared/Modal';
@@ -22,9 +22,52 @@ function Recepcion() {
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
+    const [values,setValues] = useState({
+        inputsValues : [{
+        }],
+        verificado: "",
+        fechaHora: "",
+    })
+    const [objValues,setObjValues] = useState({fecha:"",proveedor:"",producto:"",comprada:"",recibida:"",alimento:"",cajaCamion:"",vidaUtil:"",nroLote:"",fechaVencimiento:"",recibido:"",motivoRechazo:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
+
+    useEffect(()=>{
+        if(replicas === 1 && objValues.fecha !== "" && objValues.proveedor !== "" && objValues.producto !== "" && objValues.comprada !== "" && objValues.recibida !== "" && objValues.alimento !== "" && objValues.cajaCamion !== "" && objValues.vidaUtil !== "" && objValues.nroLote !== "" && objValues.fechaVencimiento !== "" && objValues.recibido !== "" && objValues.motivoRechazo !== "" && objValues.id !=="") {
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.fecha !== "" && objValues.proveedor !== "" && objValues.producto !== "" && objValues.comprada !== "" && objValues.recibida !== "" && objValues.alimento !== "" && objValues.cajaCamion !== "" && objValues.vidaUtil !== "" && objValues.nroLote !== "" && objValues.fechaVencimiento !== "" && objValues.recibido !== "" && objValues.motivoRechazo !== "" && objValues.id !=="") {
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+    useEffect(()=>{
+        if (objValues.fecha !== "" && objValues.proveedor !== "" && objValues.producto !== "" && objValues.comprada !== "" && objValues.recibida !== "" && objValues.alimento !== "" && objValues.cajaCamion !== "" && objValues.vidaUtil !== "" && objValues.nroLote !== "" && objValues.fechaVencimiento !== "" && objValues.recibido !== "" && objValues.motivoRechazo !== ""){
+            setTrigger(true)
+        }
+    },[objValues])
+
+    const inputsValuesConstructor = (id,label,index) => {
+        const inputTarget = document.getElementById(id)
+        label === 'Fecha' ?  setObjValues({...objValues,fecha:inputTarget.value, id:index}) :
+        label === 'Proveedor' ? setObjValues({...objValues,proveedor:inputTarget.value}) :
+        label === 'Producto' ? setObjValues({...objValues,producto:inputTarget.value}):
+        label === 'Comprada' ? setObjValues({...objValues,comprada:inputTarget.value}):
+        label === 'Recibida' ? setObjValues({...objValues,recibida:inputTarget.value}) :
+        label === 'Alimento' ? setObjValues({...objValues,alimento:inputTarget.value}):
+        label === 'Caja camión' ? setObjValues({...objValues,cajaCamion:inputTarget.value}):
+        label === 'Dentro de vida útil' ? setObjValues({...objValues,vidaUtil:inputTarget.value}) :
+        label === 'Nro. lote' ? setObjValues({...objValues,nroLote:inputTarget.value}):
+        label === 'Fecha Vto.' ? setObjValues({...objValues,fechaVencimiento:inputTarget.value}):
+        label === 'Recibido' ? setObjValues({...objValues,recibido:inputTarget.value}):
+        label === 'Motivo del rechazo' && setObjValues({...objValues,motivoRechazo:inputTarget.value})
+    }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({fecha:"",proveedor:"",producto:"",comprada:"",recibida:"",alimento:"",cajaCamion:"",vidaUtil:"",nroLote:"",fechaVencimiento:"",recibido:"",motivoRechazo:""})
+        setTrigger(false)
     };
 
     return (
@@ -83,7 +126,9 @@ function Recepcion() {
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
-                                        <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                        <TextField onKeyUp={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index);
+                                            }} className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                     </div>
                                 ))}
@@ -97,11 +142,12 @@ function Recepcion() {
                 </div>
                
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
