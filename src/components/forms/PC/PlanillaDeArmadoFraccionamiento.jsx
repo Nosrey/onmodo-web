@@ -30,12 +30,9 @@ function PlanillaDeArmadoFraccionamiento() {
     const [trigger,setTrigger] = useState(false)
 
     useEffect(()=>{
-        console.log("QUE PASAAAAA")
         if(replicas === 1 && objValues.fecha !== "" && objValues.producto !== "" && objValues.horaInicio !== "" && objValues.tempInternaInicio !== "" && objValues.horaFinal !== "" && objValues.tempInternaFinal !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== "" && objValues.id !=="") {
-            console.log("entro?")
             setInputValues([objValues])
         }else if (replicas > 1 && objValues.fecha !== "" && objValues.producto !== "" && objValues.horaInicio !== "" && objValues.tempInternaInicio !== "" && objValues.horaFinal !== "" && objValues.tempInternaFinal !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== "" && objValues.id !=="") {
-            console.log("entro2?")
             setInputValues([...inputValues,objValues])
         }
     },[trigger])
@@ -44,13 +41,11 @@ function PlanillaDeArmadoFraccionamiento() {
     },[inputValues])
     useEffect(()=>{
         if (objValues.fecha !== "" && objValues.producto !== "" && objValues.horaInicio !== "" && objValues.tempInternaInicio !== "" && objValues.horaFinal !== "" && objValues.tempInternaFinal !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== ""){
-            console.log("asdasdasdasd")
             setTrigger(true)
         }
     },[objValues])
 
     const inputsValuesConstructor = (id,label,index,inputID) => {
-        console.log(typeof inputID, inputID)
         const inputTarget = document.getElementById(id)
         label === 'Fecha' ?  setObjValues({...objValues,fecha:inputTarget.value, id:index}) :
         label === 'Producto' ? setObjValues({...objValues,producto:inputTarget.value}) :
@@ -61,7 +56,6 @@ function PlanillaDeArmadoFraccionamiento() {
         label === 'Acciones Correcion' ? setObjValues({...objValues,accionesCorreccion:inputTarget.value}):
         label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
     }
-    console.log(objValues)
     const handleClick = () => {
         setReplicas(replicas + 1);
         setObjValues({fecha:"",producto:"",horaInicio:"",tempInternaInicio:"",horaFinal:"",tempInternaFinal:"",accionesCorreccion:"",responsable:""})
