@@ -1,5 +1,5 @@
 import { Button,  TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './Descongelamiento.module.css'
 import Modal from '../../shared/Modal';
@@ -24,9 +24,54 @@ function Descongelamiento() {
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
+    const [values,setValues] = useState({
+        inputsValues : [{
+        }],
+        verificado: "",
+        fechaHora: "",
+    })
+    const [objValues,setObjValues] = useState({fecha:"",alimento:"",nroLote:"",metodo:"",fechaHoraInicio:"",tempInicio:"",fechaHoraM1:"",tempM1:"",fechaHoraM2:"",tempM2:"",fechaHoraFinal:"",tempFinal:"",accionesCorreccion:"",responsable:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
+
+    useEffect(()=>{
+        if(replicas === 1 && objValues.fecha !== "" && objValues.alimento !== "" && objValues.nroLote !== "" && objValues.metodo !== "" && objValues.fechaHoraInicio !== "" && objValues.tempInicio !== "" && objValues.fechaHoraM1 !== "" && objValues.tempM1 !== "" && objValues.fechaHoraM2 !== "" && objValues.tempM2 !== "" && objValues.fechaHoraFinal !== "" && objValues.tempFinal !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.fecha !== "" && objValues.alimento !== "" && objValues.nroLote !== "" && objValues.metodo !== "" && objValues.fechaHoraInicio !== "" && objValues.tempInicio !== "" && objValues.fechaHoraM1 !== "" && objValues.tempM1 !== "" && objValues.fechaHoraM2 !== "" && objValues.tempM2 !== "" && objValues.fechaHoraFinal !== "" && objValues.tempFinal !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+    useEffect(()=>{
+        if (objValues.fecha !== "" && objValues.alimento !== "" && objValues.nroLote !== "" && objValues.metodo !== "" && objValues.fechaHoraInicio !== "" && objValues.tempInicio !== "" && objValues.fechaHoraM1 !== "" && objValues.tempM1 !== "" && objValues.fechaHoraM2 !== "" && objValues.tempM2 !== "" && objValues.fechaHoraFinal !== "" && objValues.tempFinal !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== ""){
+            setTrigger(true)
+        }
+    },[objValues])
+
+    const inputsValuesConstructor = (id,label,index,inputID) => {
+        const inputTarget = document.getElementById(id)
+        label === 'Fecha' ?  setObjValues({...objValues,fecha:inputTarget.value, id:index}) :
+        label === 'Alimento' ? setObjValues({...objValues,alimento:inputTarget.value}) :
+        label === 'Nro. lote' ? setObjValues({...objValues,nroLote:inputTarget.value}):
+        label === 'Método* (C/A/M)' ? setObjValues({...objValues,metodo:inputTarget.value}):
+        (label === 'Fecha/ Hora' && inputID === 5) ? setObjValues({...objValues,fechaHoraInicio:inputTarget.value}):
+        (label === 'Temp' && inputID === 6) ? setObjValues({...objValues,tempInicio:inputTarget.value}):
+        (label === 'Fecha/ Hora' && inputID === 7) ? setObjValues({...objValues,fechaHoraM1:inputTarget.value}):
+        (label === 'Temp' && inputID === 8) ? setObjValues({...objValues,tempM1:inputTarget.value}):
+        (label === 'Fecha/ Hora' && inputID === 9) ? setObjValues({...objValues,fechaHoraM2:inputTarget.value}):
+        (label === 'Temp' && inputID === 10) ? setObjValues({...objValues,tempM2:inputTarget.value}):
+        (label === 'Fecha/ Hora' && inputID === 11) ? setObjValues({...objValues,fechaHoraFinal:inputTarget.value}):
+        (label === 'Temp' && inputID === 12) ? setObjValues({...objValues,tempFinal:inputTarget.value}):
+        label === 'Acciones de correción' ? setObjValues({...objValues,accionesCorreccion:inputTarget.value}):
+        label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
+    }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({fecha:"",alimento:"",nroLote:"",metodo:"",fechaHoraInicio:"",tempInicio:"",fechaHoraM1:"",tempM1:"",fechaHoraM2:"",tempM2:"",fechaHoraFinal:"",tempFinal:"",accionesCorreccion:"",responsable:""})
+        setTrigger(false)
     };
 
     return (
@@ -84,7 +129,9 @@ function Descongelamiento() {
 
                                     {inputs.map((input) => (
                                         <div key={input.id}>
-                                            <TextField  className="input" id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            <TextField onKeyUp={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index,input.id);
+                                            }} className="input" id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
@@ -99,11 +146,12 @@ function Descongelamiento() {
 
                 
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
