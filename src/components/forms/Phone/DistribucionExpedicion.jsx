@@ -1,5 +1,5 @@
 import { Button,  TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './DistribucionExpedicion.module.css'
 import Modal from '../../shared/Modal';
@@ -18,8 +18,49 @@ function DistribucionExpedicion() {
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
 
+    const [values,setValues] = useState({
+        fecha:"",
+        inputsValues : [{
+        }],
+        verificado: "",
+        fechaHora: "",
+    })
+    const [objValues,setObjValues] = useState({servicio:"",preparacion:"",horaDespacho:"",tempDespacho:"",horaRecepcion:"",tempRecepcion:"",accionesCorrectivas:"",responsable:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
+
+    useEffect(()=>{
+        if(replicas === 1 && objValues.servicio !== "" && objValues.preparacion !== "" && objValues.horaDespacho !== "" && objValues.tempDespacho !== "" && objValues.horaRecepcion !== "" && objValues.tempRecepcion !== "" && objValues.accionesCorrectivas !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.servicio !== "" && objValues.preparacion !== "" && objValues.horaDespacho !== "" && objValues.tempDespacho !== "" && objValues.horaRecepcion !== "" && objValues.tempRecepcion !== "" && objValues.accionesCorrectivas !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+    useEffect(()=>{
+        if (objValues.servicio !== "" && objValues.preparacion !== "" && objValues.horaDespacho !== "" && objValues.tempDespacho !== "" && objValues.horaRecepcion !== "" && objValues.tempRecepcion !== "" && objValues.accionesCorrectivas !== "" && objValues.responsable !== ""){
+            setTrigger(true)
+        }
+    },[objValues])
+
+    const inputsValuesConstructor = (id,label,index,inputID) => {
+        const inputTarget = document.getElementById(id)
+        label === 'Servicio' ?  setObjValues({...objValues,servicio:inputTarget.value, id:index}) :
+        label === 'Preparación' ? setObjValues({...objValues,preparacion:inputTarget.value}):
+        (label === 'Hora' && inputID === 3) ? setObjValues({...objValues,horaDespacho:inputTarget.value}) :
+        (label === 'Temp.' && inputID === 4) ? setObjValues({...objValues,tempDespacho:inputTarget.value}):
+        (label === 'Hora' && inputID === 5) ? setObjValues({...objValues,horaRecepcion:inputTarget.value}) :
+        (label === 'Temp.' && inputID === 6) ? setObjValues({...objValues,tempRecepcion:inputTarget.value}):
+        label === 'Acciones correctivas' ? setObjValues({...objValues,accionesCorrectivas:inputTarget.value}):
+        label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
+    }
+
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({servicio:"",preparacion:"",horaDespacho:"",tempDespacho:"",horaRecepcion:"",tempRecepcion:"",accionesCorrectivas:"",responsable:""})
+        setTrigger(false)
     };
 
     return (
@@ -45,7 +86,7 @@ function DistribucionExpedicion() {
                 }
 
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Fecha" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
                 <div className="table">
                     <div className={styles.contTitTabla}>
@@ -75,7 +116,9 @@ function DistribucionExpedicion() {
 
                                     {inputs.map((input) => (
                                         <div key={input.id}>
-                                            <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            <TextField onKeyUp={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index,input.id);
+                                            }} className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
@@ -89,11 +132,12 @@ function DistribucionExpedicion() {
                     
                 </div>
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
