@@ -1,5 +1,5 @@
 import { Button,  TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionBalanza.module.css'
 import Modal from '../shared/Modal';
@@ -18,9 +18,51 @@ function VerificacionBalanza() {
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
+    const [values,setValues] = useState({
+        fecha:"",
+        responsableValidacion:"",
+        balanza_bascula:"",
+        inputsValues : [{
+        }],
+        verificado: "",
+        fechaHora: "",
+    })
+    const [objValues,setObjValues] = useState({codigo:"",tipo:"",responsableUso:"",area:"",pesoMasa:"",pesoReal:"",desvio:"",accionesCorrecion:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
+
+    useEffect(()=>{
+        if(replicas === 1 && objValues.codigo !== "" && objValues.tipo !== "" && objValues.responsableUso !== "" && objValues.area !== "" && objValues.pesoMasa !== "" && objValues.pesoReal !== "" && objValues.desvio !== "" && objValues.accionesCorrecion !== "" && objValues.id !=="") {
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.codigo !== "" && objValues.tipo !== "" && objValues.responsableUso !== "" && objValues.area !== "" && objValues.pesoMasa !== "" && objValues.pesoReal !== "" && objValues.desvio !== "" && objValues.accionesCorrecion !== "" && objValues.id !=="") {
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+    useEffect(()=>{
+        if (objValues.codigo !== "" && objValues.tipo !== "" && objValues.responsableUso !== "" && objValues.area !== "" && objValues.pesoMasa !== "" && objValues.pesoReal !== "" && objValues.desvio !== "" && objValues.accionesCorrecion !== ""){
+            setTrigger(true)
+        }
+    },[objValues])
+
+    const inputsValuesConstructor = (id,label,index) => {
+        const inputTarget = document.getElementById(id)
+        label === 'Código' ?  setObjValues({...objValues,codigo:inputTarget.value, id:index}) :
+        label === 'Tipo (BP/BR)' ? setObjValues({...objValues,tipo:inputTarget.value}) :
+        label === 'Responsable del uso' ? setObjValues({...objValues,responsableUso:inputTarget.value}):
+        label === 'Área' ? setObjValues({...objValues,area:inputTarget.value}):
+        label === 'Peso Masa ref/Pto balanza' ? setObjValues({...objValues,pesoMasa:inputTarget.value}) :
+        label === 'Peso real' ? setObjValues({...objValues,pesoReal:inputTarget.value}):
+        label === 'Desvío' ? setObjValues({...objValues,desvio:inputTarget.value}):
+        label === 'Acciones de corrección' && setObjValues({...objValues,accionesCorrecion:inputTarget.value})
+    }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({codigo:"",tipo:"",responsableUso:"",area:"",pesoMasa:"",pesoReal:"",desvio:"",accionesCorrecion:""})
+        setTrigger(false)
     };
 
     return (
@@ -45,9 +87,9 @@ function VerificacionBalanza() {
                     )
                 }
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Fecha" variant="outlined" />
-                    <TextField id="outlined-basic" label="Responsable de validación" variant="outlined" />
-                    <TextField id="outlined-basic" label="Balanza/Báscula" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,responsableValidacion:e.target.value})}} id="outlined-basic" label="Responsable de validación" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,balanza_bascula:e.target.value})}} id="outlined-basic" label="Balanza/Báscula" variant="outlined" />
 
                 </div>
 
@@ -69,7 +111,9 @@ function VerificacionBalanza() {
 
                                     {inputs.map((input) => (
                                         <div key={input.id}>
-                                            <TextField  className="input" id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            <TextField onKeyUp={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index);
+                                            }} className="input" id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
@@ -85,11 +129,12 @@ function VerificacionBalanza() {
                 <br />
                 <br />
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
