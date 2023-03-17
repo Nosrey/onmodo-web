@@ -1,5 +1,5 @@
 import { Button,  TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './ServiciosEnLinea.module.css'
 import Modal from '../../shared/Modal';
@@ -19,9 +19,51 @@ function ServiciosEnLinea() {
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
+    const [values,setValues] = useState({
+        fecha:"",
+        inputsValues : [{
+        }],
+        verificado: "",
+        fechaHora: "",
+    })
+    const [objValues,setObjValues] = useState({servicio:"",preparacion:"",horaInicio:"",tempInicio:"",horaMantenimiento1:"",tempMantenimiento1:"",horaMantenimiento2:"",tempMantenimiento2:"",accionesCorrectivas:"",responsable:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
+
+    useEffect(()=>{
+        if(replicas === 1 && objValues.servicio !== "" && objValues.preparacion !== "" && objValues.horaInicio !== "" && objValues.tempInicio !== "" && objValues.horaMantenimiento1 !== "" && objValues.tempMantenimiento1 !== "" && objValues.horaMantenimiento2 !== "" && objValues.tempMantenimiento2 !== "" && objValues.accionesCorrectivas !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.servicio !== "" && objValues.preparacion !== "" && objValues.horaInicio !== "" && objValues.tempInicio !== "" && objValues.horaMantenimiento1 !== "" && objValues.tempMantenimiento1 !== "" && objValues.horaMantenimiento2 !== "" && objValues.tempMantenimiento2 !== "" && objValues.accionesCorrectivas !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+    useEffect(()=>{
+        if (objValues.servicio !== "" && objValues.preparacion !== "" && objValues.horaInicio !== "" && objValues.tempInicio !== "" && objValues.horaMantenimiento1 !== "" && objValues.tempMantenimiento1 !== "" && objValues.horaMantenimiento2 !== "" && objValues.tempMantenimiento2 !== "" && objValues.accionesCorrectivas !== "" && objValues.responsable !== ""){
+            setTrigger(true)
+        }
+    },[objValues])
+
+    const inputsValuesConstructor = (id,label,index,inputID) => {
+        const inputTarget = document.getElementById(id)
+        label === 'Servicio' ?  setObjValues({...objValues,servicio:inputTarget.value, id:index}) :
+        label === 'Preparación' ? setObjValues({...objValues,preparacion:inputTarget.value}):
+        (label === 'Hora' && inputID === 3) ? setObjValues({...objValues,horaInicio:inputTarget.value}) :
+        (label === 'Temp.' && inputID === 4) ? setObjValues({...objValues,tempInicio:inputTarget.value}):
+        (label === 'Hora' && inputID === 5) ? setObjValues({...objValues,horaMantenimiento1:inputTarget.value}) :
+        (label === 'Temp.' && inputID === 6) ? setObjValues({...objValues,tempMantenimiento1:inputTarget.value}):
+        (label === 'Hora' && inputID === 7) ? setObjValues({...objValues,horaMantenimiento2:inputTarget.value}) :
+        (label === 'Temp.' && inputID === 8) ? setObjValues({...objValues,tempMantenimiento2:inputTarget.value}):
+        label === 'Acciones correctivas' ? setObjValues({...objValues,accionesCorrectivas:inputTarget.value}):
+        label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
+    }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({servicio:"",preparacion:"",horaInicio:"",tempInicio:"",horaMantenimiento1:"",tempMantenimiento1:"",horaMantenimiento2:"",tempMantenimiento2:"",accionesCorrectivas:"",responsable:""})
+        setTrigger(false)
     };
 
     return (
@@ -47,7 +89,7 @@ function ServiciosEnLinea() {
                 }
 
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Fecha" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
                 <div className="table">
                     <div className={styles.contTitTabla}>
@@ -78,7 +120,9 @@ function ServiciosEnLinea() {
 
                                     {inputs.map((input) => (
                                         <div key={input.id}>
-                                            <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            <TextField onKeyUp={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index,input.id);
+                                            }} className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
@@ -91,11 +135,12 @@ function ServiciosEnLinea() {
                     </div>
                 </div>
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
