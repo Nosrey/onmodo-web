@@ -1,8 +1,28 @@
 import { Button, TextField } from '@mui/material'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './FlashReporteIncidente.module.css'
 
 function FlashReporteIncidente() {
+
+    const [values,setValues] = useState({
+       alcance:"",
+       lineaDeNegocios:"",
+       fechaIncidente:"",
+       horaIncidente:"",
+       comedor:"",
+       responsableContrato:"",
+       incidentePotencial:"",
+       tipoIncidente:"",
+       descripcionIncidente:"",
+       fotografia:"",
+       accionesInmediatas:"",
+       nombreAsesor:"",
+       firmaAsesor:"",
+       nombreSupervisor:"",
+       firmaSupervisor:"",
+       nombreGerente:"",
+       firmaGerente:""
+    })
 
     return (
         <div>
@@ -13,19 +33,19 @@ function FlashReporteIncidente() {
                 </div>
 
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Alcance" variant="outlined" />
-                    <TextField id="outlined-basic" label="Línea de negocios" variant="outlined" />
-                    <TextField id="outlined-basic" label="Fecha del Incidente" variant="outlined" />
-                    <TextField id="outlined-basic" label="Hora del Incidente" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,alcance:e.target.value})}} id="outlined-basic" label="Alcance" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,lineaDeNegocios:e.target.value})}} id="outlined-basic" label="Línea de negocios" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fechaIncidente:e.target.value})}} id="outlined-basic" label="Fecha del Incidente" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,horaIncidente:e.target.value})}} id="outlined-basic" label="Hora del Incidente" variant="outlined" />
                 </div>
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Comedor" variant="outlined" />
-                    <TextField id="outlined-basic" label="Responsable del contrato" variant="outlined" />
-                    <TextField id="outlined-basic" label="Incidente Potencial/Real" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,comedor:e.target.value})}} id="outlined-basic" label="Comedor" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,responsableContrato:e.target.value})}} id="outlined-basic" label="Responsable del contrato" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,incidentePotencial:e.target.value})}} id="outlined-basic" label="Incidente Potencial/Real" variant="outlined" />
                 </div>
                 
                 <div className={styles.personalText}>
-                    <TextField fullWidth id="outlined-basic" label="Tipo de Incidente" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,tipoIncidente:e.target.value})}} fullWidth id="outlined-basic" label="Tipo de Incidente" variant="outlined" />
                 </div>
 
                 <div className={styles.personalText}>
@@ -35,8 +55,9 @@ function FlashReporteIncidente() {
                         label="Descripción del Incidente:  (quién, qué, cómo, cuándo)"
                         multiline
                         rows={4}
+                        onChange={(e)=>{setValues({...values,descripcionIncidente:e.target.value})}}
                     />           
-                    <TextField id="outlined-basic" label="Fotografía" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fotografia:e.target.value})}} id="outlined-basic" label="Fotografía" variant="outlined" />
      
                 </div>
 
@@ -47,6 +68,7 @@ function FlashReporteIncidente() {
                         label="Acciones Inmediatas"
                         multiline
                         rows={4}
+                        onChange={(e)=>{setValues({...values,accionesInmediatas:e.target.value})}}
                     />                
                 </div>
 
@@ -56,26 +78,25 @@ function FlashReporteIncidente() {
                     </div>
                     <div className={styles.personal}>
                         <p  className={styles.tableLabel}>Asesor HSEQ</p>
-                        <TextField id="outlined-basic" label="Nombre" variant="outlined" />
-                        <TextField id="outlined-basic" label="Firma" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,nombreAsesor:e.target.value})}} id="outlined-basic" label="Nombre" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,firmaAsesor:e.target.value})}} id="outlined-basic" label="Firma" variant="outlined" />
                     </div>
                     
                     <div className={styles.personal}>
                         <p className={styles.tableLabel}>Supervisor Directo</p>
-                        <TextField id="outlined-basic" label="Nombre" variant="outlined" />
-                        <TextField id="outlined-basic" label="Firma" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,nombreSupervisor:e.target.value})}} id="outlined-basic" label="Nombre" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,firmaSupervisor:e.target.value})}} id="outlined-basic" label="Firma" variant="outlined" />
                     </div>
 
                     <div className={styles.personal}>
                         <p className={styles.tableLabel}>Gerente del Área</p>
-                        <TextField id="outlined-basic" label="Nombre" variant="outlined" />
-                        <TextField id="outlined-basic" label="Firma" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,nombreGerente:e.target.value})}} id="outlined-basic" label="Nombre" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,firmaGerente:e.target.value})}} id="outlined-basic" label="Firma" variant="outlined" />
                     </div>
                 </div>
 
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
-
+                    <Button onClick={()=>{console.log(values)}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
