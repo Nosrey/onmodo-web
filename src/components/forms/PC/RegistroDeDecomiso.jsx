@@ -1,5 +1,5 @@
 import { Button,  TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './RegistroDeDecomiso.module.css'
 
@@ -16,15 +16,56 @@ function RegistroDeDecomiso() {
         { id: 9, label: 'Otras causas' },
         { id: 10, label: 'Destino final' },
         { id: 11, label: 'Responsable' },
-
-
-
-
     ]);
     const [replicas, setReplicas] = useState(1);
+    const [values,setValues] = useState({
+        inputsValues : [{
+        }],
+    })
+    const [objValues,setObjValues] = useState({fecha:"",turno:"",productoDecomisado:"",cantidad:"",desvios:"",fueraFecha:"",fueraAptitud:"",recall:"",otrasCausas:"",destinoFinal:"",responsable:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
+
+    useEffect(()=>{
+        if(replicas === 1 && objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.fueraFecha !== "" && objValues.fueraAptitud !== "" && objValues.recall !== "" && objValues.otrasCausas !== "" && objValues.destinoFinal !== "" && objValues.responsable !== "" && objValues.desvios !== "" && objValues.id !=="") {
+
+            setInputValues([objValues])
+        }
+        else if (replicas > 1 && objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.desvios !== "" && objValues.fueraFecha !== "" && objValues.fueraAptitud !== "" && objValues.recall !== "" && objValues.otrasCausas !== "" && objValues.destinoFinal !== "" && objValues.responsable !== ""&& objValues.id !=="") {
+
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+
+    useEffect(()=>{
+        if (objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.desvios !== "" && objValues.fueraFecha !== "" && objValues.fueraAptitud !== "" && objValues.recall !== "" && objValues.otrasCausas !== "" && objValues.destinoFinal !== "" && objValues.responsable !== ""){
+            setTrigger(true)
+        }
+    },[objValues])
+
+    const inputsValuesConstructor = (id,label,index) => {
+        const inputTarget = document.getElementById(id)
+        label === 'Fecha' ?  setObjValues({...objValues,fecha:inputTarget.value, id:index}) :
+        label === 'Turno' ? setObjValues({...objValues,turno:inputTarget.value}) :
+        label === 'Producto decomisado' ? setObjValues({...objValues,productoDecomisado:inputTarget.value}):
+        label === 'Cantidad' ? setObjValues({...objValues,cantidad:inputTarget.value}):
+        label === 'Desvios de proceso' ? setObjValues({...objValues,desvios:inputTarget.value}):
+        label === 'Fuera fecha vida util' ? setObjValues({...objValues,fueraFecha:inputTarget.value}):
+        label === 'Fuera de aptitud' ? setObjValues({...objValues,fueraAptitud:inputTarget.value}):
+        label === 'Recall' ? setObjValues({...objValues,recall:inputTarget.value}):
+        label === 'Otras causas' ? setObjValues({...objValues,otrasCausas:inputTarget.value}):
+        label === 'Destino final' ? setObjValues({...objValues,destinoFinal:inputTarget.value}):
+        label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
+    }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({fecha:"",turno:"",productoDecomisado:"",cantidad:"",desvios:"",fueraFecha:"",fueraAptitud:"",recall:"",otrasCausas:"",destinoFinal:"",responsable:""})
+        setTrigger(false)
     };
 
     return (
@@ -47,7 +88,9 @@ function RegistroDeDecomiso() {
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
-                                        <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                        <TextField className='input' onKeyUp={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index);
+                                            }} id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                     </div>
                                 ))}
@@ -62,7 +105,8 @@ function RegistroDeDecomiso() {
                 
 
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
