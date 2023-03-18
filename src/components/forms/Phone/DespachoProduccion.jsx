@@ -1,22 +1,56 @@
 import { Button, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './DespachoProduccion.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 function DespachoProduccion() {
     const [inputs] = useState([
         { id: 1, label: 'Producto' },
-        { id: 2, label: 'Cantidad Planificad' },
+        { id: 2, label: 'Cantidad Planificada' },
         { id: 3, label: 'Cantidad Real' },
         { id: 4, label: 'Proveedor' },
         { id: 5, label: 'Lote' },
     ]);
     const [replicas, setReplicas] = useState(1);
+    const [values,setValues] = useState({
+        inputsValues : [{
+        }],
+        fecha: "",
+    })
+    const [objValues,setObjValues] = useState({producto:"",cantidadPlanificada:"",cantidadReal:"",proveedor:"",lote:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
+
+    useEffect(()=>{
+        if(replicas === 1 && objValues.producto !== "" && objValues.cantidadPlanificada !== "" && objValues.cantidadReal !== "" && objValues.proveedor !== "" && objValues.lote !== "" && objValues.id !=="") {
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.producto !== "" && objValues.cantidadPlanificada !== "" && objValues.cantidadReal !== "" && objValues.proveedor !== "" && objValues.lote !== "" && objValues.id !=="") {
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+    useEffect(()=>{
+        if (objValues.producto !== "" && objValues.cantidadPlanificada !== "" && objValues.cantidadReal !== "" && objValues.proveedor !== "" && objValues.lote !== ""){
+            setTrigger(true)
+        }
+    },[objValues])
+
+    const inputsValuesConstructor = (id,label,index) => {
+        const inputTarget = document.getElementById(id)
+        label === 'Producto' ?  setObjValues({...objValues,producto:inputTarget.value, id:index}) :
+        label === 'Cantidad Planificada' ? setObjValues({...objValues,cantidadPlanificada:inputTarget.value}) :
+        label === 'Cantidad Real' ? setObjValues({...objValues,cantidadReal:inputTarget.value}):
+        label === 'Proveedor' ? setObjValues({...objValues,proveedor:inputTarget.value}):
+        label === 'Lote' && setObjValues({...objValues,lote:inputTarget.value})
+    }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({producto:"",cantidadPlanificada:"",cantidadReal:"",proveedor:"",lote:""})
+        setTrigger(false)
     };
-
     return (
         <div>
             <div className="form">
@@ -39,7 +73,7 @@ function DespachoProduccion() {
 
 
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Fecha" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
                 
                 <div className="table">
@@ -52,7 +86,9 @@ function DespachoProduccion() {
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
-                                        <TextField className='' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                        <TextField onKeyUp={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index);
+                                            }} className='' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                     </div>
                                 ))}
@@ -67,7 +103,8 @@ function DespachoProduccion() {
               
                 
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
 
                 </div>
 
