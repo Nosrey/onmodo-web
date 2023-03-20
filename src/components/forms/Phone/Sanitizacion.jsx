@@ -1,5 +1,5 @@
 import { Button,  TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './Sanitizacion.module.css'
 import Modal from '../../shared/Modal';
@@ -8,7 +8,7 @@ import SanitizacionInfo from '../../modales/SanitizacionInfo';
 function Sanitizacion() {
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
-        { id: 2, label: 'Vegetal a desinfecta' },
+        { id: 2, label: 'Vegetal a desinfectar' },
         { id: 3, label: 'SI/NO' },
         { id: 4, label: '<50' },
         { id: 5, label: '100' },
@@ -21,9 +21,51 @@ function Sanitizacion() {
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
+    const [values,setValues] = useState({
+        inputsValues : [{
+        }],
+        responsable: "",
+        fecha: "",
+    })
+    const [objValues,setObjValues] = useState({fecha:"",vegetal:"",siNo:"","<50":"","100":"","200":"","300":"",">400":"",minutos:"",accionesCorreccion:"",responsable:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
+    
+    useEffect(()=>{
+        if(replicas === 1 && objValues.fecha !== "" && objValues.vegetal !== "" && objValues.siNo !== "" && objValues["<50"] !== "" && objValues["100"] !== "" && objValues["200"] !== "" && objValues["300"] !== "" && objValues[">400"] !== "" && objValues.minutos !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.fecha !== "" && objValues.vegetal !== "" && objValues.siNo !== "" && objValues["<50"] !== "" && objValues["100"] !== "" && objValues["200"] !== "" && objValues["300"] !== "" && objValues[">400"] !== "" && objValues.minutos !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+    useEffect(()=>{
+        if (objValues.fecha !== "" && objValues.vegetal !== "" && objValues.siNo !== "" && objValues["<50"] !== "" && objValues["100"] !== "" && objValues["200"] !== "" && objValues["300"] !== "" && objValues[">400"] !== "" && objValues.minutos !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== ""){
+            setTrigger(true)
+        }
+    },[objValues])
+
+    const inputsValuesConstructor = (id,label,index) => {
+        const inputTarget = document.getElementById(id)
+        label === 'Fecha' ?  setObjValues({...objValues,fecha:inputTarget.value, id:index}) :
+        label === 'Vegetal a desinfectar' ? setObjValues({...objValues,vegetal:inputTarget.value}) :
+        label === 'SI/NO' ? setObjValues({...objValues,siNo:inputTarget.value}):
+        label === '<50' ? setObjValues({...objValues,"<50":inputTarget.value}):
+        label === '100' ? setObjValues({...objValues,"100":inputTarget.value}):
+        label === '200' ? setObjValues({...objValues,"200":inputTarget.value}):
+        label === '300' ? setObjValues({...objValues,"300":inputTarget.value}):
+        label === '>400' ? setObjValues({...objValues,">400":inputTarget.value}):
+        label === 'Minutos' ? setObjValues({...objValues,minutos:inputTarget.value}):
+        label === 'Acciones de corrección' ? setObjValues({...objValues,accionesCorreccion:inputTarget.value}):
+        label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
+    }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({fecha:"",vegetal:"",siNo:"","<50":"","100":"","200":"","300":"",">400":"",minutos:"",accionesCorreccion:"",responsable:""})
+        setTrigger(false)
     };
 
     return (
@@ -81,7 +123,9 @@ function Sanitizacion() {
 
                                     {inputs.map((input) => (
                                         <div key={input.id}>
-                                            <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            <TextField onKeyUp={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index);
+                                            }} className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
@@ -95,11 +139,12 @@ function Sanitizacion() {
                     
                 </div>
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Responsable" variant="outlined" />
-                    <TextField id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,responsable:e.target.value})}} id="outlined-basic" label="Responsable" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
