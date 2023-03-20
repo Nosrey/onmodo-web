@@ -90,7 +90,7 @@ function Home() {
                     </Accordion>
                     <Accordion className={styles.accordion} expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
                         <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-                            <Typography>Entrega de Bidones de Aceite Usado</Typography>
+                            <Typography>Circuito de Aceite Usado</Typography>
                         </AccordionSummary>
                         <AccordionDetails className={styles.accordion}>
                             <EntregaBidonesAceiteUsado/>

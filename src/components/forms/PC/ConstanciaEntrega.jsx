@@ -2,6 +2,7 @@ import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import styles from './ConstanciaEntrega.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 
 function ConstanciaEntrega() {
     const [inputs] = useState([
@@ -20,7 +21,9 @@ function ConstanciaEntrega() {
     const handleClick = () => {
         setReplicas(replicas + 1);
     };
-
+    const handleClickRemove = () => {
+        setReplicas(replicas - 1);
+    }
 
     const handleCheckboxChange = (event) => {
         setShowTextField(event.target.checked);
@@ -31,12 +34,11 @@ function ConstanciaEntrega() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Constancia de Entrega de Ropa de Trabajo y de E.P.P</h3>
-                    {/* <h4 className="formNumber"> HS-01-R01</h4> */}
                 </div>
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Apellido y nombre" variant="outlined" />
                     <TextField id="outlined-basic" label="Contrato" variant="outlined" />
-                    <TextField id="outlined-basic" label="DNI" variant="outlined" />
+                    <TextField id="outlined-basic" label="DNI/Legajo" variant="outlined" />
                 </div>
                 <div className={styles.personal}>
                     <TextField id="outlined-basic" label="Direccion" variant="outlined" />
@@ -85,7 +87,11 @@ function ConstanciaEntrega() {
                                         </div>
                                     ))}
                                     <div className="icon">
+                                    {
+                                        (index == 0 || index > Array(replicas).fill(0).length) ? 
                                         <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                                        :  <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={handleClickRemove} />
+                                    }
                                     </div>
                                 </div>
                             ))}

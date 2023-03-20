@@ -5,9 +5,11 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 function EntregaBidonesAceiteUsado() {
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
-        { id: 2, label: 'Cantidad de Bidones entregados' },
-        { id: 3, label: 'Firma Emisor (ARAMARK)' },
-        { id: 4, label: 'Firma Receptor (Cliente)' },
+        { id: 2, label: 'Cantidad de Litros entregados' },
+        { id: 3, label: 'Responsable de Entrega' },
+        { id: 4, label: 'Responsable de Retiro' },
+        { id: 5, label: 'Certificado de Transporte' },
+        { id: 6, label: 'Certificado de Disposición final' },
     ]);
     const [replicas, setReplicas] = useState(1);
     const [values, setValues] = useState({
@@ -54,8 +56,7 @@ function EntregaBidonesAceiteUsado() {
         <div>
         <div className="form">
             <div className="titleContainer">
-                <h3 className="title">Entrega de Bidones de Aceite Usado</h3>
-                {/* <h4 className="formNumber">E-02-R02</h4> */}
+                <h3 className="title">Circuito de Aceite Usado</h3>
             </div>
             <div className="table">
                 <div className="tableSection">
@@ -69,7 +70,7 @@ function EntregaBidonesAceiteUsado() {
                                     <div key={input.id}>
                                         <TextField onBlur={(e)=>{
                                             inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index);
-                                            }} id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            }} id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`}  variant="outlined" />
 
                                     </div>
                                 ))}

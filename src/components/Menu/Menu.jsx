@@ -8,7 +8,7 @@ function Menu() {
         <Nav defaultActiveKey="/dietas-especiales" className={styles.menu}>
             <Nav.Link href="/dietas-especiales">Control de comensales con dietas especiales</Nav.Link>
             <Nav.Link eventKey="link-1"  href="/ropa-de-trabajo">Entrega de Ropa de Trabajo y E.P.P</Nav.Link>
-            <Nav.Link eventKey="link-2" href="/bidones-de-aceite">Entrega de Bidones de Aceite Usado</Nav.Link>
+            <Nav.Link eventKey="link-2" href="/bidones-de-aceite">Circuito de Aceite Usado</Nav.Link>
             <Nav.Link eventKey="link-3" href="/reporte-incidente">Flash Reporte de Incidente</Nav.Link>
             <Nav.Link eventKey="link-4" href="/informe-accidente">Informe Interno de Accidente</Nav.Link>
             <Nav.Link eventKey="link-5" href="/registro-de-capacitacion">Registro de Capacitación</Nav.Link>
