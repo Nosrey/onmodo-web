@@ -1,5 +1,5 @@
 import { Button,  TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './ControlProcesos.module.css'
 import Modal from '../../shared/Modal';
@@ -25,9 +25,55 @@ function ControlProcesos() {
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
+    const [values,setValues] = useState({
+        inputsValues : [{
+        }],
+        verificado: "",
+        fechaHora: ""
+    })
+    const [objValues,setObjValues] = useState({alimento:"",fechaCoccion:"",tempCoccion:"",horaInicio:"",tempInicio:"",temp2hs:"",temp4hs:"",temp6hs:"",fechaRegFinal:"",tempRegFinal:"", tempMantInicio:"",tempMant1hs:"",tempMant2hs:"",accionesCorrectivas:"",responsable:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
+
+    useEffect(()=>{
+        if(replicas === 1 && objValues.alimento !== "" && objValues.fechaCoccion !== "" && objValues.tempCoccion !== "" && objValues.horaInicio !== "" && objValues.tempInicio !== "" && objValues.temp2hs !== "" && objValues.temp4hs !== "" && objValues.temp6hs !== "" && objValues.fechaRegFinal !== "" && objValues.tempRegFinal !== "" && objValues.tempMantInicio !== "" && objValues.tempMant1hs !== "" && objValues.tempMant2hs !== "" && objValues.accionesCorrectivas !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.alimento !== "" && objValues.fechaCoccion !== "" && objValues.tempCoccion !== "" && objValues.horaInicio !== "" && objValues.tempInicio !== "" && objValues.temp2hs !== "" && objValues.temp4hs !== "" && objValues.temp6hs !== "" && objValues.fechaRegFinal !== "" && objValues.tempRegFinal !== "" && objValues.tempMantInicio !== "" && objValues.tempMant1hs !== "" && objValues.tempMant2hs !== "" && objValues.accionesCorrectivas !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+    useEffect(()=>{
+        if (objValues.alimento !== "" && objValues.fechaCoccion !== "" && objValues.tempCoccion !== "" && objValues.horaInicio !== "" && objValues.tempInicio !== "" && objValues.temp2hs !== "" && objValues.temp4hs !== "" && objValues.temp6hs !== "" && objValues.fechaRegFinal !== "" && objValues.tempRegFinal !== "" && objValues.tempMantInicio !== "" && objValues.tempMant1hs !== "" && objValues.tempMant2hs !== "" && objValues.accionesCorrectivas !== "" && objValues.responsable !== ""){
+            setTrigger(true)
+        }
+    },[objValues])
+
+    const inputsValuesConstructor = (id,label,index,inputID) => {
+        const inputTarget = document.getElementById(id)
+        label === 'Alimento' ?  setObjValues({...objValues,alimento:inputTarget.value, id:index}) :
+        (label === 'Fecha / Hora' && inputID === 2) ? setObjValues({...objValues,fechaCoccion:inputTarget.value}) :
+        (label === 'Temp.' && inputID === 3) ? setObjValues({...objValues,tempCoccion:inputTarget.value}):
+        label === 'Hora' ? setObjValues({...objValues,horaInicio:inputTarget.value}):
+        (label === 'Temp.' && inputID === 5) ? setObjValues({...objValues,tempInicio:inputTarget.value}):
+        (label === 'Temp.' && inputID === 6) ? setObjValues({...objValues,temp2hs:inputTarget.value}):
+        (label === 'Temp.' && inputID === 7) ? setObjValues({...objValues,temp4hs:inputTarget.value}):
+        (label === 'Temp.' && inputID === 8) ? setObjValues({...objValues,temp6hs:inputTarget.value}):
+        (label === 'Fecha / Hora' && inputID === 9) ? setObjValues({...objValues,fechaRegFinal:inputTarget.value}) :
+        (label === 'Temp.' && inputID === 10) ? setObjValues({...objValues,tempRegFinal:inputTarget.value}):
+        (label === 'Temp.' && inputID === 11) ? setObjValues({...objValues,tempMantInicio:inputTarget.value}):
+        (label === 'Temp.' && inputID === 12) ? setObjValues({...objValues,tempMant1hs:inputTarget.value}):
+        (label === 'Temp.' && inputID === 13) ? setObjValues({...objValues,tempMant2hs:inputTarget.value}):
+        label === 'Acciones Correción' ? setObjValues({...objValues,accionesCorrectivas:inputTarget.value}):
+        label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
+    }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({alimento:"",fechaCoccion:"",tempCoccion:"",horaInicio:"",tempInicio:"",temp2hs:"",temp4hs:"",temp6hs:"",fechaRegFinal:"",tempRegFinal:"", tempMantInicio:"",tempMant1hs:"",tempMant2hs:"",accionesCorrectivas:"",responsable:""})
+        setTrigger(false)
     };
 
     return (
@@ -107,7 +153,9 @@ function ControlProcesos() {
 
                                     {inputs.map((input) => (
                                         <div key={input.id}>
-                                            <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            <TextField onKeyUp={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index,input.id);
+                                            }} className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
@@ -121,11 +169,12 @@ function ControlProcesos() {
                     
                 </div>
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.values})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.values})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
