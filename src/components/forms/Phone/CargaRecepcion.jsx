@@ -1,5 +1,5 @@
 import { Button,  TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './CargaRecepcion.module.css'
 import Modal from '../../shared/Modal';
@@ -25,9 +25,64 @@ function CargaRecepcion() {
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
+    const [values,setValues] = useState({
+        patenteTermico:"",
+        habilitacion:"",
+        nroPrecintoLat:"",
+        nroPrecintoTras:"",
+        respControl:"",
+        observacionesControl:"",
+        respLectura:"",
+        observacionesLectura:"",
+        inputsValues : [{
+        }],
+        verificado: "",
+        fechaHora: "",
+    })
+    const [objValues,setObjValues] = useState({cargaFecha:"",recepcionFecha:"",proveedor:"",producto:"",comprada:"",recibida:"",cargaTempAlimento:"",recepcionTempAlimento:"",cargaTempCamion:"",recepcionTempCamion:"", vidaUtil:"", nroLote:"",fechaVto:"",recibidoAcciones:"",motivoRechazo:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
+
+    useEffect(()=>{
+        if(replicas === 1 && objValues.cargaFecha !== "" && objValues.recepcionFecha !== "" && objValues.proveedor !== "" && objValues.producto !== "" && objValues.comprada !== "" && objValues.recibida !== "" && objValues.cargaTempAlimento !== "" && objValues.recepcionTempAlimento !== "" && objValues.cargaTempCamion !== "" && objValues.recepcionTempCamion !== "" && objValues.vidaUtil !== "" && objValues.nroLote !== "" && objValues.fechaVto !== "" && objValues.recibidoAcciones !== "" && objValues.motivoRechazo !== "" && objValues.id !=="") {
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.cargaFecha !== "" && objValues.recepcionFecha !== "" && objValues.proveedor !== "" && objValues.producto !== "" && objValues.comprada !== "" && objValues.recibida !== "" && objValues.cargaTempAlimento !== "" && objValues.recepcionTempAlimento !== "" && objValues.cargaTempCamion !== "" && objValues.recepcionTempCamion !== "" && objValues.vidaUtil !== "" && objValues.nroLote !== "" && objValues.fechaVto !== "" && objValues.recibidoAcciones !== "" && objValues.motivoRechazo !== "" && objValues.id !=="") {
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+    useEffect(()=>{
+        setValues({...values,inputsValues:inputValues})
+    },[inputValues])
+    useEffect(()=>{
+        if (objValues.cargaFecha !== "" && objValues.recepcionFecha !== "" && objValues.proveedor !== "" && objValues.producto !== "" && objValues.comprada !== "" && objValues.recibida !== "" && objValues.cargaTempAlimento !== "" && objValues.recepcionTempAlimento !== "" && objValues.cargaTempCamion !== "" && objValues.recepcionTempCamion !== "" && objValues.vidaUtil !== "" && objValues.nroLote !== "" && objValues.fechaVto !== "" && objValues.recibidoAcciones !== "" && objValues.motivoRechazo !== ""){
+            setTrigger(true)
+        }
+    },[objValues])
+
+    const inputsValuesConstructor = (id,label,index,inputID) => {
+        console.log(id)
+        const inputTarget = document.getElementById(id);
+        (label === 'Carga' && inputID === 1) ?  setObjValues({...objValues,cargaFecha:inputTarget.value, id:index}) :
+        (label === 'Recepción' && inputID === 2) ? setObjValues({...objValues,recepcionFecha:inputTarget.value}) :
+        label === 'Proveedor' ? setObjValues({...objValues,proveedor:inputTarget.value}):
+        label === 'Producto' ? setObjValues({...objValues,producto:inputTarget.value}):
+        label === 'Comprada' ? setObjValues({...objValues,comprada:inputTarget.value}):
+        label === 'Recibida' ? setObjValues({...objValues,recibida:inputTarget.value}):
+        (label === 'Carga' && inputID === 7) ? setObjValues({...objValues,cargaTempAlimento:inputTarget.value}):
+        (label === 'Recepción' && inputID === 8) ? setObjValues({...objValues,recepcionTempAlimento:inputTarget.value}):
+        (label === 'Carga' && inputID === 9) ? setObjValues({...objValues,cargaTempCamion:inputTarget.value}):
+        (label === 'Recepción' && inputID === 10) ? setObjValues({...objValues,recepcionTempCamion:inputTarget.value}):
+        label === 'Dentro de vida útil' ? setObjValues({...objValues,vidaUtil:inputTarget.value}):
+        label === 'Nro. lote' ? setObjValues({...objValues,nroLote:inputTarget.value}):
+        label === 'Fecha vto.' ? setObjValues({...objValues,fechaVto:inputTarget.value}):
+        label === 'Recibido' ? setObjValues({...objValues,recibidoAcciones:inputTarget.value}):
+        label === 'Motivo del rechazo' && setObjValues({...objValues,motivoRechazo:inputTarget.value})
+    }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({cargaFecha:"",recepcionFecha:"",proveedor:"",producto:"",comprada:"",recibida:"",cargaTempAlimento:"",recepcionTempAlimento:"",cargaTempCamion:"",recepcionTempCamion:"", vidaUtil:"", nroLote:"",fechaVto:"",recibidoAcciones:"",motivoRechazo:""})
+        setTrigger(false)
     };
 
     return (
@@ -56,21 +111,21 @@ function CargaRecepcion() {
                 </div>
                <p>Estado sanitario: Cumple/no cumple.</p>
                <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Patente del térmico" variant="outlined" />
-                    <TextField id="outlined-basic" label="Habilitación SENASA" variant="outlined" />
-                    <TextField id="outlined-basic" label="Nº Precinto lateral" variant="outlined" />
-                    <TextField id="outlined-basic" label="Nº Precinto trasero" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,patenteTermico:e.target.value})}} id="outlined-basic" label="Patente del térmico" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,habilitacion:e.target.value})}} id="outlined-basic" label="Habilitación SENASA" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,nroPrecintoLat:e.target.value})}} id="outlined-basic" label="Nº Precinto lateral" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,nroPrecintoTras:e.target.value})}} id="outlined-basic" label="Nº Precinto trasero" variant="outlined" />
                 </div>
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Resp. control precintos" variant="outlined" />
-                    <TextField fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,respControl:e.target.value})}} id="outlined-basic" label="Resp. control precintos" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,observacionesControl:e.target.value})}} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
                     
                 </div>
             
                <p>Termógrafo:   SI     NO</p>
                <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Resp. lectura termógrafo" variant="outlined" />
-                    <TextField fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,respLectura:e.target.value})}} id="outlined-basic" label="Resp. lectura termógrafo" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,observacionesLectura:e.target.value})}} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
                     
                 </div>
                <br />
@@ -129,7 +184,9 @@ function CargaRecepcion() {
 
                                     {inputs.map((input) => (
                                         <div key={input.id}>
-                                            <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            <TextField onBlur={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index,input.id);
+                                            }} className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
@@ -143,11 +200,12 @@ function CargaRecepcion() {
                     
                 </div>
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        console.log(values)}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
