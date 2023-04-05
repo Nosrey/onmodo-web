@@ -78,7 +78,7 @@ function App() {
               <Route path="/registro-de-capacitacion" element={ <RegistroCapacitacion/> } />
               <Route path="/registro-decomisos-mp" element={ <RegistroDeDecomiso/> } />
               <Route path="/registro-simulacro" element={ <RegistroSimulacro/> } />
-              <Route path="/salud-manipuladores" element={ <SaludManipuladores/> } />
+              {/* <Route path="/salud-manipuladores" element={ <SaludManipuladores/> } /> */}
               <Route path="/control-cloro" element={ <ControlDeCloro/> } />
               <Route path="/control-vidrios" element={ <ControlVidrios/> } />
               <Route path="/despacho-produccion" element={ <DespachoProduccion/> } />

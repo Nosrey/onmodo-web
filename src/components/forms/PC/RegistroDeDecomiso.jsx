@@ -9,29 +9,27 @@ function RegistroDeDecomiso() {
         { id: 2, label: 'Turno' },
         { id: 3, label: 'Producto decomisado' },
         { id: 4, label: 'Cantidad' },
-        { id: 5, label: 'Desvios de proceso' },
-        { id: 6, label: 'Fuera fecha vida util' },
-        { id: 7, label: 'Fuera de aptitud' },
-        { id: 8, label: 'Recall' },
-        { id: 9, label: 'Otras causas' },
-        { id: 10, label: 'Destino final' },
-        { id: 11, label: 'Responsable' },
+        { id: 5, label: 'Fuera fecha vida util' },
+        { id: 6, label: 'Fuera de aptitud' },
+        { id: 7, label: 'Otras causas' },
+        { id: 8, label: 'Destino final' },
+        { id: 9, label: 'Responsable' },
     ]);
     const [replicas, setReplicas] = useState(1);
     const [values,setValues] = useState({
         inputsValues : [{
         }],
     })
-    const [objValues,setObjValues] = useState({fecha:"",turno:"",productoDecomisado:"",cantidad:"",desvios:"",fueraFecha:"",fueraAptitud:"",recall:"",otrasCausas:"",destinoFinal:"",responsable:""})
+    const [objValues,setObjValues] = useState({fecha:"",turno:"",productoDecomisado:"",cantidad:"",fueraFecha:"",fueraAptitud:"",otrasCausas:"",destinoFinal:"",responsable:""})
     const [inputValues,setInputValues]= useState([])
     const [trigger,setTrigger] = useState(false)
 
     useEffect(()=>{
-        if(replicas === 1 && objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.fueraFecha !== "" && objValues.fueraAptitud !== "" && objValues.recall !== "" && objValues.otrasCausas !== "" && objValues.destinoFinal !== "" && objValues.responsable !== "" && objValues.desvios !== "" && objValues.id !=="") {
+        if(replicas === 1 && objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.fueraFecha !== "" && objValues.fueraAptitud !== "" && objValues.otrasCausas !== "" && objValues.destinoFinal !== "" && objValues.responsable !== ""  && objValues.id !=="") {
 
             setInputValues([objValues])
         }
-        else if (replicas > 1 && objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.desvios !== "" && objValues.fueraFecha !== "" && objValues.fueraAptitud !== "" && objValues.recall !== "" && objValues.otrasCausas !== "" && objValues.destinoFinal !== "" && objValues.responsable !== ""&& objValues.id !=="") {
+        else if (replicas > 1 && objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.fueraFecha !== "" && objValues.fueraAptitud !== "" && objValues.otrasCausas !== "" && objValues.destinoFinal !== "" && objValues.responsable !== ""&& objValues.id !=="") {
 
             setInputValues([...inputValues,objValues])
         }
@@ -42,7 +40,7 @@ function RegistroDeDecomiso() {
     },[inputValues])
 
     useEffect(()=>{
-        if (objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.desvios !== "" && objValues.fueraFecha !== "" && objValues.fueraAptitud !== "" && objValues.recall !== "" && objValues.otrasCausas !== "" && objValues.destinoFinal !== "" && objValues.responsable !== ""){
+        if (objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" &&  objValues.fueraFecha !== "" && objValues.fueraAptitud !== "" && objValues.otrasCausas !== "" && objValues.destinoFinal !== "" && objValues.responsable !== ""){
             setTrigger(true)
         }
     },[objValues])
@@ -53,10 +51,8 @@ function RegistroDeDecomiso() {
         label === 'Turno' ? setObjValues({...objValues,turno:inputTarget.value}) :
         label === 'Producto decomisado' ? setObjValues({...objValues,productoDecomisado:inputTarget.value}):
         label === 'Cantidad' ? setObjValues({...objValues,cantidad:inputTarget.value}):
-        label === 'Desvios de proceso' ? setObjValues({...objValues,desvios:inputTarget.value}):
         label === 'Fuera fecha vida util' ? setObjValues({...objValues,fueraFecha:inputTarget.value}):
         label === 'Fuera de aptitud' ? setObjValues({...objValues,fueraAptitud:inputTarget.value}):
-        label === 'Recall' ? setObjValues({...objValues,recall:inputTarget.value}):
         label === 'Otras causas' ? setObjValues({...objValues,otrasCausas:inputTarget.value}):
         label === 'Destino final' ? setObjValues({...objValues,destinoFinal:inputTarget.value}):
         label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
@@ -64,7 +60,7 @@ function RegistroDeDecomiso() {
 
     const handleClick = () => {
         setReplicas(replicas + 1);
-        setObjValues({fecha:"",turno:"",productoDecomisado:"",cantidad:"",desvios:"",fueraFecha:"",fueraAptitud:"",recall:"",otrasCausas:"",destinoFinal:"",responsable:""})
+        setObjValues({fecha:"",turno:"",productoDecomisado:"",cantidad:"",fueraFecha:"",fueraAptitud:"",otrasCausas:"",destinoFinal:"",responsable:""})
         setTrigger(false)
     };
 

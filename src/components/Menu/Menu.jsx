@@ -14,7 +14,6 @@ function Menu() {
             <Nav.Link eventKey="link-5" href="/registro-de-capacitacion">Registro de Capacitación</Nav.Link>
             <Nav.Link eventKey="link-6" href="/registro-decomisos-mp">Registros de decomisos de materias primas</Nav.Link>
             <Nav.Link eventKey="link-7" href="/registro-simulacro">Registro de Simulacro</Nav.Link>
-            <Nav.Link eventKey="link-8" href="/salud-manipuladores">Salud para Manipuladores</Nav.Link>
             <Nav.Link eventKey="link-9" href="/control-cloro">Control de cloro activo residual</Nav.Link>
             <Nav.Link eventKey="link-10" href="/control-vidrios">Control de Vidrios</Nav.Link>
             <Nav.Link eventKey="link-11" href="/despacho-produccion">Despacho a Producción</Nav.Link>
