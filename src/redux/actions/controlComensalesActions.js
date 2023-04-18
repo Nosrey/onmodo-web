@@ -1,18 +1,18 @@
 import axios from 'axios';
 
 const controlComensalesActions = {
-  logIn: (user) => {
+  logIn: (inputsValues) => {
     return async (dispatch, getState) => {
       try {
-        console.log("action",user)
-        const response = await axios.post('http://localhost:4000/api/controlalergenos', user)
+        console.log("action",inputsValues)
+        const response = await axios.post('http://localhost:4000/api/controlalergenos', inputsValues)
         if (response.data.success === false) {
           alert("Usuario incorrecto")
         }
         if (!response.data.success) {
           return response.data
         }
-        dispatch({ type: 'LOG_USER', payload: response.data })
+        dispatch({ type: 'POST_FORM', payload: response.data })
 
       } catch (err) {
         alert("Hubo un error, reintenta mas tarde.")

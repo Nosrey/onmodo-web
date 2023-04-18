@@ -1,22 +1,13 @@
 const initialState = {
-    userLogged: null
+    inputsValues: null
   }
   
   const controlComensalesReducer = (state = initialState, action) => {
     switch (action.type) {
-      case 'LOG_USER':
+      case 'POST_FORM':
         return {
           ...state,
-          userLogged: action.payload
-        }
-      case 'LOG_OUT':
-        return {
-          ...state,
-          userLogged: null
-        }
-      case 'FORGOT_PASS':
-        return {
-          ...state,
+          inputsValues: action.payload
         }
       default:
         return state

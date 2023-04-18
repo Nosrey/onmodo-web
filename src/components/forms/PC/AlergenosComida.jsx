@@ -8,8 +8,8 @@ import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox
 
 function AlergenosComida() {
     const dispatch = useDispatch();
-    const user = useSelector(state=>state.comensalesR.userLogged)
-    console.log(user)
+    const formValue = useSelector(state=>state.comensalesR.inputsValues)
+    console.log(formValue)
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Nombre Comensal' },
