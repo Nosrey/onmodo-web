@@ -22,9 +22,9 @@ function AlergenosComida() {
         comedor:"",
         inputsValues : [{
         }],
-        verificado: "",
-        fecha: "",
-        id:""
+        verified: "",
+        date: "",
+        idUser:"643ea98d5b44dd9765966ae7"
     })
     const [objValues,setObjValues] = useState({fecha:"",nombre:"",diagnostico:"",listado:"",responsable:""})
     const [inputValues,setInputValues]= useState([])
@@ -101,9 +101,9 @@ function AlergenosComida() {
                 </div>
                 </div>
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
                     <TextField onChange={(e)=>{
-                        setValues({...values,fecha:e.target.value})
+                        setValues({...values,date:e.target.value})
                     }} id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
                 <div className="btn">
