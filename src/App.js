@@ -1,8 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom';
-import './index.css'
-import Login from './components/login/Login'
-import Register from './components/register/Register'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './index.css';
+import Login from './components/login/Login';
+import Register from './components/register/Register';
 import Home from './components/home/Home';
 import Menu from './components/Menu/Menu';
 import Header from './components/Header/Header';
@@ -20,7 +20,7 @@ import ControlVidrios from './components/forms/Phone/ControlVidrios';
 import DespachoProduccion from './components/forms/Phone/DespachoProduccion';
 import RecuperacionProducto from './components/forms/Phone/RecuperacionProducto';
 import Placeholder from './components/Placeholder/Placeholder';
-import { useLocation } from "react-router-dom"
+import { useLocation } from 'react-router-dom';
 import PlanillaDeArmadoFraccionamiento from './components/forms/PC/PlanillaDeArmadoFraccionamiento';
 import ControlEquiposDeFrio from './components/forms/Phone/ControlEquiposDeFrio';
 import ServiciosEnLinea from './components/forms/Phone/ServiciosEnLinea';
@@ -35,82 +35,79 @@ import VerificacionTermometros from './components/forms/VerificacionTermometros'
 import Sanitizacion from './components/forms/Phone/Sanitizacion';
 import UsoCambioAceite from './components/forms/Phone/UsoCambioAceite';
 import EPP from './components/forms/Phone/EPP';
-
+import RecoverPassword from './components/recoverPassword/RecoverPassword';
+import Card from './components/card/Card';
+import Inicio from './components/inicio/Inicio';
 
 function App() {
-  console.log(window.location.pathname)
   return (
-    <div className="App">
+    <div className='App'>
       <>
-      {
-        window.location.pathname !== '/login' && window.location.pathname !== '/register' ? (
-          <Header/>
-        )
-        : null
-      }
-     
-      <div className='mainContainer'>
-        {
-          window.location.pathname !== '/login' && window.location.pathname !== '/register' ? (
-            <Menu/> 
-          )
-          : null
-        }
-        
+        {window.location.pathname !== '/login' &&
+        window.location.pathname !== '/register' &&
+        window.location.pathname !== '/restablecer-contrasena' ? (
+          <Header />
+        ) : null}
+
+        {/* <div className='mainContainer'>
+          {window.location.pathname !== '/login' &&
+          window.location.pathname !== '/register' &&
+          window.location.pathname !== '/restablecer-contrasena' ? (
+            <Menu />
+          ) : null} */}
+
         <div className='mainContent'>
           <Router>
             <Routes>
-              <Route path="/" element={ <Placeholder/> } />
+              <Route path='/' element={<Placeholder />} />
 
-              {/* <Route path='/home' element={<Home/>}>
-              </Route> */}
-              <Route path="/login" element={ <Login/> } />
+              {/* <Route path='/home' element={<Home />} /> */}
+              <Route path='/login' element={<Login />} />
 
-              <Route path='/register' component={<Register/>}>
-              </Route>
+              <Route path='/restablecer-contrasena' element={<RecoverPassword />} />
+
+              <Route path='/register' element={<Register />} />
+
+              <Route path='/inicio' element={<Inicio />} />
 
               {/* Forms */}
-              <Route path="/dietas-especiales" element={ <AlergenosComida/> } />
-              <Route path="/ropa-de-trabajo" element={ <ConstanciaEntrega/> } />
-              <Route path="/bidones-de-aceite" element={ <EntregaBidonesAceiteUsado/> } />
-              <Route path="/reporte-incidente" element={ <FlashReporteIncidente/> } />
-              <Route path="/informe-accidente" element={ <InformeInternoAccidente/> } />
-              <Route path="/registro-de-capacitacion" element={ <RegistroCapacitacion/> } />
-              <Route path="/registro-decomisos-mp" element={ <RegistroDeDecomiso/> } />
-              <Route path="/registro-simulacro" element={ <RegistroSimulacro/> } />
+              <Route path='/dietas-especiales' element={<AlergenosComida />} />
+              <Route path='/ropa-de-trabajo' element={<ConstanciaEntrega />} />
+              <Route path='/bidones-de-aceite' element={<EntregaBidonesAceiteUsado />} />
+              <Route path='/reporte-incidente' element={<FlashReporteIncidente />} />
+              <Route path='/informe-accidente' element={<InformeInternoAccidente />} />
+              <Route path='/registro-de-capacitacion' element={<RegistroCapacitacion />} />
+              <Route path='/registro-decomisos-mp' element={<RegistroDeDecomiso />} />
+              <Route path='/registro-simulacro' element={<RegistroSimulacro />} />
               {/* <Route path="/salud-manipuladores" element={ <SaludManipuladores/> } /> */}
-              <Route path="/control-cloro" element={ <ControlDeCloro/> } />
-              <Route path="/control-vidrios" element={ <ControlVidrios/> } />
-              <Route path="/despacho-produccion" element={ <DespachoProduccion/> } />
-              <Route path="/recuperacion-de-producto" element={ <RecuperacionProducto/> } />
-              <Route path="/armado-fraccionamiento" element={ <PlanillaDeArmadoFraccionamiento/> } />
-              <Route path="/equipos-frio" element={ <ControlEquiposDeFrio/> } />
-              <Route path="/servicios-en-linea" element={ <ServiciosEnLinea/> } />
-              <Route path="/distribucion-expedicion" element={ <DistribucionExpedicion/> } />
-              <Route path="/verificacion-balanza" element={ <VerificacionBalanza/> } />
-              <Route path="/verificacion-termometro" element={ <VerificacionTermometros/> } />
-              <Route path="/recepcion" element={ <Recepcion/> } />
-              <Route path="/descongelamiento" element={ <Descongelamiento/> } />
-              <Route path="/rechazo-mp" element={ <ReporteDeRechazoDevolucionMaterias/> } />
-              <Route path="/control-procesos" element={ <ControlProcesos/> } />
-              <Route path="/carga-recepcion" element={ <CargaRecepcion/> } />
-              <Route path="/sanitizacion" element={ <Sanitizacion/> } />
-              <Route path="/cambio-aceite" element={ <UsoCambioAceite/> } />
-              <Route path="/uso-epp" element={ <EPP/> } />
-
+              <Route path='/control-cloro' element={<ControlDeCloro />} />
+              <Route path='/control-vidrios' element={<ControlVidrios />} />
+              <Route path='/despacho-produccion' element={<DespachoProduccion />} />
+              <Route path='/recuperacion-de-producto' element={<RecuperacionProducto />} />
+              <Route path='/armado-fraccionamiento' element={<PlanillaDeArmadoFraccionamiento />} />
+              <Route path='/equipos-frio' element={<ControlEquiposDeFrio />} />
+              <Route path='/servicios-en-linea' element={<ServiciosEnLinea />} />
+              <Route path='/distribucion-expedicion' element={<DistribucionExpedicion />} />
+              <Route path='/verificacion-balanza' element={<VerificacionBalanza />} />
+              <Route path='/verificacion-termometro' element={<VerificacionTermometros />} />
+              <Route path='/recepcion' element={<Recepcion />} />
+              <Route path='/descongelamiento' element={<Descongelamiento />} />
+              <Route path='/rechazo-mp' element={<ReporteDeRechazoDevolucionMaterias />} />
+              <Route path='/control-procesos' element={<ControlProcesos />} />
+              <Route path='/carga-recepcion' element={<CargaRecepcion />} />
+              <Route path='/sanitizacion' element={<Sanitizacion />} />
+              <Route path='/cambio-aceite' element={<UsoCambioAceite />} />
+              <Route path='/uso-epp' element={<EPP />} />
 
               {/* <Route path='/admin' element={<Admin/>}>
               </Route> */}
             </Routes>
           </Router>
         </div>
-      </div>
-      
+        {/* </div> */}
       </>
-
-
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
