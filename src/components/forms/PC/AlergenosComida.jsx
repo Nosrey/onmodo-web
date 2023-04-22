@@ -1,10 +1,15 @@
 import { Button, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import controlComensalesActions from '../../../redux/actions/controlComensalesActions';
 import styles from './AlergenosComida.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 
 function AlergenosComida() {
+    const dispatch = useDispatch();
+    const formValue = useSelector(state=>state.comensalesR.inputsValues)
+    console.log(formValue)
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Nombre Comensal' },
@@ -17,17 +22,17 @@ function AlergenosComida() {
         comedor:"",
         inputsValues : [{
         }],
-        verificado: "",
-        fecha: "",
-        id:""
+        verified: "",
+        date: "",
+        idUser:"643ea98d5b44dd9765966ae7"
     })
-    const [objValues,setObjValues] = useState({fecha:"",nombre:"",preparacion:"",listado:"",responsable:""})
+    const [objValues,setObjValues] = useState({fecha:"",nombre:"",diagnostico:"",listado:"",responsable:""})
     const [inputValues,setInputValues]= useState([])
     const [trigger,setTrigger] = useState(false)
     useEffect(()=>{
-        if(replicas === 1 && objValues.fecha !== "" && objValues.nombre !== "" && objValues.preparacion !== "" && objValues.listado !== "" && objValues.responsable !== "" && objValues.id !=="") {
+        if(replicas === 1 && objValues.fecha !== "" && objValues.nombre !== "" && objValues.diagnostico !== "" && objValues.listado !== "" && objValues.responsable !== "" && objValues.id !=="") {
             setInputValues([objValues])
-        }else if (replicas > 1 && objValues.fecha !== "" && objValues.nombre !== "" && objValues.preparacion !== "" && objValues.listado !== "" && objValues.responsable !== "" && objValues.id !=="") {
+        }else if (replicas > 1 && objValues.fecha !== "" && objValues.nombre !== "" && objValues.diagnostico !== "" && objValues.listado !== "" && objValues.responsable !== "" && objValues.id !=="") {
             setInputValues([...inputValues,objValues])
         }
     },[trigger])
@@ -35,7 +40,7 @@ function AlergenosComida() {
         setValues({...values,inputsValues:inputValues})
     },[inputValues])
     useEffect(()=>{
-        if (objValues.fecha !== "" && objValues.nombre !== "" && objValues.preparacion !== "" && objValues.listado !== "" && objValues.responsable !== ""){
+        if (objValues.fecha !== "" && objValues.nombre !== "" && objValues.diagnostico !== "" && objValues.listado !== "" && objValues.responsable !== ""){
             setTrigger(true)
         }
     },[objValues])
@@ -44,13 +49,13 @@ function AlergenosComida() {
         const inputTarget = document.getElementById(id)
         label === 'Fecha' ?  setObjValues({...objValues,fecha:inputTarget.value, id:index}) :
         label === 'Nombre Comensal' ? setObjValues({...objValues,nombre:inputTarget.value}) :
-        label === 'Diagnóstico' ? setObjValues({...objValues,preparacion:inputTarget.value}):
+        label === 'Diagnóstico' ? setObjValues({...objValues,diagnostico:inputTarget.value}):
         label === 'Listado de ingredientes' ? setObjValues({...objValues,listado:inputTarget.value}):
         label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
     }
     const handleClick = () => {
         setReplicas(replicas + 1);
-        setObjValues({fecha:"",nombre:"",preparacion:"",listado:"",responsable:""})
+        setObjValues({fecha:"",nombre:"",diagnostico:"",listado:"",responsable:""})
         setTrigger(false)
     };
     const handleClickRemove = (index) => {
@@ -96,14 +101,14 @@ function AlergenosComida() {
                 </div>
                 </div>
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
                     <TextField onChange={(e)=>{
-                        setValues({...values,fecha:e.target.value})
+                        setValues({...values,date:e.target.value})
                     }} id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(controlComensalesActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
