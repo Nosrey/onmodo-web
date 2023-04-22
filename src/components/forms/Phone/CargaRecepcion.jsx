@@ -4,8 +4,13 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './CargaRecepcion.module.css'
 import Modal from '../../shared/Modal';
 import CargaInfo from '../../modales/CargaInfo';
+import { useSelector,useDispatch } from 'react-redux';
+import cargaRecepcionActions from '../../../redux/actions/cargaRecepcionActions';
 
 function CargaRecepcion() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.cargaRecepcionR.inputsValues)
+    console.log("holi",prueba)
     const [inputs] = useState([
         { id: 1, label: 'Carga' },
         { id: 2, label: 'Recepción' },
@@ -27,17 +32,18 @@ function CargaRecepcion() {
     const [showModal, setShowModal] = useState(false);
     const [values,setValues] = useState({
         patenteTermico:"",
-        habilitacion:"",
-        nroPrecintoLat:"",
-        nroPrecintoTras:"",
-        respControl:"",
-        observacionesControl:"",
-        respLectura:"",
-        observacionesLectura:"",
-        inputsValues : [{
+        habSenasa:"",
+        nPrecintoLateral:"",
+        nPrecintoTrasero:"",
+        respPrecinto:"",
+        observacionesPrecinto:"",
+        respTermografo:"",
+        observacionesTermografo:"",
+        inputs : [{
         }],
         verificado: "",
         fechaHora: "",
+        idUser:"643ea98d5b44dd9765966ae7",
     })
     const [objValues,setObjValues] = useState({cargaFecha:"",recepcionFecha:"",proveedor:"",producto:"",comprada:"",recibida:"",cargaTempAlimento:"",recepcionTempAlimento:"",cargaTempCamion:"",recepcionTempCamion:"", vidaUtil:"", nroLote:"",fechaVto:"",recibidoAcciones:"",motivoRechazo:""})
     const [inputValues,setInputValues]= useState([])
@@ -51,7 +57,7 @@ function CargaRecepcion() {
         }
     },[trigger])
     useEffect(()=>{
-        setValues({...values,inputsValues:inputValues})
+        setValues({...values,inputs:inputValues})
     },[inputValues])
     useEffect(()=>{
         if (objValues.cargaFecha !== "" && objValues.recepcionFecha !== "" && objValues.proveedor !== "" && objValues.producto !== "" && objValues.comprada !== "" && objValues.recibida !== "" && objValues.cargaTempAlimento !== "" && objValues.recepcionTempAlimento !== "" && objValues.cargaTempCamion !== "" && objValues.recepcionTempCamion !== "" && objValues.vidaUtil !== "" && objValues.nroLote !== "" && objValues.fechaVto !== "" && objValues.recibidoAcciones !== "" && objValues.motivoRechazo !== ""){
@@ -112,20 +118,20 @@ function CargaRecepcion() {
                <p>Estado sanitario: Cumple/no cumple.</p>
                <div className={styles.personal}>
                     <TextField onChange={(e)=>{setValues({...values,patenteTermico:e.target.value})}} id="outlined-basic" label="Patente del térmico" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,habilitacion:e.target.value})}} id="outlined-basic" label="Habilitación SENASA" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,nroPrecintoLat:e.target.value})}} id="outlined-basic" label="Nº Precinto lateral" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,nroPrecintoTras:e.target.value})}} id="outlined-basic" label="Nº Precinto trasero" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,habSenasa:e.target.value})}} id="outlined-basic" label="Habilitación SENASA" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,nPrecintoLateral:e.target.value})}} id="outlined-basic" label="Nº Precinto lateral" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,nPrecintoTrasero:e.target.value})}} id="outlined-basic" label="Nº Precinto trasero" variant="outlined" />
                 </div>
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,respControl:e.target.value})}} id="outlined-basic" label="Resp. control precintos" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,observacionesControl:e.target.value})}} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,respPrecinto:e.target.value})}} id="outlined-basic" label="Resp. control precintos" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,observacionesPrecinto:e.target.value})}} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
                     
                 </div>
             
                <p>Termógrafo:   SI     NO</p>
                <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,respLectura:e.target.value})}} id="outlined-basic" label="Resp. lectura termógrafo" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,observacionesLectura:e.target.value})}} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,respTermografo:e.target.value})}} id="outlined-basic" label="Resp. lectura termógrafo" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,observacionesTermografo:e.target.value})}} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
                     
                 </div>
                <br />
@@ -184,7 +190,7 @@ function CargaRecepcion() {
 
                                     {inputs.map((input) => (
                                         <div key={input.id}>
-                                            <TextField onBlur={(e)=>{
+                                            <TextField onKeyUp={(e)=>{
                                             inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index,input.id);
                                             }} className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
@@ -205,7 +211,7 @@ function CargaRecepcion() {
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(cargaRecepcionActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>

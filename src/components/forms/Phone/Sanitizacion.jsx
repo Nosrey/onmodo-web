@@ -4,8 +4,13 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './Sanitizacion.module.css'
 import Modal from '../../shared/Modal';
 import SanitizacionInfo from '../../modales/SanitizacionInfo';
+import { useSelector,useDispatch } from 'react-redux';
+import sanitizacionActions from '../../../redux/actions/sanitizacionActions';
 
 function Sanitizacion() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.sanitizacionR.inputsValues)
+    console.log(prueba)
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Vegetal a desinfectar' },
@@ -22,10 +27,11 @@ function Sanitizacion() {
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
     const [values,setValues] = useState({
-        inputsValues : [{
+        inputs : [{
         }],
         responsable: "",
-        fecha: "",
+        fechaHora: "",
+        idUser:"643ea98d5b44dd9765966ae7"
     })
     const [objValues,setObjValues] = useState({fecha:"",vegetal:"",siNo:"","<50":"","100":"","200":"","300":"",">400":"",minutos:"",accionesCorreccion:"",responsable:""})
     const [inputValues,setInputValues]= useState([])
@@ -39,7 +45,7 @@ function Sanitizacion() {
         }
     },[trigger])
     useEffect(()=>{
-        setValues({...values,inputsValues:inputValues})
+        setValues({...values,inputs:inputValues})
     },[inputValues])
     useEffect(()=>{
         if (objValues.fecha !== "" && objValues.vegetal !== "" && objValues.siNo !== "" && objValues["<50"] !== "" && objValues["100"] !== "" && objValues["200"] !== "" && objValues["300"] !== "" && objValues[">400"] !== "" && objValues.minutos !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== ""){
@@ -140,13 +146,12 @@ function Sanitizacion() {
                 </div>
                 <div className={styles.personal}>
                     <TextField onChange={(e)=>{setValues({...values,responsable:e.target.value})}} id="outlined-basic" label="Responsable" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(sanitizacionActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
-
             </div>
         </div>
     )

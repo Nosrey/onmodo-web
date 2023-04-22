@@ -3,9 +3,13 @@ import React, { useState, useEffect } from 'react'
 import styles from './PlanillaDeArmadoFraccionamiento.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Modal from '../../shared/Modal';
+import armadoFraccionamientoActions from '../../../redux/actions/armadoFraccionamientoActions';
+import { useSelector, useDispatch } from 'react-redux';
 
 function PlanillaDeArmadoFraccionamiento() {
-
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.armadoFraccionamientoR.inputsValues)
+    console.log("holi",prueba)
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Producto' },
@@ -22,8 +26,9 @@ function PlanillaDeArmadoFraccionamiento() {
     const [values,setValues] = useState({
         inputsValues : [{
         }],
-        verificado: "",
-        fecha: "",
+        verified: "",
+        date: "",
+        idUser:"643ea98d5b44dd9765966ae7"
     })
     const [objValues,setObjValues] = useState({fecha:"",producto:"",horaInicio:"",tempInternaInicio:"",horaFinal:"",tempInternaFinal:"",accionesCorreccion:"",responsable:""})
     const [inputValues,setInputValues]= useState([])
@@ -135,12 +140,12 @@ function PlanillaDeArmadoFraccionamiento() {
                     
                 </div>
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,date:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(armadoFraccionamientoActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
                 </div>
             <div>
