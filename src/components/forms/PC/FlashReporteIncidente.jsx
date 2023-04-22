@@ -1,27 +1,32 @@
 import { Button, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import styles from './FlashReporteIncidente.module.css'
+import { useSelector,useDispatch } from 'react-redux'
+import reporteIncidentesActions from '../../../redux/actions/reporteIncidentesActions'
 
 function FlashReporteIncidente() {
-
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.reporteIncidentesR.inputsValues)
+    console.log(prueba)
     const [values,setValues] = useState({
        alcance:"",
-       lineaDeNegocios:"",
-       fechaIncidente:"",
-       horaIncidente:"",
+       linea:"",
+       fecha:"",
+       hora:"",
        comedor:"",
-       responsableContrato:"",
+       responsable:"",
        incidentePotencial:"",
-       tipoIncidente:"",
-       descripcionIncidente:"",
+       tipo:"",
+       descripcion:"",
        fotografia:"",
-       accionesInmediatas:"",
+       acciones:"",
        nombreAsesor:"",
        firmaAsesor:"",
        nombreSupervisor:"",
        firmaSupervisor:"",
        nombreGerente:"",
-       firmaGerente:""
+       firmaGerente:"",
+       idUser:"643ea98d5b44dd9765966ae7"
     })
 
     return (
@@ -34,18 +39,18 @@ function FlashReporteIncidente() {
 
                 <div className={styles.personal}>
                     <TextField onChange={(e)=>{setValues({...values,alcance:e.target.value})}} id="outlined-basic" label="Alcance" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,lineaDeNegocios:e.target.value})}} id="outlined-basic" label="Línea de negocios" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,fechaIncidente:e.target.value})}} id="outlined-basic" label="Fecha del Incidente" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,horaIncidente:e.target.value})}} id="outlined-basic" label="Hora del Incidente" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,linea:e.target.value})}} id="outlined-basic" label="Línea de negocios" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha del Incidente" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,hora:e.target.value})}} id="outlined-basic" label="Hora del Incidente" variant="outlined" />
                 </div>
                 <div className={styles.personal}>
                     <TextField onChange={(e)=>{setValues({...values,comedor:e.target.value})}} id="outlined-basic" label="Comedor" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,responsableContrato:e.target.value})}} id="outlined-basic" label="Responsable del contrato" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,responsable:e.target.value})}} id="outlined-basic" label="Responsable del contrato" variant="outlined" />
                     <TextField onChange={(e)=>{setValues({...values,incidentePotencial:e.target.value})}} id="outlined-basic" label="Incidente Potencial/Real" variant="outlined" />
                 </div>
                 
                 <div className={styles.personalText}>
-                    <TextField onChange={(e)=>{setValues({...values,tipoIncidente:e.target.value})}} fullWidth id="outlined-basic" label="Tipo de Incidente" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,tipo:e.target.value})}} fullWidth id="outlined-basic" label="Tipo de Incidente" variant="outlined" />
                 </div>
 
                 <div className={styles.personalText}>
@@ -55,7 +60,7 @@ function FlashReporteIncidente() {
                         label="Descripción del Incidente:  (quién, qué, cómo, cuándo)"
                         multiline
                         rows={4}
-                        onChange={(e)=>{setValues({...values,descripcionIncidente:e.target.value})}}
+                        onChange={(e)=>{setValues({...values,descripcion:e.target.value})}}
                     />           
                     <TextField onChange={(e)=>{setValues({...values,fotografia:e.target.value})}} id="outlined-basic" label="Fotografía" variant="outlined" />
      
@@ -68,7 +73,7 @@ function FlashReporteIncidente() {
                         label="Acciones Inmediatas"
                         multiline
                         rows={4}
-                        onChange={(e)=>{setValues({...values,accionesInmediatas:e.target.value})}}
+                        onChange={(e)=>{setValues({...values,acciones:e.target.value})}}
                     />                
                 </div>
 
@@ -96,7 +101,7 @@ function FlashReporteIncidente() {
                 </div>
 
                 <div className="btn">
-                    <Button onClick={()=>{console.log(values)}} variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{dispatch(reporteIncidentesActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>

@@ -1,11 +1,13 @@
 import { combineReducers } from "redux";
 import userReducer from "./userReducer";
-import recuperacionProductoReducer from "./recuperacionProductoReducer";
+import reporteIncidentesReducer from "./reporteIncidentesReducer";
 import controlComensalesReducer from "./controlComensalesReducer";
+import recuperacionProductoReducer from "./recuperacionProductoReducer";
 
 const rootReducer = combineReducers({
-    recuperacionProductoR:recuperacionProductoReducer,
     userR: userReducer,
+    reporteIncidentesR:reporteIncidentesReducer,
+    recuperacionProductoR:recuperacionProductoReducer,
     comensalesR: controlComensalesReducer,   
 })
 
