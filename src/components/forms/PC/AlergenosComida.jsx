@@ -20,7 +20,7 @@ function AlergenosComida() {
     const [replicas, setReplicas] = useState(1);
     const [values,setValues] = useState({
         comedor:"",
-        inputsValues : [{
+        inputs : [{
         }],
         verified: "",
         date: "",
@@ -37,7 +37,7 @@ function AlergenosComida() {
         }
     },[trigger])
     useEffect(()=>{
-        setValues({...values,inputsValues:inputValues})
+        setValues({...values,inputs:inputValues})
     },[inputValues])
     useEffect(()=>{
         if (objValues.fecha !== "" && objValues.nombre !== "" && objValues.diagnostico !== "" && objValues.listado !== "" && objValues.responsable !== ""){

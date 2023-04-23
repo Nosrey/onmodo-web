@@ -4,8 +4,13 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionBalanza.module.css'
 import Modal from '../shared/Modal';
 import Balanzas from '../modales/Balanzas';
+import verificacionBalanzaActions from '../../redux/actions/verificacionBalanzaActions';
+import { useSelector,useDispatch } from 'react-redux';
 
 function VerificacionBalanza() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.verificacionBalanzaR.inputsValues)
+    console.log("holi",prueba)
     const [inputs] = useState([
         { id: 1, label: 'Código' },
         { id: 2, label: 'Tipo (BP/BR)' },
@@ -20,12 +25,13 @@ function VerificacionBalanza() {
     const [showModal, setShowModal] = useState(false);
     const [values,setValues] = useState({
         fecha:"",
-        responsableValidacion:"",
-        balanza_bascula:"",
+        responsable:"",
+        balanza:"",
         inputsValues : [{
         }],
-        verificado: "",
+        verified: "",
         fechaHora: "",
+        idUser:"643ea98d5b44dd9765966ae7"
     })
     const [objValues,setObjValues] = useState({codigo:"",tipo:"",responsableUso:"",area:"",pesoMasa:"",pesoReal:"",desvio:"",accionesCorrecion:""})
     const [inputValues,setInputValues]= useState([])
@@ -88,8 +94,8 @@ function VerificacionBalanza() {
                 }
                 <div className={styles.personal}>
                     <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,responsableValidacion:e.target.value})}} id="outlined-basic" label="Responsable de validación" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,balanza_bascula:e.target.value})}} id="outlined-basic" label="Balanza/Báscula" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,responsable:e.target.value})}} id="outlined-basic" label="Responsable de validación" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,balanza:e.target.value})}} id="outlined-basic" label="Balanza/Báscula" variant="outlined" />
 
                 </div>
 
@@ -129,12 +135,12 @@ function VerificacionBalanza() {
                 <br />
                 <br />
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
                     <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(verificacionBalanzaActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>

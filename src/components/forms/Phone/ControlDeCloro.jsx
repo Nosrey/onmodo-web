@@ -2,8 +2,13 @@ import { Button, Chip, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import styles from './ControlDeCloro.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import { useSelector,useDispatch } from 'react-redux';
+import controlCloroActions from '../../../redux/actions/controlCloroActions';
 
 function ControlDeCloro() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.controlCloroR.inputsValues)
+    console.log("holi",prueba)
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Punto de toma de agua evaluado' },
@@ -17,9 +22,10 @@ function ControlDeCloro() {
 
     const [replicas, setReplicas] = useState(1);
     const [values,setValues] = useState({
-        inputsValues : [{
+        inputs : [{
         }],
         verificado: "",
+        idUser:"643ea98d5b44dd9765966ae7"
     })
     const [objValues,setObjValues] = useState({fecha:"", puntoToma:"", "menor0,2":"", "0,2-0,5":"", "0,5-0,8":"", "mayor0,8":"", acciones:"", responsable:""})
     const [inputValues,setInputValues]= useState([])
@@ -34,7 +40,7 @@ function ControlDeCloro() {
     },[trigger])
 
     useEffect(()=>{
-        setValues({...values,inputsValues:inputValues})
+        setValues({...values,inputs:inputValues})
     },[inputValues])
 
     useEffect(()=>{
@@ -128,7 +134,7 @@ function ControlDeCloro() {
 
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(controlCloroActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>

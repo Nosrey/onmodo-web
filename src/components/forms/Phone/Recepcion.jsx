@@ -4,8 +4,13 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './Recepcion.module.css'
 import Modal from '../../shared/Modal';
 import RecepcionInfo from '../../modales/Recepcion';
+import recepcionActions from '../../../redux/actions/recepcionActions';
+import { useSelector,useDispatch } from 'react-redux';
 
 function Recepcion() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state => state.recepcionR.inputsValues)
+    console.log("holi",prueba)
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Proveedor' },
@@ -25,8 +30,9 @@ function Recepcion() {
     const [values,setValues] = useState({
         inputsValues : [{
         }],
-        verificado: "",
+        verified: "",
         fechaHora: "",
+        idUser:"643ea98d5b44dd9765966ae7"
     })
     const [objValues,setObjValues] = useState({fecha:"",proveedor:"",producto:"",comprada:"",recibida:"",alimento:"",cajaCamion:"",vidaUtil:"",nroLote:"",fechaVencimiento:"",recibido:"",motivoRechazo:""})
     const [inputValues,setInputValues]= useState([])
@@ -142,12 +148,12 @@ function Recepcion() {
                 </div>
                
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
                     <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(recepcionActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>

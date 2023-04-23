@@ -2,8 +2,13 @@ import { Button,  TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './RegistroDeDecomiso.module.css'
+import { useSelector,useDispatch } from 'react-redux';
+import registroDecomisosActions from '../../../redux/actions/registroDecomisosActions';
 
 function RegistroDeDecomiso() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.registroDecomisosR.inputsValues)
+    console.log("holi",prueba)
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Turno' },
@@ -17,8 +22,9 @@ function RegistroDeDecomiso() {
     ]);
     const [replicas, setReplicas] = useState(1);
     const [values,setValues] = useState({
-        inputsValues : [{
+        inputs : [{
         }],
+        idUser:"643ea98d5b44dd9765966ae7"
     })
     const [objValues,setObjValues] = useState({fecha:"",turno:"",productoDecomisado:"",cantidad:"",fueraFecha:"",fueraAptitud:"",otrasCausas:"",destinoFinal:"",responsable:""})
     const [inputValues,setInputValues]= useState([])
@@ -36,7 +42,7 @@ function RegistroDeDecomiso() {
     },[trigger])
 
     useEffect(()=>{
-        setValues({...values,inputsValues:inputValues})
+        setValues({...values,inputs:inputValues})
     },[inputValues])
 
     useEffect(()=>{
@@ -102,7 +108,7 @@ function RegistroDeDecomiso() {
 
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(registroDecomisosActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
