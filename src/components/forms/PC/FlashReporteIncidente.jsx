@@ -7,7 +7,6 @@ import reporteIncidentesActions from '../../../redux/actions/reporteIncidentesAc
 function FlashReporteIncidente() {
     const dispatch = useDispatch()
     const prueba = useSelector(state=>state.reporteIncidentesR.inputsValues)
-    console.log(prueba)
     const [values,setValues] = useState({
        alcance:"",
        linea:"",

@@ -2,8 +2,13 @@ import { Button, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import styles from './DespachoProduccion.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import despachoProduccionActions from '../../../redux/actions/despachoProduccionActions';
+import { useSelector,useDispatch } from 'react-redux';
 
 function DespachoProduccion() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.despachoProduccionR.inputsValues)
+    console.log("holi",prueba)
     const [inputs] = useState([
         { id: 1, label: 'Producto' },
         { id: 2, label: 'Cantidad Planificada' },
@@ -15,7 +20,8 @@ function DespachoProduccion() {
     const [values,setValues] = useState({
         inputsValues : [{
         }],
-        fecha: "",
+        date: "",
+        idUser:"643ea98d5b44dd9765966ae7"
     })
     const [objValues,setObjValues] = useState({producto:"",cantidadPlanificada:"",cantidadReal:"",proveedor:"",lote:""})
     const [inputValues,setInputValues]= useState([])
@@ -73,7 +79,7 @@ function DespachoProduccion() {
 
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,date:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
                 
                 <div className="table">
@@ -104,7 +110,7 @@ function DespachoProduccion() {
                 
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(despachoProduccionActions.logIn(values))}} variant="contained">Generar PDF</Button>
 
                 </div>
 

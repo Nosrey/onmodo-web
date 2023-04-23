@@ -4,8 +4,13 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './Descongelamiento.module.css'
 import Modal from '../../shared/Modal';
 import DescongelamientoInfo from '../../modales/DescongelamientoInfo';
+import { useSelector,useDispatch } from 'react-redux';
+import descongelamientoActions from '../../../redux/actions/descongelamientoActions';
 
 function Descongelamiento() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.descongelamientoR.inputsValues)
+    console.log("holi",prueba)
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Alimento' },
@@ -25,10 +30,11 @@ function Descongelamiento() {
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
     const [values,setValues] = useState({
-        inputsValues : [{
+        inputs : [{
         }],
-        verificado: "",
+        verified: "",
         fechaHora: "",
+        idUser:"643ea98d5b44dd9765966ae7"
     })
     const [objValues,setObjValues] = useState({fecha:"",alimento:"",nroLote:"",metodo:"",fechaHoraInicio:"",tempInicio:"",fechaHoraM1:"",tempM1:"",fechaHoraM2:"",tempM2:"",fechaHoraFinal:"",tempFinal:"",accionesCorreccion:"",responsable:""})
     const [inputValues,setInputValues]= useState([])
@@ -42,7 +48,7 @@ function Descongelamiento() {
         }
     },[trigger])
     useEffect(()=>{
-        setValues({...values,inputsValues:inputValues})
+        setValues({...values,inputs:inputValues})
     },[inputValues])
     useEffect(()=>{
         if (objValues.fecha !== "" && objValues.alimento !== "" && objValues.nroLote !== "" && objValues.metodo !== "" && objValues.fechaHoraInicio !== "" && objValues.tempInicio !== "" && objValues.fechaHoraM1 !== "" && objValues.tempM1 !== "" && objValues.fechaHoraM2 !== "" && objValues.tempM2 !== "" && objValues.fechaHoraFinal !== "" && objValues.tempFinal !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== ""){
@@ -146,12 +152,12 @@ function Descongelamiento() {
 
                 
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
                     <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(descongelamientoActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>

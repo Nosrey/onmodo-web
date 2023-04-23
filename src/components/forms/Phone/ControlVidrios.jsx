@@ -2,9 +2,13 @@ import { Button, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import styles from './ControlVidrios.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
-
+import controlVidriosActions from '../../../redux/actions/controlVidriosActions';
+import { useSelector,useDispatch } from 'react-redux';
 
 function ControlVidrios() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.controlVidriosR.inputsValues)
+    console.log("holi",prueba)
     const [inputs1] = useState([
         { id: 1, label: 'Fecha de Recepción' },
         { id: 2, label: 'Proveedor' },
@@ -13,12 +17,13 @@ function ControlVidrios() {
     ]);
     const [replicas1, setReplicas1] = useState(1);
     const [values,setValues] = useState({
-        inputsValues1 : [{
+        inputs : [{
         }],
-        inputsValues2 : [{
+        inputsTwo : [{
         }],
         verificado: "",
-        fecha: "",
+        date: "",
+        idUser:"643ea98d5b44dd9765966ae7"
     })
     const [objValues1,setObjValues1] = useState({fecha:"",proveedor:"",alimentoContenido:"",responsable:""})
     const [inputValues1,setInputValues1]= useState([])
@@ -32,7 +37,7 @@ function ControlVidrios() {
         }
     },[trigger1])
     useEffect(()=>{
-        setValues({...values,inputsValues1:inputValues1})
+        setValues({...values,inputs:inputValues1})
     },[inputValues1])
     useEffect(()=>{
         if (objValues1.fecha !== "" && objValues1.proveedor !== "" && objValues1.alimentoContenido !== "" && objValues1.responsable !== ""){
@@ -65,14 +70,13 @@ function ControlVidrios() {
         }
     },[trigger2])
     useEffect(()=>{
-        setValues({...values,inputsValues2:inputValues2})
+        setValues({...values,inputsTwo:inputValues2})
     },[inputValues2])
     useEffect(()=>{
         if (objValues2.fecha !== "" && objValues2.proveedor !== "" && objValues2.alimentoContenido !== "" && objValues2.responsable !== ""){
             setTrigger2(true)
         }
     },[objValues2])
-    console.log(objValues2)
     const inputsValuesConstructor = (id,label,index,input) => {
         const inputTarget = document.getElementById(id)
         if(input === "input1"){
@@ -159,11 +163,11 @@ function ControlVidrios() {
 
                  <div className={styles.personal}>
                     <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,date:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(controlVidriosActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>

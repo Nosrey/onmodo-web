@@ -4,7 +4,12 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './DistribucionExpedicion.module.css'
 import Modal from '../../shared/Modal';
 import DisrtibucionExp from '../../modales/DisrtibucionExp';
+import distribucionExpedicionActions from '../../../redux/actions/distribucionExpedicionActions';
+import { useDispatch,useSelector } from 'react-redux';
 function DistribucionExpedicion() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.distribucionExpedicionR.inputsValues)
+    console.log("holi",prueba)
     const [inputs] = useState([
         { id: 1, label: 'Servicio' },
         { id: 2, label: 'Preparación' },
@@ -22,8 +27,9 @@ function DistribucionExpedicion() {
         fecha:"",
         inputsValues : [{
         }],
-        verificado: "",
-        fechaHora: "",
+        verified: "",
+        date: "",
+        idUser:"643ea98d5b44dd9765966ae7"
     })
     const [objValues,setObjValues] = useState({servicio:"",preparacion:"",horaDespacho:"",tempDespacho:"",horaRecepcion:"",tempRecepcion:"",accionesCorrectivas:"",responsable:""})
     const [inputValues,setInputValues]= useState([])
@@ -132,12 +138,12 @@ function DistribucionExpedicion() {
                     
                 </div>
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,date:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(distribucionExpedicionActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>

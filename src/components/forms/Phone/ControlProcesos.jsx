@@ -4,8 +4,13 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './ControlProcesos.module.css'
 import Modal from '../../shared/Modal';
 import ProcesosInfo from '../../modales/Proceso';
+import { useSelector,useDispatch } from 'react-redux';
+import controlProcesosActions from '../../../redux/actions/controlProcesosActions';
 
 function ControlProcesos() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.controlProcesosR.inputsValues)
+    console.log("holi", prueba)
     const [inputs] = useState([
         { id: 1, label: 'Alimento' },
         { id: 2, label: 'Fecha / Hora' },
@@ -26,10 +31,11 @@ function ControlProcesos() {
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
     const [values,setValues] = useState({
-        inputsValues : [{
+        inputs : [{
         }],
-        verificado: "",
-        fechaHora: ""
+        verified: "",
+        fechaHora: "",
+        idUser:"643ea98d5b44dd9765966ae7"
     })
     const [objValues,setObjValues] = useState({alimento:"",fechaCoccion:"",tempCoccion:"",horaInicio:"",tempInicio:"",temp2hs:"",temp4hs:"",temp6hs:"",fechaRegFinal:"",tempRegFinal:"", tempMantInicio:"",tempMant1hs:"",tempMant2hs:"",accionesCorrectivas:"",responsable:""})
     const [inputValues,setInputValues]= useState([])
@@ -43,7 +49,7 @@ function ControlProcesos() {
         }
     },[trigger])
     useEffect(()=>{
-        setValues({...values,inputsValues:inputValues})
+        setValues({...values,inputs:inputValues})
     },[inputValues])
     useEffect(()=>{
         if (objValues.alimento !== "" && objValues.fechaCoccion !== "" && objValues.tempCoccion !== "" && objValues.horaInicio !== "" && objValues.tempInicio !== "" && objValues.temp2hs !== "" && objValues.temp4hs !== "" && objValues.temp6hs !== "" && objValues.fechaRegFinal !== "" && objValues.tempRegFinal !== "" && objValues.tempMantInicio !== "" && objValues.tempMant1hs !== "" && objValues.tempMant2hs !== "" && objValues.accionesCorrectivas !== "" && objValues.responsable !== ""){
@@ -169,12 +175,12 @@ function ControlProcesos() {
                     
                 </div>
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.values})}} id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.values})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(controlProcesosActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>

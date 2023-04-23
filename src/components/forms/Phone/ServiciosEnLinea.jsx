@@ -4,7 +4,12 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './ServiciosEnLinea.module.css'
 import Modal from '../../shared/Modal';
 import ServEnLinea from '../../modales/ServEnLinea';
+import serviciosLineaActions from '../../../redux/actions/serviciosLineaActions';
+import { useSelector,useDispatch } from 'react-redux';
 function ServiciosEnLinea() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state => state.serviciosLineaR.inputsValues)
+    console.log("holi", prueba)
     const [inputs] = useState([
         { id: 1, label: 'Servicio' },
         { id: 2, label: 'Preparación' },
@@ -23,8 +28,9 @@ function ServiciosEnLinea() {
         fecha:"",
         inputsValues : [{
         }],
-        verificado: "",
-        fechaHora: "",
+        verified: "",
+        date: "",
+        idUser:"643ea98d5b44dd9765966ae7"
     })
     const [objValues,setObjValues] = useState({servicio:"",preparacion:"",horaInicio:"",tempInicio:"",horaMantenimiento1:"",tempMantenimiento1:"",horaMantenimiento2:"",tempMantenimiento2:"",accionesCorrectivas:"",responsable:""})
     const [inputValues,setInputValues]= useState([])
@@ -135,12 +141,12 @@ function ServiciosEnLinea() {
                     </div>
                 </div>
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,date:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        dispatch(serviciosLineaActions.logIn(values))}} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>
