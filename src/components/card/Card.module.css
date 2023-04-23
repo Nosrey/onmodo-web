@@ -1,0 +1,28 @@
+.cardContainer {
+  width: 188px;
+  height: 188px;
+  background: #e7e7e7;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.cardContainer:hover {
+  background: #7bc100;
+}
+
+.cardWrapper {
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.titleCard {
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  cursor: pointer;
+}

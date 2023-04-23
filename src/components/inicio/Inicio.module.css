@@ -1,0 +1,27 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrapper {
+  width: 93%;
+}
+
+.cardContainer {
+  display: flex;
+  gap: 25px;
+}
+
+.nivelContainer {
+  padding-top: 26px;
+  padding-bottom: 29px;
+}
+
+.titleNivel {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: left;
+}

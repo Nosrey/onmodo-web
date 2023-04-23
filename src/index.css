@@ -1,24 +1,69 @@
+:root {
+  --verde-seco: #a0b875;
+  --verde-principal: #7bc100;
+  --verde-oscuro: #6eac00;
+}
+
+input.danger {
+  border: 2px solid red;
+}
+
+p.danger {
+  color: red;
+  font-size: 12px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+input:focus {
+  outline: none;
+}
+
+input::placeholder {
+  color: #8e8e8e;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('./assets/fonts/GothamRoundedBook_21018.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  /* font-family: Gotham Rounded; */
+  font-family: Archivo;
+
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale; */
 }
 .mainContainer {
-display: flex;
+  display: flex;
 }
 .mainContent {
-  padding: 40px 0px;
+  /* padding: 40px 0px; */
   width: 100%;
-
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+/* code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+} */
 .titleContainer {
   height: 45px;
   border-radius: 4px;
@@ -42,11 +87,11 @@ code {
   font-size: 16px;
 }
 
-.index{
+.index {
   font-weight: bold;
 }
 
-.icon{
+.icon {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,7 +110,7 @@ code {
 
 .table {
   width: 75vw;
-  box-shadow:inset -7px 0 9px -7px rgba(117, 114, 114, 0.4);
+  box-shadow: inset -7px 0 9px -7px rgba(117, 114, 114, 0.4);
   overflow-x: scroll;
   margin-bottom: 100px;
   margin-top: 64px;
@@ -81,7 +126,7 @@ code {
   overflow-x: scroll;
 }
 .input {
-  width: 130px ;
+  width: 130px;
 }
 
 .tableRow {
@@ -91,7 +136,8 @@ code {
   align-items: center;
 }
 
-.tableRowCheck, .tableRowCheckTitle {
+.tableRowCheck,
+.tableRowCheckTitle {
   display: flex;
   column-gap: 0px;
   align-items: center;
@@ -117,10 +163,11 @@ code {
   border: 1px solid grey;
   border-radius: 4px;
 }
-.optionList{
+.optionList {
   width: 15%;
 }
-.optionTable, .optionTableTitle{
+.optionTable,
+.optionTableTitle {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -129,7 +176,7 @@ code {
   text-align: center;
   border: 0.5px solid grey;
 }
-.optionTableTitle{
+.optionTableTitle {
   height: 30px;
   background-color: rgb(216, 213, 213);
 }
