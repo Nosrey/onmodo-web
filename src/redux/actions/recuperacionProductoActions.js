@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-const controlComensalesActions = {
+const recuperacionProductoActions = {
   logIn: (inputsValues) => {
     return async (dispatch, getState) => {
       try {
         console.log("action",inputsValues)
-        const response = await axios.post('http://localhost:4000/api/controlalergenos', inputsValues)
-        console.log("response", response)
+        const response = await axios.post('http://localhost:4000/api/recuperacionproducto', inputsValues)
+        console.log("response", response.data)
         if (response.data.success === false) {
           alert("Usuario incorrecto")
         }
@@ -20,4 +20,4 @@ const controlComensalesActions = {
       }
     }
   }}
-export default controlComensalesActions
+export default recuperacionProductoActions
