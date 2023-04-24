@@ -82,7 +82,7 @@ function RecoverPassword() {
             </div>
 
             <div className={styles.buttonContainer}>
-              <button type='submit' style={{ backgroundColor: buttonColor }}>
+              <button className={styles.btn} type='submit' style={{ backgroundColor: buttonColor }}>
                 Restablecer
               </button>
             </div>

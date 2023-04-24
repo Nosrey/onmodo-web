@@ -78,7 +78,7 @@
   margin-top: 100px;
 }
 
-button {
+.btn {
   padding: 5px 55px;
   border-radius: 10px;
   /* background-color: var(--verde-seco); */
@@ -86,7 +86,7 @@ button {
   border: none;
 }
 
-button:hover {
+.btn:hover {
   background-color: var(--verde-oscuro) !important;
 }
 

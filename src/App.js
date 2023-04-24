@@ -36,19 +36,13 @@ import Sanitizacion from './components/forms/Phone/Sanitizacion';
 import UsoCambioAceite from './components/forms/Phone/UsoCambioAceite';
 import EPP from './components/forms/Phone/EPP';
 import RecoverPassword from './components/recoverPassword/RecoverPassword';
-import Card from './components/card/Card';
 import Inicio from './components/inicio/Inicio';
+import Cuenta from './components/cuenta/Cuenta';
 
 function App() {
   return (
     <div className='App'>
       <>
-        {window.location.pathname !== '/login' &&
-        window.location.pathname !== '/register' &&
-        window.location.pathname !== '/restablecer-contrasena' ? (
-          <Header />
-        ) : null}
-
         {/* <div className='mainContainer'>
           {window.location.pathname !== '/login' &&
           window.location.pathname !== '/register' &&
@@ -58,17 +52,24 @@ function App() {
 
         <div className='mainContent'>
           <Router>
+            {window.location.pathname !== '/login' &&
+            window.location.pathname !== '/register' &&
+            window.location.pathname !== '/restablecer-contrasena' ? (
+              <Header />
+            ) : null}
             <Routes>
               <Route path='/' element={<Placeholder />} />
 
               {/* <Route path='/home' element={<Home />} /> */}
+              <Route path='/register' element={<Register />} />
+
               <Route path='/login' element={<Login />} />
 
               <Route path='/restablecer-contrasena' element={<RecoverPassword />} />
 
-              <Route path='/register' element={<Register />} />
-
               <Route path='/inicio' element={<Inicio />} />
+
+              <Route path='/cuenta' element={<Cuenta />} />
 
               {/* Forms */}
               <Route path='/dietas-especiales' element={<AlergenosComida />} />

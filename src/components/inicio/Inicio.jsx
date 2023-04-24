@@ -15,11 +15,11 @@ function Inicio() {
     },
     {
       title: 'Documentación',
-      link: '/home',
+      link: '/documentacion',
     },
     {
       title: 'Cuenta',
-      link: '/home',
+      link: '/cuenta',
     },
   ];
 

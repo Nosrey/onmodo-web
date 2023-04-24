@@ -41,3 +41,20 @@
   line-height: 29px;
   letter-spacing: 0em;
 }
+
+@media screen and (max-width: 768px) {
+  .container {
+    margin-bottom: 23px;
+  }
+
+  .wrapper {
+    flex-direction: column;
+    gap: 30px;
+    padding-top: 46px;
+    margin-bottom: 23px;
+  }
+
+  .rightContainer {
+    align-self: flex-start;
+  }
+}
