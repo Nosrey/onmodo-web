@@ -97,6 +97,10 @@
   border: none;
 }
 
+#btnDos:enabled:hover {
+  background-color: var(--verde-oscuro) !important;
+}
+
 .toastContainer {
   position: absolute;
   width: 401px;

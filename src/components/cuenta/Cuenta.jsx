@@ -184,9 +184,9 @@ function Cuenta() {
               <button
                 disabled={!btnEdit}
                 type='submit'
-                id={styles.btnDos}
                 className={styles.btn}
                 style={{ backgroundColor: `${!btnEdit ? '#a0b875' : '#7bc100'}` }}
+                id={styles.btnDos}
               >
                 Guardar cambios
               </button>
