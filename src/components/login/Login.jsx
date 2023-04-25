@@ -80,7 +80,7 @@ function Login(props) {
             <div className={styles.inputContainer}>
               <label htmlFor=''>Legajo o DNI</label>
               <input
-                className={`${errors.contraseña && 'danger'} ${styles.inputLogin}`}
+                className={`${errors.legajo && 'danger'} ${styles.inputLogin}`}
                 type='number'
                 placeholder='Legajo o DNI'
                 onChange={handleChange}
@@ -119,7 +119,7 @@ function Login(props) {
               {errors.contraseña && <p className='danger'>{errors.contraseña}</p>}
             </div>
             <div className={styles.buttonContainer}>
-              <button type='submit' style={{ backgroundColor: buttonColor }}>
+              <button className={styles.btn} type='submit' style={{ backgroundColor: buttonColor }}>
                 Ingresar
               </button>
               <label htmlFor='' onClick={recoverPassword}>
