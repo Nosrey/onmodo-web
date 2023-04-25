@@ -1,0 +1,25 @@
+.container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #f7f7f7;
+  height: 80px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  gap: 10px;
+}
+
+.text {
+  font-size: 12px;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    display: none;
+  }
+}
