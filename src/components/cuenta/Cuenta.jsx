@@ -7,8 +7,6 @@ function Cuenta() {
   const [showToast, setShowToast] = useState(false);
   const [editInput, setEditInput] = useState(true);
   const [btnEdit, setBtnEdit] = useState(false);
-  const [btnSubmit, setBtnSubmit] = useState(true);
-  const [colorSubmit, setColorSubmit] = useState('#a0b875');
   const [inputValue, setInputValue] = useState({
     nombre: 'Ignacio',
     legajo: '40675293',
@@ -23,7 +21,13 @@ function Cuenta() {
     let errors = {};
     if (!values.nombre) errors.nombre = 'El nombre es requerido';
     if (!values.legajo) errors.legajo = 'El número de legajo o DNI es requerido';
-    if (!values.celular) errors.celular = 'El número de contacto es requerido';
+    if (!values.celular) {
+      errors.celular = 'El número de contacto es requerido';
+    } else if (
+      !/^(\d{1,4}[-. ]?)?(\d{4}[-. ]?\d{4})$/.test(values.celular.replace(/[.-\s]/g, ''))
+    ) {
+      errors.celular = 'El formato de número no es válido para Argentina';
+    }
     if (!values.nivel) errors.nivel = 'El nivel es requerido';
     if (!values.puesto) errors.puesto = 'El puesto es requerido';
     if (!values.localidad) errors.localidad = 'La localidad es requerida';
@@ -38,8 +42,6 @@ function Cuenta() {
   const disabledInputs = () => {
     setEditInput(false);
     setBtnEdit(true);
-    // setBtnSubmit(false);
-    // setColorSubmit('#7bc100');
   };
 
   const handleSubmit = (e) => {
@@ -96,7 +98,7 @@ function Cuenta() {
               />
               {errors.legajo && <p className='danger'>{errors.legajo}</p>}
             </div>
-            <div className={styles.inputContainer}>
+            <div id={styles.celInputContainer} className={styles.inputContainer}>
               <label htmlFor=''>Número de contacto</label>
               <input
                 type='number'
@@ -107,6 +109,8 @@ function Cuenta() {
                 disabled={editInput}
               />
               {errors.celular && <p className='danger'>{errors.celular}</p>}
+              {/* <i id={styles.close} class='ri-close-circle-fill'></i> */}
+              {/* <i id={styles.check} class='ri-checkbox-circle-fill'></i> */}
             </div>
             <div className={styles.inputContainer}>
               <label htmlFor=''>Nivel</label>

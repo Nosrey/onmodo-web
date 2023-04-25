@@ -36,9 +36,14 @@ input.danger {
   border: 2px solid red;
 }
 
+input.success {
+  border: 2px solid var(--verde-principal);
+}
+
 p.danger {
   color: red;
   font-size: 12px;
+  text-align: right;
 }
 
 a {
