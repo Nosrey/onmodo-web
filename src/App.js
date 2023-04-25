@@ -37,6 +37,7 @@ import EPP from './components/forms/Phone/EPP';
 import RecoverPassword from './components/recoverPassword/RecoverPassword';
 import Inicio from './components/inicio/Inicio';
 import Cuenta from './components/cuenta/Cuenta';
+import Footer from './components/footer/Footer';
 
 function App() {
   const location = useLocation();
@@ -103,6 +104,7 @@ function App() {
             {/* <Route path='/admin' element={<Admin/>}>
               </Route> */}
           </Routes>
+          <Footer />
         </div>
         {/* </div> */}
       </>
