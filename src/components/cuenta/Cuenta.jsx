@@ -5,6 +5,10 @@ import perfil from '../../assets/image/igacio.png';
 function Cuenta() {
   const [errors, setErrors] = useState({});
   const [showToast, setShowToast] = useState(false);
+  const [editInput, setEditInput] = useState(true);
+  const [btnEdit, setBtnEdit] = useState(false);
+  const [btnSubmit, setBtnSubmit] = useState(true);
+  const [colorSubmit, setColorSubmit] = useState('#a0b875');
   const [inputValue, setInputValue] = useState({
     nombre: 'Ignacio',
     legajo: '40675293',
@@ -31,6 +35,13 @@ function Cuenta() {
     setInputValue({ ...inputValue, [e.target.name]: e.target.value });
   };
 
+  const disabledInputs = () => {
+    setEditInput(false);
+    setBtnEdit(true);
+    // setBtnSubmit(false);
+    // setColorSubmit('#7bc100');
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = validate(inputValue);
@@ -42,8 +53,11 @@ function Cuenta() {
       setTimeout(() => {
         setShowToast(false);
       }, 2000);
+      setBtnEdit(!btnEdit);
+      setEditInput(true);
     }
   };
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -66,6 +80,7 @@ function Cuenta() {
                 value={inputValue.nombre}
                 onChange={handleChange}
                 name='nombre'
+                disabled
               />
               {errors.nombre && <p className='danger'>{errors.nombre}</p>}
             </div>
@@ -77,6 +92,7 @@ function Cuenta() {
                 value={inputValue.legajo}
                 onChange={handleChange}
                 name='legajo'
+                disabled
               />
               {errors.legajo && <p className='danger'>{errors.legajo}</p>}
             </div>
@@ -88,6 +104,7 @@ function Cuenta() {
                 value={inputValue.celular}
                 onChange={handleChange}
                 name='celular'
+                disabled={editInput}
               />
               {errors.celular && <p className='danger'>{errors.celular}</p>}
             </div>
@@ -99,6 +116,7 @@ function Cuenta() {
                 value={inputValue.nivel}
                 onChange={handleChange}
                 name='nivel'
+                disabled
               />
               {errors.nivel && <p className='danger'>{errors.nivel}</p>}
             </div>
@@ -106,10 +124,11 @@ function Cuenta() {
             <div className={styles.inputContainer}>
               <label htmlFor=''>Puesto</label>
               <select
-                className={`${errors.puesto && 'danger'} ${styles.input}`}
+                className={`${errors.puesto && 'danger'} ${styles.input} ${styles.select}`}
                 value={inputValue.puesto}
                 onChange={handleChange}
                 name='puesto'
+                disabled
               >
                 <option value='supervisor'>Supervisor</option>
                 <option value='gerente'>Gerente</option>
@@ -120,10 +139,11 @@ function Cuenta() {
             <div className={styles.inputContainer}>
               <label htmlFor=''>Provincia</label>
               <select
-                className={`${errors.provincia && 'danger'} ${styles.input}`}
+                className={`${errors.provincia && 'danger'} ${styles.input} ${styles.select}`}
                 value={inputValue.provincia}
                 onChange={handleChange}
                 name='provincia'
+                disabled
               >
                 <option value='Buenos Aires'>Buenos Aires</option>
                 <option value='Córdoba'>Córdoba</option>
@@ -134,10 +154,11 @@ function Cuenta() {
             <div className={styles.inputContainer}>
               <label htmlFor=''>Localidad</label>
               <select
-                className={`${errors.localidad && 'danger'} ${styles.input}`}
+                className={`${errors.localidad && 'danger'} ${styles.input} ${styles.select}`}
                 value={inputValue.localidad}
                 onChange={handleChange}
                 name='localidad'
+                disabled
               >
                 <option value='Río Cuarto'>Río Cuarto</option>
                 <option value='Córdoba'>Córdoba</option>
@@ -147,10 +168,22 @@ function Cuenta() {
             </div>
 
             <div className={styles.btnContainer}>
-              <button id={styles.btnUno} className={styles.btn}>
+              <button
+                disabled={btnEdit}
+                type='button'
+                onClick={disabledInputs}
+                id={styles.btnUno}
+                className={styles.btn}
+              >
                 Editar
               </button>
-              <button type='submit' id={styles.btnDos} className={styles.btn}>
+              <button
+                disabled={!btnEdit}
+                type='submit'
+                id={styles.btnDos}
+                className={styles.btn}
+                style={{ backgroundColor: `${!btnEdit ? '#a0b875' : '#7bc100'}` }}
+              >
                 Guardar cambios
               </button>
             </div>

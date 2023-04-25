@@ -45,6 +45,10 @@
   padding: 0 19px;
 }
 
+.select {
+  background-color: #fafafa;
+}
+
 .btnContainer {
   display: flex;
   gap: 24px;
@@ -67,7 +71,7 @@
 }
 
 #btnDos {
-  background: var(--verde-seco);
+  background: var(--verde-oscuro);
   color: white;
   border: none;
 }
@@ -91,7 +95,7 @@
   font-size: 18px;
   line-height: 22px;
   text-align: center;
-  color: #7bc100;
+  color: var(--verde-principal);
 }
 
 .footer {
