@@ -1,11 +1,28 @@
 import { Button,  TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionTermometros.module.css'
 import Termometros from '../modales/Termometros';
 import Modal from '../shared/Modal';
+import { useSelector,useDispatch } from 'react-redux';
+import verificacionTermometrosActions from '../../redux/actions/verificacionTermometrosActions';
 
 function VerificacionTermometros() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.verificacionTermometrosR.inputValues)
+    console.log("holi",prueba)
+    const [values,setValues] = useState({
+        fecha:"",
+        responsable:"",
+        inputsTrimestral : [{
+        }],
+        inputsSemestral : [{
+        }],
+        verified: "",
+        fechaHora:"",
+        date: "",
+        idUser:"643ea98d5b44dd9765966ae7"
+    })
     const [inputs] = useState([
         { id: 1, label: 'Código' },
         { id: 2, label: 'Tipo (PIN/IR)' },
@@ -17,6 +34,27 @@ function VerificacionTermometros() {
         { id: 8, label: 'Desvío' },
         { id: 9, label: 'Acciones de corrección' },
     ]);
+    const [showModal, setShowModal] = useState(false);
+    const [objValues1,setObjValues1] = useState({codigo:"",tipo:"",responsable:"",area:"",punto0:"",desvio0:"",punto100:"",desvio100:"",acciones:""})
+    const [inputValues1,setInputValues1]= useState([])
+    const [trigger1,setTrigger1] = useState(false)
+    const [replicas, setReplicas] = useState(1);
+
+    useEffect(()=>{
+        if(replicas === 1 && objValues1.codigo !== "" && objValues1.tipo !== "" && objValues1.responsable !== "" && objValues1.area !== "" && objValues1.punto0 !== "" && objValues1.desvio0 !== "" && objValues1.punto100 !== "" && objValues1.desvio100 !== "" && objValues1.acciones !== "" && objValues1.id !=="") {
+            setInputValues1([objValues1])
+        }else if (replicas > 1 && objValues1.codigo !== "" && objValues1.tipo !== "" && objValues1.responsable !== "" && objValues1.area !== "" && objValues1.punto0 !== "" && objValues1.desvio0 !== "" && objValues1.punto100 !== "" && objValues1.desvio100 !== "" && objValues1.acciones !== "" && objValues1.id !=="") {
+            setInputValues1([...inputValues1,objValues1])
+        }
+    },[trigger1])
+    useEffect(()=>{
+        setValues({...values,inputsTrimestral:inputValues1})
+    },[inputValues1])
+    useEffect(()=>{
+        if (objValues1.codigo !== "" && objValues1.tipo !== "" && objValues1.responsable !== "" && objValues1.area !== "" && objValues1.punto0 !== "" && objValues1.desvio0 !== "" && objValues1.punto100 !== "" && objValues1.desvio100 !== "" && objValues1.acciones !== "" ){
+            setTrigger1(true)
+        }
+    },[objValues1])
 
     const [inputs2] = useState([
         { id: 1, label: 'Código' },
@@ -26,15 +64,58 @@ function VerificacionTermometros() {
         { id: 5, label: 'Desvío' },
         { id: 6, label: 'Acciones de corrección' },
     ]);
-    const [replicas, setReplicas] = useState(1);
     const [replicas2, setReplicas2] = useState(1);
-    const [showModal, setShowModal] = useState(false);
+    const [objValues2,setObjValues2] = useState({codigo:"",area:"",termoReferencia:"",termoEvaluado:"",desvio:"",acciones:""})
+    const [inputValues2,setInputValues2]= useState([])
+    const [trigger2,setTrigger2] = useState(false)
 
+    useEffect(()=>{
+        if(replicas2 === 1 && objValues2.codigo !== "" && objValues2.area !== "" && objValues2.termoReferencia !== "" && objValues2.termoEvaluado !== "" && objValues2.desvio !== "" && objValues2.acciones !== "" && objValues2.id !=="") {
+            setInputValues2([objValues2])
+        }else if (replicas2 > 1 && objValues2.codigo !== "" && objValues2.area !== "" && objValues2.termoReferencia !== "" && objValues2.termoEvaluado !== "" && objValues2.desvio !== "" && objValues2.acciones !== "" && objValues2.id !=="") {
+            setInputValues2([...inputValues2,objValues2])
+        }
+    },[trigger2])
+    useEffect(()=>{
+        setValues({...values,inputsSemestral:inputValues2})
+    },[inputValues2])
+    useEffect(()=>{
+        if (objValues2.codigo !== "" && objValues2.area !== "" && objValues2.termoReferencia !== "" && objValues2.termoEvaluado !== "" && objValues2.desvio !== "" && objValues2.acciones !== ""){
+            setTrigger2(true)
+        }
+    },[objValues2])
+
+    const inputsValuesConstructor = (id,label,index,input,inputID,value) => {
+        const inputTarget = document.getElementById(id)
+        if(input === "input1"){
+            label === 'Código' ?  setObjValues1({...objValues1,codigo:inputTarget.value, id:index}) :
+            label === 'Tipo (PIN/IR)' ? setObjValues1({...objValues1,tipo:inputTarget.value}) :
+            label === 'Responsable del uso' ? setObjValues1({...objValues1,responsable:inputTarget.value}):
+            label === 'Área' ? setObjValues1({...objValues1,area:inputTarget.value}): 
+            label === 'Punto 0' ? setObjValues1({...objValues1,punto0:inputTarget.value}):
+            (label === 'Desvío' && inputID===6) ? setObjValues1({...objValues1,desvio0:inputTarget.value}):
+            label === 'Punto 100' ? setObjValues1({...objValues1,punto100:inputTarget.value}):
+            (label === 'Desvío' && inputID===8) ? setObjValues1({...objValues1,desvio100:inputTarget.value}):
+            label === 'Acciones de corrección' && setObjValues1({...objValues1,acciones:inputTarget.value})  
+        }else{
+            label === 'Código' ?  setObjValues2({...objValues2,codigo:value, id:index == 0 ? 100 : (index+1)*100}) :
+            label === 'Área' ? setObjValues2({...objValues2,area:value}) :
+            label === 'Temp. termóm referencia' ? setObjValues2({...objValues2,termoReferencia:value}):
+            label === 'Temp. termóm evaluado' ? setObjValues2({...objValues2,termoEvaluado:value}):
+            label === 'Desvío' ? setObjValues2({...objValues2,desvio:value}):
+            label === 'Acciones de corrección' && setObjValues2({...objValues2,acciones:value})
+        }
+    }
+    
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues1({codigo:"",tipo:"",responsable:"",area:"",punto0:"",desvio0:"",punto100:"",desvio100:"",acciones:""})
+        setTrigger1(false)
     };
     const handleClick2 = () => {
         setReplicas2(replicas2 + 1);
+        setObjValues2({codigo:"",area:"",termoReferencia:"",termoEvaluado:"",desvio:"",acciones:""})
+        setTrigger2(false);
     };
 
     return (
@@ -61,8 +142,8 @@ function VerificacionTermometros() {
                 }
 
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Fecha" variant="outlined" />
-                    <TextField id="outlined-basic" label="Responsable de validación" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,responsable:e.target.value})}} id="outlined-basic" label="Responsable de validación" variant="outlined" />
                 </div>
         
                 <br />
@@ -91,7 +172,9 @@ function VerificacionTermometros() {
 
                                     {inputs.map((input) => (
                                         <div key={input.id}>
-                                            <TextField  className="input" id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            <TextField onBlur={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index, "input1",input.id,e.target.value);
+                                            }} className="input" id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
@@ -132,7 +215,9 @@ function VerificacionTermometros() {
 
                                     {inputs2.map((input) => (
                                         <div key={input.id}>
-                                            <TextField  id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            <TextField onBlur={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index,"input2",input.id,e.target.value);
+                                            }} id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
@@ -150,13 +235,15 @@ function VerificacionTermometros() {
                 <br />
                 
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <span><b>*</b> PIN(Termómetro de pinche) - IR (Termómetro infrarrojo)</span>
 
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        dispatch(verificacionTermometrosActions.logIn(values))
+                    }} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>

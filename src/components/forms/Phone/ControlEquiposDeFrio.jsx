@@ -1,5 +1,5 @@
 import { Button, TextField, Checkbox, FormControlLabel, } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import styles from './ControlEquiposDeFrio.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import FormControl from '@mui/material/FormControl';
@@ -8,8 +8,13 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import EquipoFrio from '../../modales/EquipoFrio';
 import Modal from '../../shared/Modal';
+import { useDispatch,useSelector } from 'react-redux';
+import equiposFrioActions from '../../../redux/actions/equiposFrioActions';
 
 function ControlEquiposDeFrio() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.equiposFrioR.inputsValue)
+    console.log("holi",prueba)
     const [inputs] = useState([
         { id: 1, label: 'Día' },
         { id: 2, label: 'Hora' },
@@ -23,16 +28,80 @@ function ControlEquiposDeFrio() {
     const [showModal, setShowModal] = useState(false);
     const [month, setMonth] = React.useState('');
     const [turno, setTurno] = React.useState('');
+    const [values,setValues] = useState({
+        equipoNro:"",
+        checkboxes:[{}],
+        mes:"",
+        turno:"",
+        inputs: [{
+        }],
+        verified: "",
+        date: "",
+        idUser:"643ea98d5b44dd9765966ae7"
+    })
+    const [checkboxesValues]=useState([
+        {label:"HELADERA",check:false},
+        {label:"CÁMARA REFRIGERADOS",check:false},
+        {label:"CÁMARA CONGELADOS",check:false}
+    ])
+    const [objValues,setObjValues] = useState({dia:"",hora:"",tempEquipo:"",alimento:"",tempAlimento:"",accionCorreccion:"",responsable:""})
+    const [inputValues,setInputValues]= useState([])
+    const [trigger,setTrigger] = useState(false)
+    
+    useEffect(()=>{
+        if(replicas === 1 && objValues.dia !== "" && objValues.hora !== "" && objValues.tempEquipo !== "" && objValues.alimento !== "" && objValues.tempAlimento !== "" && objValues.accionCorreccion !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([objValues])
+        }else if (replicas > 1 && objValues.dia !== "" && objValues.hora !== "" && objValues.tempEquipo !== "" && objValues.alimento !== "" && objValues.tempAlimento !== "" && objValues.accionCorreccion !== "" && objValues.responsable !== "" && objValues.id !=="") {
+            setInputValues([...inputValues,objValues])
+        }
+    },[trigger])
+    useEffect(()=>{
+        setValues({...values,inputs:inputValues})
+    },[inputValues])
+    useEffect(()=>{
+        if (objValues.dia !== "" && objValues.hora !== "" && objValues.tempEquipo !== "" && objValues.alimento !== "" && objValues.tempAlimento !== "" && objValues.accionCorreccion !== "" && objValues.responsable !== "" ){
+            setTrigger(true)
+        }
+    },[objValues])
+    
+    const inputsValuesConstructor = (id,label,index) => {
+        const inputTarget = document.getElementById(id)
+        label === 'Día' ?  setObjValues({...objValues,dia:inputTarget.value, id:index}) :
+        label === 'Hora' ? setObjValues({...objValues,hora:inputTarget.value}) :
+        label === 'Temp.Equipo' ? setObjValues({...objValues,tempEquipo:inputTarget.value}):
+        label === 'Alimento' ? setObjValues({...objValues,alimento:inputTarget.value}):
+        label === 'Temperatura Alim.' ? setObjValues({...objValues,tempAlimento:inputTarget.value}):
+        label === 'Acción de corrección' ? setObjValues({...objValues,accionCorreccion:inputTarget.value}):
+        label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
+    }
+    const checkboxValuesConstructor = (label, value)=>{
+        if (label === "HELADERA") {
+            checkboxesValues[0].check = value
+            setValues({...values,checkboxes:checkboxesValues})
+        }
+        else if (label === "CÁMARA REFRIGERADOS") {
+            checkboxesValues[1].check = value
+            setValues({...values,checkboxes:checkboxesValues})
+        }
+        else {
+            checkboxesValues[2].check = value
+            setValues({...values,checkboxes:checkboxesValues})
+        }
+    }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
+        setObjValues({dia:"",hora:"",tempEquipo:"",alimento:"",tempAlimento:"",accionCorreccion:"",responsable:""})
+        setTrigger(false)
     };
 
     const handleChange = (event) => {
       setMonth(event.target.value);
+      setValues({...values,mes:event.target.value})
     };
     const handleChangeTurno = (event) => {
         setTurno(event.target.value);
+        setValues({...values,turno:event.target.value})
       };
 
     return (
@@ -63,13 +132,13 @@ function ControlEquiposDeFrio() {
 <br />
                 <div className={styles.personalNro}>
                     <p>Nro y nombre de cámara:</p>
-                    <TextField id="outlined-basic" label="Equipo Nro:" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,equipoNro:e.target.value})}} id="outlined-basic" label="Equipo Nro:" variant="outlined" />
                 </div>
 
                 <div className={styles.personal}>
-                    <FormControlLabel control={<Checkbox />} label="HELADERA" />
-                    <FormControlLabel control={<Checkbox />} label="CÁMARA REFRIGERADOS" />
-                    <FormControlLabel control={<Checkbox />} label="CÁMARA CONGELADOS" />
+                    <FormControlLabel control={<Checkbox onChange={(e)=>{checkboxValuesConstructor("HELADERA",e.target.checked)}} />} label="HELADERA" />
+                    <FormControlLabel control={<Checkbox onChange={(e)=>{checkboxValuesConstructor("CÁMARA REFRIGERADOS",e.target.checked)}} />} label="CÁMARA REFRIGERADOS" />
+                    <FormControlLabel control={<Checkbox onChange={(e)=>{checkboxValuesConstructor("CÁMARA CONGELADOS",e.target.checked)}} />} label="CÁMARA CONGELADOS" />
                 </div>
 
                 <div className={styles.personalSelects}> 
@@ -124,7 +193,9 @@ function ControlEquiposDeFrio() {
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
-                                        <TextField className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                        <TextField onKeyUp={(e)=>{
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index);
+                                            }} className='input' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
 
                                     </div>
                                 ))}
@@ -140,11 +211,13 @@ function ControlEquiposDeFrio() {
 
 
                  <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField id="outlined-basic" label="Fecha" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,date:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        dispatch(equiposFrioActions.logIn(values))
+                    }} variant="contained">Generar PDF</Button>
                 </div>
 
             </div>

@@ -7,8 +7,13 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import EppInfo from '../../modales/Epp';
 import Modal from '../../shared/Modal';
+import { useSelector,useDispatch } from 'react-redux';
+import eppActions from '../../../redux/actions/eppActions';
 
 function EPP() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.eppR.inputsValues)
+    console.log("holi",prueba)
     const [month, setMonth] = React.useState('');
     const [showModal, setShowModal] = useState(false);
     const [renglones] = useState([
@@ -55,8 +60,363 @@ function EPP() {
         { id: 30, label: '30' },
         { id: 31, label: '31' },
     ]);
+    const [checksRopa] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [checksCalzado] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [checksGuantes] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [checksOcular] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [checksFacial] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [checksAuditiva] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [checksRespiratoria] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [checksTronco] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [checksOtros] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [values,setValues] = useState({
+        mes:"",
+        nombreEmpleado:"",
+        sector:"",
+        puesto:"",
+        ropaTrabajo:[{}],
+        calzado:[{}],
+        guantes:[{}],
+        proteccionOcular:[{}],
+        proteccionFacial:[{}],
+        proteccionAuditiva:[{}],
+        proteccionRespiratoria:[{}],
+        proteccionTronco:[{}],
+        otro:[{}],
+        observaciones:"",
+        firma:"",
+        date: "",
+        idUser:"643ea98d5b44dd9765966ae7"
+    })
+    const checkboxValuesConstructor = (label,value,id)=>{
+        if (label === 0){
+            checksRopa[id-1].check = value
+            setValues({...values,ropaTrabajo:checksRopa})
+        }
+        if(label===1){
+            checksCalzado[id-1].check = value
+            setValues({...values,calzado:checksCalzado})
+        }
+        if(label===2){
+            checksGuantes[id-1].check = value
+            setValues({...values,guantes:checksGuantes})
+        }
+        if(label===3){
+            checksOcular[id-1].check = value
+            setValues({...values,proteccionOcular:checksOcular})
+        }
+        if(label===4){
+            checksFacial[id-1].check = value
+            setValues({...values,proteccionFacial:checksFacial})
+        } 
+        if(label===5){
+            checksAuditiva[id-1].check = value
+            setValues({...values,proteccionAuditiva:checksAuditiva})
+        } 
+        if(label===6){
+            checksRespiratoria[id-1].check = value
+            setValues({...values,proteccionRespiratoria:checksRespiratoria})
+        } 
+        if(label===7){
+            checksTronco[id-1].check = value
+            setValues({...values,proteccionTronco:checksTronco})
+        }  
+        if(label===8){
+            checksOtros[id-1].check = value
+            setValues({...values,otro:checksOtros})
+        }       
+    }
     const handleChange = (event) => {
-        setMonth(event.target.value);
+        setMonth(event.target.value)
+        setValues({...values,mes:event.target.value})
       };
     return (
         <div>
@@ -108,9 +468,9 @@ function EPP() {
                     </FormControl>
                 </div>
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Nombre Del Empleado" variant="outlined" />
-                    <TextField id="outlined-basic" label="Sector" variant="outlined" />
-                    <TextField id="outlined-basic" label="Puesto" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,nombreEmpleado:e.target.value})}} id="outlined-basic" label="Nombre Del Empleado" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,sector:e.target.value})}} id="outlined-basic" label="Sector" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,puesto:e.target.value})}} id="outlined-basic" label="Puesto" variant="outlined" />
                 </div>
 
                 <div className='contMonthTable'>
@@ -160,7 +520,7 @@ function EPP() {
                                 <div className="tableRowCheck" key={index}>
                                     {checks.map((input) => (
                                         <div key={input.id}>
-                                            <Checkbox className='check' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`}/>
+                                            <Checkbox onChange={(e)=>{checkboxValuesConstructor(index,e.target.checked,input.id)}} className='check' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`}/>
 
                                         </div>
                                     ))}
@@ -174,6 +534,7 @@ function EPP() {
                 <br />
                 <div className={styles.personalText}>
                     <TextField
+                        onChange={(e)=>{setValues({...values,observaciones:e.target.value})}}
                         fullWidth
                         id="outlined-multiline-static"
                         label="Observaciones"
@@ -184,11 +545,13 @@ function EPP() {
                 <br />
                 <br />
                 <div className={styles.personal}>
-                    <TextField id="outlined-basic" label="Firma Responsable Comedor" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,firma:e.target.value})}} id="outlined-basic" label="Firma Responsable Comedor" variant="outlined" />
                 </div>
 
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{
+                        dispatch(eppActions.logIn(values))
+                    }} variant="contained">Generar PDF</Button>
 
                 </div>
 

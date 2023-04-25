@@ -7,7 +7,12 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Modal from '../../shared/Modal';
 import CambioAceiteInfo from '../../modales/CambioAceiteInfo';
+import { useSelector,useDispatch } from 'react-redux';
+import cambioAceiteActions from '../../../redux/actions/cambioAceiteActions';
 function UsoCambioAceite() {
+    const dispatch = useDispatch()
+    const prueba = useSelector(state=>state.cambioAceiteR.inputsValues)
+    console.log("holi",prueba)
     const [month, setMonth] = React.useState('');
     const [showModal, setShowModal] = useState(false);
 
@@ -51,8 +56,208 @@ function UsoCambioAceite() {
         { id: 30, label: '30' },
         { id: 31, label: '31' },
     ]);
+    const [checksUso] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [checksFiltracion] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [checksCambio] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [checksLimpieza] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [checksResponsable] = useState([
+        { id: 1, label: '1' , check:false},
+        { id: 2, label: '2' , check:false},
+        { id: 3, label: '3' , check:false},
+        { id: 4, label: '4' , check:false},
+        { id: 5, label: '5' , check:false},
+        { id: 6, label: '6' , check:false},
+        { id: 7, label: '7' , check:false},
+        { id: 8, label: '8' , check:false},
+        { id: 9, label: '9' , check:false},
+        { id: 10, label: '10', check:false },
+        { id: 11, label: '11', check:false },
+        { id: 12, label: '12', check:false },
+        { id: 13, label: '13', check:false },
+        { id: 14, label: '14', check:false },
+        { id: 15, label: '15', check:false },
+        { id: 16, label: '16', check:false },
+        { id: 17, label: '17', check:false },
+        { id: 18, label: '18', check:false },
+        { id: 19, label: '19', check:false },
+        { id: 20, label: '20', check:false },
+        { id: 21, label: '21', check:false },
+        { id: 22, label: '22', check:false },
+        { id: 23, label: '23', check:false },
+        { id: 24, label: '24', check:false },
+        { id: 25, label: '25', check:false },
+        { id: 26, label: '26', check:false },
+        { id: 27, label: '27', check:false },
+        { id: 28, label: '28', check:false },
+        { id: 29, label: '29', check:false },
+        { id: 30, label: '30', check:false },
+        { id: 31, label: '31', check:false },
+    ]);
+    const [values,setValues] = useState({
+        mes:"",
+        uso:[{}],
+        filtracion:[{}],
+        cambioAceite:[{}],
+        limpieza:[{}],
+        responsable:[{}],
+        observaciones:"",
+        date: "",
+        idUser:"643ea98d5b44dd9765966ae7"
+    })
+
+    const checkboxValuesConstructor = (label,value,id)=>{
+        if (label === 0){
+            checksUso[id-1].check = value
+            setValues({...values,uso:checksUso})
+        }
+        if(label===1){
+            checksFiltracion[id-1].check = value
+            setValues({...values,filtracion:checksFiltracion})
+        }
+        if(label===2){
+            checksCambio[id-1].check = value
+            setValues({...values,cambioAceite:checksCambio})
+        }
+        if(label===3){
+            checksLimpieza[id-1].check = value
+            setValues({...values,limpieza:checksLimpieza})
+        }
+        if(label===4){
+            checksResponsable[id-1].check = value
+            setValues({...values,responsable:checksResponsable})
+        }        
+    }
     const handleChange = (event) => {
-        setMonth(event.target.value);
+        setMonth(event.target.value)
+        setValues({...values,mes:event.target.value})
       };
     return (
         <div>
@@ -139,7 +344,7 @@ function UsoCambioAceite() {
                                 <div className="tableRowCheck" key={index}>
                                     {checks.map((input) => (
                                         <div key={input.id}>
-                                            <Checkbox className='check' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`}/>
+                                            <Checkbox onChange={(e)=>{checkboxValuesConstructor(index,e.target.checked,input.id)}} className='check' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`}/>
 
                                         </div>
                                     ))}
@@ -153,6 +358,9 @@ function UsoCambioAceite() {
                 <br />
                 <div className={styles.personalText}>
                     <TextField
+                        onChange={(e)=>{
+                            setValues({...values,observaciones:e.target.value})
+                        }}
                         fullWidth
                         id="outlined-multiline-static"
                         label="Observaciones"
@@ -162,7 +370,9 @@ function UsoCambioAceite() {
                 </div>
 
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button onClick={(e)=>{
+                        dispatch(cambioAceiteActions.logIn(values))
+                    }} variant="contained">Generar PDF</Button>
 
                 </div>
 
