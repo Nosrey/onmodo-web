@@ -1,34 +1,20 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Login.module.css';
 import logo from '../../assets/image/on-modo-grande.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-function Login(props) {
+function Login() {
   const [iconPassword, setIconPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [buttonColor, setButtonColor] = useState('#a0b875');
+  const [validateBtn, setValidateBtn] = useState(true);
+  const [btnPassword, setBtnPassword] = useState(false);
+  const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     legajo: '',
     contraseña: '',
   });
-
-  // const checkFields = () => {
-  //   const values = Object.values(inputValue);
-  //   if (values.every((val) => val !== null && val !== undefined && val !== '')) {
-  //     setButtonColor('#7bc100');
-  //   } else {
-  //     setButtonColor('#a0b875');
-  //   }
-  // };
-
-  const checkFields = () => {
-    if (inputValue.legajo && inputValue.contraseña) {
-      setButtonColor('#7bc100');
-    } else {
-      setButtonColor('#a0b875');
-    }
-  };
 
   const handleBlur = (e) => {
     const { name } = e.target;
@@ -52,20 +38,31 @@ function Login(props) {
 
   const handleChange = (e) => {
     setInputValue({ ...inputValue, [e.target.name]: e.target.value });
-    checkFields();
   };
+
+  useEffect(() => {
+    const validationErrors = validate(inputValue);
+    if (Object.keys(validationErrors).length === 0) {
+      setValidateBtn(false);
+      setButtonColor('#7bc100');
+    } else {
+      setValidateBtn(true);
+      setButtonColor('#a0b875');
+    }
+  }, [inputValue]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const formValues = { ...inputValue, [e.target.name]: e.target.value };
-    setErrors(validate(formValues));
-    if (Object.keys(validate(formValues)).length === 0) {
-      alert('se envio correctamente');
+    const validationErrors = validate(inputValue);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+    } else {
+      setErrors({});
       resetForm();
+      navigate('/inicio');
     }
   };
-  const [btnPassword, setBtnPassword] = useState(false);
+
   const recoverPassword = () => {
     setBtnPassword(!btnPassword);
   };
@@ -119,7 +116,12 @@ function Login(props) {
               {errors.contraseña && <p className='danger'>{errors.contraseña}</p>}
             </div>
             <div className={styles.buttonContainer}>
-              <button className={styles.btn} type='submit' style={{ backgroundColor: buttonColor }}>
+              <button
+                disabled={validateBtn}
+                className={styles.btn}
+                type='submit'
+                style={{ backgroundColor: buttonColor }}
+              >
                 Ingresar
               </button>
               <label htmlFor='' onClick={recoverPassword}>

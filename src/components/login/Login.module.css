@@ -81,12 +81,11 @@
 .btn {
   padding: 5px 55px;
   border-radius: 10px;
-  /* background-color: var(--verde-seco); */
   color: white;
   border: none;
 }
 
-.btn:hover {
+.btn:enabled:hover {
   background-color: var(--verde-oscuro) !important;
 }
 

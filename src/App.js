@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import './index.css';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
@@ -20,7 +20,6 @@ import ControlVidrios from './components/forms/Phone/ControlVidrios';
 import DespachoProduccion from './components/forms/Phone/DespachoProduccion';
 import RecuperacionProducto from './components/forms/Phone/RecuperacionProducto';
 import Placeholder from './components/Placeholder/Placeholder';
-import { useLocation } from 'react-router-dom';
 import PlanillaDeArmadoFraccionamiento from './components/forms/PC/PlanillaDeArmadoFraccionamiento';
 import ControlEquiposDeFrio from './components/forms/Phone/ControlEquiposDeFrio';
 import ServiciosEnLinea from './components/forms/Phone/ServiciosEnLinea';
@@ -40,6 +39,8 @@ import Inicio from './components/inicio/Inicio';
 import Cuenta from './components/cuenta/Cuenta';
 
 function App() {
+  const location = useLocation();
+  const currentLocation = location.pathname;
   return (
     <div className='App'>
       <>
@@ -51,59 +52,57 @@ function App() {
           ) : null} */}
 
         <div className='mainContent'>
-          <Router>
-            {window.location.pathname !== '/login' &&
-            window.location.pathname !== '/register' &&
-            window.location.pathname !== '/restablecer-contrasena' ? (
-              <Header />
-            ) : null}
-            <Routes>
-              <Route path='/' element={<Placeholder />} />
+          {currentLocation !== '/login' &&
+          currentLocation !== '/register' &&
+          currentLocation !== '/restablecer-contrasena' ? (
+            <Header />
+          ) : null}
+          <Routes>
+            <Route path='/' element={<Placeholder />} />
 
-              {/* <Route path='/home' element={<Home />} /> */}
-              <Route path='/register' element={<Register />} />
+            {/* <Route path='/home' element={<Home />} /> */}
+            <Route path='/register' element={<Register />} />
 
-              <Route path='/login' element={<Login />} />
+            <Route path='/login' element={<Login />} />
 
-              <Route path='/restablecer-contrasena' element={<RecoverPassword />} />
+            <Route path='/restablecer-contrasena' element={<RecoverPassword />} />
 
-              <Route path='/inicio' element={<Inicio />} />
+            <Route path='/inicio' element={<Inicio />} />
 
-              <Route path='/cuenta' element={<Cuenta />} />
+            <Route path='/cuenta' element={<Cuenta />} />
 
-              {/* Forms */}
-              <Route path='/dietas-especiales' element={<AlergenosComida />} />
-              <Route path='/ropa-de-trabajo' element={<ConstanciaEntrega />} />
-              <Route path='/bidones-de-aceite' element={<EntregaBidonesAceiteUsado />} />
-              <Route path='/reporte-incidente' element={<FlashReporteIncidente />} />
-              <Route path='/informe-accidente' element={<InformeInternoAccidente />} />
-              <Route path='/registro-de-capacitacion' element={<RegistroCapacitacion />} />
-              <Route path='/registro-decomisos-mp' element={<RegistroDeDecomiso />} />
-              <Route path='/registro-simulacro' element={<RegistroSimulacro />} />
-              {/* <Route path="/salud-manipuladores" element={ <SaludManipuladores/> } /> */}
-              <Route path='/control-cloro' element={<ControlDeCloro />} />
-              <Route path='/control-vidrios' element={<ControlVidrios />} />
-              <Route path='/despacho-produccion' element={<DespachoProduccion />} />
-              <Route path='/recuperacion-de-producto' element={<RecuperacionProducto />} />
-              <Route path='/armado-fraccionamiento' element={<PlanillaDeArmadoFraccionamiento />} />
-              <Route path='/equipos-frio' element={<ControlEquiposDeFrio />} />
-              <Route path='/servicios-en-linea' element={<ServiciosEnLinea />} />
-              <Route path='/distribucion-expedicion' element={<DistribucionExpedicion />} />
-              <Route path='/verificacion-balanza' element={<VerificacionBalanza />} />
-              <Route path='/verificacion-termometro' element={<VerificacionTermometros />} />
-              <Route path='/recepcion' element={<Recepcion />} />
-              <Route path='/descongelamiento' element={<Descongelamiento />} />
-              <Route path='/rechazo-mp' element={<ReporteDeRechazoDevolucionMaterias />} />
-              <Route path='/control-procesos' element={<ControlProcesos />} />
-              <Route path='/carga-recepcion' element={<CargaRecepcion />} />
-              <Route path='/sanitizacion' element={<Sanitizacion />} />
-              <Route path='/cambio-aceite' element={<UsoCambioAceite />} />
-              <Route path='/uso-epp' element={<EPP />} />
+            {/* Forms */}
+            <Route path='/dietas-especiales' element={<AlergenosComida />} />
+            <Route path='/ropa-de-trabajo' element={<ConstanciaEntrega />} />
+            <Route path='/bidones-de-aceite' element={<EntregaBidonesAceiteUsado />} />
+            <Route path='/reporte-incidente' element={<FlashReporteIncidente />} />
+            <Route path='/informe-accidente' element={<InformeInternoAccidente />} />
+            <Route path='/registro-de-capacitacion' element={<RegistroCapacitacion />} />
+            <Route path='/registro-decomisos-mp' element={<RegistroDeDecomiso />} />
+            <Route path='/registro-simulacro' element={<RegistroSimulacro />} />
+            {/* <Route path="/salud-manipuladores" element={ <SaludManipuladores/> } /> */}
+            <Route path='/control-cloro' element={<ControlDeCloro />} />
+            <Route path='/control-vidrios' element={<ControlVidrios />} />
+            <Route path='/despacho-produccion' element={<DespachoProduccion />} />
+            <Route path='/recuperacion-de-producto' element={<RecuperacionProducto />} />
+            <Route path='/armado-fraccionamiento' element={<PlanillaDeArmadoFraccionamiento />} />
+            <Route path='/equipos-frio' element={<ControlEquiposDeFrio />} />
+            <Route path='/servicios-en-linea' element={<ServiciosEnLinea />} />
+            <Route path='/distribucion-expedicion' element={<DistribucionExpedicion />} />
+            <Route path='/verificacion-balanza' element={<VerificacionBalanza />} />
+            <Route path='/verificacion-termometro' element={<VerificacionTermometros />} />
+            <Route path='/recepcion' element={<Recepcion />} />
+            <Route path='/descongelamiento' element={<Descongelamiento />} />
+            <Route path='/rechazo-mp' element={<ReporteDeRechazoDevolucionMaterias />} />
+            <Route path='/control-procesos' element={<ControlProcesos />} />
+            <Route path='/carga-recepcion' element={<CargaRecepcion />} />
+            <Route path='/sanitizacion' element={<Sanitizacion />} />
+            <Route path='/cambio-aceite' element={<UsoCambioAceite />} />
+            <Route path='/uso-epp' element={<EPP />} />
 
-              {/* <Route path='/admin' element={<Admin/>}>
+            {/* <Route path='/admin' element={<Admin/>}>
               </Route> */}
-            </Routes>
-          </Router>
+          </Routes>
         </div>
         {/* </div> */}
       </>
