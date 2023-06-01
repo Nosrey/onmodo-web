@@ -41,6 +41,7 @@ import Footer from './components/footer/Footer';
 import FormulariosContainer from './components/formularios/FormulariosContainer';
 import FormulariosCargados from './components/formulariosCargados/FormulariosCargados';
 import FormCargado from './components/formulariosCargados/formCargado/FormCargado';
+import CrearContraseña from './components/CrearContraseña/CrearContraseña';
 
 function App() {
   const location = useLocation();
@@ -59,8 +60,9 @@ function App() {
           className='mainContent'
           style={{ position: 'relative', height: 'fit-content', minHeight: '100vh' }}
         >
-          {currentLocation !== '/login' &&
-          currentLocation !== '/register' &&
+          {currentLocation !== '/inicio-de-sesion' &&
+          currentLocation !== '/crear-contraseña' &&
+          currentLocation !== '/registro' &&
           currentLocation !== '/restablecer-contrasena' ? (
             <Header />
           ) : null}
@@ -68,9 +70,11 @@ function App() {
             <Route path='/' element={<Placeholder />} />
 
             {/* <Route path='/home' element={<Home />} /> */}
-            <Route path='/register' element={<Register />} />
+            <Route path='/registro' element={<Register />} />
 
-            <Route path='/login' element={<Login />} />
+            <Route path='/inicio-de-sesion' element={<Login />} />
+
+            <Route path='/crear-contraseña' element={<CrearContraseña />} />
 
             <Route path='/restablecer-contrasena' element={<RecoverPassword />} />
 
