@@ -1,0 +1,61 @@
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  width: 59%px;
+  max-width: 600px;
+  border-radius: 20px;
+  text-align: center;
+  outline: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 29px;
+  color: #000000;
+  margin: 31px 0 14px 0;
+}
+
+.text {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 22px;
+  margin-bottom: 44px;
+}
+
+.contBtn {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.contBtn button {
+  background: #a0b875;
+  border-radius: 10px;
+  border: none;
+  padding: 5px 10px;
+  color: white;
+  width: 7rem;
+}
+
+#btnCancelar {
+  border: 1px solid #7bc100;
+  background-color: white;
+  color: #7bc100;
+}

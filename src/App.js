@@ -38,6 +38,9 @@ import RecoverPassword from './components/recoverPassword/RecoverPassword';
 import Inicio from './components/inicio/Inicio';
 import Cuenta from './components/cuenta/Cuenta';
 import Footer from './components/footer/Footer';
+import FormulariosContainer from './components/formularios/FormulariosContainer';
+import FormulariosCargados from './components/formulariosCargados/FormulariosCargados';
+import FormCargado from './components/formulariosCargados/formCargado/FormCargado';
 
 function App() {
   const location = useLocation();
@@ -74,6 +77,12 @@ function App() {
             <Route path='/inicio' element={<Inicio />} />
 
             <Route path='/cuenta' element={<Cuenta />} />
+
+            <Route path='/formularios' element={<FormulariosContainer />} />
+
+            <Route path='/formularios-cargados' element={<FormulariosCargados />} />
+
+            <Route path='/formulario-cargado' element={<FormCargado />} />
 
             {/* Forms */}
             <Route path='/dietas-especiales' element={<AlergenosComida />} />
