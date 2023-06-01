@@ -1,17 +1,16 @@
 import React from 'react';
 import Card from '../card/Card';
 import styles from './Inicio.module.css';
-import { useState } from 'react';
 
 function Inicio() {
   const cards = [
     {
       title: 'Formularios',
-      link: '/home',
+      link: '/formularios',
     },
     {
       title: 'Formularios cargados',
-      link: '/home',
+      link: '/formularios-cargados',
     },
     {
       title: 'Documentación',
