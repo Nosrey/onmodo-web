@@ -16,6 +16,14 @@ import descongelamientoReducer from "./descongelamientoReducers";
 import controlProcesosReducer from "./controlProcesosReducer";
 import cargaRecepcionReducer from "./cargaRecepcionReducers";
 import sanitizacionReducer from "./sanitizacionReducers";
+import constanciaEntregaReducer from "./constanciaEntregaReducers";
+import reporteRechazoReducer from "./reporteRechazoReducers";
+import registroCapacitacionReducer from "./registroCapacitacionReducers";
+import equiposFrioReducer from "./equiposFrioReducers";
+import informeAccidenteReducer from "./informeAccidenteReducers";
+import cambioAceiteReducer from "./cambioAceiteReducers";
+import eppReducer from "./eppReducers";
+import verificacionTermometrosReducer from "./verificacionTermometrosReducers";
 
 const rootReducer = combineReducers({
     userR: userReducer,
@@ -34,7 +42,15 @@ const rootReducer = combineReducers({
     descongelamientoR:descongelamientoReducer,
     controlProcesosR:controlProcesosReducer,
     cargaRecepcionR:cargaRecepcionReducer,
-    sanitizacionR:sanitizacionReducer
+    sanitizacionR:sanitizacionReducer,
+    constanciaEntregaR:constanciaEntregaReducer,
+    reporteRechazoR:reporteRechazoReducer,
+    registroCapacitacionR:registroCapacitacionReducer,
+    equiposFrioR:equiposFrioReducer,
+    informeAccidenteR:informeAccidenteReducer,
+    cambioAceiteR:cambioAceiteReducer,
+    eppR:eppReducer,
+    verificacionTermometrosR:verificacionTermometrosReducer
 })
 
 export default rootReducer
