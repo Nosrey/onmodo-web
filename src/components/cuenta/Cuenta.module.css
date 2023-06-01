@@ -75,6 +75,7 @@
   gap: 24px;
   padding-top: 8px;
   padding-bottom: 95px;
+  margin-bottom: 59px;
 }
 
 .btn {
@@ -143,6 +144,10 @@
     width: 40%;
   }
 
+  .inputContainer {
+    width: 100%;
+  }
+
   .input {
     width: 100%;
   }
@@ -151,6 +156,7 @@
     padding-bottom: 40px;
     justify-content: center;
     align-items: center;
+    margin-bottom: 0;
   }
 
   .btn {

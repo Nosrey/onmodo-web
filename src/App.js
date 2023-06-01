@@ -52,7 +52,10 @@ function App() {
             <Menu />
           ) : null} */}
 
-        <div className='mainContent'>
+        <div
+          className='mainContent'
+          style={{ position: 'relative', height: 'fit-content', minHeight: '100vh' }}
+        >
           {currentLocation !== '/login' &&
           currentLocation !== '/register' &&
           currentLocation !== '/restablecer-contrasena' ? (
