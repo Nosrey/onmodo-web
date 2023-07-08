@@ -69,14 +69,11 @@ function App() {
           <Routes>
             <Route path='/' element={<Placeholder />} />
 
-            {/* <Route path='/home' element={<Home />} /> */}
             <Route path='/registro' element={<Register />} />
 
             <Route path='/inicio-de-sesion' element={<Login />} />
 
             <Route path='/restablecer-contrasena' element={<CrearContraseña />} />
-
-            {/* <Route path='/restablecer-contrasena' element={<RecoverPassword />} /> */}
 
             <Route path='/inicio' element={<Inicio />} />
 
