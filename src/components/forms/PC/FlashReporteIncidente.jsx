@@ -100,7 +100,7 @@ function FlashReporteIncidente() {
                 </div>
 
                 <div className="btn">
-                    <Button onClick={()=>{dispatch(reporteIncidentesActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                    <Button onClick={()=>{dispatch(reporteIncidentesActions.logIn(values))}} variant="contained">Guardar</Button>
                 </div>
 
             </div>

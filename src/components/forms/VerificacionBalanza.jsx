@@ -140,7 +140,7 @@ function VerificacionBalanza() {
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        dispatch(verificacionBalanzaActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                        dispatch(verificacionBalanzaActions.logIn(values))}} variant="contained">Guardar</Button>
                 </div>
 
             </div>

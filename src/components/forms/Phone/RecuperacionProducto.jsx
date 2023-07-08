@@ -51,7 +51,7 @@ function RecuperacionProducto() {
 
                 <div className="btn">
                     <Button onClick={()=>{
-                        dispatch(recuperacionProductoActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                        dispatch(recuperacionProductoActions.logIn(values))}} variant="contained">Guardar</Button>
 
                 </div>
 

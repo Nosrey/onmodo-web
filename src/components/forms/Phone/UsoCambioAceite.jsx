@@ -372,7 +372,7 @@ function UsoCambioAceite() {
                 <div className="btn">
                     <Button onClick={(e)=>{
                         dispatch(cambioAceiteActions.logIn(values))
-                    }} variant="contained">Generar PDF</Button>
+                    }} variant="contained">Guardar</Button>
 
                 </div>
 

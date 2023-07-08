@@ -108,7 +108,7 @@ function AlergenosComida() {
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        dispatch(controlComensalesActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                        dispatch(controlComensalesActions.logIn(values))}} variant="contained">Guardar</Button>
                 </div>
 
             </div>

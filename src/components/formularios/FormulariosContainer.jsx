@@ -1,119 +1,69 @@
 import React from 'react';
 import styles from './Formularios.module.css';
 import Card from '../card/Card';
-import { useState } from 'react';
+import { useState , useEffect} from 'react';
 
 function FormulariosContainer() {
   const [sortedForms, setSortedForms] = useState([]);
+  const myRol = localStorage.getItem("rol")
 
   let forms = [
     {
-      title: 'Registros de decomisos de materias primas',
-      link: '',
+      title: 'Entrega de ropa de trabajo y EPP',
+      link: '/ropa-de-trabajo',
+      rol:'superior'
     },
     {
-      title: 'Reporte de Rechazo/Devolución de Materias Primas',
-      link: '',
+      title: 'Control de comensales con dietas Especiales',
+      link: '/dietas-especiales',
+      rol:'superior'
     },
     {
-      title: 'Verificación de balanzas',
-      link: '',
+      title: 'Entrega de bidones de aceite usado',
+      link: '/bidones-de-aceite',
+      rol:'superior'
     },
     {
-      title: 'Verificación de termómetros',
-      link: '',
+      title: 'Flash reporte de incidentes',
+      link: '/reporte-incidente',
+      rol:'superior'
     },
-    // {
-    //   title: 'Control de comensales con dietas especiales',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Constancia de Entrega de Ropa de Trabajo y de E.P.P',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Circuito de Aceite Usado',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Flash Reporte de Incidente',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Informe Interno de Accidente',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Registro de Capacitación',
-    //   link: '',
-    // },
-
-    // {
-    //   title: 'Registro de Simulacro',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Control de cloro activo residual',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Control de Vidrios',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Despacho a Producción',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Recuperación de Producto',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Armado/Fraccionamiento',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Control de Equipos de Frío',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Servicio en Línea',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Distribución/Expedición',
-    //   link: '',
-    // },
-
-    // {
-    //   title: 'Recepción',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Descongelamiento',
-    //   link: '',
-    // },
-
-    // {
-    //   title: 'Control de Procesos',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Carga/ Recepción',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Sanitización',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Uso y Cambio de Aceite de Freidora',
-    //   link: '',
-    // },
-    // {
-    //   title: 'Chequeo de uso E.P.P',
-    //   link: '',
-    // },
+    {
+      title: 'Informe interno de accidente',
+      link: '/informe-accidente',
+      rol:'superior'
+    },
+    {
+      title: 'Registro de Capacitación',
+      link: '/registro-de-capacitacion',
+      rol:'superior'
+    },
+    {
+      title: 'Decomiso de materias primas',
+      link: '/registro-decomisos-mp',
+      rol:'all'
+    },
+    {
+      title: 'Registro de Simulacro',
+      link: '/registro-simulacro',
+      rol:'superior'
+    },
+    {
+      title: 'Rechazo-devolución de mat primas',
+      link: '/rechazo-mp',
+      rol:'all'
+    },
+    {
+      title: 'Verificación Balanzas',
+      link: '/verificacion-balanza',
+      rol:'all'
+    },
+    {
+      title: 'Verificación Termómetros',
+      link: '/verificacion-termometro',
+      rol:'all'
+    },
+   
   ];
 
   const handleSortChange = (event) => {
@@ -126,6 +76,13 @@ function FormulariosContainer() {
       setSortedForms(sorted);
     }
   };
+
+  useEffect(() => {
+    if (myRol !== "1") {
+     setSortedForms(() => [... forms.filter((item) => item.rol === "superior")])
+    }
+  }, [])
+  
 
   return (
     <div className={styles.container}>

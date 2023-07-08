@@ -181,7 +181,7 @@ function ConstanciaEntrega() {
                 <div className="btn">
                     <Button onClick={()=>{
                         dispatch(constanciaEntregaActions.logIn(values))
-                    }} variant="contained">Generar PDF</Button>
+                    }} variant="contained">Guardar</Button>
 
                 </div>
 

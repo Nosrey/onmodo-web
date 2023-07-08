@@ -146,7 +146,7 @@ function ServiciosEnLinea() {
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        dispatch(serviciosLineaActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                        dispatch(serviciosLineaActions.logIn(values))}} variant="contained">Guardar</Button>
                 </div>
 
             </div>

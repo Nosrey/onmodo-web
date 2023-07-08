@@ -145,7 +145,7 @@ function PlanillaDeArmadoFraccionamiento() {
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        dispatch(armadoFraccionamientoActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                        dispatch(armadoFraccionamientoActions.logIn(values))}} variant="contained">Guardar</Button>
                 </div>
                 </div>
             <div>

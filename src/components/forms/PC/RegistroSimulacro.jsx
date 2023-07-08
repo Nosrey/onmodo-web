@@ -134,7 +134,7 @@ function RegistroSimulacro() {
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        console.log(values)}} variant="contained">Generar PDF</Button>
+                        console.log(values)}} variant="contained">Guardar</Button>
 
                 </div>
 
