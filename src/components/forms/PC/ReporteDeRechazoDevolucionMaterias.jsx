@@ -466,7 +466,7 @@ const checkboxValuesConstructor = (index,value)=>{
            onClick={()=>{
             dispatch(reporteRechazoActions.logIn(values))
            }} 
-           variant="contained">Generar PDF</Button>
+           variant="contained">Guardar</Button>
         </div>
       </div>
       <div></div>

@@ -87,12 +87,12 @@ body {
 .titleContainer {
   height: 45px;
   border-radius: 4px;
-  background-color: #abc9f571;
+  background-color: #c5f46e71;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-inline: 20px;
-  margin-bottom: 18px;
+  margin-bottom: 48px;
 }
 
 .title {
@@ -126,10 +126,12 @@ body {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  padding-bottom: 300px;
+  padding-top:60px;
 }
 
 .table {
-  width: 75vw;
+  width: 87vw;
   box-shadow: inset -7px 0 9px -7px rgba(117, 114, 114, 0.4);
   overflow-x: scroll;
   margin-bottom: 100px;
@@ -146,7 +148,7 @@ body {
   overflow-x: scroll;
 }
 .input {
-  width: 130px;
+  width: 170px;
 }
 
 .tableRow {
@@ -204,4 +206,12 @@ body {
 .cont-btn {
   display: flex;
   justify-content: end;
+}
+
+.css-sghohy-MuiButtonBase-root-MuiButton-root {
+  background-color: #90C057!important;
+}
+
+.css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked {
+  color: #90C057!important;
 }

@@ -134,7 +134,7 @@ function ControlDeCloro() {
 
                 <div className="btn">
                     <Button onClick={()=>{
-                        dispatch(controlCloroActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                        dispatch(controlCloroActions.logIn(values))}} variant="contained">Guardar</Button>
                 </div>
 
             </div>

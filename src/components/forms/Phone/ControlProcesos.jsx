@@ -180,7 +180,7 @@ function ControlProcesos() {
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        dispatch(controlProcesosActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                        dispatch(controlProcesosActions.logIn(values))}} variant="contained">Guardar</Button>
                 </div>
 
             </div>

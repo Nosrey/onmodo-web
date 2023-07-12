@@ -110,7 +110,7 @@ function DespachoProduccion() {
                 
                 <div className="btn">
                     <Button onClick={()=>{
-                        dispatch(despachoProduccionActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                        dispatch(despachoProduccionActions.logIn(values))}} variant="contained">Guardar</Button>
 
                 </div>
 

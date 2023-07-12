@@ -143,7 +143,7 @@ function DistribucionExpedicion() {
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        dispatch(distribucionExpedicionActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                        dispatch(distribucionExpedicionActions.logIn(values))}} variant="contained">Guardar</Button>
                 </div>
 
             </div>

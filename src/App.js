@@ -72,14 +72,11 @@ function App() {
           <Route path="/" element={<Navigate to={isLoggedIn ? '/inicio' : '/inicio-de-sesion'} />} />
 
 
-            {/* <Route path='/home' element={<Home />} /> */}
             <Route path='/registro' element={<Register />} />
 
             <Route path='/inicio-de-sesion' element={<Login />} />
 
-            <Route path='/crear-contraseña' element={<CrearContraseña />} />
-
-            <Route path='/restablecer-contrasena' element={<RecoverPassword />} />
+            <Route path='/restablecer-contrasena' element={<CrearContraseña />} />
 
             <Route path='/inicio' element={<Inicio />} />
 
@@ -123,7 +120,13 @@ function App() {
             {/* <Route path='/admin' element={<Admin/>}>
               </Route> */}
           </Routes>
-          <Footer />
+          {currentLocation !== '/inicio-de-sesion' &&
+          currentLocation !== '/crear-contraseña' &&
+          currentLocation !== '/registro' &&
+          currentLocation !== '/restablecer-contrasena' ? (
+            <Footer />
+          ) : null}
+          
         </div>
         {/* </div> */}
       </>

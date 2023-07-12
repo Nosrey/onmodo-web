@@ -108,7 +108,7 @@ function RegistroDeDecomiso() {
 
                 <div className="btn">
                     <Button onClick={()=>{
-                        dispatch(registroDecomisosActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                        dispatch(registroDecomisosActions.logIn(values))}} variant="contained">Guardar</Button>
                 </div>
 
             </div>

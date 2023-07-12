@@ -153,7 +153,7 @@ function Recepcion() {
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        dispatch(recepcionActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                        dispatch(recepcionActions.logIn(values))}} variant="contained">Guardar</Button>
                 </div>
 
             </div>

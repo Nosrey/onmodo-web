@@ -243,7 +243,7 @@ function VerificacionTermometros() {
                 <div className="btn">
                     <Button onClick={()=>{
                         dispatch(verificacionTermometrosActions.logIn(values))
-                    }} variant="contained">Generar PDF</Button>
+                    }} variant="contained">Guardar</Button>
                 </div>
 
             </div>

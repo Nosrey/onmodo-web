@@ -80,7 +80,7 @@ function SaludManipuladores() {
 
                  
                 <div className="btn">
-                    <Button variant="contained">Generar PDF</Button>
+                    <Button variant="contained">Guardar</Button>
                 </div>
 
             </div>

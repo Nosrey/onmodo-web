@@ -217,7 +217,7 @@ function ControlEquiposDeFrio() {
                 <div className="btn">
                     <Button onClick={()=>{
                         dispatch(equiposFrioActions.logIn(values))
-                    }} variant="contained">Generar PDF</Button>
+                    }} variant="contained">Guardar</Button>
                 </div>
 
             </div>

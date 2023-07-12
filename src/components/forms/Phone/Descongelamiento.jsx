@@ -157,7 +157,7 @@ function Descongelamiento() {
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        dispatch(descongelamientoActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                        dispatch(descongelamientoActions.logIn(values))}} variant="contained">Guardar</Button>
                 </div>
 
             </div>

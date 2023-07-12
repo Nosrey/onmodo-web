@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from './Login.module.css';
 import logo from '../../assets/image/on-modo-grande.png';
 import { Link, useNavigate } from 'react-router-dom';
+import { login } from '../../services/Request';
 
 function Login() {
   const [iconPassword, setIconPassword] = useState(false);
@@ -10,6 +11,7 @@ function Login() {
   const [buttonColor, setButtonColor] = useState('#a0b875');
   const [validateBtn, setValidateBtn] = useState(true);
   const [btnPassword, setBtnPassword] = useState(false);
+  const [invalidCredentials, setInvalidCredentials] = useState(false);
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     legajo: '',
@@ -57,9 +59,23 @@ function Login() {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
-      setErrors({});
-      resetForm();
-      navigate('/inicio');
+      const data = {
+        legajo: inputValue.legajo,
+        password: inputValue.contraseña
+      }
+      login(data).then((resp) => {
+        if (resp.success) {
+          setErrors({});
+          resetForm();
+          localStorage.setItem("rol", resp.response.rol);
+          localStorage.setItem("business", resp.response.business);
+          localStorage.setItem("idChief", resp.response.idChief);
+          navigate('/inicio');
+        } else {
+          setInvalidCredentials(true)   
+        }
+      })
+  
     }
   };
 
@@ -114,6 +130,7 @@ function Login() {
                 )}
               </div>
               {errors.contraseña && <p className='danger'>{errors.contraseña}</p>}
+              {invalidCredentials && <p className='danger'>Credenciales incorrectas</p>}
             </div>
             <div className={styles.buttonContainer}>
               <button

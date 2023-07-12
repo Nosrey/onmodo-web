@@ -551,7 +551,7 @@ function EPP() {
                 <div className="btn">
                     <Button onClick={()=>{
                         dispatch(eppActions.logIn(values))
-                    }} variant="contained">Generar PDF</Button>
+                    }} variant="contained">Guardar</Button>
 
                 </div>
 

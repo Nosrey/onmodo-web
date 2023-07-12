@@ -150,7 +150,7 @@ function Sanitizacion() {
                 </div>
                 <div className="btn">
                     <Button onClick={()=>{
-                        dispatch(sanitizacionActions.logIn(values))}} variant="contained">Generar PDF</Button>
+                        dispatch(sanitizacionActions.logIn(values))}} variant="contained">Guardar</Button>
                 </div>
             </div>
         </div>
