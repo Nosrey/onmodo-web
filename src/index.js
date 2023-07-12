@@ -9,8 +9,9 @@ import thunk from 'redux-thunk';
 import rootReducer from './redux/reducers/rootReducer';
 import 'remixicon/fonts/remixicon.css';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

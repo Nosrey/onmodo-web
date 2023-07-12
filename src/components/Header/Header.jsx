@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Header.module.css';
 import logo from '../../assets/image/on-modo-logo.png';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 function Header() {
   const location = useLocation();
@@ -24,12 +24,20 @@ function Header() {
               <input className={styles.search} type='search' placeholder='¿Qué estás buscando?' />
               <i
                 style={{ position: 'absolute', left: '20px', bottom: '7px', color: '#959595' }}
-                class='ri-search-line'
+                className='ri-search-line'
               ></i>
             </div>
           )}
         </div>
-        <div className={styles.rightContainer}>Inicio |</div>
+        <div className={styles.rightContainer}>
+          <Link to="/inicio">Inicio</Link> |
+
+          <i
+            style={{ marginLeft: '10px',  cursor: 'pointer', position: "absolute",  transform: 'rotateY(180deg)' }}
+            className="ri-logout-box-line"
+            title="Cerrar sesión"
+          ></i>
+        </div>
       </div>
     </div>
   );
