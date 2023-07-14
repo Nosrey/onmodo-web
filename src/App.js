@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import './index.css';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
@@ -45,7 +45,8 @@ import CrearContraseña from './components/CrearContraseña/CrearContraseña';
 
 function App() {
   const location = useLocation();
-  const currentLocation = location.pathname;
+  const currentLocation = location?.pathname;
+  const isLoggedIn = !!localStorage.getItem('token')
   return (
     <div className='App'>
       <>
@@ -63,20 +64,19 @@ function App() {
           {currentLocation !== '/inicio-de-sesion' &&
           currentLocation !== '/crear-contraseña' &&
           currentLocation !== '/registro' &&
+          currentLocation !== '/inicio' &&
           currentLocation !== '/restablecer-contrasena' ? (
             <Header />
           ) : null}
           <Routes>
-            <Route path='/' element={<Placeholder />} />
+          <Route path="/" element={<Navigate to={isLoggedIn ? '/inicio' : '/inicio-de-sesion'} />} />
 
-            {/* <Route path='/home' element={<Home />} /> */}
+
             <Route path='/registro' element={<Register />} />
 
             <Route path='/inicio-de-sesion' element={<Login />} />
 
             <Route path='/restablecer-contrasena' element={<CrearContraseña />} />
-
-            {/* <Route path='/restablecer-contrasena' element={<RecoverPassword />} /> */}
 
             <Route path='/inicio' element={<Inicio />} />
 
