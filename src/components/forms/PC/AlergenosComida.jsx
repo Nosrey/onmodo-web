@@ -36,9 +36,11 @@ function AlergenosComida() {
             setInputValues([...inputValues,objValues])
         }
     },[trigger])
+
     useEffect(()=>{
         setValues({...values,inputs:inputValues})
     },[inputValues])
+    
     useEffect(()=>{
         if (objValues.fecha !== "" && objValues.nombre !== "" && objValues.diagnostico !== "" && objValues.listado !== "" && objValues.responsable !== ""){
             setTrigger(true)
