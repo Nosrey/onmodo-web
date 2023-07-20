@@ -2,6 +2,7 @@ import React from 'react';
 import Card from '../card/Card';
 import { useState } from 'react';
 import styles from './FormulariosCargados.module.css';
+import axios from 'axios';
 
 function FormulariosCargados() {
   const [sortedForms, setSortedForms] = useState([]);
@@ -25,6 +26,7 @@ function FormulariosCargados() {
     },
   ];
 
+  var idUser = localStorage.getItem("idUser");
   const handleSortChange = (event) => {
     const value = event.target.value;
     if (value === 'A-Z') {
@@ -35,6 +37,35 @@ function FormulariosCargados() {
       setSortedForms(sorted);
     }
   };
+  
+  const handleButtonClick =async () => {
+    let formss = await axios.get(`http://localhost:4000/api/business/${idUser}`)
+
+
+    console.log("Valor de idUser:", idUser);
+
+    console.log("Valor de forms:", formss.data.response[0]);
+    console.log(date)
+    filterArrays(date)
+  };
+  const date = axios.get(`http://localhost:4000/api/business/${idUser}`).then((response) => response.data.response[0]);
+
+  const filterArrays = (obj) => {
+  for (const key in obj) {
+    if (Array.isArray(obj[key]) && obj[key].length > 0) {
+      console.log(`${key}:`, obj[key]);
+    }
+  }
+};
+  
+  // Usage
+
+  const hola = filterArrays(date)
+  
+  console.log(hola);
+
+  
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -46,6 +77,9 @@ function FormulariosCargados() {
             <option value='Últimos utilizados'>Últimos utilizados</option>
             <option value='Z-A'>Fecha de modificación</option>
           </select>
+          <button onClick={handleButtonClick}>
+      Presiona para obtener formularios cargados
+    </button>
         </div>
         <div className={styles.cardContainer}>
           {sortedForms.length > 0

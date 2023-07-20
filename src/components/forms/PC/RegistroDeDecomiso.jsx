@@ -4,10 +4,12 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './RegistroDeDecomiso.module.css'
 import { useSelector,useDispatch } from 'react-redux';
 import registroDecomisosActions from '../../../redux/actions/registroDecomisosActions';
+import axios from 'axios';
 
 function RegistroDeDecomiso() {
     const dispatch = useDispatch()
     const prueba = useSelector(state=>state.registroDecomisosR.inputsValues)
+    var idUser = localStorage.getItem("idUser");
     console.log("holi",prueba)
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
@@ -24,7 +26,7 @@ function RegistroDeDecomiso() {
     const [values,setValues] = useState({
         inputs : [{
         }],
-        idUser:"643ea98d5b44dd9765966ae7"
+        idUser: idUser
     })
     const [objValues,setObjValues] = useState({fecha:"",turno:"",productoDecomisado:"",cantidad:"",fueraFecha:"",fueraAptitud:"",otrasCausas:"",destinoFinal:"",responsable:""})
     const [inputValues,setInputValues]= useState([])
@@ -107,8 +109,9 @@ function RegistroDeDecomiso() {
                 
 
                 <div className="btn">
-                    <Button onClick={()=>{
-                        dispatch(registroDecomisosActions.logIn(values))}} variant="contained">Guardar</Button>
+                    <Button onClick={async()=>{
+                         await axios.post('http://localhost:4000/api/registrodecomiso', values)
+                       }} variant="contained">Guardar</Button>
                 </div>
 
             </div>

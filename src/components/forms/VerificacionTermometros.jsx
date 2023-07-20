@@ -6,11 +6,13 @@ import Termometros from '../modales/Termometros';
 import Modal from '../shared/Modal';
 import { useSelector,useDispatch } from 'react-redux';
 import verificacionTermometrosActions from '../../redux/actions/verificacionTermometrosActions';
+import axios from 'axios';
 
 function VerificacionTermometros() {
     const dispatch = useDispatch()
     const prueba = useSelector(state=>state.verificacionTermometrosR.inputValues)
     console.log("holi",prueba)
+    var idUser = localStorage.getItem("idUser");
     const [values,setValues] = useState({
         fecha:"",
         responsable:"",
@@ -21,7 +23,7 @@ function VerificacionTermometros() {
         verified: "",
         fechaHora:"",
         date: "",
-        idUser:"643ea98d5b44dd9765966ae7"
+        idUser: idUser
     })
     const [inputs] = useState([
         { id: 1, label: 'Código' },
@@ -241,8 +243,8 @@ function VerificacionTermometros() {
                 <span><b>*</b> PIN(Termómetro de pinche) - IR (Termómetro infrarrojo)</span>
 
                 <div className="btn">
-                    <Button onClick={()=>{
-                        dispatch(verificacionTermometrosActions.logIn(values))
+                    <Button onClick={async()=>{
+                         await axios.post('http://localhost:4000/api/verificaciontermometros', values); console.log(values)
                     }} variant="contained">Guardar</Button>
                 </div>
 

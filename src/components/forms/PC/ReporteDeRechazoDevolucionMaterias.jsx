@@ -5,6 +5,7 @@ import Modal from '../../shared/Modal';
 import RechazoInfo from "../../modales/RechazoInfo";
 import { useDispatch,useSelector } from "react-redux";
 import reporteRechazoActions from "../../../redux/actions/reporteRechazoActions";
+import axios from "axios";
 
 function ReporteDeRechazoDevolucionMaterias() {
   const dispatch = useDispatch()
@@ -58,6 +59,7 @@ function ReporteDeRechazoDevolucionMaterias() {
     },
   ]);
   const [replicas] = useState(1);
+  var idUser = localStorage.getItem("idUser");
   const [values,setValues] = useState({
     dia:"",
     proveedor:"",
@@ -76,7 +78,7 @@ function ReporteDeRechazoDevolucionMaterias() {
     nombreAdministrador: "",
     nombreProveedor:"",
     date: "",
-    idUser:"643ea98d5b44dd9765966ae7"
+    idUser: idUser
 })
 const [condicionesValues,setCondicionesValues] = useState([
   {adelantadoCheck:false,adelantadoDescription:""},
@@ -328,13 +330,14 @@ const checkboxValuesConstructor = (index,value)=>{
 
         <div className="tableSection">
           <div className={styles.personal}>
-            <TextField 
-              onChange = {(e)=>{
-                setValues({...values,dia:e.target.value})
-              }}
-              id="outlined-basic" 
-              label="DÍA" 
-              variant="outlined" />
+          <input
+  onChange={(e) => { setValues({ ...values, dia: e.target.value }) }}
+  type="date"
+  id="fecha"
+  name="fecha"
+  required
+/>
+
             <TextField
               onChange = {(e)=>{
                 setValues({...values,proveedor:e.target.value})
@@ -463,8 +466,8 @@ const checkboxValuesConstructor = (index,value)=>{
         </div>
         <div className="btn">
           <Button
-           onClick={()=>{
-            dispatch(reporteRechazoActions.logIn(values))
+           onClick={async()=>{
+            await axios.post('http://localhost:4000/api/reporterechazo', values)
            }} 
            variant="contained">Guardar</Button>
         </div>
