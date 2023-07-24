@@ -7,6 +7,32 @@ import axios from 'axios';
 
 function InformeInternoAccidente() {
     const dispatch = useDispatch()
+    function resetFormState() {
+        const idUser = localStorage.getItem("idUser");
+        setValues({
+          comedor: "",
+          fecha: "",
+          tipo: "",
+          checkboxes: [{}],
+          nombreApellido: "",
+          cuil: "",
+          fechaIngreso: "",
+          puesto: "",
+          hora: "",
+          lugar: "",
+          descripcion: "",
+          checkboxesAccidente: [{}],
+          lugarLesion: "",
+          medidas: "",
+          razon: "",
+          firmaEmpleado: "",
+          firmaAdm: "",
+          encargado: "",
+          date: "",
+          idUser: idUser,
+        });
+      }
+      
     const prueba = useSelector(state => state.informeAccidenteR.inputsValues)
     console.log(prueba)
     const [showTextField1, setShowTextField1] = useState(false);
@@ -264,7 +290,9 @@ function InformeInternoAccidente() {
 
                 <div className="btn">
                     <Button onClick={async() => {
-                         await axios.post('http://localhost:4000/api/informeintaccidente', values)
+                         await axios.post('http://localhost:4000/api/informeintaccidente', values);
+                         setValues({});
+                         window.location.reload()
                     }} variant="contained">Guardar</Button>
 
                 </div>

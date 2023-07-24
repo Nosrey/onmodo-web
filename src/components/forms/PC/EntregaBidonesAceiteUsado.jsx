@@ -18,7 +18,6 @@ function EntregaBidonesAceiteUsado({ idUser }) {
     const [replicas, setReplicas] = useState(1);
     const [values, setValues] = useState({
         inputsValues: [{}],
-        
         idUser: idUser
     });
     const [replicaValues, setReplicaValues] = useState([{}]);

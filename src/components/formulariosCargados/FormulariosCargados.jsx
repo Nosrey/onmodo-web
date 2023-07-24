@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Card from '../card/Card';
 import { useState } from 'react';
 import styles from './FormulariosCargados.module.css';
@@ -6,25 +6,32 @@ import axios from 'axios';
 
 function FormulariosCargados() {
   const [sortedForms, setSortedForms] = useState([]);
+  const [reload, setReload] = useState(true);
+  // // // [
+  // // //   {
+  // // //     title: 'Registros de decomisos de materias primas',
+  // // //     link: '',
+  // // //   },
+  // // //   {
+  // // //     title: 'Reporte de Rechazo/Devolución de Materias Primas',
+  // // //     link: '',
+  // // //   },
+  // // //   {
+  // // //     title: 'Verificación de balanzas',
+  // // //     link: '',
+  // // //   },
+  // // //   {
+  // // //     title: 'Verificación de termómetros',
+  // // //     link: '',
+  // // //   },
+  // // // ];
 
-  let forms = [
-    {
-      title: 'Registros de decomisos de materias primas',
-      link: '',
-    },
-    {
-      title: 'Reporte de Rechazo/Devolución de Materias Primas',
-      link: '',
-    },
-    {
-      title: 'Verificación de balanzas',
-      link: '',
-    },
-    {
-      title: 'Verificación de termómetros',
-      link: '',
-    },
-  ];
+  let forms = []
+  function transformarArrayForms(forms) {
+    return forms.map(form => ({ title: form, link: '' }));
+  }
+
+
 
   var idUser = localStorage.getItem("idUser");
   const handleSortChange = (event) => {
@@ -37,34 +44,81 @@ function FormulariosCargados() {
       setSortedForms(sorted);
     }
   };
-  
-  const handleButtonClick =async () => {
-    let formss = await axios.get(`http://localhost:4000/api/business/${idUser}`)
 
 
-    console.log("Valor de idUser:", idUser);
-
-    console.log("Valor de forms:", formss.data.response[0]);
-    console.log(date)
-    filterArrays(date)
-  };
-  const date = axios.get(`http://localhost:4000/api/business/${idUser}`).then((response) => response.data.response[0]);
-
-  const filterArrays = (obj) => {
-  for (const key in obj) {
-    if (Array.isArray(obj[key]) && obj[key].length > 0) {
-      console.log(`${key}:`, obj[key]);
+  function obtenerNombresPropiedadesConArraysNoVacios(objeto) {
+    const nombresPropiedades = [];
+    for (const clave in objeto) {
+      if (Array.isArray(objeto[clave]) && objeto[clave].length > 0) {
+        nombresPropiedades.push(clave);
+      }
     }
+    return nombresPropiedades;
   }
-};
-  
-  // Usage
+  const handleButtonClick =async () => {
 
-  const hola = filterArrays(date)
-  
-  console.log(hola);
+console.log("forms", forms) // obtengo los nombres
 
+  };
+
+
+useEffect(() => {
+  fetchData()
+}, [forms])
+
+
+  function filtrarObjetoPorObjetos(objeto) {
+    const resultado = {};
+    for (const clave in objeto) {
+      if (typeof objeto[clave] === 'object' && objeto[clave] !== null ) {
+        resultado[clave] = objeto[clave];
+      }
+    }
+    return resultado;
+  }
+  function filtrarObjetoPorArraysNoVacios(objeto) {
+    const resultado = {};
+    for (const clave in objeto) {
+      if (Array.isArray(objeto[clave]) && objeto[clave].length > 0) {
+        resultado[clave] = objeto[clave];
+      }
+    }
+    return resultado;
+  }
   
+
+async function fetchData() {
+  try {
+    const response = await axios.get(`http://localhost:4000/api/business/${idUser}`);
+    const datae = response.data.response[0];
+    const dataaa = [datae][0]
+    const datita = filtrarObjetoPorObjetos(dataaa)
+
+    const data2 = filtrarObjetoPorArraysNoVacios(datita)
+
+    const data3 = obtenerNombresPropiedadesConArraysNoVacios(data2)
+
+ 
+    const arrayFinal = transformarArrayForms(data3)
+    transformarArrayForms(data3)
+    setReload(false)
+    console.log("final", arrayFinal)
+
+    return forms = arrayFinal;
+  } catch (error) {
+    console.error('Error:', error);
+
+    return null;
+  }
+}
+
+
+
+
+
+
+
+
 
   return (
     <div className={styles.container}>
