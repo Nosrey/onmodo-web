@@ -4,11 +4,13 @@ import styles from './RegistroCapacitacion.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { useDispatch, useSelector } from 'react-redux';
 import registroCapacitacionActions from '../../../redux/actions/registroCapacitacionActions';
+import axios from 'axios';
 
 function RegistroCapacitacion() {
     const dispatch = useDispatch()
     const prueba = useSelector(state => state.registroCapacitacionR.inputsValues)
     console.log("holi", prueba)
+    var idUser = localStorage.getItem("idUser");
     const [inputs] = useState([
         { id: 1, label: 'DNI' },
         { id: 2, label: 'Nombre y Apellido' },
@@ -35,7 +37,7 @@ function RegistroCapacitacion() {
         cargo: "",
         firma: "",
         date: "",
-        idUser: "643ea98d5b44dd9765966ae7",
+        idUser: idUser,
         metodo:""
 
     })
@@ -171,7 +173,13 @@ function RegistroCapacitacion() {
                         label="Fecha"
                         variant="outlined"
                     />
-                    <TextField onChange={(e) => { setValues({ ...values, tiempoDuracion: e.target.value }) }} id="outlined-basic" label="Tiempo de duración" variant="outlined" />
+                  <input
+  onChange={(e) => { setValues({ ...values, tiempoDuracion: e.target.value }) }}
+  type="time"
+  id="tiempo-duracion"
+  name="tiempo-duracion"
+/>
+
                 </div>
 
                 <h4>Tipo de capacitación </h4>
@@ -321,8 +329,8 @@ function RegistroCapacitacion() {
                 </div>
 
                 <div className="btn">
-                    <Button onClick={() => {
-                        dispatch(registroCapacitacionActions.logIn(values))
+                    <Button onClick={async() => {
+                        await axios.post('http://localhost:4000/api/registrocapacitacion', values)
                     }} variant="contained">Guardar</Button>
 
                 </div>

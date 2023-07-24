@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react'
 import styles from './FlashReporteIncidente.module.css'
 import { useSelector,useDispatch } from 'react-redux'
 import reporteIncidentesActions from '../../../redux/actions/reporteIncidentesActions'
+import axios from 'axios'
 
 function FlashReporteIncidente() {
     const dispatch = useDispatch()
     const prueba = useSelector(state=>state.reporteIncidentesR.inputsValues)
+    var idUser = localStorage.getItem("idUser");
     const [values,setValues] = useState({
        alcance:"",
        linea:"",
@@ -25,7 +27,7 @@ function FlashReporteIncidente() {
        firmaSupervisor:"",
        nombreGerente:"",
        firmaGerente:"",
-       idUser:"643ea98d5b44dd9765966ae7"
+       idUser: idUser
     })
 
     return (
@@ -39,8 +41,20 @@ function FlashReporteIncidente() {
                 <div className={styles.personal}>
                     <TextField onChange={(e)=>{setValues({...values,alcance:e.target.value})}} id="outlined-basic" label="Alcance" variant="outlined" />
                     <TextField onChange={(e)=>{setValues({...values,linea:e.target.value})}} id="outlined-basic" label="Línea de negocios" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha del Incidente" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,hora:e.target.value})}} id="outlined-basic" label="Hora del Incidente" variant="outlined" />
+                    <input
+            type="date"
+            onChange={(e) => {
+              setValues({ ...values, fecha: e.target.value });
+            }}
+            value={values.fecha}
+          />
+          <input
+            type="time"
+            onChange={(e) => {
+              setValues({ ...values, hora: e.target.value });
+            }}
+            value={values.hora}
+          />
                 </div>
                 <div className={styles.personal}>
                     <TextField onChange={(e)=>{setValues({...values,comedor:e.target.value})}} id="outlined-basic" label="Comedor" variant="outlined" />
@@ -100,7 +114,9 @@ function FlashReporteIncidente() {
                 </div>
 
                 <div className="btn">
-                    <Button onClick={()=>{dispatch(reporteIncidentesActions.logIn(values))}} variant="contained">Guardar</Button>
+                    <Button onClick={async()=>{
+                        await axios.post('http://localhost:4000/api/flashincidente', values)
+                    }} variant="contained">Guardar</Button>
                 </div>
 
             </div>
