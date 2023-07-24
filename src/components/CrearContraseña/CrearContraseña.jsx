@@ -29,16 +29,20 @@ function CrearContraseña() {
     setInputValue({ ...inputValue, contraseña: '', contraseñarep: '' });
   };
 
-  const validate = (inputValue) => {
-    let errors = {};
-    if (!inputValue.contraseña) errors.contraseña = 'Este campo no puede estar vacío';
-    if (!inputValue.contraseñarep) errors.contraseñarep = 'Las contraseñas deben coincidir';
-    return errors;
-  };
+ const validate = (inputValue) => {
+  let errors = {};
+  if (!inputValue.contraseña) errors.contraseña = 'Este campo no puede estar vacío';
+  if (!inputValue.contraseñarep) errors.contraseñarep = 'Las contraseñas deben coincidir';
+  if (inputValue.contraseña !== inputValue.contraseñarep) 
+    errors.contraseña = 'Las contraseñas deben coincidir';
+  console.log(errors)
+  return errors;
+};
 
-  const handleChange = (e) => {
-    setInputValue({ ...inputValue, [e.target.name]: e.target.value });
-  };
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  setInputValue((prevState) => ({ ...prevState, [name]: value }));
+};
 
   useEffect(() => {
     const validationErrors = validate(inputValue);
@@ -129,7 +133,7 @@ function CrearContraseña() {
             </div>
             <div className={styles.buttonContainer}>
               <button
-                disabled={validateBtn}
+                
                 className={styles.btn}
                 type='submit'
                 style={{ backgroundColor: buttonColor }}
