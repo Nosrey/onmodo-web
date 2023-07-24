@@ -6,6 +6,7 @@ import Modal from '../shared/Modal';
 import Balanzas from '../modales/Balanzas';
 import verificacionBalanzaActions from '../../redux/actions/verificacionBalanzaActions';
 import { useSelector,useDispatch } from 'react-redux';
+import axios from 'axios';
 
 function VerificacionBalanza() {
     const dispatch = useDispatch()
@@ -23,6 +24,7 @@ function VerificacionBalanza() {
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
+    var idUser = localStorage.getItem("idUser");
     const [values,setValues] = useState({
         fecha:"",
         responsable:"",
@@ -31,7 +33,7 @@ function VerificacionBalanza() {
         }],
         verified: "",
         fechaHora: "",
-        idUser:"643ea98d5b44dd9765966ae7"
+        idUser: idUser
     })
     const [objValues,setObjValues] = useState({codigo:"",tipo:"",responsableUso:"",area:"",pesoMasa:"",pesoReal:"",desvio:"",accionesCorrecion:""})
     const [inputValues,setInputValues]= useState([])
@@ -93,7 +95,14 @@ function VerificacionBalanza() {
                     )
                 }
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
+                <input
+  onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
+  type="date"
+  id="fecha"
+  name="fecha"
+  required
+/>
+
                     <TextField onChange={(e)=>{setValues({...values,responsable:e.target.value})}} id="outlined-basic" label="Responsable de validación" variant="outlined" />
                     <TextField onChange={(e)=>{setValues({...values,balanza:e.target.value})}} id="outlined-basic" label="Balanza/Báscula" variant="outlined" />
 
@@ -139,8 +148,8 @@ function VerificacionBalanza() {
                     <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button onClick={()=>{
-                        dispatch(verificacionBalanzaActions.logIn(values))}} variant="contained">Guardar</Button>
+                    <Button onClick={async()=>{
+                         await axios.post('http://localhost:4000/api/verificacionbalanza', values)}} variant="contained">Guardar</Button>
                 </div>
 
             </div>

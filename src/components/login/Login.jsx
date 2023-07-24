@@ -70,6 +70,7 @@ function Login() {
           localStorage.setItem("rol", resp.response.rol);
           localStorage.setItem("business", resp.response.business);
           localStorage.setItem("idChief", resp.response.idChief);
+          localStorage.setItem("idUser", resp.response.id);
           navigate('/inicio');
         } else {
           setInvalidCredentials(true)   

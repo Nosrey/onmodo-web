@@ -46,7 +46,7 @@ import CrearContraseña from './components/CrearContraseña/CrearContraseña';
 function App() {
   const location = useLocation();
   const currentLocation = location?.pathname;
-  const isLoggedIn = !!localStorage.getItem('token')
+  const isLoggedIn = !!localStorage.getItem('rol')
   return (
     <div className='App'>
       <>

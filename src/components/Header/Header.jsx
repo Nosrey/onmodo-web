@@ -2,12 +2,14 @@ import React from 'react';
 import styles from './Header.module.css';
 import logo from '../../assets/image/on-modo-logo.png';
 import { useEffect, useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate,  } from 'react-router-dom';
+
 
 function Header() {
   const location = useLocation();
   const currentLocation = location.pathname;
   const [showSearch, setShowSearch] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (currentLocation === '/cuenta') setShowSearch(false);
@@ -36,6 +38,14 @@ function Header() {
             style={{ marginLeft: '10px',  cursor: 'pointer', position: "absolute",  transform: 'rotateY(180deg)' }}
             className="ri-logout-box-line"
             title="Cerrar sesión"
+            onClick={() => {
+              localStorage.removeItem('token');
+              localStorage.removeItem('rol');
+              localStorage.removeItem('idChief');
+              localStorage.removeItem('business');
+              navigate('/inicio-de-sesion');
+
+            }}
           ></i>
         </div>
       </div>

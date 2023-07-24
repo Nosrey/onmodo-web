@@ -9,11 +9,13 @@ import EppInfo from '../../modales/Epp';
 import Modal from '../../shared/Modal';
 import { useSelector,useDispatch } from 'react-redux';
 import eppActions from '../../../redux/actions/eppActions';
+import axios from 'axios';
 
 function EPP() {
     const dispatch = useDispatch()
     const prueba = useSelector(state=>state.eppR.inputsValues)
     console.log("holi",prueba)
+    var idUserr = localStorage.getItem("idUser");
     const [month, setMonth] = React.useState('');
     const [showModal, setShowModal] = useState(false);
     const [renglones] = useState([
@@ -374,7 +376,7 @@ function EPP() {
         observaciones:"",
         firma:"",
         date: "",
-        idUser:"643ea98d5b44dd9765966ae7"
+        idUser: idUserr
     })
     const checkboxValuesConstructor = (label,value,id)=>{
         if (label === 0){
@@ -549,8 +551,9 @@ function EPP() {
                 </div>
 
                 <div className="btn">
-                    <Button onClick={()=>{
-                        dispatch(eppActions.logIn(values))
+                    <Button onClick={async()=>{
+                       await axios.post('http://localhost:4000/api/entregaropa', values)
+                       console.log(values, idUserr)
                     }} variant="contained">Guardar</Button>
 
                 </div>
