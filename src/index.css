@@ -40,6 +40,10 @@ input.success {
   border: 2px solid var(--verde-principal);
 }
 
+select.danger {
+  border: 2px solid red;
+}
+
 p.danger {
   color: red;
   font-size: 12px;
