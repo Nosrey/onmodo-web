@@ -1,14 +1,12 @@
 import { Button, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import controlComensalesActions from '../../../redux/actions/controlComensalesActions';
 import styles from './AlergenosComida.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import axios from 'axios';
 
 function AlergenosComida() {
-    const dispatch = useDispatch();
     const formValue = useSelector(state => state.comensalesR.inputsValues)
     var idUser = localStorage.getItem("idUser");
     console.log(formValue)

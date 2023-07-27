@@ -65,7 +65,6 @@ function App() {
           {currentLocation !== '/inicio-de-sesion' &&
           currentLocation !== '/crear-contraseña' &&
           currentLocation !== '/registro' &&
-          currentLocation !== '/inicio' &&
           currentLocation !== '/restablecer-contrasena' ? (
             <Header />
           ) : null}
