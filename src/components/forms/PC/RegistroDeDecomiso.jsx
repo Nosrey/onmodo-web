@@ -110,7 +110,7 @@ function RegistroDeDecomiso() {
 
                 <div className="btn">
                     <Button onClick={async()=>{
-                         await axios.post('http://localhost:4000/api/registrodecomiso', values)
+                         await axios.post('https://api.onmodoapp.com/api/registrodecomiso', values)
                        }} variant="contained">Guardar</Button>
                 </div>
 

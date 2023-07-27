@@ -115,7 +115,7 @@ function FlashReporteIncidente() {
 
                 <div className="btn">
                     <Button onClick={async()=>{
-                        await axios.post('http://localhost:4000/api/flashincidente', values)
+                        await axios.post('https://api.onmodoapp.com/api/flashincidente', values)
                     }} variant="contained">Guardar</Button>
                 </div>
 

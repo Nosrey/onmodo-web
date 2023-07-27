@@ -149,7 +149,7 @@ function VerificacionBalanza() {
                 </div>
                 <div className="btn">
                     <Button onClick={async()=>{
-                         await axios.post('http://localhost:4000/api/verificacionbalanza', values)}} variant="contained">Guardar</Button>
+                         await axios.post('https://api.onmodoapp.com/api/verificacionbalanza', values)}} variant="contained">Guardar</Button>
                 </div>
 
             </div>

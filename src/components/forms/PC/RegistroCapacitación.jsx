@@ -330,7 +330,7 @@ function RegistroCapacitacion() {
 
                 <div className="btn">
                     <Button onClick={async() => {
-                        await axios.post('http://localhost:4000/api/registrocapacitacion', values)
+                        await axios.post('https://api.onmodoapp.com/api/registrocapacitacion', values)
                     }} variant="contained">Guardar</Button>
 
                 </div>

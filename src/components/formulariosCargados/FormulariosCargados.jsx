@@ -89,7 +89,7 @@ useEffect(() => {
 
 async function fetchData() {
   try {
-    const response = await axios.get(`http://localhost:4000/api/business/${idUser}`);
+    const response = await axios.get(`https://api.onmodoapp.com/api/business/${idUser}`);
     const datae = response.data.response[0];
     const dataaa = [datae][0]
     const datita = filtrarObjetoPorObjetos(dataaa)

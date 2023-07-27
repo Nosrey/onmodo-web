@@ -24,7 +24,7 @@ function EntregaBidonesAceiteUsado({ idUser }) {
     const [trigger, setTrigger] = useState(false);
 
     const handleButtonClick = async () => {
-        await axios.post(`http://localhost:4000/api/entregabidones`, values);
+        await axios.post(`https://api.onmodoapp.com/api/entregabidones`, values);
         console.log("Valor de idUser:", idUser);
         console.log("Values", values);
     };

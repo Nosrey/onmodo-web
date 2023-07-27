@@ -66,7 +66,7 @@ function AlergenosComida() {
         setReplicas(replicas - 1);
     }
     const handleButtonClick = async () => {
-        await axios.post(`http://localhost:4000/api/controlalergenos`, values);
+        await axios.post(`https://api.onmodoapp.com/api/controlalergenos`, values);
         console.log("Valor de idUser:", idUser);
         console.log("Values", values);
         setInputValues([]);

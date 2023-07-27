@@ -467,7 +467,7 @@ const checkboxValuesConstructor = (index,value)=>{
         <div className="btn">
           <Button
            onClick={async()=>{
-            await axios.post('http://localhost:4000/api/reporterechazo', values)
+            await axios.post('https://api.onmodoapp.com/api/reporterechazo', values)
            }} 
            variant="contained">Guardar</Button>
         </div>
