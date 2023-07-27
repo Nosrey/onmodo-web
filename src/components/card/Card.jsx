@@ -6,6 +6,7 @@ function Card({ text }) {
   const { title, link } = text;
   return (
     <Link to={link}>
+      
       <div className={styles.cardContainer}>
         <div className={styles.cardWrapper}>
           <span className={styles.titleCard}>{title}</span>
