@@ -5,7 +5,9 @@ import styles from './FormulariosCargados.module.css';
 import axios from 'axios';
 
 function FormulariosCargados() {
-  const [sortedForms, setSortedForms] = useState([]);
+ 
+  const [forms, setForms] = useState([]);
+  const [sortedForms, setSortedForms] = useState(forms);
   const [reload, setReload] = useState(true);
   // // // [
   // // //   {
@@ -26,9 +28,9 @@ function FormulariosCargados() {
   // // //   },
   // // // ];
 
-  let forms = []
+  
   function transformarArrayForms(forms) {
-    return forms.map(form => ({ title: form, link: '' }));
+    return setSortedForms(forms.map(form => ({ title: form, link: '' })));
   }
 
 
@@ -57,14 +59,15 @@ function FormulariosCargados() {
   }
   const handleButtonClick =async () => {
 
-console.log("forms", forms) // obtengo los nombres
+    const response = await axios.get(`http://localhost:4000/api/business/${idUser}`);
+    console.log(response.data.response[0])
 
   };
 
 
 useEffect(() => {
   fetchData()
-}, [forms])
+}, [forms,sortedForms])
 
 
   function filtrarObjetoPorObjetos(objeto) {
@@ -86,7 +89,7 @@ useEffect(() => {
     return resultado;
   }
   
-
+console.log( axios.get(`http://localhost:4000/api/business/${idUser}`))
 async function fetchData() {
   try {
     const response = await axios.get(`http://localhost:4000/api/business/${idUser}`);
@@ -104,7 +107,7 @@ async function fetchData() {
     setReload(false)
     console.log("final", arrayFinal)
 
-    return forms = arrayFinal;
+    return setForms(arrayFinal);
   } catch (error) {
     console.error('Error:', error);
 

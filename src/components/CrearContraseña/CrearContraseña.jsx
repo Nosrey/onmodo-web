@@ -2,7 +2,8 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './CrearContraseña.module.css';
 import logo from '../../assets/image/on-modo-grande.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import axios, { Axios } from 'axios';
 
 function CrearContraseña() {
   const [iconPassword, setIconPassword] = useState(false);
@@ -11,10 +12,46 @@ function CrearContraseña() {
   const [validateBtn, setValidateBtn] = useState(true);
   const [btnPassword, setBtnPassword] = useState(false);
   const navigate = useNavigate();
+  const { token } = useParams();
   const [inputValue, setInputValue] = useState({
     contraseña: '',
     contraseñarep: '',
   });
+  let password = inputValue.contraseña
+
+  console.log(token)
+
+// const url = 'http://localhost:4000/api/register';
+
+//  const userData = {
+//   email: 'letosa1285@sportrid.com',
+//   fullName: 'Joasdoe a',
+//    legajo: '989829898',
+//   number: '98765223343210',
+//    puesto: 'So3aneer',
+//      contratoComedor: 'Yes',
+//     rol: "1",
+//      business: 'eainess',
+//     provincia: 'Buenos Aires',
+//   localidad: 'City',
+//    idChief: '122423',
+//  };
+  
+//   fetch(url, {
+//     method: 'POST',
+//    headers: {
+//       'Content-Type': 'application/json',
+//      },
+//    body: JSON.stringify(userData),
+//   })
+//     .then(response => response.json())
+//    .then(data => {
+//      console.log('User created:', data);
+//    })
+//     .catch(error => {
+//       console.error('Error creating user:', error);
+//    });
+
 
   const handleBlur = (e) => {
     const { name } = e.target;
@@ -55,13 +92,14 @@ const handleChange = (e) => {
     }
   }, [inputValue]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const validationErrors = validate(inputValue);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
       setErrors({});
+      await axios.post(`https://api.onmodoapp.com/api/forgotpassword/${token}`, {password})
       resetForm();
       navigate('/inicio-de-sesion');
     }

@@ -42,6 +42,7 @@ function Header() {
               localStorage.removeItem('token');
               localStorage.removeItem('rol');
               localStorage.removeItem('idChief');
+              localStorage.removeItem('idUser');
               localStorage.removeItem('business');
               navigate('/inicio-de-sesion');
 

@@ -86,6 +86,7 @@ export const getUserInfo = async (id) => {
 };
 
 
+
 /*
 export const getUser = async (id = idUser) => {
   try {
