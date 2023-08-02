@@ -80,14 +80,17 @@ function RegistroCapacitacion() {
 
     const inputsValuesConstructor = (id, label, index) => {
         const inputTarget = document.getElementById(id)
-        label === 'DNI' ? setObjValues({ ...objValues, dni: inputTarget.value, id: index }) :
-            label === 'Nombre y Apellido' ? setObjValues({ ...objValues, nombre: inputTarget.value }) :
-                label === 'Area/Lugar de trabajo' ? setObjValues({ ...objValues, area: inputTarget.value }) :
-                    label === 'Firma' ? setObjValues({ ...objValues, firma: inputTarget.value }) :
-                    label === 'Metodo de Evaluacion' ? setObjValues({ ...objValues, metodo: inputTarget.value }) :
-                        label === 'Resultado Evaluación' && setObjValues({ ...objValues, resultado: inputTarget.value })
+        setObjValues((prevObjValues) => ({
+            ...prevObjValues,
+            dni: label === "DNI" ? inputTarget.value : objValues.dni,
+            nombre: label === "Nombre y Apellido" ? inputTarget.value : objValues.nombre,
+            area: label === "Area/Lugar de trabajo" ? inputTarget.value : objValues.area,
+            firma: label === "Firma" ? inputTarget.value : objValues.firma,
+            metodo: label === "Metodo de Evaluacion" ? inputTarget.value : objValues.metodo,
+            resultado: label === "Resultado Evaluación" ? inputTarget.value : objValues.resultado,
+            id: label === "DNI" ? index : objValues.id,
+        }));
     }
-
     const checkboxValuesConstructor = (label, value) => {
         console.log(value)
         if (label === 'Inducción') {
@@ -142,8 +145,16 @@ function RegistroCapacitacion() {
 
     const handleClick = () => {
         setReplicas(replicas + 1);
-        setObjValues({ dni: "", nombre: "", area: "", firma: "", resultado: "", metodo: ""})
-        setTrigger(false)
+        setInputValues([...inputValues, objValues]);
+        setObjValues({
+            dni: "",
+            nombre: "",
+            area: "",
+            firma: "",
+            resultado: "",
+            metodo: ""
+        });
+        setTrigger(false);
     };
 
 
@@ -330,6 +341,7 @@ function RegistroCapacitacion() {
 
                 <div className="btn">
                     <Button onClick={async() => {
+                        console.log(values);
                         await axios.post('http://localhost:4000/api/registrocapacitacion', values)
                     }} variant="contained">Guardar</Button>
 

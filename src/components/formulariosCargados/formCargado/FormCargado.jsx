@@ -2,10 +2,17 @@ import React, { useState } from 'react';
 import styles from './FormCargado.module.css';
 import ModalEdicion from '../../modalEdicion/ModalEdicion';
 import ModalBorrar from '../../modalBorrar/ModalBorrar';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 function FormCargado() {
   const [openModal, setOpenModal] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
+  const {form} = useParams()
+ const idUser = localStorage.getItem("idUser");
+ 
+
+  console.log(form)
   const formularios = [
     {
       nombre: 'Formulario 1',
@@ -54,6 +61,41 @@ function FormCargado() {
     },
     // Agrega más objetos de formulario según sea necesario
   ];
+  async function fetchDataAndAccessData() {
+    try {
+      const response = await axios.get(`http://localhost:4000/api/business/${idUser}`);
+      const datae = response.data.response[0];
+      return datae;
+    } catch (error) {
+      console.error('Error:', error);
+      return null;
+    }
+  }
+  
+  async function getData() {
+    const data = await fetchDataAndAccessData();
+
+    if (data.hasOwnProperty(form)) {
+      const info = data[form];
+      console.log(`Valor de ${form}`, info);
+    } else {
+      console.log("error");
+    }
+  }
+  getData();
+  getData();
+  const hola = getData()
+  console.log("hola", hola)
+
+
+
+
+
+
+
+
+
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>

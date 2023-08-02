@@ -17,7 +17,7 @@ function EntregaBidonesAceiteUsado({ idUser }) {
 
     const [replicas, setReplicas] = useState(1);
     const [values, setValues] = useState({
-        inputsValues: [{}],
+        inputs: [{}],
         idUser: idUser
     });
     const [replicaValues, setReplicaValues] = useState([{}]);
@@ -31,9 +31,9 @@ function EntregaBidonesAceiteUsado({ idUser }) {
 
     useEffect(() => {
         if (replicas === 1 && areAllValuesFilled(replicaValues[0])) {
-            setValues({ ...values, inputsValues: [replicaValues[0]] });
+            setValues({ ...values, inputs: [replicaValues[0]] });
         } else if (replicas > 1 && replicaValues.every(areAllValuesFilled)) {
-            setValues({ ...values, inputsValues: replicaValues });
+            setValues({ ...values, inputs: replicaValues });
         }
     }, [replicaValues, replicas]);
 

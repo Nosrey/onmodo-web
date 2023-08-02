@@ -1,5 +1,5 @@
 import { Button, TextField } from '@mui/material'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styles from './RegistroSimulacro.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import axios from 'axios';
@@ -17,44 +17,42 @@ function RegistroSimulacro() {
         ubicacion: "",
         localidad: "",
         fecha: "",
-        inputsValues: [{
-        }],
+        personas: [
+            {
+                nombreCompleto: "",
+                dni: "",
+                firma: ""
+            }
+        ],
         firmaInstructor: "",
         idUser: idUser
-    })
-    const [objValues, setObjValues] = useState({ nombreCompleto: "", dni: "", firma: "" })
-    const [inputValues, setInputValues] = useState([])
-    const [trigger, setTrigger] = useState(false)
-
-    useEffect(() => {
-        if (replicas === 1 && objValues.nombreCompleto !== "" && objValues.dni !== "" && objValues.firma !== "") {
-            setInputValues([objValues])
-        } else if (replicas > 1 && objValues.nombreCompleto !== "" && objValues.dni !== "" && objValues.firma !== "") {
-            setInputValues([...inputValues, objValues])
-        }
-    }, [trigger])
-
-    useEffect(() => {
-        setValues({ ...values, inputsValues: inputValues })
-    }, [inputValues])
-
-    useEffect(() => {
-        if (objValues.nombreCompleto !== "" && objValues.dni !== "" && objValues.firma !== "") {
-            setTrigger(true)
-        }
-    }, [objValues])
-
-    const inputsValuesConstructor = (id, label, index) => {
-        const inputTarget = document.getElementById(id)
-        label === 'Apellido y Nombre' ? setObjValues({ ...objValues, nombreCompleto: inputTarget.value, id: index }) :
-            label === 'Nro DNI' ? setObjValues({ ...objValues, dni: inputTarget.value }) :
-                label === 'Firma' && setObjValues({ ...objValues, firma: inputTarget.value })
-    }
+    });
 
     const handleClick = () => {
         setReplicas(replicas + 1);
-        setObjValues({ nombreCompleto: "", dni: "", firma: "" })
-        setTrigger(false)
+        setValues({
+            ...values,
+            personas: [
+                ...values.personas,
+                {
+                    nombreCompleto: "",
+                    dni: "",
+                    firma: ""
+                }
+            ]
+        });
+    };
+
+    const handleChangePerson = (index, field, value) => {
+        const updatedPersonas = [...values.personas];
+        updatedPersonas[index] = {
+            ...updatedPersonas[index],
+            [field]: value
+        };
+        setValues({
+            ...values,
+            personas: updatedPersonas
+        });
     };
 
     return (
@@ -62,12 +60,8 @@ function RegistroSimulacro() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Registro de Simulacro</h3>
-                    {/* <h4 className="formNumber"> HS-02-R01</h4> */}
                 </div>
 
-                <div className={styles.personal}>
-                    <p>Curso: Manejo Extintores –Plan Emergencia y Evacuación –Simulacro Evacuación“Según Ley 1346/04” –Sistema de alarma y señal de evacuación.</p>
-                </div>
                 <div className={styles.personalText}>
                     <TextField onChange={(e) => { setValues({ ...values, razonSocial: e.target.value }) }} fullWidth id="outlined-basic" label="Razón Social" variant="outlined" />
                 </div>
@@ -84,7 +78,6 @@ function RegistroSimulacro() {
                     />
                 </div>
 
-
                 <div className="table">
                     <div className="tableSection">
                         {Array(replicas)
@@ -92,13 +85,15 @@ function RegistroSimulacro() {
                             .map((_, index) => (
                                 <div className="tableRow" key={index}>
                                     <p className="index">{index + 1} </p>
-
                                     {inputs.map((input) => (
                                         <div key={input.id}>
-                                            <TextField onKeyUp={(e) => {
-                                                inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                            }} id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
-
+                                            <TextField
+                                                onKeyUp={(e) => handleChangePerson(index, input.label, e.target.value)}
+                                                id={`input-${input.id}-${index}`}
+                                                name={`input-${input.id}-${index}`}
+                                                label={`${input.label}`}
+                                                variant="outlined"
+                                            />
                                         </div>
                                     ))}
                                     <div className="icon">
@@ -106,10 +101,8 @@ function RegistroSimulacro() {
                                     </div>
                                 </div>
                             ))}
-
                     </div>
                 </div>
-
 
                 <div className={styles.responsableCont}>
                     <div className={styles.subtitleCont}>
@@ -137,20 +130,19 @@ function RegistroSimulacro() {
                     </ul>
                 </div>
 
-
                 <div className={styles.personal}>
                     <TextField onChange={(e) => { setValues({ ...values, firmaInstructor: e.target.value }) }} id="outlined-basic" label="Firma del Instructor" variant="outlined" />
                 </div>
+
                 <div className="btn">
-                    <Button onClick={async() => {
-                         await axios.post('http://localhost:4000/api/registrosimulacro', values)
+                    <Button onClick={async () => {
+                        console.log(values);
+                        await axios.post('http://localhost:4000/api/registrosimulacro', values);
                     }} variant="contained">Guardar</Button>
-
                 </div>
-
             </div>
         </div>
     )
 }
 
-export default RegistroSimulacro
+export default RegistroSimulacro;

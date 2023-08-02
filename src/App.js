@@ -72,10 +72,10 @@ function App() {
 
 
             <Route path='/registro' element={<Register />} />
-
+            <Route path='/forgotpassword' element={<RecoverPassword />} />
             <Route path='/inicio-de-sesion' element={<Login />} />
 
-            <Route path='/restablecer-contrasena' element={<CrearContraseña />} />
+            <Route path='/restablecer-contrasena/:token' element={<CrearContraseña />} />
 
             <Route path='/inicio' element={<Inicio />} />
 
@@ -85,7 +85,7 @@ function App() {
 
             <Route path='/formularios-cargados' element={<FormulariosCargados />} />
 
-            <Route path='/formulario-cargado' element={<FormCargado />} />
+            <Route path='/formularios-cargados/:form' element={<FormCargado />} />
 
             {/* Forms */}
             <Route path='/dietas-especiales' element={<AlergenosComida />} />
