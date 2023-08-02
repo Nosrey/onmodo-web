@@ -86,7 +86,7 @@ function App() {
 
             <Route path='/formularios-cargados' element={<FormulariosCargados />} />
 
-            <Route path='/formulario-cargado' element={<FormCargado />} />
+            <Route path='/formularios-cargados/:form' element={<FormCargado />} />
 
             {/* Forms */}
             <Route path='/dietas-especiales' element={<AlergenosComida />} />

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 function Card({ text }) {
   const { title, link } = text;
   return (
-    <Link to={link}>
+    <Link to={title}>
       <div className={styles.cardContainer}>
         <div className={styles.cardWrapper}>
           <span className={styles.titleCard}>{title}</span>
