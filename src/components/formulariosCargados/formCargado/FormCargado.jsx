@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './FormCargado.module.css';
 import ModalEdicion from '../../modalEdicion/ModalEdicion';
 import ModalBorrar from '../../modalBorrar/ModalBorrar';
@@ -8,59 +8,91 @@ import axios from 'axios';
 function FormCargado() {
   const [openModal, setOpenModal] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
+  const [formularios, setFormularios] = useState([]);
+  const [name, setName] = useState("");
   const {form} = useParams()
+  const [titulo, setTitulo] = useState("");
+  
  const idUser = localStorage.getItem("idUser");
  
+useEffect(() => {
+  getName();
+  getData();
+  getTitle();
+}, [])
 
-  console.log(form)
-  const formularios = [
-    {
-      nombre: 'Formulario 1',
-      anio: 2023,
-      mes: 'Mayo',
-      dia: 30,
-      hora: '12:00 PM',
-      usuario: 'Usuario 1',
-      edicion: 'Editar',
-    },
-    {
-      nombre: 'Formulario 2',
-      anio: 2023,
-      mes: 'Junio',
-      dia: 1,
-      hora: '10:00 AM',
-      usuario: 'Usuario 2',
-      edicion: 'Editar',
-    },
-    {
-      nombre: 'Formulario 2',
-      anio: 2023,
-      mes: 'Junio',
-      dia: 1,
-      hora: '10:00 AM',
-      usuario: 'Usuario 2',
-      edicion: 'Editar',
-    },
-    {
-      nombre: 'Formulario 2',
-      anio: 2023,
-      mes: 'Junio',
-      dia: 1,
-      hora: '10:00 AM',
-      usuario: 'Usuario 2',
-      edicion: 'Editar',
-    },
-    {
-      nombre: 'Formulario 2',
-      anio: 2023,
-      mes: 'Junio',
-      dia: 1,
-      hora: '10:00 AM',
-      usuario: 'Usuario 2',
-      edicion: 'Editar',
-    },
-    // Agrega más objetos de formulario según sea necesario
-  ];
+
+  console.log("form", form)
+  async function getTitle() {
+
+    if (form == "controlalergenos") {
+      setTitulo("Control Alergenos")
+    } else if (form == "entregabidones") {
+      setTitulo("Entrega Bidones")
+    }
+    else if (form == "flashincidente") {
+      setTitulo("Flash Incidente")
+    }
+    else if (form == "informeintaccidente") {
+      setTitulo("Informe Accidente")
+    }
+    else if (form == "registrocapacitacion") {
+      setTitulo("Registro Capacitacion")
+    }
+    else if (form == "registrodecomiso") {
+      setTitulo("Registro Decomiso")
+    }
+    else if (form == "registrosimulacro") {
+      setTitulo("Registro Simulacro")
+    }
+    else if (form == "reporterechazo") {
+      setTitulo("Reporte Rechazo")
+    }
+    else if (form == "verificacionbalanza") {
+      setTitulo("Verificacion Balanza")
+    }
+    else if (form == "verificaciontermometros") {
+      setTitulo("Verificacion Termometros")
+    }
+    else{
+      setTitulo("0")
+    }
+  }
+  async function getMonth() {
+
+    if (form == "controlalergenos") {
+      setTitulo("Control Alergenos")
+    } else if (form == "entregabidones") {
+      setTitulo("Entrega Bidones")
+    }
+    else if (form == "flashincidente") {
+      setTitulo("Flash Incidente")
+    }
+    else if (form == "informeintaccidente") {
+      setTitulo("Informe Accidente")
+    }
+    else if (form == "registrocapacitacion") {
+      setTitulo("Registro Capacitacion")
+    }
+    else if (form == "registrodecomiso") {
+      setTitulo("Registro Decomiso")
+    }
+    else if (form == "registrosimulacro") {
+      setTitulo("Registro Simulacro")
+    }
+    else if (form == "reporterechazo") {
+      setTitulo("Reporte Rechazo")
+    }
+    else if (form == "verificacionbalanza") {
+      setTitulo("Verificacion Balanza")
+    }
+    else if (form == "verificaciontermometros") {
+      setTitulo("Verificacion Termometros")
+    }
+    else{
+      setTitulo("0")
+    }
+  }
   async function fetchDataAndAccessData() {
     try {
       const response = await axios.get(`http://localhost:4000/api/business/${idUser}`);
@@ -77,24 +109,21 @@ function FormCargado() {
 
     if (data.hasOwnProperty(form)) {
       const info = data[form];
-      console.log(`Valor de ${form}`, info);
+      setFormularios(info)
+      console.log(`Valor de formulario`, formularios);
+      console.log(`Valor de asd`, info);
     } else {
       console.log("error");
     }
   }
-  getData();
-  getData();
-  const hola = getData()
-  console.log("hola", hola)
 
+  async function getName(){
+    const data = await fetchDataAndAccessData();
+    setName(data.fullName)
+    console.log("datita", data.fullName)
+  }
 
-
-
-
-
-
-
-
+  console.log(`Valor de formulariooiooooo`,   fetchDataAndAccessData());
 
   return (
     <div className={styles.container}>
@@ -115,13 +144,13 @@ function FormCargado() {
           <tbody>
             {formularios.map((formulario, index) => (
               <tr key={index} className={styles.fila}>
-                <td>{formulario.nombre}</td>
-                <td>{formulario.anio}</td>
-                <td>{formulario.mes}</td>
-                <td>{formulario.dia}</td>
-                <td>{formulario.hora}</td>
-                <td>{formulario.usuario}</td>
-                <td>{formulario.edicion}</td>
+                <td>{titulo}</td>
+                <td>{formulario.createdAt.slice(0, 4)}</td>
+                <td>{formulario.createdAt.slice(5, 7)}</td>
+                <td>{formulario.createdAt.slice(8, 10)}</td>
+                <td>{formulario.createdAt.slice(11, 16)}</td>
+                <td>{name}</td>
+                <td>Edicion</td>
                 <td className={styles.contEdicion}>
                   <span className={styles.actionIcon}>
                     <i class='ri-eye-line'></i>
