@@ -30,7 +30,7 @@ function FormulariosCargados() {
 
   
   function transformarArrayForms(forms) {
-    return setSortedForms(forms.map(form => ({ title: form, link: '' })));
+    return setSortedForms(forms.map(form => ({ title: form, link: form })));
   }
 
 
