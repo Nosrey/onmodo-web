@@ -12,7 +12,7 @@ function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentLocation === '/cuenta') setShowSearch(false);
+    if (currentLocation === '/cuenta' || currentLocation === '/inicio') setShowSearch(false);
     else setShowSearch(true);
   }, [currentLocation]);
 
