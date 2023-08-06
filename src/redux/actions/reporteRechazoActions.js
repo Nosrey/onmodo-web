@@ -4,7 +4,7 @@ const reporteRechazoActions = {
   logIn: (inputsValues) => {
     return async (dispatch, getState) => {
       try {
-        const response = await axios.post('http://localhost:4000/api/reporterechazo', inputsValues)
+        const response = await axios.post('https://api.onmodoapp.com/api/reporterechazo', inputsValues)
         if (response.data.success === false) {
           alert("Usuario incorrecto")
         }

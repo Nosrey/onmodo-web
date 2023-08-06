@@ -1,4 +1,4 @@
-const URL_API = 'http://localhost:4000';
+const URL_API = 'https://api.onmodoapp.com';
 
 export const ejemplo = async ({ dato1, dato2}) => {
     try {

@@ -11,7 +11,7 @@ import axios from 'axios';
 function VerificacionBalanza() {
     const dispatch = useDispatch()
     const prueba = useSelector(state => state.verificacionBalanzaR.inputs)
-    console.log("holi", prueba)
+    
     const [inputs] = useState([
         { id: 1, label: 'Código' },
         { id: 2, label: 'Tipo (BP/BR)' },
@@ -173,7 +173,7 @@ function VerificacionBalanza() {
                 <div className="btn">
                     <Button onClick={async () => {
                         console.log(values);
-                        await axios.post('http://localhost:4000/api/verificacionbalanza', values)
+                        await axios.post('https://api.onmodoapp.com/api/verificacionbalanza', values)
                     }} variant="contained">Guardar</Button>
                 </div>
 

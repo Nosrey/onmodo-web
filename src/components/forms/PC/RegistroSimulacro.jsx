@@ -137,7 +137,7 @@ function RegistroSimulacro() {
                 <div className="btn">
                     <Button onClick={async () => {
                         console.log(values);
-                        await axios.post('http://localhost:4000/api/registrosimulacro', values);
+                        await axios.post('https://api.onmodoapp.com/api/registrosimulacro', values);
                     }} variant="contained">Guardar</Button>
                 </div>
             </div>

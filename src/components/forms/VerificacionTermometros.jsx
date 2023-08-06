@@ -244,7 +244,7 @@ function VerificacionTermometros() {
 
                 <div className="btn">
                     <Button onClick={async()=>{
-                         await axios.post('http://localhost:4000/api/verificaciontermometros', values); console.log(values)
+                         await axios.post('https://api.onmodoapp.com/api/verificaciontermometros', values); console.log(values)
                     }} variant="contained">Guardar</Button>
                 </div>
 

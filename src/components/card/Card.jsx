@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 // verificacionbalanza
 // verificaciontermometros
 function Card({ text }) {
+  console.log(text)
   const { title, link } = text;
   const [titulo, setTitulo] = useState(true);
 
@@ -50,15 +51,16 @@ function Card({ text }) {
       setTitulo("Verificacion Balanza")
     }
     else if (title == "verificaciontermometros") {
-      setTitulo("Verificacion Termometros")
+      setTitulo("Verificacion Termómetros")
     }
     else{
-      setTitulo("0")
+      // setTitulo("0")
+      setTitulo(title)
     }
   }
 
   return (
-    <Link to={title}>
+    <Link to={link}>
       <div className={styles.cardContainer}>
         <div className={styles.cardWrapper}>
           <span className={styles.titleCard}>{titulo}</span>

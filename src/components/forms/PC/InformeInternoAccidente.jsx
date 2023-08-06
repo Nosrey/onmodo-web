@@ -291,7 +291,7 @@ function InformeInternoAccidente() {
                 <div className="btn">
                     <Button onClick={async() => {
                         console.log(values);
-                         await axios.post('http://localhost:4000/api/informeintaccidente', values);
+                         await axios.post('https://api.onmodoapp.com/api/informeintaccidente', values);
                          
                         
                     }} variant="contained">Guardar</Button>

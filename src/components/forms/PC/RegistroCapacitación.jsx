@@ -9,7 +9,7 @@ import axios from 'axios';
 function RegistroCapacitacion() {
     const dispatch = useDispatch()
     const prueba = useSelector(state => state.registroCapacitacionR.inputsValues)
-    console.log("holi", prueba)
+    
     var idUser = localStorage.getItem("idUser");
     const [inputs] = useState([
         { id: 1, label: 'DNI' },
@@ -342,7 +342,7 @@ function RegistroCapacitacion() {
                 <div className="btn">
                     <Button onClick={async() => {
                         console.log(values);
-                        await axios.post('http://localhost:4000/api/registrocapacitacion', values)
+                        await axios.post('https://api.onmodoapp.com/api/registrocapacitacion', values)
                     }} variant="contained">Guardar</Button>
 
                 </div>
