@@ -5,7 +5,7 @@ const controlComensalesActions = {
     return async (dispatch, getState) => {
       try {
         console.log("action",inputsValues)
-        const response = await axios.post('http://localhost:4000/api/controlalergenos', inputsValues)
+        const response = await axios.post('https://api.onmodoapp.com/api/controlalergenos', inputsValues)
         console.log("response", response)
         if (response.data.success === false) {
           alert("Usuario incorrecto")

@@ -5,7 +5,7 @@ const cargaRecepcionActions = {
     return async (dispatch, getState) => {
       try {
         console.log("action",inputsValues)
-        const response = await axios.post('http://localhost:4000/api/carga', inputsValues)
+        const response = await axios.post('https://api.onmodoapp.com/api/carga', inputsValues)
         console.log("response", response.data)
         if (response.data.success === false) {
           alert("Usuario incorrecto")

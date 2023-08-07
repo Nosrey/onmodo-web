@@ -2,6 +2,8 @@ import { Button, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import axios from 'axios';
+import { entregaBidones } from '../../../services/FormsRequest';
+import Alert from '../../shared/components/Alert/Alert';
 
 function EntregaBidonesAceiteUsado({ idUser }) {
     const [inputs] = useState([
@@ -23,11 +25,10 @@ function EntregaBidonesAceiteUsado({ idUser }) {
     const [replicaValues, setReplicaValues] = useState([{}]);
     const [trigger, setTrigger] = useState(false);
 
-    const handleButtonClick = async () => {
-        await axios.post(`http://localhost:4000/api/entregabidones`, values);
-        console.log("Valor de idUser:", idUser);
-        console.log("Values", values);
-    };
+    //** ALERTA */
+    const [textAlert, setTextAlert] = useState("");
+    const [typeAlert, setTypeAlert] = useState("");
+    const [showAlert, setShowlert] = useState(false);
 
     useEffect(() => {
         if (replicas === 1 && areAllValuesFilled(replicaValues[0])) {
@@ -55,8 +56,30 @@ function EntregaBidonesAceiteUsado({ idUser }) {
         setTrigger(false);
     };
 
+    const handleSubmit = () => {
+        entregaBidones(values).then((resp)=> {
+            setTextAlert("¡Formulario cargado exitosamente!");
+            setTypeAlert("success");
+        }).catch((resp)=> {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(()=> {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
+    };
+
     return (
-        <div>
+        <>
+         <div>
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Circuito de Aceite Usado</h3>
@@ -97,10 +120,12 @@ function EntregaBidonesAceiteUsado({ idUser }) {
                     </div>
                 </div>
                 <div className="btn">
-                    <Button onClick={() => handleButtonClick()} variant="contained">Guardar</Button>
+                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
                 </div>
             </div>
         </div>
+        { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+        </>
     );
 }
 

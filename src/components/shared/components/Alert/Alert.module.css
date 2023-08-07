@@ -1,0 +1,24 @@
+.notificationGreen , .notificationRed {
+    position: absolute;
+    right: 40px;
+    top: 150px;
+    height: 47px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90vw;
+    max-width: 400px;
+    border-radius: 30px;
+}
+.notificationGreen {
+    background-color: #a0b875;
+}
+.notificationRed {
+    background-color: #f39d5e;
+}
+p{
+    color: white;
+    text-align: center;
+    display: block;
+    margin-top: 8px;
+}

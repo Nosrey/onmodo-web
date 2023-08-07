@@ -21,7 +21,7 @@ function CrearContraseña() {
 
   console.log(token)
 
-// const url = 'http://localhost:4000/api/register';
+// const url = 'https://api.onmodoapp.com/api/register';
 
 //  const userData = {
 //   email: 'letosa1285@sportrid.com',

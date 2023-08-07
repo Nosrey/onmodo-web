@@ -10,7 +10,7 @@ import controlProcesosActions from '../../../redux/actions/controlProcesosAction
 function ControlProcesos() {
     const dispatch = useDispatch()
     const prueba = useSelector(state=>state.controlProcesosR.inputsValues)
-    console.log("holi", prueba)
+    
     const [inputs] = useState([
         { id: 1, label: 'Alimento' },
         { id: 2, label: 'Fecha / Hora' },

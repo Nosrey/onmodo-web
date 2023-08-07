@@ -1,13 +1,15 @@
 import { Button, TextField } from '@mui/material'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styles from './FlashReporteIncidente.module.css'
-import { useSelector,useDispatch } from 'react-redux'
-import reporteIncidentesActions from '../../../redux/actions/reporteIncidentesActions'
-import axios from 'axios'
+import Alert from '../../shared/components/Alert/Alert';
+import { flashIncidente } from '../../../services/FormsRequest';
 
 function FlashReporteIncidente() {
-    const dispatch = useDispatch()
-    const prueba = useSelector(state=>state.reporteIncidentesR.inputsValues)
+     //** ALERTA */
+     const [textAlert, setTextAlert] = useState("");
+     const [typeAlert, setTypeAlert] = useState("");
+     const [showAlert, setShowlert] = useState(false);
+ 
     var idUser = localStorage.getItem("idUser");
     const [values,setValues] = useState({
        alcance:"",
@@ -30,12 +32,33 @@ function FlashReporteIncidente() {
        idUser: idUser
     })
 
+    const handleSubmit = () => {
+        flashIncidente(values).then((resp)=> {
+            setTextAlert("¡Formulario cargado exitosamente!");
+            setTypeAlert("success");
+        }).catch((resp)=> {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(()=> {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
+    };
+
     return (
+        <>
         <div>
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Flash Reporte de Incidente</h3>
-                    {/* <h4 className="formNumber"> HSEQ-07-R01</h4> */}
                 </div>
 
                 <div className={styles.personal}>
@@ -114,13 +137,14 @@ function FlashReporteIncidente() {
                 </div>
 
                 <div className="btn">
-                    <Button onClick={async()=>{
-                        await axios.post('http://localhost:4000/api/flashincidente', values)
-                    }} variant="contained">Guardar</Button>
+                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
                 </div>
 
             </div>
         </div>
+        { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+        </>
+
     )
 }
 

@@ -4,14 +4,15 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionTermometros.module.css'
 import Termometros from '../modales/Termometros';
 import Modal from '../shared/Modal';
-import { useSelector,useDispatch } from 'react-redux';
-import verificacionTermometrosActions from '../../redux/actions/verificacionTermometrosActions';
-import axios from 'axios';
+import Alert from '../shared/components/Alert/Alert';
+import { verificacionTermometros } from '../../services/FormsRequest';
 
 function VerificacionTermometros() {
-    const dispatch = useDispatch()
-    const prueba = useSelector(state=>state.verificacionTermometrosR.inputValues)
-    console.log("holi",prueba)
+     //** ALERTA */
+     const [textAlert, setTextAlert] = useState("");
+     const [typeAlert, setTypeAlert] = useState("");
+     const [showAlert, setShowlert] = useState(false);
+
     var idUser = localStorage.getItem("idUser");
     const [values,setValues] = useState({
         fecha:"",
@@ -120,7 +121,29 @@ function VerificacionTermometros() {
         setTrigger2(false);
     };
 
+    const handleSubmit = () => {
+        verificacionTermometros(values).then((resp)=> {
+            setTextAlert("¡Formulario cargado exitosamente!");
+            setTypeAlert("success");
+        }).catch((resp)=> {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(()=> {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
+    };
+
     return (
+        <>
         <div>
             <div className="form">
                 <div className="titleContainer">
@@ -243,13 +266,14 @@ function VerificacionTermometros() {
                 <span><b>*</b> PIN(Termómetro de pinche) - IR (Termómetro infrarrojo)</span>
 
                 <div className="btn">
-                    <Button onClick={async()=>{
-                         await axios.post('http://localhost:4000/api/verificaciontermometros', values); console.log(values)
-                    }} variant="contained">Guardar</Button>
+                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
                 </div>
 
             </div>
         </div>
+        { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+        </>
+
     )
 }
 

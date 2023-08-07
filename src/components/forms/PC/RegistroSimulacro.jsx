@@ -2,9 +2,15 @@ import { Button, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import styles from './RegistroSimulacro.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import axios from 'axios';
+import Alert from '../../shared/components/Alert/Alert';
+import { registroSimulacro } from '../../../services/FormsRequest';
 
 function RegistroSimulacro() {
+    //** ALERTA */
+    const [textAlert, setTextAlert] = useState("");
+    const [typeAlert, setTypeAlert] = useState("");
+    const [showAlert, setShowlert] = useState(false);
+
     const [inputs] = useState([
         { id: 1, label: 'Apellido y Nombre' },
         { id: 2, label: 'Nro DNI' },
@@ -54,8 +60,29 @@ function RegistroSimulacro() {
             personas: updatedPersonas
         });
     };
+    const handleSubmit = () => {
+        registroSimulacro(values).then((resp)=> {
+            setTextAlert("¡Formulario cargado exitosamente!");
+            setTypeAlert("success");
+        }).catch((resp)=> {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(()=> {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
+    };
 
     return (
+        <>
         <div>
             <div className="form">
                 <div className="titleContainer">
@@ -135,13 +162,13 @@ function RegistroSimulacro() {
                 </div>
 
                 <div className="btn">
-                    <Button onClick={async () => {
-                        console.log(values);
-                        await axios.post('http://localhost:4000/api/registrosimulacro', values);
-                    }} variant="contained">Guardar</Button>
+                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
                 </div>
             </div>
         </div>
+        { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+        </>
+
     )
 }
 

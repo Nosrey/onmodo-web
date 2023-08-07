@@ -3,11 +3,16 @@ import React, { useState,useEffect } from 'react'
 import styles from './ConstanciaEntrega.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import { useSelector,useDispatch } from 'react-redux';
-import constanciaEntregaActions from '../../../redux/actions/constanciaEntregaActions';
+import { useSelector} from 'react-redux';
+import Alert from '../../shared/components/Alert/Alert';
+import { entregaRopa } from '../../../services/FormsRequest';
 
 function ConstanciaEntrega() {
-    const dispatch=useDispatch()
+    //** ALERTA */
+    const [textAlert, setTextAlert] = useState("");
+    const [typeAlert, setTypeAlert] = useState("");
+    const [showAlert, setShowlert] = useState(false);
+
     const prueba = useSelector(state=>state.constanciaEntregaR.inputsValues)
     console.log("holi",prueba)
     const [inputs] = useState([
@@ -103,7 +108,29 @@ function ConstanciaEntrega() {
         setShowTextField(event.target.checked);
     };
 
+    const handleSubmit = () => {
+        entregaRopa(values).then((resp)=> {
+            setTextAlert("¡Formulario cargado exitosamente!");
+            setTypeAlert("success");
+        }).catch((resp)=> {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(()=> {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
+    };
+
     return (
+        <>
         <div>
             <div className="form">
                 <div className="titleContainer">
@@ -179,14 +206,15 @@ function ConstanciaEntrega() {
                     <TextField onChange={(e)=>{setValues({...values,infoAdicional:e.target.value})}} fullWidth id="outlined-basic" label="Informacion adicional" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button onClick={()=>{
-                        dispatch(constanciaEntregaActions.logIn(values))
-                    }} variant="contained">Guardar</Button>
+                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
 
                 </div>
 
             </div>
         </div>
+        { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+        </>
+        
     )
 }
 
