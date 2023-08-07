@@ -4,14 +4,16 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionBalanza.module.css'
 import Modal from '../shared/Modal';
 import Balanzas from '../modales/Balanzas';
-import verificacionBalanzaActions from '../../redux/actions/verificacionBalanzaActions';
-import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
+import { verificacionBalanza } from '../../services/FormsRequest';
+import Alert from '../shared/components/Alert/Alert';
 
 function VerificacionBalanza() {
-    const dispatch = useDispatch()
-    const prueba = useSelector(state => state.verificacionBalanzaR.inputs)
-    
+    //** ALERTA */
+    const [textAlert, setTextAlert] = useState("");
+    const [typeAlert, setTypeAlert] = useState("");
+    const [showAlert, setShowlert] = useState(false);
+
     const [inputs] = useState([
         { id: 1, label: 'Código' },
         { id: 2, label: 'Tipo (BP/BR)' },
@@ -90,7 +92,29 @@ function VerificacionBalanza() {
         setTrigger(false)
     };
 
+    const handleSubmit = () => {
+        verificacionBalanza(values).then((resp)=> {
+            setTextAlert("¡Formulario cargado exitosamente!");
+            setTypeAlert("success");
+        }).catch((resp)=> {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(()=> {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
+    };
+
     return (
+        <>
         <div>
             <div className="form">
                 <div className="titleContainer">
@@ -171,14 +195,15 @@ function VerificacionBalanza() {
                     <TextField onChange={(e) => { setValues({ ...values, fechaHora: e.target.value }) }} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button onClick={async () => {
-                        console.log(values);
-                        await axios.post('https://api.onmodoapp.com/api/verificacionbalanza', values)
-                    }} variant="contained">Guardar</Button>
+                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
                 </div>
 
             </div>
         </div>
+        { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+
+        </>
+        
     )
 }
 

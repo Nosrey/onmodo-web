@@ -8,8 +8,8 @@ import MenuItem from '@mui/material/MenuItem';
 import EppInfo from '../../modales/Epp';
 import Modal from '../../shared/Modal';
 import { useSelector,useDispatch } from 'react-redux';
-import eppActions from '../../../redux/actions/eppActions';
 import axios from 'axios';
+import Alert from '../../shared/components/Alert/Alert';
 
 function EPP() {
     const dispatch = useDispatch()
@@ -421,63 +421,61 @@ function EPP() {
         setValues({...values,mes:event.target.value})
       };
     return (
-        <div>
+        <><div>
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Lista para chequeo de uso E.P.P</h3>
                 </div>
 
-                { showModal ? (
+                {showModal ? (
                     <Modal
-                    content={<EppInfo/>}
-                    closeModal={() => setShowModal(false)}
-                    />
-                
-                    )
+                        content={<EppInfo />}
+                        closeModal={() => setShowModal(false)} />
+
+                )
                     : (
-                    <div className='cont-btn'>
-                        <Button  size="small" onClick={() => setShowModal(true)}>
-                            <i class="ri-information-line" style={{marginRight: "8px", fontSize:"22px"}}></i> Ver Más
-                        </Button>
-                    </div>
-                    )
-                }
+                        <div className='cont-btn'>
+                            <Button size="small" onClick={() => setShowModal(true)}>
+                                <i class="ri-information-line" style={{ marginRight: "8px", fontSize: "22px" }}></i> Ver Más
+                            </Button>
+                        </div>
+                    )}
 
 
                 <div className={styles.personalMonth}>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Mes</InputLabel>
                         <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={month}
-                        label="Mes"
-                        onChange={handleChange}
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={month}
+                            label="Mes"
+                            onChange={handleChange}
                         >
-                        <MenuItem value={"enero"}>Enero</MenuItem>
-                        <MenuItem value={"febrero"}>Febrero</MenuItem>
-                        <MenuItem value={"marzo"}>Marzo</MenuItem>
-                        <MenuItem value={"abril"}>Abril</MenuItem>
-                        <MenuItem value={"mayo"}>Mayo</MenuItem>
-                        <MenuItem value={"junio"}>Junio</MenuItem>
-                        <MenuItem value={"julio"}>Julio</MenuItem>
-                        <MenuItem value={"agosto"}>Agosto</MenuItem>
-                        <MenuItem value={"septiembre"}>Septiembre</MenuItem>
-                        <MenuItem value={"octubre"}>Octubre</MenuItem>
-                        <MenuItem value={"noviembre"}>Noviembre</MenuItem>
-                        <MenuItem value={"diciembre"}>Diciembre</MenuItem>
+                            <MenuItem value={"enero"}>Enero</MenuItem>
+                            <MenuItem value={"febrero"}>Febrero</MenuItem>
+                            <MenuItem value={"marzo"}>Marzo</MenuItem>
+                            <MenuItem value={"abril"}>Abril</MenuItem>
+                            <MenuItem value={"mayo"}>Mayo</MenuItem>
+                            <MenuItem value={"junio"}>Junio</MenuItem>
+                            <MenuItem value={"julio"}>Julio</MenuItem>
+                            <MenuItem value={"agosto"}>Agosto</MenuItem>
+                            <MenuItem value={"septiembre"}>Septiembre</MenuItem>
+                            <MenuItem value={"octubre"}>Octubre</MenuItem>
+                            <MenuItem value={"noviembre"}>Noviembre</MenuItem>
+                            <MenuItem value={"diciembre"}>Diciembre</MenuItem>
                         </Select>
                     </FormControl>
                 </div>
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,nombreEmpleado:e.target.value})}} id="outlined-basic" label="Nombre Del Empleado" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,sector:e.target.value})}} id="outlined-basic" label="Sector" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,puesto:e.target.value})}} id="outlined-basic" label="Puesto" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, nombreEmpleado: e.target.value }); } } id="outlined-basic" label="Nombre Del Empleado" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, sector: e.target.value }); } } id="outlined-basic" label="Sector" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, puesto: e.target.value }); } } id="outlined-basic" label="Puesto" variant="outlined" />
                 </div>
 
                 <div className='contMonthTable'>
                     <div className='optionList'>
-                    <div className='optionTableTitle'>
+                        <div className='optionTableTitle'>
                             <p></p>
                         </div>
                         <div className='optionTable'>
@@ -522,7 +520,7 @@ function EPP() {
                                 <div className="tableRowCheck" key={index}>
                                     {checks.map((input) => (
                                         <div key={input.id}>
-                                            <Checkbox onChange={(e)=>{checkboxValuesConstructor(index,e.target.checked,input.id)}} className='check' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`}/>
+                                            <Checkbox onChange={(e) => { checkboxValuesConstructor(index, e.target.checked, input.id); } } className='check' id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} />
 
                                         </div>
                                     ))}
@@ -536,30 +534,31 @@ function EPP() {
                 <br />
                 <div className={styles.personalText}>
                     <TextField
-                        onChange={(e)=>{setValues({...values,observaciones:e.target.value})}}
+                        onChange={(e) => { setValues({ ...values, observaciones: e.target.value }); } }
                         fullWidth
                         id="outlined-multiline-static"
                         label="Observaciones"
                         multiline
-                        rows={4}
-                    />                
+                        rows={4} />
                 </div>
                 <br />
                 <br />
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,firma:e.target.value})}} id="outlined-basic" label="Firma Responsable Comedor" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, firma: e.target.value }); } } id="outlined-basic" label="Firma Responsable Comedor" variant="outlined" />
                 </div>
 
                 <div className="btn">
-                    <Button onClick={async()=>{
-                       await axios.post('https://api.onmodoapp.com/api/entregaropa', values)
-                       console.log(values, idUserr)
-                    }} variant="contained">Guardar</Button>
+                    <Button onClick={async () => {
+                        await axios.post('https://api.onmodoapp.com/api/entregaropa', values);
+                        console.log(values, idUserr);
+                    } } variant="contained">Guardar</Button>
 
                 </div>
 
             </div>
         </div>
+        
+        </>
     )
 }
 

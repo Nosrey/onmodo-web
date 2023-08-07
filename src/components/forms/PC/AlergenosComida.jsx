@@ -1,12 +1,19 @@
 import { Button, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styles from './AlergenosComida.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import axios from 'axios';
+import Alert from '../../shared/components/Alert/Alert';
+import { controlAlergenos } from '../../../services/FormsRequest';
 
 function AlergenosComida() {
+    //** ALERTA */
+    const [textAlert, setTextAlert] = useState("");
+    const [typeAlert, setTypeAlert] = useState("");
+    const [showAlert, setShowlert] = useState(false);
+
     const formValue = useSelector(state => state.comensalesR.inputsValues)
     var idUser = localStorage.getItem("idUser");
     console.log(formValue)
@@ -65,15 +72,37 @@ function AlergenosComida() {
         setInputValues(inputsArrFiltered)
         setReplicas(replicas - 1);
     }
-    const handleButtonClick = async () => {
-        await axios.post(`https://api.onmodoapp.com/api/controlalergenos`, values);
-        console.log("Valor de idUser:", idUser);
-        console.log("Values", values);
-        setInputValues([]);
-        setReplicas(1); // Reiniciamos el estado replicas para evitar el input adicional vacío
-    
+
+    const handleSubmit = () => {
+        controlAlergenos(values).then((resp)=> {
+            if (resp.error) {
+                setTextAlert("Ocurrió un error")
+                setTypeAlert("error");
+            } else {
+                setTextAlert("¡Formulario cargado exitosamente!");
+                setTypeAlert("success");
+                setInputValues([]);
+                setReplicas(1); // Reiniciamos el estado replicas para evitar el input adicional vacío
+            }
+        }).catch((resp)=> {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(()=> {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
     };
+
     return (
+        <>
         <div>
             <div className="form">
                 <div className="titleContainer">
@@ -145,11 +174,15 @@ function AlergenosComida() {
                 </div>
 
                 <div className="btn">
-                    <Button onClick={() => handleButtonClick()} variant="contained">Guardar</Button>
+                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
                 </div>
 
             </div>
         </div>
+       { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+        </>
+        
+
     )
 }
 

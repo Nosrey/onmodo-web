@@ -2,12 +2,16 @@ import { Button,  TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './RegistroDeDecomiso.module.css'
-import { useSelector,useDispatch } from 'react-redux';
-import registroDecomisosActions from '../../../redux/actions/registroDecomisosActions';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
+import Alert from '../../shared/components/Alert/Alert';
+import { registroDecomiso } from '../../../services/FormsRequest';
 
 function RegistroDeDecomiso() {
-    const dispatch = useDispatch()
+    //** ALERTA */
+    const [textAlert, setTextAlert] = useState("");
+    const [typeAlert, setTypeAlert] = useState("");
+    const [showAlert, setShowlert] = useState(false);
+
     const prueba = useSelector(state=>state.registroDecomisosR.inputsValues)
     var idUser = localStorage.getItem("idUser");
     console.log("holi",prueba)
@@ -72,12 +76,33 @@ function RegistroDeDecomiso() {
         setTrigger(false)
     };
 
+    const handleSubmit = () => {
+        registroDecomiso(values).then((resp)=> {
+            setTextAlert("¡Formulario cargado exitosamente!");
+            setTypeAlert("success");
+        }).catch((resp)=> {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(()=> {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
+    };
+
     return (
+        <>
         <div>
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Registros de decomisos de materias primas</h3>
-                    {/* <h4 className="formNumber">Q/SOP-03-R02</h4> */}
                 </div>
                 <div className="table">
                 <div className={styles.subtituloTable}>
@@ -109,13 +134,15 @@ function RegistroDeDecomiso() {
                 
 
                 <div className="btn">
-                    <Button onClick={async()=>{
-                         await axios.post('https://api.onmodoapp.com/api/registrodecomiso', values)
-                       }} variant="contained">Guardar</Button>
+                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
                 </div>
 
             </div>
         </div>
+        { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+
+        </>
+        
     )
 }
 

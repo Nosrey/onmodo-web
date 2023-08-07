@@ -1,16 +1,17 @@
 import { Button, TextField, Checkbox } from "@mui/material";
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import styles from "./ReporteDeRechazoDevolucionMaterias.module.css";
 import Modal from '../../shared/Modal';
 import RechazoInfo from "../../modales/RechazoInfo";
-import { useDispatch,useSelector } from "react-redux";
-import reporteRechazoActions from "../../../redux/actions/reporteRechazoActions";
-import axios from "axios";
+import Alert from "../../shared/components/Alert/Alert";
+import { reporteRechazo } from "../../../services/FormsRequest";
 
 function ReporteDeRechazoDevolucionMaterias() {
-  const dispatch = useDispatch()
-  const prueba = useSelector(state=>state.reporteRechazoR.inputsValues)
-  console.log("holi",prueba)
+  //** ALERTA */
+  const [textAlert, setTextAlert] = useState("");
+  const [typeAlert, setTypeAlert] = useState("");
+  const [showAlert, setShowlert] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
 
   const [inputs] = useState([
@@ -304,7 +305,29 @@ const checkboxValuesConstructor = (index,value)=>{
   }
 }
 
+const handleSubmit = () => {
+  reporteRechazo(values).then((resp)=> {
+      setTextAlert("¡Formulario cargado exitosamente!");
+      setTypeAlert("success");
+  }).catch((resp)=> {
+      setTextAlert("Ocurrió un error")
+      setTypeAlert("error");
+  }).finally(()=> {
+      window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      setShowlert(true);
+      setTimeout(() => {
+          setShowlert(false);
+
+      }, 7000);
+  }
+  )
+};
+
   return (
+    <>
     <div>
       <div className="form">
         <div className="titleContainer">
@@ -466,14 +489,15 @@ const checkboxValuesConstructor = (index,value)=>{
         </div>
         <div className="btn">
           <Button
-           onClick={async()=>{
-            await axios.post('https://api.onmodoapp.com/api/reporterechazo', values)
-           }} 
+           onClick={handleSubmit} 
            variant="contained">Guardar</Button>
         </div>
       </div>
       <div></div>
     </div>
+    { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+    </>
+
   );
 }
 

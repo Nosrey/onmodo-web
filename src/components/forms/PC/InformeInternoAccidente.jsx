@@ -1,12 +1,16 @@
 import { Button, TextField, Checkbox, FormControlLabel } from '@mui/material'
 import React, { useState } from 'react'
 import styles from './InformeInternoAccidente.module.css'
-import { useSelector, useDispatch } from 'react-redux';
-import informeAccidenteActions from '../../../redux/actions/informeAccidenteActions';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { informeIntAccidente } from '../../../services/FormsRequest';
+import Alert from '../../shared/components/Alert/Alert';
 
 function InformeInternoAccidente() {
-    const dispatch = useDispatch()
+     //** ALERTA */
+     const [textAlert, setTextAlert] = useState("");
+     const [typeAlert, setTypeAlert] = useState("");
+     const [showAlert, setShowlert] = useState(false);
+ 
     function resetFormState() {
         const idUser = localStorage.getItem("idUser");
         setValues({
@@ -139,7 +143,30 @@ function InformeInternoAccidente() {
             setValues({ ...values, checkboxesAccidente: checkboxesAccidenteValues })
         }
     };
+
+    const handleSubmit = () => {
+        informeIntAccidente(values).then((resp)=> {
+            setTextAlert("¡Formulario cargado exitosamente!");
+            setTypeAlert("success");
+        }).catch((resp)=> {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(()=> {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
+    };
+
     return (
+        <>
         <div>
             <div className="form">
                 <div className="titleContainer">
@@ -286,20 +313,17 @@ function InformeInternoAccidente() {
                     <TextField onChange={(e) => { setValues({ ...values, encargado: e.target.value }) }} id="outlined-basic" label="Encargado ContratoRevisado por" variant="outlined" />
                 </div>
 
-
-
                 <div className="btn">
-                    <Button onClick={async() => {
-                        console.log(values);
-                         await axios.post('https://api.onmodoapp.com/api/informeintaccidente', values);
-                         
-                        
-                    }} variant="contained">Guardar</Button>
+                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
 
                 </div>
 
             </div>
         </div>
+        { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+
+        </>
+        
     )
 }
 
