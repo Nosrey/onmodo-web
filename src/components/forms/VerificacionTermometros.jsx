@@ -167,7 +167,16 @@ function VerificacionTermometros() {
                 }
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,fecha:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
+                <input
+  type="date"
+  onChange={(e) => {
+    setValues({ ...values, fecha: e.target.value });
+  }}
+  id="fecha"
+  name="fecha"
+  value={values.fecha}
+
+/>
                     <TextField onChange={(e)=>{setValues({...values,responsable:e.target.value})}} id="outlined-basic" label="Responsable de validación" variant="outlined" />
                 </div>
         

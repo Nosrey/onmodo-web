@@ -43,6 +43,7 @@ import FormulariosCargados from './components/formulariosCargados/FormulariosCar
 import FormCargado from './components/formulariosCargados/formCargado/FormCargado';
 import CrearContraseña from './components/CrearContraseña/CrearContraseña';
 
+
 function App() {
   const location = useLocation();
   const currentLocation = location?.pathname;
@@ -86,6 +87,7 @@ function App() {
             <Route path='/formularios-cargados' element={<FormulariosCargados />} />
 
             <Route path='/formularios-cargados/:form' element={<FormCargado />} />
+
 
             {/* Forms */}
             <Route path='/dietas-especiales' element={<AlergenosComida />} />

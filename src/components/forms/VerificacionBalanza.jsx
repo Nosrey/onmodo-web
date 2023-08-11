@@ -93,17 +93,17 @@ function VerificacionBalanza() {
     };
 
     const handleSubmit = () => {
-        verificacionBalanza(values).then((resp)=> {
+        verificacionBalanza(values).then((resp) => {
             setTextAlert("¡Formulario cargado exitosamente!");
             setTypeAlert("success");
-        }).catch((resp)=> {
+        }).catch((resp) => {
             setTextAlert("Ocurrió un error")
             setTypeAlert("error");
-        }).finally(()=> {
+        }).finally(() => {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth',
-              });
+            });
             setShowlert(true);
             setTimeout(() => {
                 setShowlert(false);
@@ -115,95 +115,105 @@ function VerificacionBalanza() {
 
     return (
         <>
-        <div>
-            <div className="form">
-                <div className="titleContainer">
-                    <h3 className="title">Verificación de Instrumentos de Medición: Balanzas</h3>
-                </div>
-                {showModal ? (
-                    <Modal
-                        content={<Balanzas />}
-                        closeModal={() => setShowModal(false)}
-                    />
-
-                ) : (
-                    <div className='cont-btn'>
-                        <Button size="small" onClick={() => setShowModal(true)}>
-                            <i class="ri-information-line" style={{ marginRight: "8px", fontSize: "22px" }}></i> Ver Más
-                        </Button>
+            <div>
+                <div className="form">
+                    <div className="titleContainer">
+                        <h3 className="title">Verificación de Instrumentos de Medición: Balanzas</h3>
                     </div>
-                )
-                }
-                <div className={styles.personal}>
-                    <input
-                        onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
-                        type="date"
-                        id="fecha"
-                        name="fecha"
-                        required
-                    />
+                    {showModal ? (
+                        <Modal
+                            content={<Balanzas />}
+                            closeModal={() => setShowModal(false)}
+                        />
 
-                    <TextField onChange={(e) => { setValues({ ...values, responsable: e.target.value }) }} id="outlined-basic" label="Responsable de validación" variant="outlined" />
-                    <TextField onChange={(e) => { setValues({ ...values, balanza: e.target.value }) }} id="outlined-basic" label="Balanza/Báscula" variant="outlined" />
+                    ) : (
+                        <div className='cont-btn'>
+                            <Button size="small" onClick={() => setShowModal(true)}>
+                                <i class="ri-information-line" style={{ marginRight: "8px", fontSize: "22px" }}></i> Ver Más
+                            </Button>
+                        </div>
+                    )
+                    }
+                    <div className={styles.personal}>
+                        <input
+                            onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
+                            type="date"
+                            id="fecha"
+                            name="fecha"
+                            required
+                        />
 
-                </div>
+                        <TextField onChange={(e) => { setValues({ ...values, responsable: e.target.value }) }} id="outlined-basic" label="Responsable de validación" variant="outlined" />
+                        <TextField onChange={(e) => { setValues({ ...values, balanza: e.target.value }) }} id="outlined-basic" label="Balanza/Báscula" variant="outlined" />
 
-                <div className="table">
-                    <div className={styles.contTitTabla}>
-                        <div className={styles.subtituloTable}>
-                            <div>
-                                <p style={{ textAlign: 'center', fontWeight: 'bold' }}>Identificación Balanza </p>
+                    </div>
+
+                    <div className="table">
+                        <div className={styles.contTitTabla}>
+                            <div className={styles.subtituloTable}>
+                                <div>
+                                    <p style={{ textAlign: 'center', fontWeight: 'bold' }}>Identificación Balanza </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="tableSection">
-                        {Array(replicas)
-                            .fill(0)
-                            .map((_, index) => (
-                                <div className="tableRow" key={index}>
-                                    <p className="index">{index + 1} </p>
+                        <div className="tableSection">
+                            {Array(replicas)
+                                .fill(0)
+                                .map((_, index) => (
+                                    <div className="tableRow" key={index}>
+                                        <p className="index">{index + 1} </p>
 
-                                    {inputs.map((input) => (
-                                        <div key={input.id}>
-                                            <TextField
-                                                onKeyUp={(e) => {
-                                                    inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                                }}
-                                                className="input"
-                                                id={`input-${input.id}-${index}`}
-                                                name={`input-${input.id}-${index}`}
-                                                label={`${input.label}`}
-                                                variant="outlined"
-                                            />
+                                        {inputs.map((input) => (
+                                            <div key={input.id}>
+                                                <TextField
+                                                    onKeyUp={(e) => {
+                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                    }}
+                                                    className="input"
+                                                    id={`input-${input.id}-${index}`}
+                                                    name={`input-${input.id}-${index}`}
+                                                    label={`${input.label}`}
+                                                    variant="outlined"
+                                                />
 
+                                            </div>
+                                        ))}
+                                        <div className="icon">
+                                            <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                                         </div>
-                                    ))}
-                                    <div className="icon">
-                                        <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+
+                        </div>
+                    </div>
+                    <span><b>*</b> BP(Balanza de producción) - BR (Balanza de recepción)</span>
+                    <br />
+                    <br />
+                    <div className={styles.personal}>
+                        <TextField onChange={(e) => { setValues({ ...values, verified: e.target.value }) }} id="outlined-basic" label="Verificado por" variant="outlined" />
+                        <input
+                            type="datetime-local"
+                            onChange={(e) => {
+                                setValues({ ...values, fechaHora: e.target.value });
+                            }}
+                            id="fechaHora"
+                            name="fechaHora"
+                            value={values.fechaHora}
+
+                        />
 
                     </div>
-                </div>
-                <span><b>*</b> BP(Balanza de producción) - BR (Balanza de recepción)</span>
-                <br />
-                <br />
-                <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, verified: e.target.value }) }} id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField onChange={(e) => { setValues({ ...values, fechaHora: e.target.value }) }} id="outlined-basic" label="Fecha/hora" variant="outlined" />
-                </div>
-                <div className="btn">
-                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
-                </div>
+                    <div className="btn">
+                        <Button onClick={handleSubmit} variant="contained">Guardar</Button>
+                    </div>
 
+                </div>
             </div>
-        </div>
-        { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+            {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}
 
         </>
-        
+
     )
 }
 
