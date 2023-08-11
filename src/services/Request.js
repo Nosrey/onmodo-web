@@ -19,7 +19,7 @@ export const login = async ({ legajo, password}) => {
     }
   };
 
-  export const createPassword = async ( token, password ) => {
+  export const createPassword = async ( token, password) => {
     try {
       const response = await fetch(`${URL_API}/api/forgotpassword/${token}`, {
         method: 'POST',
