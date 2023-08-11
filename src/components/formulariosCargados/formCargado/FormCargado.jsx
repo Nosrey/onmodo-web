@@ -7,7 +7,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { setFormulario } from '../../../redux/actions/formulariosActions';
 
-function FormCargado( {formulario}) {
+function FormCargado( {formulario} ) {
   const [openModal, setOpenModal] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [formularios, setFormularios] = useState([]);

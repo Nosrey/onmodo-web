@@ -4,6 +4,7 @@ import styles from './CrearContraseña.module.css';
 import logo from '../../assets/image/on-modo-grande.png';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios, { Axios } from 'axios';
+import { createPassword } from '../../services/Request';
 
 function CrearContraseña() {
   const [iconPassword, setIconPassword] = useState(false);
@@ -17,41 +18,22 @@ function CrearContraseña() {
     contraseña: '',
     contraseñarep: '',
   });
-  let password = inputValue.contraseña
+  const password = inputValue.contraseña
 
-  console.log(token)
-
-// const url = 'https://api.onmodoapp.com/api/register';
-
-//  const userData = {
-//   email: 'letosa1285@sportrid.com',
-//   fullName: 'Joasdoe a',
-//    legajo: '989829898',
-//   number: '98765223343210',
-//    puesto: 'So3aneer',
-//      contratoComedor: 'Yes',
-//     rol: "1",
-//      business: 'eainess',
-//     provincia: 'Buenos Aires',
-//   localidad: 'City',
-//    idChief: '122423',
-//  };
+  // Datos para crear cuenta
+  // {
+  //   "email":"mayef31829@tiuas.com",
+  //   "business":"asdaaaaaasdasdsadas",
+  //   "puesto":"teasdst",
+  //   "rol":1,
+  //   "fullName":"joaquin giorgis",
+  //   "number":"11322321211234209497",
+  //   "legajo":"1231222123123",
+  //   "provincia":"cordoba",
+  //   "localidad":"cordoba",
+  //   "contratoComedor":"test"
+  // }
   
-//   fetch(url, {
-//     method: 'POST',
-//    headers: {
-//       'Content-Type': 'application/json',
-//      },
-//    body: JSON.stringify(userData),
-//   })
-//     .then(response => response.json())
-//    .then(data => {
-//      console.log('User created:', data);
-//    })
-//     .catch(error => {
-//       console.error('Error creating user:', error);
-//    });
-
 
   const handleBlur = (e) => {
     const { name } = e.target;
@@ -99,7 +81,7 @@ const handleChange = (e) => {
       setErrors(validationErrors);
     } else {
       setErrors({});
-      await axios.post(`https://api.onmodoapp.com/api/forgotpassword/${token}`, {password})
+      createPassword(token, password)
       resetForm();
       navigate('/inicio-de-sesion');
     }
