@@ -6,6 +6,7 @@ import Termometros from '../modales/Termometros';
 import Modal from '../shared/Modal';
 import Alert from '../shared/components/Alert/Alert';
 import { verificacionTermometros } from '../../services/FormsRequest';
+import { useLocation } from 'react-router-dom';
 
 function VerificacionTermometros() {
      //** ALERTA */
@@ -14,18 +15,7 @@ function VerificacionTermometros() {
      const [showAlert, setShowlert] = useState(false);
 
     var idUser = localStorage.getItem("idUser");
-    const [values,setValues] = useState({
-        fecha:"",
-        responsable:"",
-        inputsTrimestral : [{
-        }],
-        inputsSemestral : [{
-        }],
-        verified: "",
-        fechaHora:"",
-        date: "",
-        idUser: idUser
-    })
+    const [values,setValues] = useState()
     const [inputs] = useState([
         { id: 1, label: 'Código' },
         { id: 2, label: 'Tipo (PIN/IR)' },
@@ -50,9 +40,11 @@ function VerificacionTermometros() {
             setInputValues1([...inputValues1,objValues1])
         }
     },[trigger1])
+
     useEffect(()=>{
         setValues({...values,inputsTrimestral:inputValues1})
     },[inputValues1])
+
     useEffect(()=>{
         if (objValues1.codigo !== "" && objValues1.tipo !== "" && objValues1.responsable !== "" && objValues1.area !== "" && objValues1.punto0 !== "" && objValues1.desvio0 !== "" && objValues1.punto100 !== "" && objValues1.desvio100 !== "" && objValues1.acciones !== "" ){
             setTrigger1(true)
@@ -79,9 +71,11 @@ function VerificacionTermometros() {
             setInputValues2([...inputValues2,objValues2])
         }
     },[trigger2])
+
     useEffect(()=>{
         setValues({...values,inputsSemestral:inputValues2})
     },[inputValues2])
+
     useEffect(()=>{
         if (objValues2.codigo !== "" && objValues2.area !== "" && objValues2.termoReferencia !== "" && objValues2.termoEvaluado !== "" && objValues2.desvio !== "" && objValues2.acciones !== ""){
             setTrigger2(true)
@@ -142,9 +136,43 @@ function VerificacionTermometros() {
         )
     };
 
+    const location = useLocation();
+    useEffect(() => {
+        const infoPrecargada = location.state?.objeto;
+        if (infoPrecargada) { // muestro un form del historial
+            console.log(infoPrecargada)
+            setValues({
+                fecha:infoPrecargada.fecha,
+                responsable:infoPrecargada.responsable,
+                inputsTrimestral : infoPrecargada.inputsTrimestral,
+                inputsSemestral : infoPrecargada.inputsSemestral,
+                verified: infoPrecargada.verified,
+                fechaHora:infoPrecargada.fechaHora,
+                date: infoPrecargada.date,
+                idUser: idUser
+            })
+        } else { // creo un form desde cero
+            setValues({
+                fecha:"",
+                responsable:"",
+                inputsTrimestral : [{
+                }],
+                inputsSemestral : [{
+                }],
+                verified: "",
+                fechaHora:"",
+                date: "",
+                idUser: idUser
+            })
+        }
+    }, [])
+    
+
     return (
         <>
-        <div>
+        {
+            values && 
+            <div>
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Verificación de Instrumentos de Medición: Termometros</h3>
@@ -168,16 +196,16 @@ function VerificacionTermometros() {
 
                 <div className={styles.personal}>
                 <input
-  type="date"
-  onChange={(e) => {
-    setValues({ ...values, fecha: e.target.value });
-  }}
-  id="fecha"
-  name="fecha"
-  value={values.fecha}
+                    type="date"
+                    onChange={(e) => {
+                        setValues({ ...values, fecha: e.target.value });
+                    }}
+                    id="fecha"
+                    name="fecha"
+                    value={values.fecha}
 
-/>
-                    <TextField onChange={(e)=>{setValues({...values,responsable:e.target.value})}} id="outlined-basic" label="Responsable de validación" variant="outlined" />
+                    />
+                    <TextField value={values.responsable} onChange={(e)=>{setValues({...values,responsable:e.target.value})}} id="outlined-basic" placeholder="Responsable de validación" variant="outlined" />
                 </div>
         
                 <br />
@@ -207,8 +235,8 @@ function VerificacionTermometros() {
                                     {inputs.map((input) => (
                                         <div key={input.id}>
                                             <TextField onBlur={(e)=>{
-                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index, "input1",input.id,e.target.value);
-                                            }} className="input" id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.placeholder, index, "input1",input.id,e.target.value);
+                                            }} className="input" id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} placeholder={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
@@ -250,8 +278,8 @@ function VerificacionTermometros() {
                                     {inputs2.map((input) => (
                                         <div key={input.id}>
                                             <TextField onBlur={(e)=>{
-                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index,"input2",input.id,e.target.value);
-                                            }} id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
+                                            inputsValuesConstructor(`input-${input.id}-${index}`,input.placeholder, index,"input2",input.id,e.target.value);
+                                            }} id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} placeholder={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
@@ -269,8 +297,8 @@ function VerificacionTermometros() {
                 <br />
                 
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
+                    <TextField value={values.verified} onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" placeholder="Verificado por" variant="outlined" />
+                    <TextField value={values.fechaHora} onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" placeholder="Fecha/hora" variant="outlined" />
                 </div>
                 <span><b>*</b> PIN(Termómetro de pinche) - IR (Termómetro infrarrojo)</span>
 
@@ -280,6 +308,8 @@ function VerificacionTermometros() {
 
             </div>
         </div>
+        }
+        
         { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
         </>
 
