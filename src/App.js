@@ -42,6 +42,7 @@ import FormulariosContainer from './components/formularios/FormulariosContainer'
 import FormulariosCargados from './components/formulariosCargados/FormulariosCargados';
 import FormCargado from './components/formulariosCargados/formCargado/FormCargado';
 import CrearContraseña from './components/CrearContraseña/CrearContraseña';
+import Cuentas from './views/Cuentas/Cuentas';
 
 
 function App() {
@@ -51,13 +52,6 @@ function App() {
   return (
     <div className='App'>
       <>
-        {/* <div className='mainContainer'>
-          {window.location.pathname !== '/login' &&
-          window.location.pathname !== '/register' &&
-          window.location.pathname !== '/restablecer-contrasena' ? (
-            <Menu />
-          ) : null} */}
-
         <div
           className='mainContent'
           style={{ position: 'relative', height: 'fit-content', minHeight: '100vh' }}
@@ -81,7 +75,7 @@ function App() {
             <Route path='/inicio' element={<Inicio />} />
 
             <Route path='/cuenta' element={<Cuenta />} />
-
+            <Route path='/cuentas' element={<Cuentas />} />
             <Route path='/formularios' element={<FormulariosContainer />} />
 
             <Route path='/formularios-cargados' element={<FormulariosCargados />} />
