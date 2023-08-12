@@ -232,11 +232,11 @@ function VerificacionTermometros() {
                                 <div className="tableRow" key={index}>
                                     <p className="index">{index + 1} </p>
 
-                                    {inputs.map((input) => (
+                                    {inputs.map((input, i) => (
                                         <div key={input.id}>
                                             <TextField onBlur={(e)=>{
                                             inputsValuesConstructor(`input-${input.id}-${index}`,input.placeholder, index, "input1",input.id,e.target.value);
-                                            }} className="input" id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} placeholder={`${input.label}`} variant="outlined" />
+                                            }} value={values.inputsTrimestral[i]} className="input" id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} placeholder={`${input.label}`} variant="outlined" />
 
                                         </div>
                                     ))}
