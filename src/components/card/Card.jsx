@@ -17,7 +17,7 @@ import { useEffect } from 'react';
 function Card({ text }) {
   console.log(text)
   const { title, link } = text;
-  const [titulo, setTitulo] = useState(true);
+  const [titulo, setTitulo] = useState("");
 
   useEffect(() => {
     getTitle()
@@ -63,7 +63,7 @@ function Card({ text }) {
     <Link to={link}>
       <div className={styles.cardContainer}>
         <div className={styles.cardWrapper}>
-          <span className={styles.titleCard}>{titulo}</span>
+          <span className={styles.titleCard}>{titulo === "0" ? title : titulo}</span>
         </div>
       </div>
     </Link>

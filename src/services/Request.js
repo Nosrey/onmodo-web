@@ -1,5 +1,6 @@
 const URL_API = 'https://api.onmodoapp.com';
 
+
 export const login = async ({ legajo, password}) => {
     try {
       const response = await fetch(`${URL_API}/api/login`, {
@@ -7,6 +8,23 @@ export const login = async ({ legajo, password}) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           legajo,
+          password
+        }),
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error', error);
+      throw error;
+    }
+  };
+
+  export const createPassword = async ( token, password) => {
+    try {
+      const response = await fetch(`${URL_API}/api/forgotpassword/${token}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           password
         }),
       });

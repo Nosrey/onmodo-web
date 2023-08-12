@@ -2,24 +2,26 @@ import React, { useEffect, useState } from 'react';
 import styles from './FormCargado.module.css';
 import ModalEdicion from '../../modalEdicion/ModalEdicion';
 import ModalBorrar from '../../modalBorrar/ModalBorrar';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { setFormulario } from '../../../redux/actions/formulariosActions';
 
-function FormCargado() {
+function FormCargado( {formulario} ) {
   const [openModal, setOpenModal] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [formularios, setFormularios] = useState([]);
   const [name, setName] = useState("");
-  const {form} = useParams()
+  const { form } = useParams()
   const [titulo, setTitulo] = useState("");
-  
- const idUser = localStorage.getItem("idUser");
- 
-useEffect(() => {
-  getName();
-  getData();
-  getTitle();
-}, [])
+
+  const idUser = localStorage.getItem("idUser");
+
+  useEffect(() => {
+    getName();
+    getData();
+    getTitle();
+  }, [])
 
 
   console.log("form", form)
@@ -54,45 +56,12 @@ useEffect(() => {
     else if (form == "verificaciontermometros") {
       setTitulo("Verificacion Termometros")
     }
-    else{
+    else {
       setTitulo("0")
     }
   }
-  async function getMonth() {
 
-    if (form == "controlalergenos") {
-      setTitulo("Control Alergenos")
-    } else if (form == "entregabidones") {
-      setTitulo("Entrega Bidones")
-    }
-    else if (form == "flashincidente") {
-      setTitulo("Flash Incidente")
-    }
-    else if (form == "informeintaccidente") {
-      setTitulo("Informe Accidente")
-    }
-    else if (form == "registrocapacitacion") {
-      setTitulo("Registro Capacitacion")
-    }
-    else if (form == "registrodecomiso") {
-      setTitulo("Registro Decomiso")
-    }
-    else if (form == "registrosimulacro") {
-      setTitulo("Registro Simulacro")
-    }
-    else if (form == "reporterechazo") {
-      setTitulo("Reporte Rechazo")
-    }
-    else if (form == "verificacionbalanza") {
-      setTitulo("Verificacion Balanza")
-    }
-    else if (form == "verificaciontermometros") {
-      setTitulo("Verificacion Termometros")
-    }
-    else{
-      setTitulo("0")
-    }
-  }
+  console.log("formularioooo", formulario)
   async function fetchDataAndAccessData() {
     try {
       const response = await axios.get(`https://api.onmodoapp.com/api/business/${idUser}`);
@@ -103,7 +72,7 @@ useEffect(() => {
       return null;
     }
   }
-  
+
   async function getData() {
     const data = await fetchDataAndAccessData();
 
@@ -117,17 +86,25 @@ useEffect(() => {
     }
   }
 
-  async function getName(){
+  async function getName() {
     const data = await fetchDataAndAccessData();
     setName(data.fullName)
     console.log("datita", data.fullName)
   }
 
-  console.log(`Valor de formulariooiooooo`,   fetchDataAndAccessData());
+  console.log(`Valor de formulariooiooooo`, fetchDataAndAccessData());
 
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
+        <div className={styles.orderContainer}>
+          <span className={styles.spanOrder}>Ordenar por:</span>
+          <select name='' id={styles.select} onChange={console.log("orden")}>
+            <option value='Últimos utilizados'>Últimos utilizados</option>
+            <option value='A-Z'>A - Z</option>
+            <option value='Z-A'>Z - A</option>
+          </select>
+        </div>
         <table className={styles.table}>
           <thead>
             <tr>
@@ -152,9 +129,17 @@ useEffect(() => {
                 <td>{name}</td>
                 <td>Edicion</td>
                 <td className={styles.contEdicion}>
-                  <span className={styles.actionIcon}>
-                    <i class='ri-eye-line'></i>
-                  </span>
+                <Link
+                  to={`/${form}`}
+                  onClick={() => setFormulario(formulario) }
+                  
+                    className={styles.actionIcon}
+                    
+                > 
+                   <i className='ri-eye-line'>
+
+                   </i>
+                  </Link>
                   <span onClick={() => setOpenModal(true)} className={styles.actionIcon}>
                     <i class='ri-pencil-line'></i>
                   </span>
@@ -176,4 +161,11 @@ useEffect(() => {
   );
 }
 
-export default FormCargado;
+const mapDispatchToProps = {
+  setFormulario,
+};
+const mapStateToProps = (state) => ({
+  formulario: state.formulario,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormCargado);

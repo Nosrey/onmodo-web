@@ -93,7 +93,7 @@ function FormulariosContainer() {
             <option value='Últimos utilizados'>Últimos utilizados</option>
             <option value='A-Z'>A - Z</option>
             <option value='Z-A'>Z - A</option>
-          </select>
+          </select> 
         </div>
         <div className={styles.cardContainer}>
           {sortedForms.length > 0
