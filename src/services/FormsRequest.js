@@ -216,3 +216,20 @@ export const ejemplo = async ({ dato1, dato2}) => {
       throw error;
     }
   };
+
+
+  /// PARA BORRAR
+  
+  export const deleteForm = async (idForm, form) => {
+    try {
+      const response = await fetch(`${URL_API}/api/${form}/${idForm}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error', error);
+      throw error;
+    }
+  };

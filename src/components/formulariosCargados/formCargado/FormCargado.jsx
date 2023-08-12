@@ -6,10 +6,12 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { setFormulario } from '../../../redux/actions/formulariosActions';
+import Alert from '../../shared/components/Alert/Alert';
 
 function FormCargado( {formulario} ) {
   const [openModal, setOpenModal] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
+  const [formSelected, setFormSelected] = useState();
   const [formularios, setFormularios] = useState([]);
   const [name, setName] = useState("");
   const { form } = useParams()
@@ -17,6 +19,11 @@ function FormCargado( {formulario} ) {
   const [url, setUrl] = useState("");
   const idUser = localStorage.getItem("idUser");
   const navigate = useNavigate();
+
+  //** ALERTA */
+  const [textAlert, setTextAlert] = useState("");
+  const [typeAlert, setTypeAlert] = useState("");
+  const [showAlert, setShowlert] = useState(false);
 
   const goToForm = (form) => {
     navigate(url, { state: { objeto: form }});
@@ -34,25 +41,25 @@ function FormCargado( {formulario} ) {
     if (form == "controlalergenos") {
       setTitulo("Control Alergenos")
     } else if (form == "entregabidones") {
-      setTitulo("Entrega Bidones")
+      setTitulo("Entrega de Bidones de aceite usado")
     }
     else if (form == "flashincidente") {
-      setTitulo("Flash Incidente")
+      setTitulo("Flash reporte de incidentes")
     }
     else if (form == "informeintaccidente") {
-      setTitulo("Informe Accidente")
+      setTitulo("Informe interno de accidente")
     }
     else if (form == "registrocapacitacion") {
-      setTitulo("Registro Capacitacion")
+      setTitulo("Registro de capacitación")
     }
     else if (form == "registrodecomiso") {
       setTitulo("Registro Decomiso")
     }
     else if (form == "registrosimulacro") {
-      setTitulo("Registro Simulacro")
+      setTitulo("Registro de simulacro")
     }
     else if (form == "reporterechazo") {
-      setTitulo("Reporte Rechazo");
+      setTitulo("Reporte de rechazo de materia prima");
       setUrl("/rechazo-mp")
     }
     else if (form == "verificacionbalanza") {
@@ -94,7 +101,30 @@ function FormCargado( {formulario} ) {
     setName(data.fullName)
   }
 
+  const openDeleteModal = (id) => {
+    setFormSelected(id);
+    setModalDelete(true);
+  }
+
+  const showAlertNotif = (type, msg) => {
+    setTextAlert(msg);
+    setTypeAlert(type);
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    setShowlert(true);
+    setTimeout(() => {
+        setShowlert(false);
+
+    }, 7000);
+    if (type === "success") {
+      getData();
+    }
+  }
+
   return (
+    <>
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.orderContainer}>
@@ -135,7 +165,7 @@ function FormCargado( {formulario} ) {
                   <span onClick={() => setOpenModal(true)} className={styles.actionIcon}>
                     <i class='ri-pencil-line'></i>
                   </span>
-                  <span onClick={() => setModalDelete(true)} className={styles.actionIcon}>
+                  <span onClick={() => openDeleteModal(formulario._id)} className={styles.actionIcon}>
                     <i class='ri-delete-bin-line'></i>
                   </span>
                   <span className={styles.actionIcon}>
@@ -147,9 +177,12 @@ function FormCargado( {formulario} ) {
           </tbody>
         </table>
         <ModalEdicion openModal={openModal} setOpenModal={setOpenModal} />
-        <ModalBorrar modalDelete={modalDelete} setModalDelete={setModalDelete} />
+        <ModalBorrar modalDelete={modalDelete} setModalDelete={setModalDelete} idForm={formSelected} url={form} showAlert={(type,msg) => showAlertNotif(type,msg)}/>
       </div>
     </div>
+    { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+    </>
+    
   );
 }
 

@@ -131,6 +131,9 @@ function AlergenosComida() {
                                                     label={`${input.label}`}
                                                     variant="outlined"
                                                     type="date" // Esto cambia el tipo de entrada a fecha
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
                                                 />
                                             ) : (
                                                 <TextField

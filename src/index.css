@@ -215,3 +215,15 @@ body {
 .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked {
   color: #90C057!important;
 }
+
+
+.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+  color: grey !important;
+}
+
+   
+
+  .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline, .css-md26zr-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline  {
+    border-color:  #90C057 !important;
+    border-width: 2px;
+  }
