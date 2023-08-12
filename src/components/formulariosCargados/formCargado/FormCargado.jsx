@@ -14,14 +14,14 @@ function FormCargado( {formulario} ) {
   const [name, setName] = useState("");
   const { form } = useParams()
   const [titulo, setTitulo] = useState("");
-
+  const [url, setUrl] = useState("");
   const idUser = localStorage.getItem("idUser");
   const navigate = useNavigate();
 
-  const goToForm = (form, url) => {
-    console.log(url)
-    navigate('/verificacion-termometro', { state: { objeto: form }});
+  const goToForm = (form) => {
+    navigate(url, { state: { objeto: form }});
   };
+
   useEffect(() => {
     getName();
     getData();
@@ -52,13 +52,15 @@ function FormCargado( {formulario} ) {
       setTitulo("Registro Simulacro")
     }
     else if (form == "reporterechazo") {
-      setTitulo("Reporte Rechazo")
+      setTitulo("Reporte Rechazo");
+      setUrl("/rechazo-mp")
     }
     else if (form == "verificacionbalanza") {
       setTitulo("Verificacion Balanza")
     }
     else if (form == "verificaciontermometros") {
-      setTitulo("Verificacion Termometros")
+      setTitulo("Verificacion Termometros");
+      setUrl("/verificacion-termometro")
     }
     else {
       setTitulo("0")
@@ -127,7 +129,7 @@ function FormCargado( {formulario} ) {
                 <td>{name}</td>
                 <td>Edicion</td>
                 <td className={styles.contEdicion}>
-                <span onClick={() => goToForm(formulario,form)} className={styles.actionIcon}>
+                <span onClick={() => goToForm(formulario)} className={styles.actionIcon}>
                    <i className='ri-eye-line' ></i>
                    </span>
                   <span onClick={() => setOpenModal(true)} className={styles.actionIcon}>

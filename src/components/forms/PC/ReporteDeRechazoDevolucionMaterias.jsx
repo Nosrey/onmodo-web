@@ -1,10 +1,11 @@
 import { Button, TextField, Checkbox } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ReporteDeRechazoDevolucionMaterias.module.css";
 import Modal from '../../shared/Modal';
 import RechazoInfo from "../../modales/RechazoInfo";
 import Alert from "../../shared/components/Alert/Alert";
 import { reporteRechazo } from "../../../services/FormsRequest";
+import { useLocation } from "react-router-dom";
 
 function ReporteDeRechazoDevolucionMaterias() {
   //** ALERTA */
@@ -111,23 +112,6 @@ const [medidasValues,setMedidasValues] = useState([
   {rechazoCheck:false,rechazoDescription:""},  
   {devolucionCheck:false,devolucionDescription:""},
   {aceptadoCheck:false,aceptadoDescription:""}])
-
-
-/* useEffect(()=>{
-    if(replicas === 1) {
-        setInputValues([objValues])
-    }else if (replicas > 1 ) {
-        setInputValues([...inputValues,objValues])
-    }
-},[trigger])
-useEffect(()=>{
-    setValues({...values,inputsValues:inputValues})
-},[inputValues])
-useEffect(()=>{
-    if (objValues.fecha !== "" && objValues.nombre !== "" && objValues.preparacion !== "" && objValues.listado !== "" && objValues.responsable !== ""){
-        setTrigger(true)
-    }
-},[objValues]) */
 
 const inputsValuesConstructor = (index,value) => {
     /* const inputTarget = document.getElementById(id) */
@@ -326,6 +310,12 @@ const handleSubmit = () => {
   )
 };
 
+const location = useLocation();
+  useEffect(() => {
+    const infoPrecargada = location.state?.objeto;
+    console.log(infoPrecargada)
+  }, [])
+  
   return (
     <>
     <div>

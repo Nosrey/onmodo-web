@@ -205,7 +205,7 @@ function VerificacionTermometros() {
                     value={values.fecha}
 
                     />
-                    <TextField value={values.responsable} onChange={(e)=>{setValues({...values,responsable:e.target.value})}} id="outlined-basic" placeholder="Responsable de validación" variant="outlined" />
+                    <TextField value={values.responsable} onChange={(e)=>{setValues({...values,responsable:e.target.value})}} id="outlined-basic" placeholder="Responsable de validación" label="Responsable de validación" variant="outlined" />
                 </div>
         
                 <br />
