@@ -1,9 +1,10 @@
 import { Button, TextField, Checkbox, FormControlLabel } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './InformeInternoAccidente.module.css'
 import { useSelector } from 'react-redux';
 import { informeIntAccidente } from '../../../services/FormsRequest';
 import Alert from '../../shared/components/Alert/Alert';
+import { useLocation } from 'react-router';
 
 function InformeInternoAccidente() {
      //** ALERTA */
@@ -43,28 +44,7 @@ function InformeInternoAccidente() {
     const [showTextField2, setShowTextField2] = useState(false);
     const [showTextField3, setShowTextField3] = useState(false);
     var idUser = localStorage.getItem("idUser");
-    const [values, setValues] = useState({
-        comedor: "",
-        fecha: "",
-        tipo: "",
-        checkboxes: [{}],
-        nombreApellido: "",
-        cuil: "",
-        fechaIngreso: "",
-        puesto: "",
-        hora: "",
-        lugar: "",
-        descripcion: "",
-        checkboxesAccidente: [{}],
-        lugarLesion: "",
-        medidas: "",
-        razon: "",
-        firmaEmpleado: "",
-        firmaAdm: "",
-        encargado: "",
-        date: "",
-        idUser: idUser
-    })
+    const [values, setValues] = useState()
     const [checkboxesValues] = useState([
         { label: "CDR", check: false },
         { label: "CMS", check: false },
@@ -164,9 +144,64 @@ function InformeInternoAccidente() {
         }
         )
     };
+    const location = useLocation();
+    useEffect(() => {
+        const infoPrecargada = location.state?.objeto;
+        if (infoPrecargada) { // muestro un form del historial
+            console.log("infoPrecargada", infoPrecargada)
+            setValues({
+                comedor: infoPrecargada.comedor,
+                fecha: infoPrecargada.fecha,
+                tipo: infoPrecargada.tipo,
+                checkboxes: [infoPrecargada.checkboxes],
+                nombreApellido: infoPrecargada.nombreApellido,
+                cuil: infoPrecargada.cuil,
+                fechaIngreso: infoPrecargada.fechaIngreso,
+                puesto: infoPrecargada.puesto,
+                hora: infoPrecargada.hora,
+                lugar: infoPrecargada.lugar,
+                descripcion: infoPrecargada.descripcion,
+                checkboxesAccidente: [infoPrecargada.checkboxesAccidente],
+                lugarLesion: infoPrecargada.lugarLesion,
+                medidas: infoPrecargada.medidas,
+                razon: infoPrecargada.razon,
+                firmaEmpleado: infoPrecargada.firmaEmpleado,
+                firmaAdm: infoPrecargada.firmaAdm,
+                encargado: infoPrecargada.encargado,
+                date: infoPrecargada.date,
+                idUser: idUser
+            })
+            console.log("value", values)
+        } else { // creo un form desde cero
+            
+            setValues({
+                comedor: "",
+                fecha: "",
+                tipo: "",
+                checkboxes: [{}],
+                nombreApellido: "",
+                cuil: "",
+                fechaIngreso: "",
+                puesto: "",
+                hora: "",
+                lugar: "",
+                descripcion: "",
+                checkboxesAccidente: [{}],
+                lugarLesion: "",
+                medidas: "",
+                razon: "",
+                firmaEmpleado: "",
+                firmaAdm: "",
+                encargado: "",
+                date: "",
+                idUser: idUser
+            })
+        }
+    }, [])
 
     return (
         <>
+        {values &&
         <div>
             <div className="form">
                 <div className="titleContainer">
@@ -175,14 +210,15 @@ function InformeInternoAccidente() {
                 </div>
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }} id="outlined-basic" style={{ width: "50%" }} label="Comedor donde ocurrió" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }} value={values.comedor} id="outlined-basic" style={{ width: "50%" }} label="Comedor donde ocurrió" variant="outlined" />
                     <input
                         onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
                         type="date"
                         id="fecha"
+                        value={values.fecha}
                         name="fecha"
                     />
-                    <TextField onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} id="outlined-basic" label="Tipo de accidente" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} value={values.tipo} id="outlined-basic" label="Tipo de accidente" variant="outlined" />
                 </div>
 
                 <div className={styles.personal}>
@@ -199,26 +235,28 @@ function InformeInternoAccidente() {
                         <p className={styles.subtitle}>DATOS DEL ACCIDENTADO</p>
                     </div>
                     <div className={styles.personal}>
-                        <TextField onChange={(e) => { setValues({ ...values, nombreApellido: e.target.value }) }} id="outlined-basic" label="Nombre y Apellido" variant="outlined" />
-                        <TextField onChange={(e) => { setValues({ ...values, cuil: e.target.value }) }} id="outlined-basic" label="Nº de CUIL" variant="outlined" />
+                        <TextField onChange={(e) => { setValues({ ...values, nombreApellido: e.target.value }) }}  value={values.nombreApellido} id="outlined-basic" label="Nombre y Apellido" variant="outlined" />
+                        <TextField onChange={(e) => { setValues({ ...values, cuil: e.target.value }) }}  value={values.cuil} id="outlined-basic" label="Nº de CUIL" variant="outlined" />
                         <input
                             onChange={(e) => { setValues({ ...values, fechaIngreso: e.target.value }) }}
                             type="date"
                             id="fecha-ingreso"
                             name="fecha-ingreso"
+                            value={values.fechaIngreso} 
                         />
 
                     </div>
                     <div className={styles.personal}>
-                        <TextField onChange={(e) => { setValues({ ...values, puesto: e.target.value }) }} id="outlined-basic" label="Puesto de trabajo" variant="outlined" />
+                        <TextField onChange={(e) => { setValues({ ...values, puesto: e.target.value }) }} value={values.puesto}  id="outlined-basic" label="Puesto de trabajo" variant="outlined" />
                         <input
                             onChange={(e) => { setValues({ ...values, hora: e.target.value }) }}
                             type="time"
                             id="hora-accidente"
                             name="hora-accidente"
+                            value={values.hora} 
                         />
 
-                        <TextField onChange={(e) => { setValues({ ...values, lugar: e.target.value }) }} id="outlined-basic" label="Lugar del accidente" variant="outlined" />
+                        <TextField onChange={(e) => { setValues({ ...values, lugar: e.target.value }) }}  value={values.lugar} id="outlined-basic" label="Lugar del accidente" variant="outlined" />
                     </div>
 
                     <div className={styles.personalText}>
@@ -229,6 +267,7 @@ function InformeInternoAccidente() {
                             label="Descripción del Accidente"
                             multiline
                             rows={4}
+                            value={values.descripcion} 
                         />
                     </div>
 
@@ -274,7 +313,7 @@ function InformeInternoAccidente() {
 
                         {!showTextField3 && (
                             <div className={styles.personal}>
-                                <TextField onChange={(e) => { setValues({ ...values, razon: e.target.value }) }} id="outlined-basic" multiline style={{ width: "50%" }}
+                                <TextField onChange={(e) => { setValues({ ...values, razon: e.target.value }) }}  value={values.razon} id="outlined-basic" multiline style={{ width: "50%" }}
                                     rows={2} name="textField" variant="outlined" label=" ¿Por qué razón no lo usaba?" />
                             </div>
                         )}
@@ -289,6 +328,7 @@ function InformeInternoAccidente() {
                             label="¿En qué lugar del cuerpo se produjo la lesión?"
                             multiline
                             rows={2}
+                            value={values.lugarLesion} 
                         />
                     </div>
                     <div className={styles.personalText}>
@@ -300,6 +340,7 @@ function InformeInternoAccidente() {
                             label="¿Qué medidas cree conveniente adoptar para evitar futuros accidentes de este tipo?"
                             multiline
                             rows={4}
+                            value={values.medidas} 
                         />
                     </div>
                 </div>
@@ -308,9 +349,9 @@ function InformeInternoAccidente() {
 
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, firmaEmpleado: e.target.value }) }} id="outlined-basic" label="Firma del Empleado" variant="outlined" />
-                    <TextField onChange={(e) => { setValues({ ...values, firmaAdm: e.target.value }) }} id="outlined-basic" label="Firma del Administrador o Encargado Contrato" variant="outlined" />
-                    <TextField onChange={(e) => { setValues({ ...values, encargado: e.target.value }) }} id="outlined-basic" label="Encargado ContratoRevisado por" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, firmaEmpleado: e.target.value }) }}  value={values.firmaEmpleado}  id="outlined-basic" label="Firma del Empleado" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, firmaAdm: e.target.value }) }}  value={values.firmaAdm} id="outlined-basic" label="Firma del Administrador o Encargado Contrato" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, encargado: e.target.value }) }}  value={values.encargado} id="outlined-basic" label="Encargado ContratoRevisado por" variant="outlined" />
                 </div>
 
                 <div className="btn">
@@ -320,6 +361,7 @@ function InformeInternoAccidente() {
 
             </div>
         </div>
+        }
         { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
 
         </>

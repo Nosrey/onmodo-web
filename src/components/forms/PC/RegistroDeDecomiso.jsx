@@ -127,8 +127,7 @@ function RegistroDeDecomiso() {
                                                         id={`input-${input.id}-${index}`}
                                                         name={`input-${input.id}-${index}`}
                                                         value={objValues.fecha}
-                                                        min="2023-01-01"
-                                                        max="2030-12-31"
+
                                                     />
                                                 ) : (
                                                     <TextField

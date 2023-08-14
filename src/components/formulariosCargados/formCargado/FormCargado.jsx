@@ -7,8 +7,12 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { setFormulario } from '../../../redux/actions/formulariosActions';
 import Alert from '../../shared/components/Alert/Alert';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
-function FormCargado( {formulario} ) {
+
+
+function FormCargado({ formulario }) {
   const [openModal, setOpenModal] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [formSelected, setFormSelected] = useState();
@@ -25,8 +29,41 @@ function FormCargado( {formulario} ) {
   const [typeAlert, setTypeAlert] = useState("");
   const [showAlert, setShowlert] = useState(false);
 
+
+
+  const generatePDF = () => {
+    const table = document.querySelector(`.${styles.table}`);
+  
+    if (!table) {
+      console.error('Table element not found.');
+      return;
+    }
+  
+    const pdf = new jsPDF();
+    
+    const tableData = [];
+    const rows = table.querySelectorAll('tbody tr');
+  
+    rows.forEach(row => {
+      const rowData = [];
+      row.querySelectorAll('td').forEach(cell => {
+        rowData.push(cell.textContent);
+      });
+      tableData.push(rowData);
+    });
+  
+    const header = ['Formulario', 'Año', 'Mes', 'Día', 'Hora', 'Usuario'];
+  
+    pdf.autoTable({
+      head: [header],
+      body: tableData,
+    });
+  
+    pdf.save('formulario.pdf');
+  };
+
   const goToForm = (form) => {
-    navigate(url, { state: { objeto: form }});
+    navigate(url, { state: { objeto: form } });
   };
 
   useEffect(() => {
@@ -40,23 +77,31 @@ function FormCargado( {formulario} ) {
 
     if (form == "controlalergenos") {
       setTitulo("Control Alergenos")
+      setUrl("/dietas-especiales")
+
     } else if (form == "entregabidones") {
       setTitulo("Entrega de Bidones de aceite usado")
+      setUrl("/bidones-de-aceite")
     }
     else if (form == "flashincidente") {
       setTitulo("Flash reporte de incidentes")
+      setUrl("/reporte-incidente")
     }
     else if (form == "informeintaccidente") {
       setTitulo("Informe interno de accidente")
+      setUrl("/informe-accidente")
     }
     else if (form == "registrocapacitacion") {
       setTitulo("Registro de capacitación")
+      setUrl("/registro-de-capacitacion")
     }
     else if (form == "registrodecomiso") {
       setTitulo("Registro Decomiso")
+      setUrl("/registro-decomisos-mp")
     }
     else if (form == "registrosimulacro") {
       setTitulo("Registro de simulacro")
+      setUrl("/registro-simulacro")
     }
     else if (form == "reporterechazo") {
       setTitulo("Reporte de rechazo de materia prima");
@@ -64,6 +109,7 @@ function FormCargado( {formulario} ) {
     }
     else if (form == "verificacionbalanza") {
       setTitulo("Verificacion Balanza")
+      setUrl("/verificacion-balanza")
     }
     else if (form == "verificaciontermometros") {
       setTitulo("Verificacion Termometros");
@@ -110,12 +156,12 @@ function FormCargado( {formulario} ) {
     setTextAlert(msg);
     setTypeAlert(type);
     window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
+      top: 0,
+      behavior: 'smooth',
+    });
     setShowlert(true);
     setTimeout(() => {
-        setShowlert(false);
+      setShowlert(false);
 
     }, 7000);
     if (type === "success") {
@@ -125,64 +171,64 @@ function FormCargado( {formulario} ) {
 
   return (
     <>
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <div className={styles.orderContainer}>
-          <span className={styles.spanOrder}>Ordenar por:</span>
-          <select name='' id={styles.select} onChange={() => console.log("orden")}>
-            <option value='Últimos utilizados'>Últimos utilizados</option>
-            <option value='A-Z'>A - Z</option>
-            <option value='Z-A'>Z - A</option>
-          </select>
-        </div>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Formulario</th>
-              <th>Año</th>
-              <th>Mes</th>
-              <th>Día</th>
-              <th>Hora</th>
-              <th>Usuario</th>
-              <th>Edición</th>
-              <th className={styles.accion}>Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            {formularios.map((formulario, index) => (
-              <tr key={index} className={styles.fila}>
-                <td>{titulo}</td>
-                <td>{formulario.createdAt.slice(0, 4)}</td>
-                <td>{formulario.createdAt.slice(5, 7)}</td>
-                <td>{formulario.createdAt.slice(8, 10)}</td>
-                <td>{formulario.createdAt.slice(11, 16)}</td>
-                <td>{name}</td>
-                <td>Edicion</td>
-                <td className={styles.contEdicion}>
-                <span onClick={() => goToForm(formulario)} className={styles.actionIcon}>
-                   <i className='ri-eye-line' ></i>
-                   </span>
-                  <span onClick={() => setOpenModal(true)} className={styles.actionIcon}>
-                    <i class='ri-pencil-line'></i>
-                  </span>
-                  <span onClick={() => openDeleteModal(formulario._id)} className={styles.actionIcon}>
-                    <i class='ri-delete-bin-line'></i>
-                  </span>
-                  <span className={styles.actionIcon}>
-                    <i class='ri-printer-line'></i>
-                  </span>
-                </td>
+      <div className={styles.container}>
+        <div className={styles.wrapper}>
+          <div className={styles.orderContainer}>
+            <span className={styles.spanOrder}>Ordenar por:</span>
+            <select name='' id={styles.select} onChange={() => console.log("orden")}>
+              <option value='Últimos utilizados'>Últimos utilizados</option>
+              <option value='A-Z'>A - Z</option>
+              <option value='Z-A'>Z - A</option>
+            </select>
+          </div>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Formulario</th>
+                <th>Año</th>
+                <th>Mes</th>
+                <th>Día</th>
+                <th>Hora</th>
+                <th>Usuario</th>
+                <th>Edición</th>
+                <th className={styles.accion}>Acción</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <ModalEdicion openModal={openModal} setOpenModal={setOpenModal} />
-        <ModalBorrar modalDelete={modalDelete} setModalDelete={setModalDelete} idForm={formSelected} url={form} showAlert={(type,msg) => showAlertNotif(type,msg)}/>
+            </thead>
+            <tbody>
+              {formularios.map((formulario, index) => (
+                <tr key={index} className={styles.fila}>
+                  <td>{titulo}</td>
+                  <td>{formulario.createdAt.slice(0, 4)}</td>
+                  <td>{formulario.createdAt.slice(5, 7)}</td>
+                  <td>{formulario.createdAt.slice(8, 10)}</td>
+                  <td>{formulario.createdAt.slice(11, 16)}</td>
+                  <td>{name}</td>
+                  <td>Edicion</td>
+                  <td className={styles.contEdicion}>
+                    <span onClick={() => goToForm(formulario)} className={styles.actionIcon}>
+                      <i className='ri-eye-line' ></i>
+                    </span>
+                    <span onClick={() => setOpenModal(true)} className={styles.actionIcon}>
+                      <i class='ri-pencil-line'></i>
+                    </span>
+                    <span onClick={() => openDeleteModal(formulario._id)} className={styles.actionIcon}>
+                      <i class='ri-delete-bin-line'></i>
+                    </span>
+                    <span onClick={generatePDF} className={styles.actionIcon}>
+                      <i className='ri-printer-line'></i>
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <ModalEdicion openModal={openModal} setOpenModal={setOpenModal} />
+          <ModalBorrar modalDelete={modalDelete} setModalDelete={setModalDelete} idForm={formSelected} url={form} showAlert={(type, msg) => showAlertNotif(type, msg)} />
+        </div>
       </div>
-    </div>
-    { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+      {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}
     </>
-    
+
   );
 }
 

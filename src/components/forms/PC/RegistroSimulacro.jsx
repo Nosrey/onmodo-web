@@ -1,9 +1,10 @@
 import { Button, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './RegistroSimulacro.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Alert from '../../shared/components/Alert/Alert';
 import { registroSimulacro } from '../../../services/FormsRequest';
+import { useLocation } from 'react-router';
 
 function RegistroSimulacro() {
     //** ALERTA */
@@ -18,21 +19,7 @@ function RegistroSimulacro() {
     ]);
     var idUser = localStorage.getItem("idUser");
     const [replicas, setReplicas] = useState(1);
-    const [values, setValues] = useState({
-        razonSocial: "",
-        ubicacion: "",
-        localidad: "",
-        fecha: "",
-        personas: [
-            {
-                nombreCompleto: "",
-                dni: "",
-                firma: ""
-            }
-        ],
-        firmaInstructor: "",
-        idUser: idUser
-    });
+    const [values, setValues] = useState();
 
     const handleClick = () => {
         setReplicas(replicas + 1);
@@ -80,9 +67,50 @@ function RegistroSimulacro() {
         }
         )
     };
-
+    const location = useLocation();
+    useEffect(() => {
+        const infoPrecargada = location.state?.objeto;
+        if (infoPrecargada) { // muestro un form del historial
+            console.log("infoPrecargada", infoPrecargada)
+            console.log("sepudo")
+            setValues({
+                razonSocial: infoPrecargada.razonSocial,
+                ubicacion: infoPrecargada.ubicacion,
+                localidad: infoPrecargada.localidad,
+                fecha: infoPrecargada.fecha,
+                personas: [
+                    {
+                        nombreCompleto: infoPrecargada.personas.nombreCompleto,
+                        dni: infoPrecargada.personas.dni,
+                        firma: infoPrecargada.personas.firma
+                    }
+                ],
+                firmaInstructor: infoPrecargada.firmaInstructor,
+                idUser: idUser
+            })
+            console.log("values", values)
+        } else { // creo un form desde cero
+            console.log("error")
+            setValues({
+                razonSocial: "",
+                ubicacion: "",
+                localidad: "",
+                fecha: "",
+                personas: [
+                    {
+                        nombreCompleto: "",
+                        dni: "",
+                        firma: ""
+                    }
+                ],
+                firmaInstructor: "",
+                idUser: idUser
+            })
+        }
+    }, [])
     return (
         <>
+        {values &&
         <div>
             <div className="form">
                 <div className="titleContainer">
@@ -90,18 +118,19 @@ function RegistroSimulacro() {
                 </div>
 
                 <div className={styles.personalText}>
-                    <TextField onChange={(e) => { setValues({ ...values, razonSocial: e.target.value }) }} fullWidth id="outlined-basic" label="Razón Social" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, razonSocial: e.target.value }) }} value={values.razonSocial} fullWidth id="outlined-basic" label="Razón Social" variant="outlined" />
                 </div>
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, ubicacion: e.target.value }) }} id="outlined-basic" label="Ubicación" variant="outlined" />
-                    <TextField onChange={(e) => { setValues({ ...values, localidad: e.target.value }) }} id="outlined-basic" label="Localidad" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, ubicacion: e.target.value }) }} value={values.ubicacion}  id="outlined-basic" label="Ubicación" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, localidad: e.target.value }) }} value={values.localidad}  id="outlined-basic" label="Localidad" variant="outlined" />
                     <input
                         onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
                         type="date"
                         id="fecha"
                         name="fecha"
                         required
+                        value={values.fecha} 
                     />
                 </div>
 
@@ -158,7 +187,7 @@ function RegistroSimulacro() {
                 </div>
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, firmaInstructor: e.target.value }) }} id="outlined-basic" label="Firma del Instructor" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, firmaInstructor: e.target.value }) }} value={values.firmaInstructor}  id="outlined-basic" label="Firma del Instructor" variant="outlined" />
                 </div>
 
                 <div className="btn">
@@ -166,6 +195,7 @@ function RegistroSimulacro() {
                 </div>
             </div>
         </div>
+        }
         { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
         </>
 
