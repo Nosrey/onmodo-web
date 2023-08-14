@@ -2,21 +2,27 @@ import styles from './Cuenta.module.css';
 import React, { useEffect, useState } from 'react';
 import perfil from '../../../assets/image/perfil.png';
 import placeholder from '../../../assets/image/download.png';
-import { getUserInfo } from '../../../services/Request';
+import { getLocalidades, getProvincias, getUserInfo } from '../../../services/Request';
 import { useLocation } from 'react-router-dom';
-import { PUESTOS_N1 } from '../../../components/shared/constants/Puestos';
+import { PUESTOS_N1, PUESTOS_N2 } from '../../../components/shared/constants/Puestos';
 
 function Cuenta() {
-  var idUser = localStorage.getItem("idUser");
+  const idUser = localStorage.getItem("idUser");
+  const myRol = localStorage.getItem("rol")
   const location = useLocation();
+
   const [errors, setErrors] = useState({});
   const [showToast, setShowToast] = useState(false);
   const [editInput, setEditInput] = useState(true);
   const [btnEdit, setBtnEdit] = useState(false);
   const [inputValue, setInputValue] = useState();
   const [srcImage, setSrcImage] = useState();
-  const [puestoOptions, setPuestoOptions] = useState(PUESTOS_N1)
+  const [puestoOptions, setPuestoOptions] = useState(PUESTOS_N1);
+  const [provinciasOptions, setProvinciasOptions] = useState([]);
+  const [localidadesOptions, setLocalidadesOptions] = useState([]);
   const [isANewProfile, setIsANewProfile] = useState(true);
+  const [hidePuestos, setHidePuestos] = useState(false);
+  const [nivelOptions, setNivelOptions] = useState()
 
   const validate = (values) => {
     let errors = {};
@@ -41,6 +47,10 @@ function Cuenta() {
 
   const handleChange = (e) => {
     setInputValue({ ...inputValue, [e.target.name]: e.target.value });
+    if (e.target.name === "provincia") {
+      const idProvSeleccionada = provinciasOptions.find((item) => item.nombre ===  e.target.value).id;
+      getLocalidades(idProvSeleccionada).then((resp) => setLocalidadesOptions(resp) )
+    }
   };
 
   const disabledInputs = () => {
@@ -65,7 +75,7 @@ function Cuenta() {
   };
 
   useEffect(() => {
-    console.log(location.pathname)
+    getProvincias().then((resp) => setProvinciasOptions(resp));
     if (location.pathname === "/cuenta") {
       getUserInfo(idUser).then((resp) => {
         console.log(resp)
@@ -89,7 +99,7 @@ function Cuenta() {
         legajo: '',
         email: '',
         celular: '',
-        nivel: '',
+        nivel: myRol === "2" ? "1" : "",
         puesto: '',
         localidad: '',
         provincia: '',
@@ -97,9 +107,24 @@ function Cuenta() {
       })
       setSrcImage(placeholder)
       setIsANewProfile(true);
-
+      setNivelOptions(myRol === "3" ? ["1", "2"] : ["1", "2", "3"] )
+      setPuestoOptions(myRol === "2" ? PUESTOS_N1 : PUESTOS_N2)
     }
   }, [])
+
+  useEffect(() => {
+    if (inputValue && inputValue.nivel === "1" ) {
+      setPuestoOptions(PUESTOS_N1);   
+      setHidePuestos(false)   
+    } else if (inputValue && inputValue.nivel === "2" ) {
+      setPuestoOptions(PUESTOS_N2);
+      setHidePuestos(false)
+    } else if (inputValue && inputValue.nivel === "3" ) {
+      setHidePuestos(true)
+    }
+
+  }, [inputValue])
+  
   
 
   return (
@@ -168,37 +193,63 @@ function Cuenta() {
                 />
                 {errors.email && <p className='danger'>{errors.email}</p>}
               </div>
+              {
+                (isANewProfile && myRol === "2" )  || (!isANewProfile)   ?
+                <div className={styles.inputContainer}>
+                  <label htmlFor=''>Nivel</label>
+                  <input
+                    type='text'
+                    className={`${errors.nivel && 'danger'} ${styles.input}`}
+                    value={inputValue.nivel}
+                    onChange={handleChange}
+                    name='nivel'
+                    disabled
+                  />
+                {errors.nivel && <p className='danger'>{errors.nivel}</p>}
+              </div>
+              :
               <div className={styles.inputContainer}>
                 <label htmlFor=''>Nivel</label>
-                <input
-                  type='text'
-                  className={`${errors.nivel && 'danger'} ${styles.input}`}
+                <select
+                  className={`${errors.nivel && 'danger'} ${styles.input} ${styles.select}`}
                   value={inputValue.nivel}
                   onChange={handleChange}
                   name='nivel'
                   disabled={!isANewProfile}
-                />
-                {errors.nivel && <p className='danger'>{errors.nivel}</p>}
-              </div>
-
-              <div className={styles.inputContainer}>
-                <label htmlFor=''>Puesto</label>
-                <select
-                  className={`${errors.puesto && 'danger'} ${styles.input} ${styles.select}`}
-                  value={inputValue.puesto}
-                  onChange={handleChange}
-                  name='puesto'
-                  disabled={!isANewProfile}
                 >
                   <option value='' selected hidden>- Seleccione -</option>
-                  {puestoOptions.map((option, index) => (
+                  {nivelOptions.map((option, index) => (
                     <option key={index} value={option}>
                       {option}
                     </option>
                   ))}
                 </select>
-                {errors.puesto && <p className='danger'>{errors.puesto}</p>}
+                {errors.nivel && <p className='danger'>{errors.nivel}</p>}
               </div>
+              }
+              
+              {
+                !hidePuestos && 
+                <div className={styles.inputContainer}>
+                  <label htmlFor=''>Puesto</label>
+                  <select
+                    className={`${errors.puesto && 'danger'} ${styles.input} ${styles.select}`}
+                    value={inputValue.puesto}
+                    onChange={handleChange}
+                    name='puesto'
+                    disabled={!isANewProfile}
+                  >
+                    <option value='' selected hidden>- Seleccione -</option>
+                    {puestoOptions.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.puesto && <p className='danger'>{errors.puesto}</p>}
+              </div>
+              }
+              
               <div className={styles.inputContainer}>
                 <label htmlFor=''>Provincia</label>
                 <select
@@ -208,9 +259,12 @@ function Cuenta() {
                   name='provincia'
                   disabled={!isANewProfile}
                 >
-                  <option value='Buenos Aires'>Buenos Aires</option>
-                  <option value='Córdoba'>Córdoba</option>
-                  <option value='Río Negro'>Río Negro</option>
+                  <option value='' selected hidden>- Seleccione -</option>
+                    {provinciasOptions.map((option, index) => (
+                      <option key={index} value={option.nombre}>
+                        {option.nombre}
+                      </option>
+                    ))}
                 </select>
                 {errors.provincia && <p className='danger'>{errors.provincia}</p>}
               </div>
@@ -223,9 +277,12 @@ function Cuenta() {
                   name='localidad'
                   disabled={!isANewProfile}
                 >
-                  <option value='Río Cuarto'>Río Cuarto</option>
-                  <option value='Córdoba'>Córdoba</option>
-                  <option value='Las Jarillas'>Las Jarillas</option>
+                  <option value='' selected hidden>- Seleccione -</option>
+                    {localidadesOptions.map((option, index) => (
+                      <option key={index} value={option.nombre}>
+                        {option.nombre}
+                      </option>
+                    ))}
                 </select>
                 {errors.localidad && <p className='danger'>{errors.localidad}</p>}
               </div>

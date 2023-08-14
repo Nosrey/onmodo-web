@@ -103,6 +103,29 @@ export const getUserInfo = async (id) => {
     }
 };
 
+export const getProvincias = async () => {
+  try {
+    const resp = await fetch("https://apis.datos.gob.ar/georef/api/provincias?campos=id,nombre");
+    const data = await resp.json();
+
+    return data.provincias.sort((a, b) => a.nombre.localeCompare(b.nombre));
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('No se pudo obtener los datos del usuario.');
+  }
+};
+
+export const getLocalidades = async (idProv) => {
+  try {
+    const resp = await fetch(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${idProv}&campos=id,nombre&max=500`);
+    const data = await resp.json();
+
+    return data.municipios.sort((a, b) => a.nombre.localeCompare(b.nombre));
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('No se pudo obtener los datos del usuario.');
+  }
+};
 
 
 /*
