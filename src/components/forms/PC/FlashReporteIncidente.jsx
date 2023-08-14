@@ -96,14 +96,15 @@ function FlashReporteIncidente() {
                 </div>
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,alcance:e.target.value})}} value={values.alcance} id="outlined-basic" label="Alcance" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,linea:e.target.value})}} value={values.linea} id="outlined-basic" label="Línea de negocios" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,alcance:e.target.value})}} disabled={!!location.state?.objeto}  value={values.alcance} id="outlined-basic" label="Alcance" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,linea:e.target.value})}} disabled={!!location.state?.objeto}  value={values.linea} id="outlined-basic" label="Línea de negocios" variant="outlined" />
                     <input
             type="date"
             onChange={(e) => {
               setValues({ ...values, fecha: e.target.value });
             }}
             value={values.fecha}
+            disabled={!!location.state?.objeto} 
           />
           <input
             type="time"
@@ -111,16 +112,17 @@ function FlashReporteIncidente() {
               setValues({ ...values, hora: e.target.value });
             }}
             value={values.hora}
+            disabled={!!location.state?.objeto} 
           />
                 </div>
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,comedor:e.target.value})}} value={values.comedor} id="outlined-basic" label="Comedor" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,responsable:e.target.value})}} value={values.responsable} id="outlined-basic" label="Responsable del contrato" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,incidentePotencial:e.target.value})}} value={values.incidentePotencial} id="outlined-basic" label="Incidente Potencial/Real" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,comedor:e.target.value})}} disabled={!!location.state?.objeto}  value={values.comedor} id="outlined-basic" label="Comedor" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,responsable:e.target.value})}} disabled={!!location.state?.objeto}  value={values.responsable} id="outlined-basic" label="Responsable del contrato" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,incidentePotencial:e.target.value})}} disabled={!!location.state?.objeto}  value={values.incidentePotencial} id="outlined-basic" label="Incidente Potencial/Real" variant="outlined" />
                 </div>
                 
                 <div className={styles.personalText}>
-                    <TextField onChange={(e)=>{setValues({...values,tipo:e.target.value})}} value={values.tipo} fullWidth id="outlined-basic" label="Tipo de Incidente" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,tipo:e.target.value})}} disabled={!!location.state?.objeto}  value={values.tipo} fullWidth id="outlined-basic" label="Tipo de Incidente" variant="outlined" />
                 </div>
 
                 <div className={styles.personalText}>
@@ -131,9 +133,10 @@ function FlashReporteIncidente() {
                         multiline
                         value={values.descripcion}
                         rows={4}
+                        disabled={!!location.state?.objeto} 
                         onChange={(e)=>{setValues({...values,descripcion:e.target.value})}}
                     />           
-                    <TextField onChange={(e)=>{setValues({...values,fotografia:e.target.value})}} value={values.fotografia} id="outlined-basic" label="Fotografía" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fotografia:e.target.value})}} disabled={!!location.state?.objeto}  value={values.fotografia} id="outlined-basic" label="Fotografía" variant="outlined" />
      
                 </div>
 
@@ -145,6 +148,7 @@ function FlashReporteIncidente() {
                         value={values.acciones}
                         multiline
                         rows={4}
+                        disabled={!!location.state?.objeto} 
                         onChange={(e)=>{setValues({...values,acciones:e.target.value})}}
                     />                
                 </div>
@@ -155,25 +159,25 @@ function FlashReporteIncidente() {
                     </div>
                     <div className={styles.personal}>
                         <p  className={styles.tableLabel}>Asesor HSEQ</p>
-                        <TextField onChange={(e)=>{setValues({...values,nombreAsesor:e.target.value})}} value={values.nombreAsesor} id="outlined-basic" label="Nombre" variant="outlined" />
-                        <TextField onChange={(e)=>{setValues({...values,firmaAsesor:e.target.value})}} value={values.firmaAsesor} id="outlined-basic" label="Firma" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,nombreAsesor:e.target.value})}} disabled={!!location.state?.objeto}  value={values.nombreAsesor} id="outlined-basic" label="Nombre" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,firmaAsesor:e.target.value})}} disabled={!!location.state?.objeto}  value={values.firmaAsesor} id="outlined-basic" label="Firma" variant="outlined" />
                     </div>
                     
                     <div className={styles.personal}>
                         <p className={styles.tableLabel}>Supervisor Directo</p>
-                        <TextField onChange={(e)=>{setValues({...values,nombreSupervisor:e.target.value})}} value={values.nombreSupervisor} id="outlined-basic" label="Nombre" variant="outlined" />
-                        <TextField onChange={(e)=>{setValues({...values,firmaSupervisor:e.target.value})}} value={values.firmaSupervisor} id="outlined-basic" label="Firma" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,nombreSupervisor:e.target.value})}} disabled={!!location.state?.objeto}  value={values.nombreSupervisor} id="outlined-basic" label="Nombre" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,firmaSupervisor:e.target.value})}} disabled={!!location.state?.objeto}  value={values.firmaSupervisor} id="outlined-basic" label="Firma" variant="outlined" />
                     </div>
 
                     <div className={styles.personal}>
                         <p className={styles.tableLabel}>Gerente del Área</p>
-                        <TextField onChange={(e)=>{setValues({...values,nombreGerente:e.target.value})}} value={values.nombreGerente} id="outlined-basic" label="Nombre" variant="outlined" />
-                        <TextField onChange={(e)=>{setValues({...values,firmaGerente:e.target.value})}} value={values.firmaGerente} id="outlined-basic" label="Firma" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,nombreGerente:e.target.value})}} disabled={!!location.state?.objeto} value={values.nombreGerente} id="outlined-basic" label="Nombre" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,firmaGerente:e.target.value})}} disabled={!!location.state?.objeto}  value={values.firmaGerente} id="outlined-basic" label="Firma" variant="outlined" />
                     </div>
                 </div>
 
                 <div className="btn">
-                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
+                    <Button onClick={handleSubmit} disabled={!!location.state?.objeto}  variant="contained">Guardar</Button>
                 </div>
 
             </div>
