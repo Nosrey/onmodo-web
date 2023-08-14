@@ -4,6 +4,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import axios from 'axios';
 import { entregaBidones } from '../../../services/FormsRequest';
 import Alert from '../../shared/components/Alert/Alert';
+import { useLocation } from 'react-router';
 
 function EntregaBidonesAceiteUsado({ idUser }) {
     const [inputs] = useState([
@@ -18,10 +19,7 @@ function EntregaBidonesAceiteUsado({ idUser }) {
     var idUser = localStorage.getItem("idUser");
 
     const [replicas, setReplicas] = useState(1);
-    const [values, setValues] = useState({
-        inputs: [{}],
-        idUser: idUser
-    });
+    const [values, setValues] = useState();
     const [replicaValues, setReplicaValues] = useState([{}]);
     const [trigger, setTrigger] = useState(false);
 
@@ -76,7 +74,24 @@ function EntregaBidonesAceiteUsado({ idUser }) {
         }
         )
     };
-
+    const location = useLocation();
+    useEffect(() => {
+        const infoPrecargada = location.state?.objeto;
+        if (infoPrecargada) { // muestro un form del historial
+            console.log("infoPrecargada", infoPrecargada)
+            setValues({  
+                    inputs: [{}],
+                    idUser: idUser
+            })
+            console.log("value", values)
+        } else { // creo un form desde cero
+            
+            setValues({
+                inputs: [{}],
+                idUser: idUser
+            })
+        }
+    }, [])
     return (
         <>
          <div>
@@ -107,6 +122,7 @@ function EntregaBidonesAceiteUsado({ idUser }) {
                                                     id={`input-${input.id}-${index}`}
                                                     name={`input-${input.id}-${index}`}
                                                     label={`${input.label}`}
+                                                  
                                                     variant="outlined"
                                                 />
                                             )}

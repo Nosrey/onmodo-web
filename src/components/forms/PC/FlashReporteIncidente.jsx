@@ -1,8 +1,9 @@
 import { Button, TextField } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './FlashReporteIncidente.module.css'
 import Alert from '../../shared/components/Alert/Alert';
 import { flashIncidente } from '../../../services/FormsRequest';
+import { useLocation } from 'react-router';
 
 function FlashReporteIncidente() {
      //** ALERTA */
@@ -11,26 +12,7 @@ function FlashReporteIncidente() {
      const [showAlert, setShowlert] = useState(false);
  
     var idUser = localStorage.getItem("idUser");
-    const [values,setValues] = useState({
-       alcance:"",
-       linea:"",
-       fecha:"",
-       hora:"",
-       comedor:"",
-       responsable:"",
-       incidentePotencial:"",
-       tipo:"",
-       descripcion:"",
-       fotografia:"",
-       acciones:"",
-       nombreAsesor:"",
-       firmaAsesor:"",
-       nombreSupervisor:"",
-       firmaSupervisor:"",
-       nombreGerente:"",
-       firmaGerente:"",
-       idUser: idUser
-    })
+    const [values,setValues] = useState()
 
     const handleSubmit = () => {
         flashIncidente(values).then((resp)=> {
@@ -52,9 +34,61 @@ function FlashReporteIncidente() {
         }
         )
     };
-
+    const location = useLocation();
+    useEffect(() => {
+        const infoPrecargada = location.state?.objeto;
+        if (infoPrecargada) { // muestro un form del historial
+            console.log("infoPrecargada", infoPrecargada)
+            setValues({  
+                    alcance:infoPrecargada.alcance,
+                    linea:infoPrecargada.linea,
+                    fecha:infoPrecargada.fecha,
+                    hora:infoPrecargada.hora,
+                    comedor:infoPrecargada.comedor,
+                    responsable:infoPrecargada.responsable,
+                    incidentePotencial:infoPrecargada.incidentePotencial,
+                    tipo:infoPrecargada.tipo,
+                    descripcion:infoPrecargada.descripcion,
+                    fotografia:infoPrecargada.fotografia,
+                    acciones:infoPrecargada.acciones,
+                    nombreAsesor:infoPrecargada.nombreAsesor,
+                    firmaAsesor:infoPrecargada.firmaAsesor,
+                    nombreSupervisor:infoPrecargada.nombreSupervisor,
+                    firmaSupervisor:infoPrecargada.firmaSupervisor,
+                    nombreGerente:infoPrecargada.nombreGerente,
+                    firmaGerente:infoPrecargada.firmaGerente,
+                    idUser: idUser
+                 
+            })
+            console.log("value", values)
+        } else { // creo un form desde cero
+            
+            setValues({
+                    alcance:"",
+                    linea:"",
+                    fecha:"",
+                    hora:"",
+                    comedor:"",
+                    responsable:"",
+                    incidentePotencial:"",
+                    tipo:"",
+                    descripcion:"",
+                    fotografia:"",
+                    acciones:"",
+                    nombreAsesor:"",
+                    firmaAsesor:"",
+                    nombreSupervisor:"",
+                    firmaSupervisor:"",
+                    nombreGerente:"",
+                    firmaGerente:"",
+                    idUser: idUser
+                 
+            })
+        }
+    }, [])
     return (
         <>
+        {values &&
         <div>
             <div className="form">
                 <div className="titleContainer">
@@ -62,8 +96,8 @@ function FlashReporteIncidente() {
                 </div>
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,alcance:e.target.value})}} id="outlined-basic" label="Alcance" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,linea:e.target.value})}} id="outlined-basic" label="Línea de negocios" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,alcance:e.target.value})}} value={values.alcance} id="outlined-basic" label="Alcance" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,linea:e.target.value})}} value={values.linea} id="outlined-basic" label="Línea de negocios" variant="outlined" />
                     <input
             type="date"
             onChange={(e) => {
@@ -80,13 +114,13 @@ function FlashReporteIncidente() {
           />
                 </div>
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,comedor:e.target.value})}} id="outlined-basic" label="Comedor" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,responsable:e.target.value})}} id="outlined-basic" label="Responsable del contrato" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,incidentePotencial:e.target.value})}} id="outlined-basic" label="Incidente Potencial/Real" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,comedor:e.target.value})}} value={values.comedor} id="outlined-basic" label="Comedor" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,responsable:e.target.value})}} value={values.responsable} id="outlined-basic" label="Responsable del contrato" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,incidentePotencial:e.target.value})}} value={values.incidentePotencial} id="outlined-basic" label="Incidente Potencial/Real" variant="outlined" />
                 </div>
                 
                 <div className={styles.personalText}>
-                    <TextField onChange={(e)=>{setValues({...values,tipo:e.target.value})}} fullWidth id="outlined-basic" label="Tipo de Incidente" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,tipo:e.target.value})}} value={values.tipo} fullWidth id="outlined-basic" label="Tipo de Incidente" variant="outlined" />
                 </div>
 
                 <div className={styles.personalText}>
@@ -95,10 +129,11 @@ function FlashReporteIncidente() {
                         id="outlined-multiline-static"
                         label="Descripción del Incidente:  (quién, qué, cómo, cuándo)"
                         multiline
+                        value={values.descripcion}
                         rows={4}
                         onChange={(e)=>{setValues({...values,descripcion:e.target.value})}}
                     />           
-                    <TextField onChange={(e)=>{setValues({...values,fotografia:e.target.value})}} id="outlined-basic" label="Fotografía" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,fotografia:e.target.value})}} value={values.fotografia} id="outlined-basic" label="Fotografía" variant="outlined" />
      
                 </div>
 
@@ -107,6 +142,7 @@ function FlashReporteIncidente() {
                         fullWidth
                         id="outlined-multiline-static"
                         label="Acciones Inmediatas"
+                        value={values.acciones}
                         multiline
                         rows={4}
                         onChange={(e)=>{setValues({...values,acciones:e.target.value})}}
@@ -119,20 +155,20 @@ function FlashReporteIncidente() {
                     </div>
                     <div className={styles.personal}>
                         <p  className={styles.tableLabel}>Asesor HSEQ</p>
-                        <TextField onChange={(e)=>{setValues({...values,nombreAsesor:e.target.value})}} id="outlined-basic" label="Nombre" variant="outlined" />
-                        <TextField onChange={(e)=>{setValues({...values,firmaAsesor:e.target.value})}} id="outlined-basic" label="Firma" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,nombreAsesor:e.target.value})}} value={values.nombreAsesor} id="outlined-basic" label="Nombre" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,firmaAsesor:e.target.value})}} value={values.firmaAsesor} id="outlined-basic" label="Firma" variant="outlined" />
                     </div>
                     
                     <div className={styles.personal}>
                         <p className={styles.tableLabel}>Supervisor Directo</p>
-                        <TextField onChange={(e)=>{setValues({...values,nombreSupervisor:e.target.value})}} id="outlined-basic" label="Nombre" variant="outlined" />
-                        <TextField onChange={(e)=>{setValues({...values,firmaSupervisor:e.target.value})}} id="outlined-basic" label="Firma" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,nombreSupervisor:e.target.value})}} value={values.nombreSupervisor} id="outlined-basic" label="Nombre" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,firmaSupervisor:e.target.value})}} value={values.firmaSupervisor} id="outlined-basic" label="Firma" variant="outlined" />
                     </div>
 
                     <div className={styles.personal}>
                         <p className={styles.tableLabel}>Gerente del Área</p>
-                        <TextField onChange={(e)=>{setValues({...values,nombreGerente:e.target.value})}} id="outlined-basic" label="Nombre" variant="outlined" />
-                        <TextField onChange={(e)=>{setValues({...values,firmaGerente:e.target.value})}} id="outlined-basic" label="Firma" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,nombreGerente:e.target.value})}} value={values.nombreGerente} id="outlined-basic" label="Nombre" variant="outlined" />
+                        <TextField onChange={(e)=>{setValues({...values,firmaGerente:e.target.value})}} value={values.firmaGerente} id="outlined-basic" label="Firma" variant="outlined" />
                     </div>
                 </div>
 
@@ -142,6 +178,7 @@ function FlashReporteIncidente() {
 
             </div>
         </div>
+        }
         { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
         </>
 

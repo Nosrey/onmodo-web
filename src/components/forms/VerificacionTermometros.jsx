@@ -140,7 +140,7 @@ function VerificacionTermometros() {
     useEffect(() => {
         const infoPrecargada = location.state?.objeto;
         if (infoPrecargada) { // muestro un form del historial
-            console.log(infoPrecargada)
+            console.log("infoPrecargada", infoPrecargada)
             setValues({
                 fecha:infoPrecargada.fecha,
                 responsable:infoPrecargada.responsable,
@@ -152,6 +152,7 @@ function VerificacionTermometros() {
                 idUser: idUser
             })
         } else { // creo un form desde cero
+            
             setValues({
                 fecha:"",
                 responsable:"",

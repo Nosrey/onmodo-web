@@ -7,6 +7,7 @@ import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox
 import axios from 'axios';
 import Alert from '../../shared/components/Alert/Alert';
 import { controlAlergenos } from '../../../services/FormsRequest';
+import { useLocation } from 'react-router';
 
 function AlergenosComida() {
     //** ALERTA */
@@ -25,14 +26,7 @@ function AlergenosComida() {
         { id: 5, label: 'Responsable' },
     ]);
     const [replicas, setReplicas] = useState(1);
-    const [values, setValues] = useState({
-        comedor: "",
-        inputs: [{
-        }],
-        verified: "",
-        date: "",
-        idUser: idUser
-    })
+    const [values, setValues] = useState()
     const [objValues, setObjValues] = useState({ fecha: "", nombre: "", diagnostico: "", listado: "", responsable: "" })
     const [inputValues, setInputValues] = useState([])
     const [trigger, setTrigger] = useState(false)
@@ -100,93 +94,138 @@ function AlergenosComida() {
         }
         )
     };
+    const location = useLocation();
+    useEffect(() => {
+        const infoPrecargada = location.state?.objeto;
+        if (infoPrecargada) { // muestro un form del historial
+            console.log("infoPrecargada", infoPrecargada)
+            console.log("sepudo")
+            setValues({
+                comedor: infoPrecargada.comedor,
+                inputs: [infoPrecargada.inputs
+            ],
+                verified: infoPrecargada.verified,
+                date: infoPrecargada.date,
+                idUser: idUser
+            })
+            console.log("values", values)
+        } else { // creo un form desde cero
+            console.log("error")
+            setValues({
+                comedor: "",
+                inputs: [{
+                }],
+                verified: "",
+                date: "",
+                idUser: idUser
+            })
+        }
+    }, [])
+    console.log("values", values)
 
-    return (
-        <>
-        <div>
-            <div className="form">
-                <div className="titleContainer">
-                    <h3 className="title">Control de comensales con dietas especiales</h3>
-                </div>
-                <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }} fullWidth id="outlined-basic" label="Comedor" variant="outlined" />
-                </div>
-                <div className="table">
-                    <div className="tableSection">
-                        {Array(replicas)
-                            .fill(0)
-                            .map((_, index) => (
-                                <div className="tableRow" key={index}>
-                                    <p className="index">{index + 1} </p>
 
-                                    {inputs.map((input) => (
-                                        <div key={input.id}>
-                                            {input.label === "Fecha" ? (
-                                                <TextField
-                                                    onBlur={(e) => {
-                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                                    }}
-                                                    id={`input-${input.id}-${index}`}
-                                                    name={`input-${input.id}-${index}`}
-                                                    label={`${input.label}`}
-                                                    variant="outlined"
-                                                    type="date" // Esto cambia el tipo de entrada a fecha
-                                                    InputLabelProps={{
-                                                        shrink: true,
-                                                    }}
-                                                />
-                                            ) : (
-                                                <TextField
-                                                    onBlur={(e) => {
-                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                                    }}
-                                                    id={`input-${input.id}-${index}`}
-                                                    name={`input-${input.id}-${index}`}
-                                                    label={`${input.label}`}
-                                                    variant="outlined"
-                                                />
-                                            )}
-                                        </div>
-                                    ))}
 
-                                    <div className="icon">
-                                        {
-                                            (index == 0 || index > Array(replicas).fill(0).length) ?
-                                                <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
-                                                : <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={() => { handleClickRemove(index) }} />
-                                        }
+return (
+    <>
+    {
+        values &&
+    <div>
+        <div className="form">
+            <div className="titleContainer">
+                <h3 className="title">Control de comensales con dietas especiales</h3>
+            </div>
+            <div className={styles.personal}>
+                <TextField
+                    onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }}
+                    value={values.comedor || ""}
+                    fullWidth
+                    id="outlined-basic"
+                    label="Comedor"
+                    variant="outlined"
+                />
+            </div>
+            <div className="table">
+                <div className="tableSection">
+                    {Array(replicas)
+                        .fill(0)
+                        .map((_, index) => (
+                            <div className="tableRow" key={index}>
+                                <p className="index">{index + 1} </p>
+
+                                {inputs.map((input) => (
+                                    <div key={input.id}>
+                                        {input.label === "Fecha" ? (
+                                            <TextField
+                                                onBlur={(e) => {
+                                                    inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                }}
+                                                id={`input-${input.id}-${index}`}
+                                                name={`input-${input.id}-${index}`}
+                                                label={`${input.label}`}
+                                               
+                                                variant="outlined"
+                                                type="date"
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                            />
+                                        ) : (
+                                            <TextField
+                                                onBlur={(e) => {
+                                                    inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                }}
+                                                id={`input-${input.id}-${index}`}
+                                                name={`input-${input.id}-${index}`}
+                                                label={`${input.label}`}
+                                               
+                                                variant="outlined"
+                                            />
+                                        )}
                                     </div>
+                                ))}
+
+                                <div className="icon">
+                                    {
+                                        (index === 0 || index >= replicas) ?
+                                            <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                                            : <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={() => { handleClickRemove(index) }} />
+                                    }
                                 </div>
-                            ))}
-                    </div>
+                            </div>
+                        ))}
                 </div>
-                <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, verified: e.target.value }) }} id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField
-                        onChange={(e) => {
-                            setValues({ ...values, date: e.target.value });
-                        }}
-                        id="outlined-basic"
-                        label="Fecha"
-                        variant="outlined"
-                        type="date"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                </div>
+            </div>
+            <div className={styles.personal}>
+                <TextField
+                    onChange={(e) => { setValues({ ...values, verified: e.target.value }) }}
+                    value={values.verified || ""}
+                    id="outlined-basic"
+                    label="Verificado por"
+                    variant="outlined"
+                />
+                <TextField
+                    onChange={(e) => { setValues({ ...values, date: e.target.value }) }}
+                    value={values.date || ""}
+                    id="outlined-basic"
+                    label="Fecha"
+                    variant="outlined"
+                    type="date"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+            </div>
 
-                <div className="btn">
-                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
-                </div>
-
+            <div className="btn">
+                <Button onClick={handleSubmit} variant="contained">Guardar</Button>
             </div>
         </div>
-       { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
-        </>
-        
+    </div>
+    }
+   { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+    </>
+)
 
-    )
 }
 
 export default AlergenosComida
