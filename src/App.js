@@ -36,7 +36,7 @@ import UsoCambioAceite from './components/forms/Phone/UsoCambioAceite';
 import EPP from './components/forms/Phone/EPP';
 import RecoverPassword from './components/recoverPassword/RecoverPassword';
 import Inicio from './components/inicio/Inicio';
-import Cuenta from './components/cuenta/Cuenta';
+import Cuenta from './views/Cuentas/cuenta/Cuenta';
 import Footer from './components/footer/Footer';
 import FormulariosContainer from './components/formularios/FormulariosContainer';
 import FormulariosCargados from './components/formulariosCargados/FormulariosCargados';
@@ -75,6 +75,8 @@ function App() {
             <Route path='/inicio' element={<Inicio />} />
 
             <Route path='/cuenta' element={<Cuenta />} />
+            <Route path='/crear-cuenta' element={<Cuenta />} />
+
             <Route path='/cuentas' element={<Cuentas />} />
             <Route path='/formularios' element={<FormulariosContainer />} />
 

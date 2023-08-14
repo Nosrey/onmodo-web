@@ -24,9 +24,7 @@ export const ejemplo = async ({ dato1, dato2}) => {
       const response = await fetch(`${URL_API}/api/registrocapacitacion`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          values
-        }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       return data;
@@ -42,9 +40,7 @@ export const ejemplo = async ({ dato1, dato2}) => {
       const response = await fetch(`${URL_API}/api/entregaropa`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          values
-        }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       return data;
@@ -60,9 +56,7 @@ export const ejemplo = async ({ dato1, dato2}) => {
       const response = await fetch(`${URL_API}/api/controlalergenos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          values
-        }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       return data;
@@ -78,9 +72,7 @@ export const ejemplo = async ({ dato1, dato2}) => {
       const response = await fetch(`${URL_API}/api/entregabidones`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          values
-        }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       return data;
@@ -96,9 +88,7 @@ export const ejemplo = async ({ dato1, dato2}) => {
       const response = await fetch(`${URL_API}/api/flashincidente`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          values
-        }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       return data;
@@ -114,9 +104,7 @@ export const ejemplo = async ({ dato1, dato2}) => {
       const response = await fetch(`${URL_API}/api/informeintaccidente`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          values
-        }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       return data;
@@ -132,9 +120,7 @@ export const ejemplo = async ({ dato1, dato2}) => {
       const response = await fetch(`${URL_API}/api/registrodecomiso`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          values
-        }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       return data;
@@ -150,9 +136,7 @@ export const ejemplo = async ({ dato1, dato2}) => {
       const response = await fetch(`${URL_API}/api/registrosimulacro`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          values
-        }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       return data;
@@ -168,9 +152,7 @@ export const ejemplo = async ({ dato1, dato2}) => {
       const response = await fetch(`${URL_API}/api/reporterechazo`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          values
-        }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       return data;
@@ -186,9 +168,7 @@ export const ejemplo = async ({ dato1, dato2}) => {
       const response = await fetch(`${URL_API}/api/verificacionbalanza`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          values
-        }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       return data;
@@ -204,9 +184,7 @@ export const ejemplo = async ({ dato1, dato2}) => {
       const response = await fetch(`${URL_API}/api/verificaciontermometros`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          values
-        }),
+        body: JSON.stringify(values),
       });
       const data = await response.json();
       return data;
