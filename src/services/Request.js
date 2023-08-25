@@ -1,4 +1,4 @@
-const URL_API = 'https://api.onmodoapp.com';
+const URL_API = 'https://http://localhost:4000';
 
 
 export const login = async ({ legajo, password}) => {

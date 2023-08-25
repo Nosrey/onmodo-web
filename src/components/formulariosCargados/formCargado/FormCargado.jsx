@@ -7,12 +7,13 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { setFormulario } from '../../../redux/actions/formulariosActions';
 import Alert from '../../shared/components/Alert/Alert';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import moment from 'moment';
+import 'moment-timezone';
+
+import { generatePDF } from '../../../services/PDF';
 
 
-
-function FormCargado({ formulario }) {
+function FormCargado() {
   const [openModal, setOpenModal] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [formSelected, setFormSelected] = useState();
@@ -29,38 +30,6 @@ function FormCargado({ formulario }) {
   const [typeAlert, setTypeAlert] = useState("");
   const [showAlert, setShowlert] = useState(false);
 
-
-
-  const generatePDF = () => {
-    const table = document.querySelector(`.${styles.table}`);
-  
-    if (!table) {
-      console.error('Table element not found.');
-      return;
-    }
-  
-    const pdf = new jsPDF();
-    
-    const tableData = [];
-    const rows = table.querySelectorAll('tbody tr');
-  
-    rows.forEach(row => {
-      const rowData = [];
-      row.querySelectorAll('td').forEach(cell => {
-        rowData.push(cell.textContent);
-      });
-      tableData.push(rowData);
-    });
-  
-    const header = ['Formulario', 'Año', 'Mes', 'Día', 'Hora', 'Usuario'];
-  
-    pdf.autoTable({
-      head: [header],
-      body: tableData,
-    });
-  
-    pdf.save('formulario.pdf');
-  };
 
   const goToForm = (form) => {
     navigate(url, { state: { objeto: form } });
@@ -169,6 +138,7 @@ function FormCargado({ formulario }) {
     }
   }
 
+
   return (
     <>
       <div className={styles.container}>
@@ -201,7 +171,7 @@ function FormCargado({ formulario }) {
                   <td>{formulario.createdAt.slice(0, 4)}</td>
                   <td>{formulario.createdAt.slice(5, 7)}</td>
                   <td>{formulario.createdAt.slice(8, 10)}</td>
-                  <td>{formulario.createdAt.slice(11, 16)}</td>
+                  <td>{moment(formulario.createdAt).tz('America/Argentina/Buenos_Aires').slice(11, 16)}</td>
                   <td>{name}</td>
                   <td>Edicion</td>
                   <td className={styles.contEdicion}>
@@ -214,7 +184,7 @@ function FormCargado({ formulario }) {
                     <span onClick={() => openDeleteModal(formulario._id)} className={styles.actionIcon}>
                       <i class='ri-delete-bin-line'></i>
                     </span>
-                    <span onClick={generatePDF} className={styles.actionIcon}>
+                    <span onClick={generatePDF(formulario, form)} className={styles.actionIcon}>
                       <i className='ri-printer-line'></i>
                     </span>
                   </td>
