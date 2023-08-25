@@ -165,31 +165,37 @@ function FormCargado() {
               </tr>
             </thead>
             <tbody>
-              {formularios.map((formulario, index) => (
-                <tr key={index} className={styles.fila}>
-                  <td>{titulo}</td>
-                  <td>{formulario.createdAt.slice(0, 4)}</td>
-                  <td>{formulario.createdAt.slice(5, 7)}</td>
-                  <td>{formulario.createdAt.slice(8, 10)}</td>
-                  <td>{moment(formulario.createdAt).tz('America/Argentina/Buenos_Aires').slice(11, 16)}</td>
-                  <td>{name}</td>
-                  <td>Edicion</td>
-                  <td className={styles.contEdicion}>
-                    <span onClick={() => goToForm(formulario)} className={styles.actionIcon}>
-                      <i className='ri-eye-line' ></i>
-                    </span>
-                    <span onClick={() => setOpenModal(true)} className={styles.actionIcon}>
-                      <i class='ri-pencil-line'></i>
-                    </span>
-                    <span onClick={() => openDeleteModal(formulario._id)} className={styles.actionIcon}>
-                      <i class='ri-delete-bin-line'></i>
-                    </span>
-                    <span onClick={generatePDF(formulario, form)} className={styles.actionIcon}>
-                      <i className='ri-printer-line'></i>
-                    </span>
-                  </td>
-                </tr>
-              ))}
+            {formularios.map((formulario, index) => {
+  const createdAtUTC = new Date(formulario.createdAt);
+  const argentinaTime = new Date(createdAtUTC.getTime() );
+
+  return (
+    <tr key={index} className={styles.fila}>
+      <td>{titulo}</td>
+      <td>{argentinaTime.getFullYear()}</td>
+      <td>{argentinaTime.getMonth() + 1}</td>
+      <td>{argentinaTime.getDate()}</td>
+      <td>{argentinaTime.getHours()}:{String(argentinaTime.getMinutes()).padStart(2, '0')}</td>
+      <td>{name}</td>
+      <td>Edicion</td>
+      <td className={styles.contEdicion}>
+        <span onClick={() => goToForm(formulario)} className={styles.actionIcon}>
+          <i className='ri-eye-line' ></i>
+        </span>
+        <span onClick={() => setOpenModal(true)} className={styles.actionIcon}>
+          <i className='ri-pencil-line'></i>
+        </span>
+        <span onClick={() => openDeleteModal(formulario._id)} className={styles.actionIcon}>
+          <i className='ri-delete-bin-line'></i>
+        </span>
+        <span onClick={() => generatePDF(formulario, form)} className={styles.actionIcon}>
+          <i className='ri-printer-line'></i>
+        </span>
+      </td>
+    </tr>
+  );
+})}
+
             </tbody>
           </table>
           <ModalEdicion openModal={openModal} setOpenModal={setOpenModal} />
