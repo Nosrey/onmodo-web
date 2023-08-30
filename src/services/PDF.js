@@ -301,6 +301,7 @@ export const generatePDF = (formulario, form) => {
   else {
     return null
   }
+  
   if (pdfContent.length > 0) {
     const documentDefinition = {
       content: [
