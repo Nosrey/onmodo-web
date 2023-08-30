@@ -196,7 +196,7 @@ function VerificacionTermometros() {
                         }
 
                         <div className={styles.personal}>
-                            <input
+                            <TextField
                                 type="date"
                                 onChange={(e) => {
                                     setValues({ ...values, fecha: e.target.value });
@@ -299,7 +299,7 @@ function VerificacionTermometros() {
 
                         <div className={styles.personal}>
                             <TextField value={values.verified} onChange={(e) => { setValues({ ...values, verified: e.target.value }) }} id="outlined-basic" placeholder="Verificado por" variant="outlined" />
-                            <input
+                            <TextField
                                 type="datetime-local"
                                 value={values.fechaHora}
                                 onChange={(e) => {
