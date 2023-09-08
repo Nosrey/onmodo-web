@@ -130,6 +130,7 @@ export const generatePDF = (formulario, form) => {
 
 
   }
+  
   else if (form === "controlalergenos") {
     const { comedor, inputs, verified, date } = formulario;
     const doc = new jsPDF();
