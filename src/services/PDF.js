@@ -1,3 +1,4 @@
+import jsPDF from 'jspdf';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
@@ -7,138 +8,705 @@ export const generatePDF = (formulario, form) => {
   let pdfContent = [];
 
   if (form == "flashincidente") {
+    const styles = {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 20],
+      },
+      subheader: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 10, 0, 40],
+      },
+      label: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 5, 0, 0],
+        color: 'rgb(37, 35, 35)',
+      },
+      value: {
+        fontSize: 12,
+        margin: [0, 0, 0, 20],
+        border: [0, 0, 0, 0],
+        fillColor: '#FFFFFF',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: [5, 5, 5, 5],
+      },
+
+    };
     const { alcance, linea, fecha, hora, comedor, responsable, incidentePotencial, tipo, descripcion, fotografia, acciones, nombreAsesor, firmaAsesor, nombreSupervisor, firmaSupervisor, nombreGerente, firmaGerente } = formulario;
-    pdfContent.push(`Alcance: ${alcance}`, `Línea: ${linea}`, `Fecha: ${fecha}`, `Hora: ${hora}`, `Comedor: ${comedor}`, `Responsable: ${responsable}`, `Incidente Potencial: ${incidentePotencial}`, `Tipo: ${tipo}`, `Descripción: ${descripcion}`, `Acciones: ${acciones}`, `Nombre Asesor: ${nombreAsesor}`, `Firma Asesor: ${firmaAsesor}`, `Nombre Supervisor: ${nombreSupervisor}`, `Firma Supervisor: ${firmaSupervisor}`, `Nombre Gerente: ${nombreGerente}`, `Firma Gerente: ${firmaGerente}`);
+
+    const content = [
+      { text: 'Formulario ONMODO', style: 'header', alignment: 'center' },
+      { text: 'Flash Incidente', style: 'subheader', alignment: 'center' },
+      {
+        table: {
+          widths: ['25%', '25%', '25%', '25%'], // Divide la tabla en 4 columnas
+          body: [
+            [
+              { text: 'Alcance:', style: 'label' },
+              { text: 'Línea de Negocios:', style: 'label' },
+              { text: 'Fecha:', style: 'label' },
+              { text: 'Hora:', style: 'label' },
+            ],
+            [
+              { text: alcance || '', style: 'value' },
+              { text: linea || '', style: 'value' },
+              { text: fecha || '', style: 'value' },
+              { text: hora || '', style: 'value' },
+            ],
+            [
+              { text: 'Comedor:', style: 'label' },
+              { text: 'Responsable:', style: 'label' },
+              { text: 'Incidente Potencial:', style: 'label' },
+              { text: 'Tipo:', style: 'label' },
+            ],
+            [
+              { text: comedor || '', style: 'value' },
+              { text: responsable || '', style: 'value' },
+              { text: incidentePotencial || '', style: 'value' },
+              { text: tipo || '', style: 'value' },
+            ],
+            [
+              { text: 'Descripción:', style: 'label' },
+              { colSpan: 3, text: descripcion || '', style: 'descriptionValue' },
+              '',
+            ],
+            [
+              { text: 'Acciones:', style: 'label' },
+              { colSpan: 3, text: acciones || '', style: 'descriptionValue' },
+              '',
+            ],
+            [
+              { text: 'Nombre Asesor:', style: 'label' },
+              { text: 'Firma Asesor:', style: 'label' },
+              { text: 'Nombre Supervisor:', style: 'label' },
+              { text: 'Firma Supervisor:', style: 'label' },
+            ],
+            [
+              { text: nombreAsesor || '', style: 'value' },
+              { text: firmaAsesor || '', style: 'value' },
+              { text: nombreSupervisor || '', style: 'value' },
+              { text: firmaSupervisor || '', style: 'value' },
+            ],
+            [
+              { text: 'Nombre Gerente:', style: 'label' },
+              { text: 'Firma Gerente:', style: 'label' },
+              '',
+              '',
+            ],
+            [
+              { text: nombreGerente || '', style: 'value' },
+              { text: firmaGerente || '', style: 'value' },
+              '',
+              '',
+            ],
+          ],
+        },
+        layout: {
+          hLineWidth: () => 0,
+          vLineWidth: () => 0,
+          hLineColor: () => 'gray',
+          vLineColor: () => 'gray',
+          paddingTop: (i) => (i === 0 ? 10 : 10),
+        },
+      },
+    ]
+
+    const descriptionValueStyle = {
+      fontSize: 12,
+      marginBottom: 30,
+    };
+    styles.descriptionValue = descriptionValueStyle;
+
+    const documentDefinition = {
+      content,
+      styles,
+    };
+
+    pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
+
+
   }
-  else if (form == "controlalergenos") {
+  else if (form === "controlalergenos") {
     const { comedor, inputs, verified, date } = formulario;
-    pdfContent.push(`Comedor: ${comedor}`);
-    inputs.forEach(input => {
-      pdfContent.push(`Fecha: ${input.fecha}`, `Nombre: ${input.nombre}`, `Diagnóstico: ${input.diagnostico}`, `Listado: ${input.listado}`, `Responsable: ${input.responsable}`);
+    const doc = new jsPDF();
+
+    // Encabezado
+    doc.setFontSize(18);
+    doc.setFont('bold');
+    doc.text('Formulario ONMODO', 105, 20, { align: 'center' });
+    doc.setFontSize(14);
+    doc.text('Control Alergenos', 105, 30, { align: 'center' });
+
+    // Datos
+    doc.setFontSize(12);
+    doc.setFont('normal');
+    doc.text(`Comedor: ${comedor}`, 10, 50);
+    doc.text(`Verificado: ${verified}`, 10, 60);
+    doc.text(`Fecha: ${date}`, 10, 70);
+
+    // Tabla
+    let y = 90;
+    doc.setFont('bold');
+    doc.text('Fecha', 10, y);
+    doc.text('Nombre', 40, y);
+    doc.text('Diagnóstico', 70, y);
+    doc.text('Listado', 100, y);
+    doc.text('Responsable', 130, y);
+    y += 10;
+
+    doc.setFont('normal');
+    inputs.forEach((input) => {
+      doc.text(input.fecha || '', 10, y);
+      doc.text(input.nombre || '', 40, y);
+      doc.text(input.diagnostico || '', 70, y);
+      doc.text(input.listado || '', 100, y);
+      doc.text(input.responsable || '', 130, y);
+      y += 10;
     });
-    pdfContent.push(`Verificado: ${verified}`, `Fecha: ${date}`);
+
+    // Guardar el PDF
+    doc.save(`${form}_formulario.pdf`);
   }
   else if (form === "entregabidones") {
-    pdfContent.push("Entrega de Bidones");
+    const pdfContent = [];
+
+    const styles = {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 20],
+      },
+      subheader: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 10, 0, 20], // Ajusta el margen inferior
+      },
+      label: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 5, 0, 0],
+        color: 'rgb(37, 35, 35)',
+      },
+      value: {
+        fontSize: 12,
+        margin: [0, 0, 0, 10], // Ajusta el margen inferior
+        border: [0.5, 0.5, 0.5, 0.5], // Bordes delgados en todas las partes de la celda
+        fillColor: '#FfFfFf',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: [5, 5, 5, 5],
+      },
+    };
+
+    pdfContent.push({ text: 'Formulario ONMODO', style: 'header', alignment: 'center' });
+    pdfContent.push({ text: 'Entrega de Bidones', style: 'subheader', alignment: 'center' });
 
     const { inputs } = formulario;
 
+
+    const columnWidths = ['50%', '50%'];
+
     inputs.forEach((input, index) => {
-      pdfContent.push(`Bidon ${index + 1}:`);
-      pdfContent.push(`Fecha: ${input.fecha}`);
-      pdfContent.push(`Cant. de litros entregados: ${input.cantidaddelitrosentregados}`);
-      pdfContent.push(`Responsable de entrega: ${input.responsabledeentrega}`);
-      pdfContent.push(`Responsable de retiro: ${input.responsablederetiro}`);
-      pdfContent.push(`Certificado de transporte: ${input.certificadodetransporte}`);
-      pdfContent.push(`Certificado de disposición final: ${input.certificadodedisposiciónfinal}`);
+      pdfContent.push({ text: `Bidón ${index + 1}:`, style: 'subheader' });
+      pdfContent.push({
+        table: {
+          widths: columnWidths,
+          body: [
+            [{ text: 'Fecha:', style: 'label' }, { text: input.fecha, style: 'value' }],
+            [{ text: 'Cant. de litros entregados:', style: 'label' }, { text: input.cantidaddelitrosentregados, style: 'value' }],
+            [{ text: 'Responsable de entrega:', style: 'label' }, { text: input.responsabledeentrega, style: 'value' }],
+            [{ text: 'Responsable de retiro:', style: 'label' }, { text: input.responsablederetiro, style: 'value' }],
+            [{ text: 'Certificado de transporte:', style: 'label' }, { text: input.certificadodetransporte, style: 'value' }],
+            [{ text: 'Certificado de disposición final:', style: 'label' }, { text: input.certificadodedisposiciónfinal, style: 'value' }],
+          ],
+        },
+        layout: {
+          hLineWidth: () => 0,
+          vLineWidth: () => 0,
+          paddingTop: () => 5, // Ajusta el margen superior de las celdas
+        },
+      });
     });
+
+    const documentDefinition = {
+      content: pdfContent,
+      styles,
+    };
+
+    pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
+  // arreglar
   else if (form === "informeintaccidente") {
-    pdfContent.push("Informe de Incidente o Accidente");
+    const styles = {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 20],
+      },
+      subheader: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 10, 0, 20],
+      },
+      label: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 0, 10, 10],
+        color: 'rgb(37, 35, 35)',
+      },
+      value: {
+        fontSize: 12,
+        margin: [0, 0, 0, 10],
+        border: [0.5, 0.5, 0.5, 0.5],
+        fillColor: '#FfFfFf',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: [5, 5, 5, 5],
+      },
+    };
 
-    const { comedor, fecha, tipo, checkboxes, cuil, fechaIngreso, puesto, hora, lugar, descripcion, checkboxesAccidente, razon, lugarLesion, medidas, firmaEmpleado, encargado, date } = formulario;
+    const {
+      comedor,
+      fecha,
+      tipo,
+      cuil,
+      fechaIngreso,
+      puesto,
+      hora,
+      lugar,
+      descripcion,
+      razon,
+      lugarLesion,
+      medidas,
+      firmaEmpleado,
+      encargado,
+      date,
+      checkboxes,
+      checkboxesAccidente
+    } = formulario;
+
+    const pdfContent = [
+      { text: 'Formulario ONMODO', style: 'header', alignment: 'center' },
+      { text: 'Informe de Incidente o Accidente', style: 'subheader', alignment: 'center' },
+      {
+        table: {
+          widths: ['25%', '25%', '25%', '25%'], // Divide la tabla en 4 columnas
+          body: [
+            [
+              { text: 'Comedor:', style: 'label' },
+              { text: 'Fecha:', style: 'label' },
+              { text: 'Tipo:', style: 'label' },
+              { text: 'CUIT/CUIL:', style: 'label' },
+            ],
+            [
+              { text: comedor || '', style: 'value' },
+              { text: fecha || '', style: 'value' },
+              { text: tipo || '', style: 'value' },
+              { text: cuil || '', style: 'value' },
+            ],
+            [
+              { text: 'Fecha de Ingreso:', style: 'label' },
+              { text: 'Puesto:', style: 'label' },
+              { text: 'Hora:', style: 'label' },
+              { text: 'Lugar:', style: 'label' },
+            ],
+            [
+              { text: fechaIngreso || '', style: 'value' },
+              { text: puesto || '', style: 'value' },
+              { text: hora || '', style: 'value' },
+              { text: lugar || '', style: 'value' },
+            ],
+            [
+              { text: 'Descripción:', style: 'label' },
+              { text: 'Razón:', style: 'label' },
+              { text: 'Lugar de la Lesión:', style: 'label' },
+              { text: 'Medidas:', style: 'label' },
+            ],
+            [
+              { text: descripcion || '', style: 'value' },
+              { text: razon || '', style: 'value' },
+              { text: lugarLesion || '', style: 'value' },
+              { text: medidas || '', style: 'value' },
+            ],
+            [
+              { text: 'Firma del Empleado:', style: 'label' },
+              { text: 'Encargado:', style: 'label' },
+              { text: 'Fecha del Informe:', style: 'label' },
+              '',
+            ],
+            [
+              { text: firmaEmpleado || '', style: 'value' },
+              { text: encargado || '', style: 'value' },
+              { text: date || '', style: 'value' },
+              '',
+            ],
+          ],
+        },
+        layout: {
+          hLineWidth: () => 0,
+          vLineWidth: () => 0,
+          hLineColor: () => 'gray',
+          vLineColor: () => 'gray',
+          paddingTop: (i) => (i === 0 ? 10 : 10),
+        },
+      },
+
+    ];
 
 
-    pdfContent.push(`Comedor: ${comedor}`);
-    pdfContent.push(`Fecha: ${fecha}`);
-    pdfContent.push(`Tipo: ${tipo}`);
-    pdfContent.push(`CUIT/CUIL: ${cuil}`);
-    pdfContent.push(`Fecha de Ingreso: ${fechaIngreso}`);
-    pdfContent.push(`Puesto: ${puesto}`);
-    pdfContent.push(`Hora: ${hora}`);
-    pdfContent.push(`Lugar: ${lugar}`);
-    pdfContent.push(`Descripción: ${descripcion}`);
-    pdfContent.push(`Razón: ${razon}`);
-    pdfContent.push(`Lugar de la Lesión: ${lugarLesion}`);
-    pdfContent.push(`Medidas: ${medidas}`);
-    pdfContent.push(`Firma del Empleado: ${firmaEmpleado}`);
-    pdfContent.push(`Encargado: ${encargado}`);
-    pdfContent.push(`Fecha del Informe: ${date}`);
+    const checkboxesTable = {
+      table: {
+        widths: ['25%', '25%', '25%', '25%'], // Divide la tabla de checkboxes en 4 columnas
+        body: [],
+      },
+      layout: {
+        hLineWidth: () => 0,
+        vLineWidth: () => 0,
+        hLineColor: () => 'gray',
+        vLineColor: () => 'gray',
+      },
+    };
+
 
     checkboxes.forEach((checkbox) => {
-      pdfContent.push(`${checkbox.label}: ${checkbox.check ? 'Sí' : 'No'}`);
+      checkboxesTable.table.body.push(
+        [
+          { text: checkbox.label, style: 'label' },
+          { text: checkbox.check ? 'Sí' : 'No', style: 'value' },
+          { text: '', style: 'label' },
+          { text: '', style: 'value' },
+        ],
+
+
+      );
     });
+
+
+    pdfContent.push(checkboxesTable);
+
+    pdfContent.push({ text: 'Checkbox Accidente:', style: 'label' });
+
 
     checkboxesAccidente.forEach((checkbox) => {
-      pdfContent.push(`${checkbox.label}: ${checkbox.check ? 'Sí' : 'No'}`);
-      if (checkbox.cualMaquina) {
-        pdfContent.push(`Máquina: ${checkbox.cualMaquina}`);
-      }
-      if (checkbox.cualAccion) {
-        pdfContent.push(`Acción: ${checkbox.cualAccion}`);
-      }
+      pdfContent[2].table.body.push([
+        { text: checkbox.label, style: 'label' },
+        { text: checkbox.check ? 'Sí' : 'No', style: 'value' },
+        { text: checkbox.cualMaquina ? 'Máquina:' : '', style: 'label' },
+        { text: checkbox.cualMaquina || '', style: 'value' },
+      ]);
+      pdfContent[2].table.body.push([
+        { text: '', style: 'label' },
+        { text: '', style: 'value' },
+        { text: checkbox.cualAccion ? 'Acción:' : '', style: 'label' },
+        { text: checkbox.cualAccion || '', style: 'value' },
+      ]);
     });
+
+    const documentDefinition = {
+      content: pdfContent,
+      styles,
+    };
+
+    pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
+
   else if (form === "registrocapacitacion") {
-    pdfContent.push("Registro de Capacitación");
+    const styles = {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 20],
+      },
+      subheader: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 10, 0, 20],
+      },
+      label: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 0, 10, 10],
+        color: 'rgb(37, 35, 35)',
+      },
+      label1: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 0, 40, 10],
+        paddingTop: 30,
+        color: 'rgb(37, 35, 35)',
+      },
+      value: {
+        fontSize: 12,
+        margin: [0, 0, 10, 10],
+        color: 'black',
+      },
+    };
+
+    const {
+      fecha,
+      tiempoDuracion,
+      checkboxes,
+      temas,
+      materialEntregado,
+      asistentes,
+      observaciones,
+      instructor,
+      cargo,
+      firma,
+      date,
+    } = formulario;
+
+    const pdfContent = [
+      { text: 'Formulario ONMODO', style: 'header', alignment: 'center' },
+      { text: 'Registro de Capacitación', style: 'subheader', alignment: 'center' },
+    ];
 
 
-    const { fecha, tiempoDuracion, checkboxes, temas, materialEntregado, asistentes, observaciones, instructor, cargo, firma, date } = formulario;
+    const tableContent = {
+      table: {
+        widths: ['25%', '25%', '25%', '25%'],
+        body: [],
+      },
+      layout: 'noBorders',
+      margin: [0, 10, 0, 10],
+    };
 
 
-    pdfContent.push(`Fecha: ${fecha}`);
-    pdfContent.push(`Duración: ${tiempoDuracion}`);
-    pdfContent.push("Capacitaciones:");
+    tableContent.table.body.push([
+      { text: 'Fecha:', style: 'label' },
+      { text: fecha, style: 'value' },
+      { text: 'Duración:', style: 'label' },
+      { text: tiempoDuracion, style: 'value' },
+    ]);
+
+
     checkboxes.forEach((checkbox) => {
-      pdfContent.push(`${checkbox.label}: ${checkbox.check ? 'Sí' : 'No'}`);
+      tableContent.table.body.push([
+        { text: `${checkbox.label}:`, style: 'label' },
+        { text: checkbox.check ? 'Sí' : 'No', style: 'value' },
+        { text: '', style: 'label' },
+        { text: '', style: 'value' },
+      ]);
     });
-    pdfContent.push(`Temas: ${temas}`);
-    pdfContent.push("Material Entregado:");
+
+    tableContent.table.body.push([
+      { text: 'Temas:', style: 'label' },
+      { text: temas, style: 'value', colSpan: 3 },
+    ]);
+
+
     materialEntregado.forEach((item) => {
-      pdfContent.push(`${item.label}: ${item.check ? 'Sí' : 'No'}`);
+      tableContent.table.body.push([
+        { text: `${item.label}:`, style: 'label' },
+        { text: item.check ? 'Sí' : 'No', style: 'value' },
+        { text: '', style: 'label' },
+        { text: '', style: 'value' },
+      ]);
     });
 
 
-    pdfContent.push("Asistentes:");
-    asistentes.forEach((asistente) => {
-      pdfContent.push(`Nombre: ${asistente.nombre}`);
-      pdfContent.push(`DNI: ${asistente.dni}`);
-      pdfContent.push(`Área: ${asistente.area}`);
-      pdfContent.push(`Firma: ${asistente.firma}`);
-      pdfContent.push(`Resultado: ${asistente.resultado}`);
-      pdfContent.push(`Método: ${asistente.metodo}`);
-      pdfContent.push("-----");
+    asistentes.forEach((asistente, index) => {
+      tableContent.table.body.push([
+        { text: `Asistente ${index + 1}:`, style: 'label1' },
+        { text: '', style: 'value' },
+        { text: `Nombre:`, style: 'label' },
+        { text: asistente.nombre, style: 'value' },
+      ]);
+      tableContent.table.body.push([
+        { text: '', style: 'label' },
+        { text: '', style: 'value' },
+        { text: `DNI:`, style: 'label' },
+        { text: asistente.dni, style: 'value' },
+      ]);
+      tableContent.table.body.push([
+        { text: '', style: 'label' },
+        { text: '', style: 'value' },
+        { text: `Área:`, style: 'label' },
+        { text: asistente.area, style: 'value' },
+      ]);
+      tableContent.table.body.push([
+        { text: 'Firma:', style: 'label' },
+        { text: asistente.firma, style: 'value' },
+        { text: `Resultado:`, style: 'label' },
+        { text: asistente.resultado, style: 'value' },
+      ]);
+      tableContent.table.body.push([
+        { text: '', style: 'label' },
+        { text: '', style: 'value' },
+        { text: `Método:`, style: 'label' },
+        { text: asistente.metodo, style: 'value' },
+      ]);
     });
 
-    pdfContent.push(`Observaciones: ${observaciones}`);
-    pdfContent.push(`Instructor: ${instructor}`);
-    pdfContent.push(`Cargo: ${cargo}`);
-    pdfContent.push(`Firma: ${firma}`);
-    pdfContent.push(`Fecha del Registro: ${date}`);
+    tableContent.table.body.push([
+      { text: 'Observaciones:', style: 'label' },
+      { text: observaciones, style: 'value', colSpan: 3 },
+    ]);
 
+    tableContent.table.body.push([
+      { text: 'Instructor:', style: 'label' },
+      { text: instructor, style: 'value' },
+      { text: 'Cargo:', style: 'label' },
+      { text: cargo, style: 'value' },
+    ]);
+
+    tableContent.table.body.push([
+      { text: 'Firma:', style: 'label' },
+      { text: firma, style: 'value' },
+      { text: 'Fecha del Registro:', style: 'label' },
+      { text: date, style: 'value' },
+    ]);
+
+
+    pdfContent.push(tableContent);
+
+    const documentDefinition = {
+      content: pdfContent,
+      styles,
+    };
+
+    pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
+
   else if (form === "registrodecomiso") {
-    pdfContent.push("Registro de Decomiso");
+    const styles = {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 20],
+      },
+      subheader: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 10, 0, 40],
+      },
+      label: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 0, 10, 30],
+        color: 'rgb(37, 35, 35)',
+      },
+      value: {
+        fontSize: 12,
+        margin: [0, 0, 10, 10],
+        color: 'black',
+      },
+    };
+
+    pdfContent.push({ text: 'Formulario ONMODO', style: 'header', alignment: 'center' });
+    pdfContent.push({ text: 'Registro de Decomiso', style: 'subheader', alignment: 'center' });
 
     const { inputs } = formulario;
 
-    pdfContent.push("Decomiso Records:");
+    // Crear una tabla de 25% de ancho para cada columna
+    const tableContent = {
+      table: {
+        widths: ['25%', '25%', '25%', '25%'],
+        body: [],
+      },
+      layout: 'noBorders',
+      margin: [0, 10, 0, 10],
+    };
+
+    // Agregar filas a la tabla para cada registro de decomiso
     inputs.forEach((input, index) => {
-      pdfContent.push(`Decomiso #${index + 1}`);
-      pdfContent.push(`Fecha: ${input.fecha}`);
-      pdfContent.push(`Turno: ${input.turno}`);
-      pdfContent.push(`Producto Decomisado: ${input.productoDecomisado}`);
-      pdfContent.push(`Cantidad: ${input.cantidad}`);
-      pdfContent.push(`Fuera de Fecha: ${input.fueraFecha}`);
-      pdfContent.push(`Fuera de Aptitud: ${input.fueraAptitud}`);
-      pdfContent.push(`Otras Causas: ${input.otrasCausas}`);
-      pdfContent.push(`Destino Final: ${input.destinoFinal}`);
-      pdfContent.push(`Responsable: ${input.responsable}`);
-      pdfContent.push("-----");
+      tableContent.table.body.push(
+        [
+          { text: `Decomiso #${index + 1}`, style: 'label' },
+          { text: `Fecha: ${input.fecha}`, style: 'value' },
+          { text: `Turno: ${input.turno}`, style: 'value' },
+          { text: `Producto Decomisado: ${input.productoDecomisado}`, style: 'value' },
+        ],
+        [
+          { text: '', style: 'value' },
+          { text: `Cantidad: ${input.cantidad}`, style: 'value' },
+          { text: `Fuera de Fecha: ${input.fueraFecha}`, style: 'value' },
+          { text: `Fuera de Aptitud: ${input.fueraAptitud}`, style: 'value' },
+        ],
+        [
+          { text: '', style: 'value' },
+          { text: `Otras Causas: ${input.otrasCausas}`, style: 'value' },
+          { text: `Destino Final: ${input.destinoFinal}`, style: 'value' },
+          { text: `Responsable: ${input.responsable}`, style: 'value' },
+        ],
+        [
+          { text: '', colSpan: 4 }, // Celda vacía para separar los registros
+        ]
+      );
     });
 
+    // Agregar la tabla al contenido del PDF
+    pdfContent.push(tableContent);
+
+    const documentDefinition = {
+      content: pdfContent,
+      styles,
+    };
+
+    pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
+
   else if (form === "registrosimulacro") {
-    pdfContent.push("Registro de Simulacro");
+    const styles = {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 20],
+      },
+      subheader: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 10, 0, 20],
+      },
+      label: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 0, 10, 10],
+        color: 'rgb(37, 35, 35)',
+      },
+      value: {
+        fontSize: 12,
+        margin: [0, 0, 10, 10],
+        color: 'black',
+      },
+    };
+
+    pdfContent.push({ text: 'Formulario ONMODO', style: 'header', alignment: 'center' });
+    pdfContent.push({ text: 'Registro de Simulacro', style: 'subheader', alignment: 'center' });
 
     const { razonSocial, ubicacion, localidad, fecha, personas } = formulario;
 
-    pdfContent.push(`Razon Social: ${razonSocial}`);
-    pdfContent.push(`Ubicación: ${ubicacion}`);
-    pdfContent.push(`Localidad: ${localidad}`);
-    pdfContent.push(`Fecha: ${fecha}`);
+    const tableContent = {
+      table: {
+        widths: ['25%', '25%', '25%', '25%'],
+        body: [],
+      },
+      layout: 'noBorders',
+      margin: [0, 10, 0, 10],
+    };
 
-    pdfContent.push("Personas Participantes:");
+    tableContent.table.body.push(
+      [
+        { text: 'Razon Social:', style: 'label' },
+        { text: razonSocial, style: 'value' },
+        { text: 'Ubicación:', style: 'label' },
+        { text: ubicacion, style: 'value' },
+      ],
+      [
+        { text: 'Localidad:', style: 'label' },
+        { text: localidad, style: 'value' },
+        { text: 'Fecha:', style: 'label' },
+        { text: fecha, style: 'value' },
+      ]
+    );
+
+    pdfContent.push(tableContent);
+
+    pdfContent.push({ text: "Personas Participantes:", style: 'subheader' });
     personas.forEach((persona, index) => {
       pdfContent.push(`Persona #${index + 1}`);
       pdfContent.push(`Nombre Completo: ${persona["Apellido y Nombre"]}`);
@@ -147,12 +715,48 @@ export const generatePDF = (formulario, form) => {
       pdfContent.push("-----");
     });
 
+    const documentDefinition = {
+      content: pdfContent,
+      styles,
+    };
+
+    pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
+
   else if (form === "reporterechazo") {
-    pdfContent.push("Reporte de Rechazo");
+    const styles = {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 20],
+      },
+      subheader: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 10, 0, 20],
+      },
+      label: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 5, 0, 0],
+        color: 'rgb(37, 35, 35)',
+      },
+      value: {
+        fontSize: 12,
+        margin: [0, 0, 0, 20],
+        border: [0, 0, 0, 0],
+        fillColor: '#FFFFFF',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: [5, 5, 5, 5],
+      },
+      descriptionValue: {
+        fontSize: 12,
+        marginBottom: 30,
+      },
+    };
 
     const {
-
       dia,
       proveedor,
       producto,
@@ -164,71 +768,87 @@ export const generatePDF = (formulario, form) => {
       medidasTomadas,
       nombreAdministrador,
       nombreProveedor,
-
     } = formulario;
 
-    // Add general information to pdfContent
+    const pdfContent = [
+      {
+        table: {
+          widths: ['25%', '25%', '25%', '25%'], // Divide la tabla en 4 columnas
+          body: [
+            [{ text: 'Día:', style: 'label' }, { text: 'Proveedor:', style: 'label' }, { text: 'Producto:', style: 'label' }, { text: 'Número de Lote:', style: 'label' }],
+            [dia, proveedor, producto, nroLote],
+          ],
+        },
+      },
+      { text: 'Condiciones de Entrega:', style: 'subheader' },
+    ];
 
-    pdfContent.push(`Día: ${dia}`);
-    pdfContent.push(`Proveedor: ${proveedor}`);
-    pdfContent.push(`Producto: ${producto}`);
-    pdfContent.push(`Número de Lote: ${nroLote}`);
-
-    // Process and add information about condicionesEntrega
-    pdfContent.push("Condiciones de Entrega:");
     condicionesEntrega.forEach((condicion, index) => {
-      pdfContent.push(`Condición #${index + 1}`);
-      pdfContent.push(`Adelantado: ${condicion.adelantadoCheck}`);
-      pdfContent.push(`Descripción Adelantado: ${condicion.adelantadoDescription}`);
-      pdfContent.push(`Atrasado: ${condicion.atrasadoCheck}`);
-      pdfContent.push(`Descripción Atrasado: ${condicion.atrasadoDescription}`);
-      pdfContent.push("-----");
+      pdfContent.push(
+        [
+          { text: `Condición #${index + 1}`, style: 'subheader' },
+          { text: 'Adelantado:', style: 'label' },
+          { text: 'Descripción Adelantado:', style: 'label' },
+          { text: 'Atrasado:', style: 'label' },
+          { text: 'Descripción Atrasado:', style: 'label' },
+        ],
+        [
+          '',
+          condicion.adelantadoCheck,
+          condicion.adelantadoDescription,
+          condicion.atrasadoCheck,
+          condicion.atrasadoDescription,
+        ],
+      );
     });
 
-    // Process and add information about calidad
-    pdfContent.push("Calidad:");
+    pdfContent.push({ text: 'Calidad:', style: 'subheader' });
+
     calidad.forEach((calidadItem, index) => {
-      pdfContent.push(`Calidad Item #${index + 1}`);
-      Object.keys(calidadItem).forEach(key => {
-        pdfContent.push(`${key}: ${calidadItem[key]}`);
+      pdfContent.push([{ text: `Calidad Item #${index + 1}`, style: 'subheader' }, '', '', '']);
+      Object.keys(calidadItem).forEach((key) => {
+        pdfContent.push([`${key}: ${calidadItem[key]}`, '', '', '']);
       });
-      pdfContent.push("-----");
     });
 
-    // Process and add information about diferencias
-    pdfContent.push("Diferencias:");
+    pdfContent.push({ text: 'Diferencias:', style: 'subheader' });
+
     diferencias.forEach((diferencia, index) => {
-      pdfContent.push(`Diferencia #${index + 1}`);
-      Object.keys(diferencia).forEach(key => {
-        pdfContent.push(`${key}: ${diferencia[key]}`);
+      pdfContent.push([{ text: `Diferencia #${index + 1}`, style: 'subheader' }, '', '', '']);
+      Object.keys(diferencia).forEach((key) => {
+        pdfContent.push([`${key}: ${diferencia[key]}`, '', '', '']);
       });
-      pdfContent.push("-----");
     });
 
-    // Process and add information about transporte
-    pdfContent.push("Transporte:");
+    pdfContent.push({ text: 'Transporte:', style: 'subheader' });
+
     transporte.forEach((transporteItem, index) => {
-      pdfContent.push(`Transporte Item #${index + 1}`);
-      Object.keys(transporteItem).forEach(key => {
-        pdfContent.push(`${key}: ${transporteItem[key]}`);
+      pdfContent.push([{ text: `Transporte Item #${index + 1}`, style: 'subheader' }, '', '', '']);
+      Object.keys(transporteItem).forEach((key) => {
+        pdfContent.push([`${key}: ${transporteItem[key]}`, '', '', '']);
       });
-      pdfContent.push("-----");
     });
 
-    // Process and add information about medidasTomadas
-    pdfContent.push("Medidas Tomadas:");
+    pdfContent.push({ text: 'Medidas Tomadas:', style: 'subheader' });
+
     medidasTomadas.forEach((medida, index) => {
-      pdfContent.push(`Medida #${index + 1}`);
-      Object.keys(medida).forEach(key => {
-        pdfContent.push(`${key}: ${medida[key]}`);
+      pdfContent.push([{ text: `Medida #${index + 1}`, style: 'subheader' }, '', '', '']);
+      Object.keys(medida).forEach((key) => {
+        pdfContent.push([`${key}: ${medida[key]}`, '', '', '']);
       });
-      pdfContent.push("-----");
     });
 
-    pdfContent.push(`Nombre Administrador: ${nombreAdministrador}`);
-    pdfContent.push(`Nombre Proveedor: ${nombreProveedor}`);
+    pdfContent.push([{ text: 'Nombre Administrador:', style: 'label' }, nombreAdministrador, '', '']);
+    pdfContent.push([{ text: 'Nombre Proveedor:', style: 'label' }, nombreProveedor, '', '']);
 
+    const documentDefinition = {
+      content: pdfContent,
+      styles,
+    };
+
+    pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
+
   else if (form === "verificacionbalanza") {
     pdfContent.push("Verificación de Balanza");
 
@@ -301,28 +921,6 @@ export const generatePDF = (formulario, form) => {
   else {
     return null
   }
-  
-  if (pdfContent.length > 0) {
-    const documentDefinition = {
-      content: [
-        { text: 'Formulario Generado', style: 'header' },
-        { text: form, style: 'subheader' },
-        pdfContent.join('\n'),
-      ],
-      styles: {
-        header: {
-          fontSize: 18,
-          bold: true,
-          margin: [0, 0, 0, 10],
-        },
-        subheader: {
-          fontSize: 14,
-          bold: true,
-          margin: [0, 10, 0, 5],
-        },
-      },
-    };
 
-    pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
-  }
+
 };
