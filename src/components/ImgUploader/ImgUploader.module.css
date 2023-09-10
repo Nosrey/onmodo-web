@@ -1,0 +1,40 @@
+.imageUploader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    width: 200px;
+    border: 2px dashed gray;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .imageInputLabel {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .imagePreview {
+    width: 100%;
+    height: 100%;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  
+  .imagePlaceholder {
+    text-align: center;
+    font-size: 14px;
+    color: gray;
+  }
+  
+  /* Ocultar el input tipo file */
+  input[type='file'] {
+    display: none;
+  }
+  

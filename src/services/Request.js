@@ -36,6 +36,7 @@ export const login = async ({ legajo, password}) => {
     }
   };
 
+  // values?.upload[0],
 export const createNewUSer = async ({ 
     email,
     fullName,
@@ -47,9 +48,13 @@ export const createNewUSer = async ({
     business,
     provincia,
     localidad,
-    idChief
+    idChief,
+    imgProfile
 }) => {
 try {
+    const formData = new FormData();
+    formData.append('imgProfile', imgProfile);
+
     const response = await fetch(`${URL_API}/api/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
