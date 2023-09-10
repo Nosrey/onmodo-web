@@ -118,7 +118,7 @@ function RegistroDeDecomiso() {
                                         {inputs.map((input) => (
                                             <div key={input.id}>
                                                 {input.label === 'Fecha' ? (
-                                                    <input
+                                                    <TextField
                                                         type="date"
                                                         className='input'
                                                         onChange={(e) => {
