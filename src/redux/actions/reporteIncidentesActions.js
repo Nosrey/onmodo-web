@@ -4,7 +4,7 @@ const reporteIncidentesActions = {
   logIn: (inputsValues) => {
     return async (dispatch, getState) => {
       try {
-        const response = await axios.post('https://api.onmodoapp.com/api//flashincidente', inputsValues)
+        const response = await axios.post('http://localhost:8080/api//flashincidente', inputsValues)
         if (response.data.success === false) {
           alert("Usuario incorrecto")
         }

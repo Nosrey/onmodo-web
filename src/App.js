@@ -109,7 +109,7 @@ function App() {
             <Route path='/descongelamiento' element={<Descongelamiento />} />
             <Route path='/rechazo-mp' element={<ReporteDeRechazoDevolucionMaterias />} />
             <Route path='/control-procesos' element={<ControlProcesos />} />
-            <Route path='/carga-recepcion' element={<CargaRecepcion />} />
+            <Route path='/carga' element={<CargaRecepcion />} />
             <Route path='/sanitizacion' element={<Sanitizacion />} />
             <Route path='/cambio-aceite' element={<UsoCambioAceite />} />
             <Route path='/uso-epp' element={<EPP />} />

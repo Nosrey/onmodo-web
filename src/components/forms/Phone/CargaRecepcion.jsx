@@ -6,11 +6,11 @@ import Modal from '../../shared/Modal';
 import CargaInfo from '../../modales/CargaInfo';
 import { useSelector,useDispatch } from 'react-redux';
 import cargaRecepcionActions from '../../../redux/actions/cargaRecepcionActions';
+import { cargaForm } from '../../../services/FormsRequest';
 
 function CargaRecepcion() {
     const dispatch = useDispatch()
     const prueba = useSelector(state=>state.cargaRecepcionR.inputsValues)
-    console.log("holi",prueba)
     const [inputs] = useState([
         { id: 1, label: 'Carga' },
         { id: 2, label: 'Recepción' },
@@ -43,7 +43,7 @@ function CargaRecepcion() {
         }],
         verificado: "",
         fechaHora: "",
-        idUser:"643ea98d5b44dd9765966ae7",
+        idUser: localStorage.getItem("idUser"),
     })
     const [objValues,setObjValues] = useState({cargaFecha:"",recepcionFecha:"",proveedor:"",producto:"",comprada:"",recibida:"",cargaTempAlimento:"",recepcionTempAlimento:"",cargaTempCamion:"",recepcionTempCamion:"", vidaUtil:"", nroLote:"",fechaVto:"",recibidoAcciones:"",motivoRechazo:""})
     const [inputValues,setInputValues]= useState([])
@@ -90,6 +90,12 @@ function CargaRecepcion() {
         setObjValues({cargaFecha:"",recepcionFecha:"",proveedor:"",producto:"",comprada:"",recibida:"",cargaTempAlimento:"",recepcionTempAlimento:"",cargaTempCamion:"",recepcionTempCamion:"", vidaUtil:"", nroLote:"",fechaVto:"",recibidoAcciones:"",motivoRechazo:""})
         setTrigger(false)
     };
+
+    const handleSubmit = () => {
+        cargaForm(values).then((resp) =>{
+            console.log(resp)
+        })
+    }
 
     return (
         <div>
@@ -210,8 +216,7 @@ function CargaRecepcion() {
                     <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button onClick={()=>{
-                        dispatch(cargaRecepcionActions.logIn(values))}} variant="contained">Guardar</Button>
+                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
                 </div>
 
             </div>

@@ -5,7 +5,7 @@ const registroDecomisosActions = {
     return async (dispatch, getState) => {
       try {
         console.log("action",inputsValues)
-        const response = await axios.post('https://api.onmodoapp.com/api/registrodecomiso', inputsValues)
+        const response = await axios.post('http://localhost:8080/api/registrodecomiso', inputsValues)
         console.log("response", response.data)
         if (response.data.success === false) {
           alert("Usuario incorrecto")

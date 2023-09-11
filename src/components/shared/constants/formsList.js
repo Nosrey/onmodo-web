@@ -1,5 +1,10 @@
 export const FORMS_LIST = [
     {
+      title: 'CARGA',
+      link: '/carga',
+      rol:'all'
+    },
+    {
       title: 'Entrega de ropa de trabajo y EPP',
       link: '/ropa-de-trabajo',
       rol:'superior'

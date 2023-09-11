@@ -5,7 +5,7 @@ const sanitizacionActions = {
     return async (dispatch, getState) => {
       try {
         console.log("action",inputsValues)
-        const response = await axios.post('https://api.onmodoapp.com/api/sanitizacion', inputsValues)
+        const response = await axios.post('http://localhost:8080/api/sanitizacion', inputsValues)
         console.log("response", response.data)
         if (response.data.success === false) {
           alert("Usuario incorrecto")

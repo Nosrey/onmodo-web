@@ -2,9 +2,10 @@ import styles from './Cuenta.module.css';
 import React, { useEffect, useState } from 'react';
 import perfil from '../../../assets/image/perfil.png';
 import placeholder from '../../../assets/image/download.png';
-import { getLocalidades, getProvincias, getUserInfo } from '../../../services/Request';
+import { createNewUSer, getLocalidades, getProvincias, getUserInfo } from '../../../services/Request';
 import { useLocation } from 'react-router-dom';
 import { PUESTOS_N1, PUESTOS_N2 } from '../../../components/shared/constants/Puestos';
+import ImageUploader from '../../../components/ImgUploader/ImgUploader';
 
 function Cuenta() {
   const idUser = localStorage.getItem("idUser");
@@ -13,6 +14,7 @@ function Cuenta() {
 
   const [errors, setErrors] = useState({});
   const [showToast, setShowToast] = useState(false);
+  const [showToastError, setShowToastError] = useState(false);
   const [editInput, setEditInput] = useState(true);
   const [btnEdit, setBtnEdit] = useState(false);
   const [inputValue, setInputValue] = useState();
@@ -65,12 +67,38 @@ function Cuenta() {
       setErrors(validationErrors);
     } else {
       setErrors({});
-      setShowToast(true);
-      setTimeout(() => {
-        setShowToast(false);
-      }, 2000);
-      setBtnEdit(!btnEdit);
-      setEditInput(true);
+      console.log(inputValue)
+      const data = { 
+        email: inputValue.email,
+        fullName: inputValue.nombre,
+        legajo: inputValue.legajo,
+        number : inputValue.celular,
+        puesto : inputValue.puesto,
+        contratoComedor:  inputValue.contrato,
+        rol:  inputValue.nivel,
+        business: localStorage.getItem("business"),
+        provincia:  inputValue.provincia,
+        localidad :  inputValue.localidad,
+        // idChief,
+        imgProfile: inputValue.imgProfile
+      }
+      
+      createNewUSer(data).then((resp) => {
+        setShowToast(true);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 2000);
+        setBtnEdit(!btnEdit);
+        setEditInput(true)
+      })
+      .catch((error) => {
+        console.log(error)
+        setShowToastError(true);
+        setTimeout(() => {
+          setShowToastError(false);
+        }, 2000);
+      })
+    ;
     }
   };
 
@@ -137,10 +165,12 @@ function Cuenta() {
               <span className={styles.toast}>¡Cambios guardados exitosamente!</span>
             </div>
           )}
-
-          <div className={styles.imgContainer}>
-            <img src={srcImage} className={styles.image} alt='' />
-          </div>
+              {showToastError && (
+            <div className={styles.toastContainer}>
+              <span className={styles.toast}>¡Ups! Ocurrió un error</span>
+            </div>
+          )}
+          <ImageUploader uploadPhoto={handleChange}/>
           <div className={styles.formContainer}>
             <form onSubmit={handleSubmit} action='' className={styles.formulario}>
               <div className={styles.inputContainer}>
@@ -178,8 +208,6 @@ function Cuenta() {
                   disabled={editInput && !isANewProfile}
                 />
                 {errors.celular && <p className='danger'>{errors.celular}</p>}
-                {/* <i id={styles.close} class='ri-close-circle-fill'></i> */}
-                {/* <i id={styles.check} class='ri-checkbox-circle-fill'></i> */}
               </div>
               <div id={styles.celInputContainer} className={styles.inputContainer}>
                 <label htmlFor=''>Correo electrónico</label>

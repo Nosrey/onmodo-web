@@ -1,4 +1,6 @@
-const URL_API = 'https://api.onmodoapp.com';
+// const URL_API = 'http://localhost:8080';
+
+const URL_API = 'http://localhost:8080';
 
 
 export const login = async ({ legajo, password}) => {
@@ -48,29 +50,38 @@ export const createNewUSer = async ({
     business,
     provincia,
     localidad,
-    idChief,
+    // idChief,
     imgProfile
 }) => {
 try {
     const formData = new FormData();
     formData.append('imgProfile', imgProfile);
-
-    const response = await fetch(`${URL_API}/api/login`, {
+    formData.append('email', email);
+    formData.append('fullName', fullName);
+    formData.append('legajo', legajo);
+    formData.append('number', number);
+    formData.append('puesto', puesto);
+    formData.append('contratoComedor', contratoComedor);
+    formData.append('rol', parseInt(rol));
+    formData.append('business', business);
+    formData.append('provincia', provincia);
+    formData.append('localidad', localidad);
+    const response = await fetch(`${URL_API}/api/register`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ 
-        email,
-        fullName,
-        legajo,
-        number,
-        puesto,
-        contratoComedor,
-        rol,
-        business,
-        provincia,
-        localidad,
-        idChief
-    }),
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data:formData,
+    // body: JSON.stringify({ 
+    //     email,
+    //     fullName,
+    //     legajo,
+    //     number,
+    //     puesto,
+    //     contratoComedor,
+    //     rol,
+    //     business,
+    //     provincia,
+    //     localidad
+    // }),
     });
     const data = await response.json();
     return data;

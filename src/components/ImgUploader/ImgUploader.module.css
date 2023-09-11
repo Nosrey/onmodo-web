@@ -2,9 +2,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 200px;
-    width: 200px;
-    border: 2px dashed gray;
+    height: 160px !important;
+    width: 200px !important;
     border-radius: 50%;
     overflow: hidden;
     position: relative;
@@ -13,26 +12,23 @@
   
   .imageInputLabel {
     display: block;
-    width: 100%;
-    height: 100%;
   }
   
   .imagePreview {
-    width: 100%;
-    height: 100%;
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    width: 160px;
+    height: 160px;
+    .image {
+      width: 160px !important;
+    height: 160px !important;
     }
   }
   
-  .imagePlaceholder {
-    text-align: center;
-    font-size: 14px;
-    color: gray;
+  .imgContainerPlaceholer{
+    width: 100%;
   }
-  
+  .imagePlaceholder {
+    width: 100%;
+  }
   /* Ocultar el input tipo file */
   input[type='file'] {
     display: none;
