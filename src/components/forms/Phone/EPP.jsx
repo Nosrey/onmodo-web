@@ -14,7 +14,6 @@ import Alert from '../../shared/components/Alert/Alert';
 function EPP() {
     const dispatch = useDispatch()
     const prueba = useSelector(state=>state.eppR.inputsValues)
-    console.log("holi",prueba)
     var idUserr = localStorage.getItem("idUser");
     const [month, setMonth] = React.useState('');
     const [showModal, setShowModal] = useState(false);

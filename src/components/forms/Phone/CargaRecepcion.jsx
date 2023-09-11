@@ -7,10 +7,9 @@ import CargaInfo from '../../modales/CargaInfo';
 import { useSelector,useDispatch } from 'react-redux';
 import cargaRecepcionActions from '../../../redux/actions/cargaRecepcionActions';
 import { cargaForm } from '../../../services/FormsRequest';
+import { useLocation } from 'react-router';
 
 function CargaRecepcion() {
-    const dispatch = useDispatch()
-    const prueba = useSelector(state=>state.cargaRecepcionR.inputsValues)
     const [inputs] = useState([
         { id: 1, label: 'Carga' },
         { id: 2, label: 'Recepción' },
@@ -30,21 +29,7 @@ function CargaRecepcion() {
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
-    const [values,setValues] = useState({
-        patenteTermico:"",
-        habSenasa:"",
-        nPrecintoLateral:"",
-        nPrecintoTrasero:"",
-        respPrecinto:"",
-        observacionesPrecinto:"",
-        respTermografo:"",
-        observacionesTermografo:"",
-        inputs : [{
-        }],
-        verificado: "",
-        fechaHora: "",
-        idUser: localStorage.getItem("idUser"),
-    })
+    const [values,setValues] = useState()
     const [objValues,setObjValues] = useState({cargaFecha:"",recepcionFecha:"",proveedor:"",producto:"",comprada:"",recibida:"",cargaTempAlimento:"",recepcionTempAlimento:"",cargaTempCamion:"",recepcionTempCamion:"", vidaUtil:"", nroLote:"",fechaVto:"",recibidoAcciones:"",motivoRechazo:""})
     const [inputValues,setInputValues]= useState([])
     const [trigger,setTrigger] = useState(false)
@@ -56,9 +41,11 @@ function CargaRecepcion() {
             setInputValues([...inputValues,objValues])
         }
     },[trigger])
+
     useEffect(()=>{
         setValues({...values,inputs:inputValues})
     },[inputValues])
+    
     useEffect(()=>{
         if (objValues.cargaFecha !== "" && objValues.recepcionFecha !== "" && objValues.proveedor !== "" && objValues.producto !== "" && objValues.comprada !== "" && objValues.recibida !== "" && objValues.cargaTempAlimento !== "" && objValues.recepcionTempAlimento !== "" && objValues.cargaTempCamion !== "" && objValues.recepcionTempCamion !== "" && objValues.vidaUtil !== "" && objValues.nroLote !== "" && objValues.fechaVto !== "" && objValues.recibidoAcciones !== "" && objValues.motivoRechazo !== ""){
             setTrigger(true)
@@ -96,8 +83,51 @@ function CargaRecepcion() {
             console.log(resp)
         })
     }
+    const location = useLocation();
+    useEffect(() => {
+        const infoPrecargada = location.state?.objeto;
+        if (infoPrecargada) { // muestro un form del historial
+            console.log("infoPrecargada", infoPrecargada)
+            setValues(
+            {
+                patenteTermico: infoPrecargada.patenteTermico,
+                habSenasa:infoPrecargada.habSenasa,
+                nPrecintoLateral:infoPrecargada.nPrecintoLateral,
+                nPrecintoTrasero:infoPrecargada.nPrecintoTrasero,
+                respPrecinto:infoPrecargada.respPrecinto,
+                observacionesPrecinto:infoPrecargada.observacionesPrecinto,
+                respTermografo:infoPrecargada.respTermografo,
+                observacionesTermografo:infoPrecargada.observacionesTermografo,
+                inputs : infoPrecargada.input,
+                verificado: infoPrecargada.verificado,
+                fechaHora: infoPrecargada.fechaHora,
+                idUser: localStorage.getItem("idUser"),
+            }
+            )
+        } else { // creo un form desde cero
+
+            setValues({
+                patenteTermico:"",
+                habSenasa:"",
+                nPrecintoLateral:"",
+                nPrecintoTrasero:"",
+                respPrecinto:"",
+                observacionesPrecinto:"",
+                respTermografo:"",
+                observacionesTermografo:"",
+                inputs : [{
+                }],
+                verificado: "",
+                fechaHora: "",
+                idUser: localStorage.getItem("idUser"),
+            })
+        }
+    }, [])
 
     return (
+        <>
+        {
+            values &&
         <div>
             <div className="form">
                 <div className="titleContainer">
@@ -215,12 +245,23 @@ function CargaRecepcion() {
                     <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
                     <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
                 </div>
+                {location.state?.objeto  ? (
+                    <div className="btn">
+                    <Button onClick={handleSubmit} variant="contained">Editar</Button>
+                </div>
+                )
+            : (
                 <div className="btn">
                     <Button onClick={handleSubmit} variant="contained">Guardar</Button>
                 </div>
+            )
+            }
+                
 
             </div>
         </div>
+        }
+        </>
     )
 }
 

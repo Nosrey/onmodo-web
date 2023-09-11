@@ -84,6 +84,10 @@ function FormCargado() {
       setTitulo("Verificacion Termometros");
       setUrl("/verificacion-termometro")
     }
+    else if (form == "carga") {
+      setTitulo("Carga y Recepción");
+      setUrl("/carga")
+    }
     else {
       setTitulo("0")
     }
@@ -121,6 +125,21 @@ function FormCargado() {
     setModalDelete(true);
   }
 
+  const openModalEdit = (form) => {
+    console.log(form._id)
+    setFormSelected(form._id);
+    if (formSelected && form.status !== "pending" && form.status !== "denied") {
+      setOpenModal(true);
+    }
+    if(form.status === "approved"){
+      goToForm(form)
+      // abrir modal con mensaje y enviar a editar
+    }
+    if(form.status === "denied"){
+      // abrir modal con mensaje
+    }
+  }
+
   const showAlertNotif = (type, msg) => {
     setTextAlert(msg);
     setTypeAlert(type);
@@ -137,7 +156,6 @@ function FormCargado() {
       getData();
     }
   }
-
 
   return (
     <>
@@ -170,19 +188,39 @@ function FormCargado() {
   const argentinaTime = new Date(createdAtUTC.getTime() );
 
   return (
-    <tr key={index} className={styles.fila}>
+    <tr key={index} className={`${styles.fila} ${formulario.status === "" ? "" : (
+      formulario.status === "pending" ? styles.pendingRow : (
+        formulario.status === "approved" ? styles.aprovedRow : (
+          formulario.status === "denied" ? styles.deniedRow : ""
+        )
+      )
+    )}`}>
       <td>{titulo}</td>
       <td>{argentinaTime.getFullYear()}</td>
       <td>{argentinaTime.getMonth() + 1}</td>
       <td>{argentinaTime.getDate()}</td>
       <td>{argentinaTime.getHours()}:{String(argentinaTime.getMinutes()).padStart(2, '0')}</td>
       <td>{name}</td>
-      <td>Edicion</td>
+      <td className={formulario.status === "" ? "" : (
+          formulario.status === "pending" ? styles.pendingText : (
+            formulario.status === "approved" ? styles.aprovedText : (
+              formulario.status === "denied" ? styles.deniedText : ""
+            )
+          )
+        )}>
+        {formulario.status === "" ? "-" : (
+          formulario.status === "pending" ? "Pendiente" : (
+            formulario.status === "approved" ? "Aprobado" : (
+              formulario.status === "denied" ? "Denegado" : ""
+            )
+          )
+        )}
+      </td>
       <td className={styles.contEdicion}>
         <span onClick={() => goToForm(formulario)} className={styles.actionIcon}>
           <i className='ri-eye-line' ></i>
         </span>
-        <span onClick={() => setOpenModal(true)} className={styles.actionIcon}>
+        <span onClick={() => openModalEdit(formulario)} className={styles.actionIcon}>
           <i className='ri-pencil-line'></i>
         </span>
         <span onClick={() => openDeleteModal(formulario._id)} className={styles.actionIcon}>
@@ -198,7 +236,7 @@ function FormCargado() {
 
             </tbody>
           </table>
-          <ModalEdicion openModal={openModal} setOpenModal={setOpenModal} />
+          <ModalEdicion openModal={openModal} setOpenModal={setOpenModal} idForm={formSelected} urlForm={form} showAlert={(type, msg) => showAlertNotif(type, msg)}/>
           <ModalBorrar modalDelete={modalDelete} setModalDelete={setModalDelete} idForm={formSelected} url={form} showAlert={(type, msg) => showAlertNotif(type, msg)} />
         </div>
       </div>

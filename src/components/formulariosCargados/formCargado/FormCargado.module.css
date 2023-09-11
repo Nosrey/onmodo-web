@@ -71,3 +71,27 @@
 .accion {
   text-align: center !important;
 }
+
+.pendingText {
+  font-weight: bold;
+  color:#FFB82F;
+
+}
+.deniedText {
+  font-weight: bold;
+  color:#FF2E11;
+
+}
+.aprovedText {
+  font-weight: bold;
+  color:#7BC100;
+}
+.pendingRow {
+  background: #FFB82F1A;
+}
+.deniedRow {
+  background: #FF2E111A;
+}
+.aprovedRow {
+  background: #7BC1001A;
+}

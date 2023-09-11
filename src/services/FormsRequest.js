@@ -229,3 +229,22 @@ export const ejemplo = async ({ dato1, dato2}) => {
       throw error;
     }
   };
+
+
+  // PARA EDITAR 
+  export const sendEditApplication = async ({values, formId, form}) => {
+    try {
+      const response = await fetch(`${URL_API}/api/${form}/${formId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(values),
+      });
+      const data = await response.json();
+      return data;
+
+    } catch (error) {
+      console.error('Error', error);
+      throw error;
+    }
+  };
+
