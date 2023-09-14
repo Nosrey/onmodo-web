@@ -29,7 +29,7 @@ export const generatePDF = (formulario, form) => {
         fontSize: 12,
         margin: [0, 0, 0, 20],
         border: [0, 0, 0, 0],
-        fillColor: '#FFFFFF',
+        fillColor: '#F8F8F8',
         paddingLeft: 5,
         paddingRight: 5,
         borderRadius: [5, 5, 5, 5],
@@ -130,7 +130,6 @@ export const generatePDF = (formulario, form) => {
 
 
   }
-  
   else if (form === "controlalergenos") {
     const { comedor, inputs, verified, date } = formulario;
     const doc = new jsPDF();
@@ -186,6 +185,11 @@ export const generatePDF = (formulario, form) => {
         bold: true,
         margin: [0, 10, 0, 20], // Ajusta el margen inferior
       },
+      subheader1: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 40, 0, 20], // Ajusta el margen inferior
+      },
       label: {
         fontSize: 12,
         bold: true,
@@ -240,7 +244,6 @@ export const generatePDF = (formulario, form) => {
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
-  // arreglar
   else if (form === "informeintaccidente") {
     const styles = {
       header: {
@@ -414,7 +417,6 @@ export const generatePDF = (formulario, form) => {
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
-
   else if (form === "registrocapacitacion") {
     const styles = {
       header: {
@@ -572,7 +574,6 @@ export const generatePDF = (formulario, form) => {
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
-
   else if (form === "registrodecomiso") {
     const styles = {
       header: {
@@ -650,7 +651,6 @@ export const generatePDF = (formulario, form) => {
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
-
   else if (form === "registrosimulacro") {
     const styles = {
       header: {
@@ -723,8 +723,7 @@ export const generatePDF = (formulario, form) => {
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
-
-  else if (form === "reporterechazo") {
+  if (form === "reporterechazo") {
     const styles = {
       header: {
         fontSize: 18,
@@ -744,19 +743,15 @@ export const generatePDF = (formulario, form) => {
       },
       value: {
         fontSize: 12,
-        margin: [0, 0, 0, 20],
+        margin: [0, 0, 0, 5],
         border: [0, 0, 0, 0],
         fillColor: '#FFFFFF',
         paddingLeft: 5,
         paddingRight: 5,
         borderRadius: [5, 5, 5, 5],
       },
-      descriptionValue: {
-        fontSize: 12,
-        marginBottom: 30,
-      },
     };
-
+  
     const {
       dia,
       proveedor,
@@ -770,89 +765,207 @@ export const generatePDF = (formulario, form) => {
       nombreAdministrador,
       nombreProveedor,
     } = formulario;
-
+  
     const pdfContent = [
+      { text: 'Formulario Reporte de Rechazo', style: 'header', alignment: 'center' },
       {
         table: {
-          widths: ['25%', '25%', '25%', '25%'], // Divide la tabla en 4 columnas
+          widths: ['50%', '50%'], // Cambiamos el ancho de la tabla a 50% - 50%
           body: [
-            [{ text: 'Día:', style: 'label' }, { text: 'Proveedor:', style: 'label' }, { text: 'Producto:', style: 'label' }, { text: 'Número de Lote:', style: 'label' }],
-            [dia, proveedor, producto, nroLote],
+            [{ text: 'Día:', style: 'label' }, { text: 'Proveedor:', style: 'label' }],
+            [dia, proveedor],
+            [{ text: 'Producto:', style: 'label' }, { text: 'Número de Lote:', style: 'label' }],
+            [producto, nroLote],
           ],
         },
+        layout: {
+          hLineWidth: () => 0,
+          vLineWidth: () => 0,
+          hLineColor: () => 'gray',
+          vLineColor: () => 'gray',
+          paddingTop: () => 5,
+          paddingBottom: () => 5,
+        },
       },
-      { text: 'Condiciones de Entrega:', style: 'subheader' },
+      { text: 'Condiciones de Entrega:', style: 'subheader', margin: [0, 10, 0, 0] },
     ];
-
+  
     condicionesEntrega.forEach((condicion, index) => {
       pdfContent.push(
-        [
-          { text: `Condición #${index + 1}`, style: 'subheader' },
-          { text: 'Adelantado:', style: 'label' },
-          { text: 'Descripción Adelantado:', style: 'label' },
-          { text: 'Atrasado:', style: 'label' },
-          { text: 'Descripción Atrasado:', style: 'label' },
-        ],
-        [
-          '',
-          condicion.adelantadoCheck,
-          condicion.adelantadoDescription,
-          condicion.atrasadoCheck,
-          condicion.atrasadoDescription,
-        ],
+        {
+          table: {
+            widths: ['50%', '50%'], // Cambiamos el ancho de la tabla a 50% - 50%
+            body: [
+              [{ text: `Condición #${index + 1}`, style: 'subheader', colSpan: 2 }, ''],
+              ['Adelantado:', { text: condicion.adelantadoCheck, style: 'value' }],
+              ['Descripción Adelantado:', { text: condicion.adelantadoDescription, style: 'value' }],
+              ['Atrasado:', { text: condicion.atrasadoCheck, style: 'value' }],
+              ['Descripción Atrasado:', { text: condicion.atrasadoDescription, style: 'value' }],
+            ],
+          },
+          layout: {
+            hLineWidth: () => 0,
+            vLineWidth: () => 0,
+            hLineColor: () => 'gray',
+            vLineColor: () => 'gray',
+            paddingTop: () => 5,
+            paddingBottom: () => 5,
+          },
+        }
       );
     });
-
-    pdfContent.push({ text: 'Calidad:', style: 'subheader' });
-
+  
+    // Sección Calidad
+    pdfContent.push({ text: 'Calidad:', style: 'subheader', margin: [0, 10, 0, 0] });
+  
     calidad.forEach((calidadItem, index) => {
-      pdfContent.push([{ text: `Calidad Item #${index + 1}`, style: 'subheader' }, '', '', '']);
-      Object.keys(calidadItem).forEach((key) => {
-        pdfContent.push([`${key}: ${calidadItem[key]}`, '', '', '']);
+      pdfContent.push(
+        { text: ``, style: 'subheader', margin: [0, 10, 0, 0] }
+      );
+      const calidadItemContent = [];
+      Object.keys(calidadItem).forEach(key => {
+        calidadItemContent.push([{ text: `${key}:`, style: 'value' }, { text: calidadItem[key], style: 'value' }]);
+      });
+      pdfContent.push({
+        table: {
+          widths: ['50%', '50%'], // Cambiamos el ancho de la tabla a 50% - 50%
+          body: calidadItemContent,
+        },
+        layout: {
+          hLineWidth: () => 0,
+          vLineWidth: () => 0,
+          hLineColor: () => 'gray',
+          vLineColor: () => 'gray',
+          paddingTop: () => 5,
+          paddingBottom: () => 5,
+        },
       });
     });
-
-    pdfContent.push({ text: 'Diferencias:', style: 'subheader' });
-
+  
+    // Sección Diferencias
+    pdfContent.push({ text: 'Diferencias:', style: 'subheader', margin: [0, 10, 0, 0] });
+  
     diferencias.forEach((diferencia, index) => {
-      pdfContent.push([{ text: `Diferencia #${index + 1}`, style: 'subheader' }, '', '', '']);
-      Object.keys(diferencia).forEach((key) => {
-        pdfContent.push([`${key}: ${diferencia[key]}`, '', '', '']);
+      pdfContent.push(
+        { text: ``, style: 'subheader', margin: [0, 10, 0, 0] }
+      );
+      const diferenciaItemContent = [];
+      Object.keys(diferencia).forEach(key => {
+        diferenciaItemContent.push([{ text: `${key}:`, style: 'value' }, { text: diferencia[key], style: 'value' }]);
+      });
+      pdfContent.push({
+        table: {
+          widths: ['50%', '50%'], // Cambiamos el ancho de la tabla a 50% - 50%
+          body: diferenciaItemContent,
+        },
+        layout: {
+          hLineWidth: () => 0,
+          vLineWidth: () => 0,
+          hLineColor: () => 'gray',
+          vLineColor: () => 'gray',
+          paddingTop: () => 5,
+          paddingBottom: () => 5,
+        },
       });
     });
-
-    pdfContent.push({ text: 'Transporte:', style: 'subheader' });
-
+  
+    // Sección Transporte
+    pdfContent.push({ text: 'Transporte:', style: 'subheader', margin: [0, 10, 0, 0] });
+  
     transporte.forEach((transporteItem, index) => {
-      pdfContent.push([{ text: `Transporte Item #${index + 1}`, style: 'subheader' }, '', '', '']);
-      Object.keys(transporteItem).forEach((key) => {
-        pdfContent.push([`${key}: ${transporteItem[key]}`, '', '', '']);
+      pdfContent.push(
+        { text: ``, style: 'subheader', margin: [0, 10, 0, 0] }
+      );
+      const transporteItemContent = [];
+      Object.keys(transporteItem).forEach(key => {
+        transporteItemContent.push([{ text: `${key}:`, style: 'value' }, { text: transporteItem[key], style: 'value' }]);
+      });
+      pdfContent.push({
+        table: {
+          widths: ['50%', '50%'], // Cambiamos el ancho de la tabla a 50% - 50%
+          body: transporteItemContent,
+        },
+        layout: {
+          hLineWidth: () => 0,
+          vLineWidth: () => 0,
+          hLineColor: () => 'gray',
+          vLineColor: () => 'gray',
+          paddingTop: () => 5,
+          paddingBottom: () => 5,
+        },
       });
     });
-
-    pdfContent.push({ text: 'Medidas Tomadas:', style: 'subheader' });
-
+  
+    // Sección Medidas Tomadas
+    pdfContent.push({ text: 'Medidas Tomadas:', style: 'subheader', margin: [0, 10, 0, 0] });
+  
     medidasTomadas.forEach((medida, index) => {
-      pdfContent.push([{ text: `Medida #${index + 1}`, style: 'subheader' }, '', '', '']);
-      Object.keys(medida).forEach((key) => {
-        pdfContent.push([`${key}: ${medida[key]}`, '', '', '']);
+      pdfContent.push(
+        { text: ``, style: 'subheader', margin: [0, 10, 0, 0] }
+      );
+      const medidaItemContent = [];
+      Object.keys(medida).forEach(key => {
+        medidaItemContent.push([{ text: `${key}:`, style: 'value' }, { text: medida[key], style: 'value' }]);
+      });
+      pdfContent.push({
+        table: {
+          widths: ['50%', '50%'], // Cambiamos el ancho de la tabla a 50% - 50%
+          body: medidaItemContent,
+        },
+        layout: {
+          hLineWidth: () => 0,
+          vLineWidth: () => 0,
+          hLineColor: () => 'gray',
+          vLineColor: () => 'gray',
+          paddingTop: () => 5,
+          paddingBottom: () => 5,
+        },
       });
     });
-
+  
+    // Nombre del Administrador y Proveedor
     pdfContent.push([{ text: 'Nombre Administrador:', style: 'label' }, nombreAdministrador, '', '']);
     pdfContent.push([{ text: 'Nombre Proveedor:', style: 'label' }, nombreProveedor, '', '']);
-
+  
     const documentDefinition = {
       content: pdfContent,
       styles,
     };
-
+  
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
-
-  else if (form === "verificacionbalanza") {
-    pdfContent.push("Verificación de Balanza");
-
+  if (form === "verificacionbalanza") {
+    const styles = {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 20],
+      },
+      subheader: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 10, 0, 10],
+      },
+      label: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 5, 0, 0],
+        color: 'rgb(37, 35, 35)',
+      },
+      value: {
+        fontSize: 12,
+        margin: [0, 0, 0, 5],
+        border: [0, 0, 0, 0],
+        fillColor: '#FFFFFF',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: [5, 5, 5, 5],
+      },
+      table: {
+        margin: [0, 10, 0, 10],
+      },
+    };
+  
     const {
       fecha,
       responsable,
@@ -861,23 +974,77 @@ export const generatePDF = (formulario, form) => {
       verified,
       fechaHora,
     } = formulario;
-
-    pdfContent.push(`Fecha: ${fecha}`);
-    pdfContent.push(`Responsable: ${responsable}`);
-    pdfContent.push(`Balanza: ${balanza}`);
-    pdfContent.push(`Verificado: ${verified}`);
-    pdfContent.push(`Fecha y Hora: ${fechaHora}`);
-
-    pdfContent.push("Inputs:");
+  
+    const inputTableBody = [];
+  
     inputs.forEach((input, index) => {
-      pdfContent.push(`Input #${index + 1}`);
-      Object.keys(input).forEach(key => {
-        pdfContent.push(`${key}: ${input[key]}`);
+      inputTableBody.push(
+        [
+          { text: `Balanza #${index + 1}`, style: 'subheader', alignment: 'left', colSpan: 2 },
+          '',
+        ]
+      );
+  
+      // Iterar sobre las claves de los datos de la balanza y formatearlas
+      Object.keys(input).forEach((key) => {
+        const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'); // Formato de título
+        inputTableBody.push(
+          [
+            { text: `${formattedKey}:`, style: 'label' },
+            { text: input[key], style: 'value' },
+          ]
+        );
       });
-      pdfContent.push("-----");
+  
+      inputTableBody.push(['', '']);
     });
-
+  
+    const inputTable = {
+      table: {
+        widths: ['50%', '50%'],
+        body: [
+          [
+            { text: 'Balanzas:', style: 'label', colSpan: 2, alignment: 'center' },
+            '',
+          ],
+          ...inputTableBody,
+        ],
+      },
+      layout: {
+        hLineWidth: () => 0,
+        vLineWidth: () => 0,
+        hLineColor: () => 'gray',
+        vLineColor: () => 'gray',
+        paddingTop: () => 5,
+      },
+    };
+  
+    const content = [
+      { text: 'Formulario Verificación de Balanza', style: 'header', alignment: 'center' },
+      { text: 'Verificación de Balanza', style: 'subheader', alignment: 'center' },
+      { text: 'Fecha:', style: 'label' },
+      { text: fecha, style: 'value' },
+      { text: 'Responsable:', style: 'label' },
+      { text: responsable, style: 'value' },
+      { text: 'Balanza:', style: 'label' },
+      { text: balanza, style: 'value' },
+      { text: 'Verificado:', style: 'label' },
+      { text: verified, style: 'value' },
+      { text: 'Fecha y Hora:', style: 'label' },
+      { text: fechaHora, style: 'value' },
+      inputTable,
+    ];
+  
+    const documentDefinition = {
+      content,
+      styles,
+    };
+  
+    pdfMake.createPdf(documentDefinition).download(`verificacionbalanza_formulario.pdf`);
   }
+  
+  
+  
   else if (form === "verificaciontermometros") {
     pdfContent.push("Verificación de Termómetros");
 
