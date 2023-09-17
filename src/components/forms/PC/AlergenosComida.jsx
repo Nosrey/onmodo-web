@@ -162,7 +162,7 @@ return (
                                                 id={`input-${input.id}-${index}`}
                                                 name={`input-${input.id}-${index}`}
                                                 label={`${input.label}`}
-                                               
+                                                value={values.inputs[index]?.diagnostico || ''}
                                                 variant="outlined"
                                                 type="date"
                                                 InputLabelProps={{
@@ -177,7 +177,7 @@ return (
                                                 id={`input-${input.id}-${index}`}
                                                 name={`input-${input.id}-${index}`}
                                                 label={`${input.label}`}
-                                               
+                                                value={values.inputs[index].fecha || ''}
                                                 variant="outlined"
                                             />
                                         )}
