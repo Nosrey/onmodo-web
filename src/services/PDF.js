@@ -165,7 +165,6 @@ export const generatePDF = (formulario, form) => {
       { text: 'Formulario ONMODO', style: 'header', alignment: 'center' },
       { text: 'Control Alergenos', style: 'subheader', alignment: 'center' },
 
-      // Table for Comedor, Verified, and Date
       {
         table: {
           widths: ['33%', '33%', '34%'],
@@ -183,44 +182,42 @@ export const generatePDF = (formulario, form) => {
           ],
         },
         layout: {
-          hLineWidth: () => 1, // Horizontal line width
-          vLineWidth: () => 1, // Vertical line width
-          hLineColor: () => 'black', // Horizontal line color
-          vLineColor: () => 'black', // Vertical line color
+          hLineWidth: () => 1,
+          vLineWidth: () => 1, 
+          hLineColor: () => 'black', 
+          vLineColor: () => 'black', 
           paddingTop: (i) => (i === 0 ? 10 : 10),
-          paddingBottom: (i) => (i === 1 ? 0 : 5), // Add margin after the first table
+          paddingBottom: (i) => (i === 1 ? 0 : 5), 
         },
       },
 
-      // Space (Empty paragraph to create space)
       { text: '', style: 'value', margin: [0, 30, 0, 0] },
 
-      // Table for Inputs
       {
         table: {
-          widths: ['20%', '20%', '20%', '20%', '20%'], // Divide the table into 5 columns
+          widths: ['20%', '20%', '20%', '20%', '20%'],
           body: [
             [
               { text: 'Fecha:', style: 'label' },
               { text: 'Nombre:', style: 'label' },
               { text: 'Diagnóstico:', style: 'label' },
               { text: 'Listado:', style: 'label' },
-              { text: 'Responsable:', style: 'label' }, // Add the "Responsable" label
+              { text: 'Responsable:', style: 'label' }, 
             ],
             ...inputs.map((input) => [
               { text: input.fecha || '', style: 'value' },
               { text: input.nombre || '', style: 'value' },
               { text: input.diagnostico || '', style: 'value' },
               { text: input.listado || '', style: 'value' },
-              { text: input.responsable || '', style: 'value' }, // Add the "Responsable" value for each input
+              { text: input.responsable || '', style: 'value' }, 
             ]),
           ],
         },
         layout: {
-          hLineWidth: () => 1, // Horizontal line width
-          vLineWidth: () => 1, // Vertical line width
-          hLineColor: () => 'black', // Horizontal line color
-          vLineColor: () => 'black', // Vertical line color
+          hLineWidth: () => 1, 
+          vLineWidth: () => 1, 
+          hLineColor: () => 'black',
+          vLineColor: () => 'black', 
           paddingTop: (i) => (i === 0 ? 10 : 10),
         },
       },
@@ -245,12 +242,12 @@ export const generatePDF = (formulario, form) => {
       subheader: {
         fontSize: 14,
         bold: true,
-        margin: [0, 10, 0, 20], // Ajusta el margen inferior
+        margin: [0, 10, 0, 20], 
       },
       subheader1: {
         fontSize: 14,
         bold: true,
-        margin: [0, 40, 0, 20], // Ajusta el margen inferior
+        margin: [0, 40, 0, 20], 
       },
       label: {
         fontSize: 12,
@@ -260,8 +257,8 @@ export const generatePDF = (formulario, form) => {
       },
       value: {
         fontSize: 12,
-        margin: [0, 0, 0, 10], // Ajusta el margen inferior
-        border: [0.5, 0.5, 0.5, 0.5], // Bordes delgados en todas las partes de la celda
+        margin: [0, 0, 0, 10],
+        border: [0.5, 0.5, 0.5, 0.5], 
         fillColor: '#EAFFDC',
         paddingLeft: 5,
         paddingRight: 5,
@@ -292,12 +289,12 @@ export const generatePDF = (formulario, form) => {
           ],
         },
         layout: {
-          hLineWidth: () => 1, // Horizontal line width
-          vLineWidth: () => 1, // Vertical line width
-          hLineColor: () => 'black', // Horizontal line color
-          vLineColor: () => 'black', // Vertical line color
+          hLineWidth: () => 1, 
+          vLineWidth: () => 1, 
+          hLineColor: () => 'black', 
+          vLineColor: () => 'black', 
           paddingTop: (i) => (i === 0 ? 10 : 10),
-          paddingBottom: (i) => (i === 1 ? 0 : 5), // Add margin after the first table
+          paddingBottom: (i) => (i === 1 ? 0 : 5), 
         },
       });
     });
@@ -363,7 +360,7 @@ export const generatePDF = (formulario, form) => {
       { text: 'Informe de Incidente o Accidente', style: 'subheader', alignment: 'center' },
       {
         table: {
-          widths: ['25%', '25%', '25%', '25%'], // Divide la tabla en 4 columnas
+          widths: ['25%', '25%', '25%', '25%'],
           body: [
             [
               { text: 'Comedor:', style: 'label' },
@@ -416,29 +413,28 @@ export const generatePDF = (formulario, form) => {
           ],
         },
         layout: {
-          hLineWidth: () => 1, // Horizontal line width
-          vLineWidth: () => 1, // Vertical line width
-          hLineColor: () => 'black', // Horizontal line color
-          vLineColor: () => 'black', // Vertical line color
+          hLineWidth: () => 1,
+          vLineWidth: () => 1,
+          hLineColor: () => 'black', 
+          vLineColor: () => 'black',
           paddingTop: (i) => (i === 0 ? 10 : 10),
-          paddingBottom: (i) => (i === 1 ? 0 : 5), // Add margin after the first table
+          paddingBottom: (i) => (i === 1 ? 0 : 5), 
         },
       },
     ];
 
-    // Create the first table for checkboxes
     const checkboxesTable = {
       table: {
-        widths: ['50%', '50%'], // Divide the table into 2 columns with equal width
+        widths: ['50%', '50%'], 
         body: [],
       },
       layout: {
-        hLineWidth: () => 1, // Horizontal line width
-        vLineWidth: () => 1, // Vertical line width
-        hLineColor: () => 'black', // Horizontal line color
-        vLineColor: () => 'black', // Vertical line color
+        hLineWidth: () => 1, 
+        vLineWidth: () => 1, 
+        hLineColor: () => 'black', 
+        vLineColor: () => 'black', 
         paddingTop: (i) => (i === 0 ? 2 : 2),
-        paddingBottom: (i) => (i === 1 ? 2 : 2), // Add margin after the first table
+        paddingBottom: (i) => (i === 1 ? 2 : 2), 
       },
     };
     pdfContent.push({ text: '', style: 'label' });
@@ -451,19 +447,18 @@ export const generatePDF = (formulario, form) => {
 
     pdfContent.push(checkboxesTable);
 
-    // Create the second table for checkboxesAccidente
     const checkboxesAccidenteTable = {
       table: {
-        widths: ['50%', '50%'], // Divide the table into 2 columns with equal width
+        widths: ['50%', '50%'],
         body: [],
       },
       layout: {
-        hLineWidth: () => 1, // Horizontal line width
-        vLineWidth: () => 1, // Vertical line width
-        hLineColor: () => 'black', // Horizontal line color
-        vLineColor: () => 'black', // Vertical line color
+        hLineWidth: () => 1, 
+        vLineWidth: () => 1,
+        hLineColor: () => 'black',
+        vLineColor: () => 'black', 
         paddingTop: (i) => (i === 0 ? 2 : 2),
-        paddingBottom: (i) => (i === 1 ? 2 : 2), // Add margin after the first table
+        paddingBottom: (i) => (i === 1 ? 2 : 2), 
       },
     };
 
@@ -543,12 +538,12 @@ export const generatePDF = (formulario, form) => {
           body: [],
         },
         layout: {
-          hLineWidth: () => 1, // Horizontal line width
-          vLineWidth: () => 1, // Vertical line width
-          hLineColor: () => 'black', // Horizontal line color
-          vLineColor: () => 'black', // Vertical line color
+          hLineWidth: () => 1,
+          vLineWidth: () => 1, 
+          hLineColor: () => 'black', 
+          vLineColor: () => 'black', 
           paddingTop: (i) => (i === 0 ? 10 : 10),
-          paddingBottom: (i) => (i === 1 ? 0 : 5), // Add margin after the first table
+          paddingBottom: (i) => (i === 1 ? 0 : 5), 
         },
         margin: [0, 10, 0, 10],
       },
@@ -693,24 +688,22 @@ export const generatePDF = (formulario, form) => {
 
     const { inputs } = formulario;
 
-    // Crear una tabla de 25% de ancho para cada columna
     const tableContent = {
       table: {
         widths: ['25%', '25%', '25%', '25%'],
         body: [],
       },
       layout: {
-        hLineWidth: () => 1, // Horizontal line width
-        vLineWidth: () => 1, // Vertical line width
-        hLineColor: () => 'black', // Horizontal line color
-        vLineColor: () => 'black', // Vertical line color
+        hLineWidth: () => 1,
+        vLineWidth: () => 1, 
+        hLineColor: () => 'black',
+        vLineColor: () => 'black', 
         paddingTop: (i) => (i === 0 ? 10 : 10),
-        paddingBottom: (i) => (i === 1 ? 0 : 5), // Add margin after the first table
+        paddingBottom: (i) => (i === 1 ? 0 : 5), 
       },
       margin: [0, 10, 0, 10],
     };
 
-    // Agregar filas a la tabla para cada registro de decomiso
     inputs.forEach((input, index) => {
       tableContent.table.body.push(
         [
@@ -735,7 +728,6 @@ export const generatePDF = (formulario, form) => {
       );
     });
 
-    // Agregar la tabla al contenido del PDF
     pdfContent.push(tableContent);
 
     const documentDefinition = {
@@ -765,8 +757,8 @@ export const generatePDF = (formulario, form) => {
       },
       value: {
         fontSize: 12,
-        margin: [0, 0, 0, 10], // Ajusta el margen inferior
-        border: [0.5, 0.5, 0.5, 0.5], // Bordes delgados en todas las partes de la celda
+        margin: [0, 0, 0, 10], 
+        border: [0.5, 0.5, 0.5, 0.5], 
         fillColor: '#EAFFDC',
         paddingLeft: 5,
         paddingRight: 5,
@@ -787,12 +779,12 @@ export const generatePDF = (formulario, form) => {
         body: [],
       },
       layout: {
-        hLineWidth: () => 1, // Ancho de línea horizontal
-        vLineWidth: () => 1, // Ancho de línea vertical
-        hLineColor: () => 'black', // Color de línea horizontal
-        vLineColor: () => 'black', // Color de línea vertical
+        hLineWidth: () => 1,
+        vLineWidth: () => 1, 
+        hLineColor: () => 'black', 
+        vLineColor: () => 'black', 
         paddingTop: (i) => (i === 0 ? 10 : 10),
-        paddingBottom: (i) => (i === 1 ? 0 : 5), // Agregar margen después de la primera fila de la tabla
+        paddingBottom: (i) => (i === 1 ? 0 : 5), 
       },
       margin: [0, 10, 0, 10],
     };
@@ -814,7 +806,6 @@ export const generatePDF = (formulario, form) => {
 
     pdfContent.push(tableContent);
 
-    // Ahora agregamos la sección "Personas Participantes" como una fila en la tabla
     pdfContent.push([
       { text: 'Personas Participantes:', style: 'label', colSpan: 4, margin: [0, 25, 0, 10] },
       {},
@@ -822,17 +813,16 @@ export const generatePDF = (formulario, form) => {
       {},
     ]);
 
-    // Crear una tabla para mostrar la información de las personas participantes
     const personasTable = {
       table: {
         widths: ['25%', '25%', '25%', '25%'],
         body: [],
       },
       layout: {
-        hLineWidth: () => 1, // Ancho de línea horizontal
-        vLineWidth: () => 1, // Ancho de línea vertical
-        hLineColor: () => 'black', // Color de línea horizontal
-        vLineColor: () => 'black', // Color de línea vertical
+        hLineWidth: () => 1, 
+        vLineWidth: () => 1, 
+        hLineColor: () => 'black', 
+        vLineColor: () => 'black', 
         paddingTop: () => 5,
         paddingBottom: () => 5,
       },
@@ -1043,8 +1033,8 @@ export const generatePDF = (formulario, form) => {
       },
       value: {
         fontSize: 12,
-        margin: [0, 0, 0, 10], // Ajusta el margen inferior
-        border: [0.5, 0.5, 0.5, 0.5], // Bordes delgados en todas las partes de la celda
+        margin: [0, 0, 0, 10],
+        border: [0.5, 0.5, 0.5, 0.5], 
         fillColor: '#EAFFDC',
         paddingLeft: 5,
         paddingRight: 5,
@@ -1094,12 +1084,12 @@ export const generatePDF = (formulario, form) => {
         ],
       },
       layout: {
-        hLineWidth: () => 1, // Horizontal line width
-        vLineWidth: () => 1, // Vertical line width
-        hLineColor: () => 'black', // Horizontal line color
-        vLineColor: () => 'black', // Vertical line color
+        hLineWidth: () => 1, 
+        vLineWidth: () => 1, 
+        hLineColor: () => 'black', 
+        vLineColor: () => 'black',
         paddingTop: (i) => (i === 0 ? 2 : 2),
-        paddingBottom: (i) => (i === 1 ? 2 : 2), // Add margin after the first table
+        paddingBottom: (i) => (i === 1 ? 2 : 2), 
       },
     };
 
@@ -1123,12 +1113,12 @@ export const generatePDF = (formulario, form) => {
         ],
       },
       layout: {
-        hLineWidth: () => 1, // Horizontal line width
-        vLineWidth: () => 1, // Vertical line width
-        hLineColor: () => 'black', // Horizontal line color
-        vLineColor: () => 'black', // Vertical line color
+        hLineWidth: () => 1, 
+        vLineWidth: () => 1, 
+        hLineColor: () => 'black', 
+        vLineColor: () => 'black',
         paddingTop: (i) => (i === 0 ? 2 : 2),
-        paddingBottom: (i) => (i === 1 ? 0 : 2), // Add margin after the first table
+        paddingBottom: (i) => (i === 1 ? 0 : 2), 
       },
     };
 
