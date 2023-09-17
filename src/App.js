@@ -98,10 +98,8 @@ function App() {
             <Route path='/control-cloro' element={<ControlDeCloro />} />
             <Route path='/control-vidrios' element={<ControlVidrios />} />
             <Route path='/despacho-produccion' element={<DespachoProduccion />} />
-            <Route path='/recuperacion-de-producto' element={<RecuperacionProducto />} />
             <Route path='/armado-fraccionamiento' element={<PlanillaDeArmadoFraccionamiento />} />
             <Route path='/equipos-frio' element={<ControlEquiposDeFrio />} />
-            <Route path='/servicios-en-linea' element={<ServiciosEnLinea />} />
             <Route path='/distribucion-expedicion' element={<DistribucionExpedicion />} />
             <Route path='/verificacion-balanza' element={<VerificacionBalanza />} />
             <Route path='/verificacion-termometro' element={<VerificacionTermometros />} />
@@ -111,8 +109,12 @@ function App() {
             <Route path='/control-procesos' element={<ControlProcesos />} />
             <Route path='/carga' element={<CargaRecepcion />} />
             <Route path='/sanitizacion' element={<Sanitizacion />} />
-            <Route path='/cambio-aceite' element={<UsoCambioAceite />} />
             <Route path='/uso-epp' element={<EPP />} />
+
+            {/* mobile */}
+            <Route path='/recuperacion-de-producto' element={<RecuperacionProducto />} />
+            <Route path='/servicios-en-linea' element={<ServiciosEnLinea />} />
+            <Route path='/cambio-aceite' element={<UsoCambioAceite />} />
 
             {/* <Route path='/admin' element={<Admin/>}>
               </Route> */}
