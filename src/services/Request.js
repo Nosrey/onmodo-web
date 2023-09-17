@@ -39,7 +39,7 @@ export const login = async ({ legajo, password}) => {
   };
 
   // values?.upload[0],
-export const createNewUSer = async ({ 
+  export const createNewUSer  = async ({
     email,
     fullName,
     legajo,
@@ -50,46 +50,39 @@ export const createNewUSer = async ({
     business,
     provincia,
     localidad,
-    // idChief,
-    imgProfile
-}) => {
-try {
-    const formData = new FormData();
-    formData.append('imgProfile', imgProfile);
-    formData.append('email', email);
-    formData.append('fullName', fullName);
-    formData.append('legajo', legajo);
-    formData.append('number', number);
-    formData.append('puesto', puesto);
-    formData.append('contratoComedor', contratoComedor);
-    formData.append('rol', parseInt(rol));
-    formData.append('business', business);
-    formData.append('provincia', provincia);
-    formData.append('localidad', localidad);
-    const response = await fetch(`${URL_API}/api/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'multipart/form-data' },
-    data:formData,
-    // body: JSON.stringify({ 
-    //     email,
-    //     fullName,
-    //     legajo,
-    //     number,
-    //     puesto,
-    //     contratoComedor,
-    //     rol,
-    //     business,
-    //     provincia,
-    //     localidad
-    // }),
-    });
-    const data = await response.json();
-    return data;
-} catch (error) {
-    console.error('Error', error);
-    throw error;
-}
-};
+    imgProfile,
+  }) => {
+    try {
+      const formData = new FormData();
+      formData.append('imgProfile', imgProfile);
+      formData.append('email', email);
+      formData.append('fullName', fullName);
+      formData.append('legajo', legajo);
+      formData.append('number', number);
+      formData.append('puesto', puesto);
+      formData.append('contratoComedor', contratoComedor);
+      formData.append('rol', rol); // No need to parseInt here
+      formData.append('business', business);
+      formData.append('provincia', provincia);
+      formData.append('localidad', localidad);
+  
+      const response = await fetch(`${URL_API}/api/register`, {
+        method: 'POST',
+        body: formData, // Use 'body' instead of 'data' for FormData
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP Error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  };
+  
 
 export const setPassword = async (password) => {
 try {

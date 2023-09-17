@@ -29,7 +29,7 @@ export const generatePDF = (formulario, form) => {
         fontSize: 12,
         margin: [0, 0, 0, 20],
         border: [0, 0, 0, 0],
-        fillColor: '#FFFFFF',
+        fillColor: '#EAFFDC',
         paddingLeft: 5,
         paddingRight: 5,
         borderRadius: [5, 5, 5, 5],
@@ -93,23 +93,23 @@ export const generatePDF = (formulario, form) => {
             ],
             [
               { text: 'Nombre Gerente:', style: 'label' },
-              { text: 'Firma Gerente:', style: 'label' },
+              { text: 'Firma Gerente:', style: 'label', colSpan: 3 },
               '',
               '',
             ],
             [
               { text: nombreGerente || '', style: 'value' },
-              { text: firmaGerente || '', style: 'value' },
+              { text: firmaGerente || '', style: 'value', colSpan: 3 },
               '',
               '',
             ],
           ],
         },
         layout: {
-          hLineWidth: () => 0,
-          vLineWidth: () => 0,
-          hLineColor: () => 'gray',
-          vLineColor: () => 'gray',
+          hLineWidth: () => 1, // Ancho de línea horizontal
+          vLineWidth: () => 1, // Ancho de línea vertical
+          hLineColor: () => 'black', // Color de línea horizontal
+          vLineColor: () => 'black', // Color de línea vertical
           paddingTop: (i) => (i === 0 ? 10 : 10),
         },
       },
@@ -130,47 +130,105 @@ export const generatePDF = (formulario, form) => {
 
 
   }
-  
   else if (form === "controlalergenos") {
+    const styles = {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 20],
+      },
+      subheader: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 10, 0, 40],
+      },
+      label: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 5, 0, 0],
+        color: 'rgb(37, 35, 35)',
+      },
+      value: {
+        fontSize: 12,
+        margin: [0, 0, 0, 20],
+        border: [0, 0, 0, 0],
+        fillColor: '#EAFFDC',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: [5, 5, 5, 5],
+      },
+    };
+
     const { comedor, inputs, verified, date } = formulario;
-    const doc = new jsPDF();
 
-    // Encabezado
-    doc.setFontSize(18);
-    doc.setFont('bold');
-    doc.text('Formulario ONMODO', 105, 20, { align: 'center' });
-    doc.setFontSize(14);
-    doc.text('Control Alergenos', 105, 30, { align: 'center' });
+    const content = [
+      { text: 'Formulario ONMODO', style: 'header', alignment: 'center' },
+      { text: 'Control Alergenos', style: 'subheader', alignment: 'center' },
 
-    // Datos
-    doc.setFontSize(12);
-    doc.setFont('normal');
-    doc.text(`Comedor: ${comedor}`, 10, 50);
-    doc.text(`Verificado: ${verified}`, 10, 60);
-    doc.text(`Fecha: ${date}`, 10, 70);
+      {
+        table: {
+          widths: ['33%', '33%', '34%'],
+          body: [
+            [
+              { text: 'Comedor:', style: 'label' },
+              { text: 'Verificado:', style: 'label' },
+              { text: 'Fecha:', style: 'label' },
+            ],
+            [
+              { text: comedor || '', style: 'value' },
+              { text: verified || '', style: 'value' },
+              { text: date || '', style: 'value' },
+            ],
+          ],
+        },
+        layout: {
+          hLineWidth: () => 1,
+          vLineWidth: () => 1, 
+          hLineColor: () => 'black', 
+          vLineColor: () => 'black', 
+          paddingTop: (i) => (i === 0 ? 10 : 10),
+          paddingBottom: (i) => (i === 1 ? 0 : 5), 
+        },
+      },
 
-    // Tabla
-    let y = 90;
-    doc.setFont('bold');
-    doc.text('Fecha', 10, y);
-    doc.text('Nombre', 40, y);
-    doc.text('Diagnóstico', 70, y);
-    doc.text('Listado', 100, y);
-    doc.text('Responsable', 130, y);
-    y += 10;
+      { text: '', style: 'value', margin: [0, 30, 0, 0] },
 
-    doc.setFont('normal');
-    inputs.forEach((input) => {
-      doc.text(input.fecha || '', 10, y);
-      doc.text(input.nombre || '', 40, y);
-      doc.text(input.diagnostico || '', 70, y);
-      doc.text(input.listado || '', 100, y);
-      doc.text(input.responsable || '', 130, y);
-      y += 10;
-    });
+      {
+        table: {
+          widths: ['20%', '20%', '20%', '20%', '20%'],
+          body: [
+            [
+              { text: 'Fecha:', style: 'label' },
+              { text: 'Nombre:', style: 'label' },
+              { text: 'Diagnóstico:', style: 'label' },
+              { text: 'Listado:', style: 'label' },
+              { text: 'Responsable:', style: 'label' }, 
+            ],
+            ...inputs.map((input) => [
+              { text: input.fecha || '', style: 'value' },
+              { text: input.nombre || '', style: 'value' },
+              { text: input.diagnostico || '', style: 'value' },
+              { text: input.listado || '', style: 'value' },
+              { text: input.responsable || '', style: 'value' }, 
+            ]),
+          ],
+        },
+        layout: {
+          hLineWidth: () => 1, 
+          vLineWidth: () => 1, 
+          hLineColor: () => 'black',
+          vLineColor: () => 'black', 
+          paddingTop: (i) => (i === 0 ? 10 : 10),
+        },
+      },
+    ];
 
-    // Guardar el PDF
-    doc.save(`${form}_formulario.pdf`);
+    const documentDefinition = {
+      content,
+      styles,
+    };
+
+    pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
   else if (form === "entregabidones") {
     const pdfContent = [];
@@ -184,7 +242,12 @@ export const generatePDF = (formulario, form) => {
       subheader: {
         fontSize: 14,
         bold: true,
-        margin: [0, 10, 0, 20], // Ajusta el margen inferior
+        margin: [0, 10, 0, 20], 
+      },
+      subheader1: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 40, 0, 20], 
       },
       label: {
         fontSize: 12,
@@ -194,9 +257,9 @@ export const generatePDF = (formulario, form) => {
       },
       value: {
         fontSize: 12,
-        margin: [0, 0, 0, 10], // Ajusta el margen inferior
-        border: [0.5, 0.5, 0.5, 0.5], // Bordes delgados en todas las partes de la celda
-        fillColor: '#FfFfFf',
+        margin: [0, 0, 0, 10],
+        border: [0.5, 0.5, 0.5, 0.5], 
+        fillColor: '#EAFFDC',
         paddingLeft: 5,
         paddingRight: 5,
         borderRadius: [5, 5, 5, 5],
@@ -226,9 +289,12 @@ export const generatePDF = (formulario, form) => {
           ],
         },
         layout: {
-          hLineWidth: () => 0,
-          vLineWidth: () => 0,
-          paddingTop: () => 5, // Ajusta el margen superior de las celdas
+          hLineWidth: () => 1, 
+          vLineWidth: () => 1, 
+          hLineColor: () => 'black', 
+          vLineColor: () => 'black', 
+          paddingTop: (i) => (i === 0 ? 10 : 10),
+          paddingBottom: (i) => (i === 1 ? 0 : 5), 
         },
       });
     });
@@ -240,7 +306,6 @@ export const generatePDF = (formulario, form) => {
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
-  // arreglar
   else if (form === "informeintaccidente") {
     const styles = {
       header: {
@@ -263,7 +328,7 @@ export const generatePDF = (formulario, form) => {
         fontSize: 12,
         margin: [0, 0, 0, 10],
         border: [0.5, 0.5, 0.5, 0.5],
-        fillColor: '#FfFfFf',
+        fillColor: '#EAFFDC',
         paddingLeft: 5,
         paddingRight: 5,
         borderRadius: [5, 5, 5, 5],
@@ -295,7 +360,7 @@ export const generatePDF = (formulario, form) => {
       { text: 'Informe de Incidente o Accidente', style: 'subheader', alignment: 'center' },
       {
         table: {
-          widths: ['25%', '25%', '25%', '25%'], // Divide la tabla en 4 columnas
+          widths: ['25%', '25%', '25%', '25%'],
           body: [
             [
               { text: 'Comedor:', style: 'label' },
@@ -348,64 +413,64 @@ export const generatePDF = (formulario, form) => {
           ],
         },
         layout: {
-          hLineWidth: () => 0,
-          vLineWidth: () => 0,
-          hLineColor: () => 'gray',
-          vLineColor: () => 'gray',
+          hLineWidth: () => 1,
+          vLineWidth: () => 1,
+          hLineColor: () => 'black', 
+          vLineColor: () => 'black',
           paddingTop: (i) => (i === 0 ? 10 : 10),
+          paddingBottom: (i) => (i === 1 ? 0 : 5), 
         },
       },
-
     ];
-
 
     const checkboxesTable = {
       table: {
-        widths: ['25%', '25%', '25%', '25%'], // Divide la tabla de checkboxes en 4 columnas
+        widths: ['50%', '50%'], 
         body: [],
       },
       layout: {
-        hLineWidth: () => 0,
-        vLineWidth: () => 0,
-        hLineColor: () => 'gray',
-        vLineColor: () => 'gray',
+        hLineWidth: () => 1, 
+        vLineWidth: () => 1, 
+        hLineColor: () => 'black', 
+        vLineColor: () => 'black', 
+        paddingTop: (i) => (i === 0 ? 2 : 2),
+        paddingBottom: (i) => (i === 1 ? 2 : 2), 
       },
     };
-
-
+    pdfContent.push({ text: '', style: 'label' });
     checkboxes.forEach((checkbox) => {
-      checkboxesTable.table.body.push(
-        [
-          { text: checkbox.label, style: 'label' },
-          { text: checkbox.check ? 'Sí' : 'No', style: 'value' },
-          { text: '', style: 'label' },
-          { text: '', style: 'value' },
-        ],
-
-
-      );
+      checkboxesTable.table.body.push([
+        { text: checkbox.label, style: 'label' },
+        { text: checkbox.check ? 'Sí' : 'No', style: 'value' },
+      ]);
     });
-
 
     pdfContent.push(checkboxesTable);
 
-    pdfContent.push({ text: 'Checkbox Accidente:', style: 'label' });
-
+    const checkboxesAccidenteTable = {
+      table: {
+        widths: ['50%', '50%'],
+        body: [],
+      },
+      layout: {
+        hLineWidth: () => 1, 
+        vLineWidth: () => 1,
+        hLineColor: () => 'black',
+        vLineColor: () => 'black', 
+        paddingTop: (i) => (i === 0 ? 2 : 2),
+        paddingBottom: (i) => (i === 1 ? 2 : 2), 
+      },
+    };
 
     checkboxesAccidente.forEach((checkbox) => {
-      pdfContent[2].table.body.push([
+      checkboxesAccidenteTable.table.body.push([
         { text: checkbox.label, style: 'label' },
         { text: checkbox.check ? 'Sí' : 'No', style: 'value' },
-        { text: checkbox.cualMaquina ? 'Máquina:' : '', style: 'label' },
-        { text: checkbox.cualMaquina || '', style: 'value' },
-      ]);
-      pdfContent[2].table.body.push([
-        { text: '', style: 'label' },
-        { text: '', style: 'value' },
-        { text: checkbox.cualAccion ? 'Acción:' : '', style: 'label' },
-        { text: checkbox.cualAccion || '', style: 'value' },
       ]);
     });
+
+
+    pdfContent.push(checkboxesAccidenteTable);
 
     const documentDefinition = {
       content: pdfContent,
@@ -414,7 +479,6 @@ export const generatePDF = (formulario, form) => {
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
-
   else if (form === "registrocapacitacion") {
     const styles = {
       header: {
@@ -425,12 +489,12 @@ export const generatePDF = (formulario, form) => {
       subheader: {
         fontSize: 14,
         bold: true,
-        margin: [0, 10, 0, 20],
+        margin: [0, 10, 0, 40],
       },
       label: {
         fontSize: 12,
         bold: true,
-        margin: [0, 0, 10, 10],
+        margin: [0, 5, 0, 0],
         color: 'rgb(37, 35, 35)',
       },
       label1: {
@@ -442,8 +506,12 @@ export const generatePDF = (formulario, form) => {
       },
       value: {
         fontSize: 12,
-        margin: [0, 0, 10, 10],
-        color: 'black',
+        margin: [0, 0, 0, 10],
+        border: [0.5, 0.5, 0.5, 0.5],
+
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: [5, 5, 5, 5],
       },
     };
 
@@ -461,118 +529,131 @@ export const generatePDF = (formulario, form) => {
       date,
     } = formulario;
 
-    const pdfContent = [
+    const content = [
       { text: 'Formulario ONMODO', style: 'header', alignment: 'center' },
       { text: 'Registro de Capacitación', style: 'subheader', alignment: 'center' },
+      {
+        table: {
+          widths: ['25%', '25%', '25%', '25%'],
+          body: [],
+        },
+        layout: {
+          hLineWidth: () => 1,
+          vLineWidth: () => 1, 
+          hLineColor: () => 'black', 
+          vLineColor: () => 'black', 
+          paddingTop: (i) => (i === 0 ? 10 : 10),
+          paddingBottom: (i) => (i === 1 ? 0 : 5), 
+        },
+        margin: [0, 10, 0, 10],
+      },
     ];
 
-
-    const tableContent = {
-      table: {
-        widths: ['25%', '25%', '25%', '25%'],
-        body: [],
-      },
-      layout: 'noBorders',
-      margin: [0, 10, 0, 10],
-    };
-
-
-    tableContent.table.body.push([
-      { text: 'Fecha:', style: 'label' },
-      { text: fecha, style: 'value' },
-      { text: 'Duración:', style: 'label' },
-      { text: tiempoDuracion, style: 'value' },
-    ]);
-
+    content[2].table.body.push(
+      [
+        { text: 'Fecha:', style: 'label' },
+        { text: fecha, style: 'value' },
+        { text: 'Duración:', style: 'label' },
+        { text: tiempoDuracion, style: 'value' },
+      ]
+    );
 
     checkboxes.forEach((checkbox) => {
-      tableContent.table.body.push([
-        { text: `${checkbox.label}:`, style: 'label' },
-        { text: checkbox.check ? 'Sí' : 'No', style: 'value' },
-        { text: '', style: 'label' },
-        { text: '', style: 'value' },
-      ]);
+      content[2].table.body.push(
+        [
+          { text: `${checkbox.label}:`, style: 'label' },
+          { text: checkbox.check ? 'Sí' : 'No', style: 'value', colSpan: 3 },
+          { text: '', style: 'label' },
+          { text: '', style: 'value' },
+        ]
+      );
     });
 
-    tableContent.table.body.push([
-      { text: 'Temas:', style: 'label' },
-      { text: temas, style: 'value', colSpan: 3 },
-    ]);
-
+    content[2].table.body.push(
+      [
+        { text: 'Temas:', style: 'label' },
+        { text: temas, style: 'value', colSpan: 3 },
+      ]
+    );
 
     materialEntregado.forEach((item) => {
-      tableContent.table.body.push([
-        { text: `${item.label}:`, style: 'label' },
-        { text: item.check ? 'Sí' : 'No', style: 'value' },
-        { text: '', style: 'label' },
-        { text: '', style: 'value' },
-      ]);
+      content[2].table.body.push(
+        [
+          { text: `${item.label}:`, style: 'label' },
+          { text: item.check ? 'Sí' : 'No', style: 'value', colSpan: 3 },
+          { text: '', style: 'label' },
+          { text: '', style: 'value' },
+        ]
+      );
     });
-
 
     asistentes.forEach((asistente, index) => {
-      tableContent.table.body.push([
-        { text: `Asistente ${index + 1}:`, style: 'label1' },
-        { text: '', style: 'value' },
-        { text: `Nombre:`, style: 'label' },
-        { text: asistente.nombre, style: 'value' },
-      ]);
-      tableContent.table.body.push([
-        { text: '', style: 'label' },
-        { text: '', style: 'value' },
-        { text: `DNI:`, style: 'label' },
-        { text: asistente.dni, style: 'value' },
-      ]);
-      tableContent.table.body.push([
-        { text: '', style: 'label' },
-        { text: '', style: 'value' },
-        { text: `Área:`, style: 'label' },
-        { text: asistente.area, style: 'value' },
-      ]);
-      tableContent.table.body.push([
-        { text: 'Firma:', style: 'label' },
-        { text: asistente.firma, style: 'value' },
-        { text: `Resultado:`, style: 'label' },
-        { text: asistente.resultado, style: 'value' },
-      ]);
-      tableContent.table.body.push([
-        { text: '', style: 'label' },
-        { text: '', style: 'value' },
-        { text: `Método:`, style: 'label' },
-        { text: asistente.metodo, style: 'value' },
-      ]);
+      content[2].table.body.push(
+        [
+          { text: `Asistente ${index + 1}`, style: 'label1', colSpan: 4 },
+          { text: `Nombre:`, style: 'label', colSpan: 3 },
+          { text: asistente.nombre, style: 'value' },
+          { text: '', style: 'value' },
+        ]
+      );
+      content[2].table.body.push(
+        [
+          { text: `DNI:`, style: 'label' },
+          { text: asistente.dni, style: 'value' },
+          { text: `Área:`, style: 'label' },
+          { text: asistente.area, style: 'value' },
+        ]
+      );
+
+      content[2].table.body.push(
+        [
+          { text: 'Firma:', style: 'label' },
+          { text: asistente.firma, style: 'value' },
+          { text: `Resultado:`, style: 'label' },
+          { text: asistente.resultado, style: 'value' },
+        ],
+        [
+          { text: `Método:`, style: 'label' },
+          { text: asistente.metodo, style: 'value', colSpan: 3 },
+          {},
+          {},
+        ],
+      );
+
     });
 
-    tableContent.table.body.push([
-      { text: 'Observaciones:', style: 'label' },
-      { text: observaciones, style: 'value', colSpan: 3 },
-    ]);
+    content[2].table.body.push(
+      [
+        { text: 'Observaciones:', style: 'label' },
+        { text: observaciones, style: 'value', colSpan: 3 },
+      ]
+    );
 
-    tableContent.table.body.push([
-      { text: 'Instructor:', style: 'label' },
-      { text: instructor, style: 'value' },
-      { text: 'Cargo:', style: 'label' },
-      { text: cargo, style: 'value' },
-    ]);
+    content[2].table.body.push(
+      [
+        { text: 'Instructor:', style: 'label' },
+        { text: instructor, style: 'value' },
+        { text: 'Cargo:', style: 'label' },
+        { text: cargo, style: 'value' },
+      ]
+    );
 
-    tableContent.table.body.push([
-      { text: 'Firma:', style: 'label' },
-      { text: firma, style: 'value' },
-      { text: 'Fecha del Registro:', style: 'label' },
-      { text: date, style: 'value' },
-    ]);
-
-
-    pdfContent.push(tableContent);
+    content[2].table.body.push(
+      [
+        { text: 'Firma:', style: 'label' },
+        { text: firma, style: 'value' },
+        { text: 'Fecha del Registro:', style: 'label' },
+        { text: date, style: 'value' },
+      ]
+    );
 
     const documentDefinition = {
-      content: pdfContent,
+      content,
       styles,
     };
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
-
   else if (form === "registrodecomiso") {
     const styles = {
       header: {
@@ -593,8 +674,12 @@ export const generatePDF = (formulario, form) => {
       },
       value: {
         fontSize: 12,
-        margin: [0, 0, 10, 10],
-        color: 'black',
+        margin: [0, 0, 0, 20],
+        border: [0, 0, 0, 0],
+        fillColor: '#EAFFDC',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: [5, 5, 5, 5],
       },
     };
 
@@ -603,21 +688,26 @@ export const generatePDF = (formulario, form) => {
 
     const { inputs } = formulario;
 
-    // Crear una tabla de 25% de ancho para cada columna
     const tableContent = {
       table: {
         widths: ['25%', '25%', '25%', '25%'],
         body: [],
       },
-      layout: 'noBorders',
+      layout: {
+        hLineWidth: () => 1,
+        vLineWidth: () => 1, 
+        hLineColor: () => 'black',
+        vLineColor: () => 'black', 
+        paddingTop: (i) => (i === 0 ? 10 : 10),
+        paddingBottom: (i) => (i === 1 ? 0 : 5), 
+      },
       margin: [0, 10, 0, 10],
     };
 
-    // Agregar filas a la tabla para cada registro de decomiso
     inputs.forEach((input, index) => {
       tableContent.table.body.push(
         [
-          { text: `Decomiso #${index + 1}`, style: 'label' },
+          { text: `Decomiso #${index + 1}`, style: 'label', rowSpan: 3, alignment: 'center' },
           { text: `Fecha: ${input.fecha}`, style: 'value' },
           { text: `Turno: ${input.turno}`, style: 'value' },
           { text: `Producto Decomisado: ${input.productoDecomisado}`, style: 'value' },
@@ -634,13 +724,10 @@ export const generatePDF = (formulario, form) => {
           { text: `Destino Final: ${input.destinoFinal}`, style: 'value' },
           { text: `Responsable: ${input.responsable}`, style: 'value' },
         ],
-        [
-          { text: '', colSpan: 4 }, // Celda vacía para separar los registros
-        ]
+
       );
     });
 
-    // Agregar la tabla al contenido del PDF
     pdfContent.push(tableContent);
 
     const documentDefinition = {
@@ -650,7 +737,6 @@ export const generatePDF = (formulario, form) => {
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
-
   else if (form === "registrosimulacro") {
     const styles = {
       header: {
@@ -671,10 +757,16 @@ export const generatePDF = (formulario, form) => {
       },
       value: {
         fontSize: 12,
-        margin: [0, 0, 10, 10],
-        color: 'black',
+        margin: [0, 0, 0, 10], 
+        border: [0.5, 0.5, 0.5, 0.5], 
+        fillColor: '#EAFFDC',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: [5, 5, 5, 5],
       },
     };
+
+    const pdfContent = [];
 
     pdfContent.push({ text: 'Formulario ONMODO', style: 'header', alignment: 'center' });
     pdfContent.push({ text: 'Registro de Simulacro', style: 'subheader', alignment: 'center' });
@@ -686,7 +778,14 @@ export const generatePDF = (formulario, form) => {
         widths: ['25%', '25%', '25%', '25%'],
         body: [],
       },
-      layout: 'noBorders',
+      layout: {
+        hLineWidth: () => 1,
+        vLineWidth: () => 1, 
+        hLineColor: () => 'black', 
+        vLineColor: () => 'black', 
+        paddingTop: (i) => (i === 0 ? 10 : 10),
+        paddingBottom: (i) => (i === 1 ? 0 : 5), 
+      },
       margin: [0, 10, 0, 10],
     };
 
@@ -707,14 +806,49 @@ export const generatePDF = (formulario, form) => {
 
     pdfContent.push(tableContent);
 
-    pdfContent.push({ text: "Personas Participantes:", style: 'subheader' });
-    personas.forEach((persona, index) => {
-      pdfContent.push(`Persona #${index + 1}`);
-      pdfContent.push(`Nombre Completo: ${persona["Apellido y Nombre"]}`);
-      pdfContent.push(`DNI: ${persona["Nro DNI"]}`);
-      pdfContent.push(`Firma: ${persona["Firma"]}`);
-      pdfContent.push("-----");
+    pdfContent.push([
+      { text: 'Personas Participantes:', style: 'label', colSpan: 4, margin: [0, 25, 0, 10] },
+      {},
+      {},
+      {},
+    ]);
+
+    const personasTable = {
+      table: {
+        widths: ['25%', '25%', '25%', '25%'],
+        body: [],
+      },
+      layout: {
+        hLineWidth: () => 1, 
+        vLineWidth: () => 1, 
+        hLineColor: () => 'black', 
+        vLineColor: () => 'black', 
+        paddingTop: () => 5,
+        paddingBottom: () => 5,
+      },
+      margin: [0, 10, 0, 10],
+    };
+
+    personasTable.table.body.push(
+      [
+        { text: 'Nombre Completo', style: 'label' },
+        { text: 'DNI', style: 'label' },
+        { text: 'Firma', style: 'label' },
+
+      ]
+    );
+
+    personas.forEach((persona) => {
+      personasTable.table.body.push(
+        [
+          { text: persona["Apellido y Nombre"], style: 'value' },
+          { text: persona["Nro DNI"], style: 'value' },
+          { text: persona["Firma"], style: 'value' },
+        ]
+      );
     });
+
+    pdfContent.push(personasTable);
 
     const documentDefinition = {
       content: pdfContent,
@@ -723,7 +857,6 @@ export const generatePDF = (formulario, form) => {
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
-
   else if (form === "reporterechazo") {
     const styles = {
       header: {
@@ -734,7 +867,7 @@ export const generatePDF = (formulario, form) => {
       subheader: {
         fontSize: 14,
         bold: true,
-        margin: [0, 10, 0, 20],
+        margin: [0, 10, 0, 10],
       },
       label: {
         fontSize: 12,
@@ -744,16 +877,12 @@ export const generatePDF = (formulario, form) => {
       },
       value: {
         fontSize: 12,
-        margin: [0, 0, 0, 20],
+        margin: [0, 0, 0, 5],
         border: [0, 0, 0, 0],
         fillColor: '#FFFFFF',
         paddingLeft: 5,
         paddingRight: 5,
         borderRadius: [5, 5, 5, 5],
-      },
-      descriptionValue: {
-        fontSize: 12,
-        marginBottom: 30,
       },
     };
 
@@ -774,73 +903,108 @@ export const generatePDF = (formulario, form) => {
     const pdfContent = [
       {
         table: {
-          widths: ['25%', '25%', '25%', '25%'], // Divide la tabla en 4 columnas
+          widths: ['50%', '50%'],
           body: [
-            [{ text: 'Día:', style: 'label' }, { text: 'Proveedor:', style: 'label' }, { text: 'Producto:', style: 'label' }, { text: 'Número de Lote:', style: 'label' }],
-            [dia, proveedor, producto, nroLote],
+            [
+              {
+                text: 'Formulario Reporte de Rechazo',
+                style: 'header',
+                alignment: 'center',
+                colSpan: 2,
+              },
+              {},
+            ],
+            [
+              { text: 'Día:', style: 'label' },
+              { text: 'Proveedor:', style: 'label' },
+            ],
+            [dia, proveedor],
+            [
+              { text: 'Producto:', style: 'label' },
+              { text: 'Número de Lote:', style: 'label' },
+            ],
+            [producto, nroLote],
+            [{ text: 'Condiciones de Entrega:', style: 'subheader', colSpan: 2 }, {}],
           ],
         },
+        layout: {
+          hLineWidth: () => 1,
+          vLineWidth: () => 1,
+          hLineColor: () => 'black',
+          vLineColor: () => 'black',
+          paddingTop: (i) => (i === 0 ? 1 : 1),
+          paddingBottom: (i) => (i === 1 ? 1 : 1),
+        },
       },
-      { text: 'Condiciones de Entrega:', style: 'subheader' },
     ];
 
     condicionesEntrega.forEach((condicion, index) => {
-      pdfContent.push(
+      pdfContent[0].table.body.push(
         [
-          { text: `Condición #${index + 1}`, style: 'subheader' },
-          { text: 'Adelantado:', style: 'label' },
-          { text: 'Descripción Adelantado:', style: 'label' },
-          { text: 'Atrasado:', style: 'label' },
-          { text: 'Descripción Atrasado:', style: 'label' },
+          { text: `Condición #${index + 1}`, style: 'subheader', colSpan: 2 },
+          {},
         ],
-        [
-          '',
-          condicion.adelantadoCheck,
-          condicion.adelantadoDescription,
-          condicion.atrasadoCheck,
-          condicion.atrasadoDescription,
-        ],
+        ['Adelantado:', { text: condicion.adelantado ? 'Sí' : 'No', style: 'value' }],
+        ['Descripción Adelantado:', { text: condicion.adelantadoDescription, style: 'value' }],
+        ['Atrasado:', { text: condicion.atrasado ? 'Sí' : 'No', style: 'value' }],
+        ['Descripción Atrasado:', { text: condicion.atrasadoDescription, style: 'value' }]
       );
     });
 
-    pdfContent.push({ text: 'Calidad:', style: 'subheader' });
+    function createSectionTable(sectionData, sectionName) {
+      pdfContent[0].table.body.push([
+        { text: sectionName, style: 'subheader', colSpan: 2 },
+        {},
+      ]);
 
-    calidad.forEach((calidadItem, index) => {
-      pdfContent.push([{ text: `Calidad Item #${index + 1}`, style: 'subheader' }, '', '', '']);
-      Object.keys(calidadItem).forEach((key) => {
-        pdfContent.push([`${key}: ${calidadItem[key]}`, '', '', '']);
+      sectionData.forEach((item) => {
+        Object.keys(item).forEach((key) => {
+          // Formatea el nombre de la clave para mostrarlo como título
+          let formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+
+          // Reemplaza "Description" con "Descripcion" en el nombre de la clave
+          formattedKey = formattedKey.replace('Description', 'Descripcion');
+          formattedKey = formattedKey.replace('Check', 'Control');
+
+          let formattedValue = item[key];
+
+          // Reemplaza "true" o "false" con "Si" o "No"
+          if (typeof item[key] === 'boolean') {
+            formattedValue = item[key] ? 'Si' : 'No';
+
+            // Reemplaza "Check" con "Control" en el valor
+
+          }
+
+          pdfContent[0].table.body.push([
+            { text: formattedKey + ':', style: 'label' },
+            { text: formattedValue, style: 'value' },
+          ]);
+        });
       });
-    });
+    }
+    // Sección Calidad
+    createSectionTable(calidad, 'Calidad');
 
-    pdfContent.push({ text: 'Diferencias:', style: 'subheader' });
+    // Sección Diferencias
+    createSectionTable(diferencias, 'Diferencias');
 
-    diferencias.forEach((diferencia, index) => {
-      pdfContent.push([{ text: `Diferencia #${index + 1}`, style: 'subheader' }, '', '', '']);
-      Object.keys(diferencia).forEach((key) => {
-        pdfContent.push([`${key}: ${diferencia[key]}`, '', '', '']);
-      });
-    });
+    // Sección Transporte
+    createSectionTable(transporte, 'Transporte');
 
-    pdfContent.push({ text: 'Transporte:', style: 'subheader' });
+    // Sección Medidas Tomadas
+    createSectionTable(medidasTomadas, 'Medidas Tomadas');
 
-    transporte.forEach((transporteItem, index) => {
-      pdfContent.push([{ text: `Transporte Item #${index + 1}`, style: 'subheader' }, '', '', '']);
-      Object.keys(transporteItem).forEach((key) => {
-        pdfContent.push([`${key}: ${transporteItem[key]}`, '', '', '']);
-      });
-    });
+    // Nombre del Administrador y Proveedor
+    pdfContent[0].table.body.push([
+      { text: 'Nombre Administrador:', style: 'label' },
+      { text: nombreAdministrador, style: 'value' },
+    ]);
+    pdfContent[0].table.body.push([
+      { text: 'Nombre Proveedor:', style: 'label' },
+      { text: nombreProveedor, style: 'value' },
+    ]);
 
-    pdfContent.push({ text: 'Medidas Tomadas:', style: 'subheader' });
-
-    medidasTomadas.forEach((medida, index) => {
-      pdfContent.push([{ text: `Medida #${index + 1}`, style: 'subheader' }, '', '', '']);
-      Object.keys(medida).forEach((key) => {
-        pdfContent.push([`${key}: ${medida[key]}`, '', '', '']);
-      });
-    });
-
-    pdfContent.push([{ text: 'Nombre Administrador:', style: 'label' }, nombreAdministrador, '', '']);
-    pdfContent.push([{ text: 'Nombre Proveedor:', style: 'label' }, nombreProveedor, '', '']);
 
     const documentDefinition = {
       content: pdfContent,
@@ -849,9 +1013,37 @@ export const generatePDF = (formulario, form) => {
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
-
   else if (form === "verificacionbalanza") {
-    pdfContent.push("Verificación de Balanza");
+    const styles = {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 20],
+      },
+      subheader: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 10, 0, 10],
+      },
+      label: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 5, 0, 0],
+        color: 'black',
+      },
+      value: {
+        fontSize: 12,
+        margin: [0, 0, 0, 10],
+        border: [0.5, 0.5, 0.5, 0.5], 
+        fillColor: '#EAFFDC',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: [5, 5, 5, 5],
+      },
+      table: {
+        margin: [0, 10, 0, 10],
+      },
+    };
 
     const {
       fecha,
@@ -862,21 +1054,89 @@ export const generatePDF = (formulario, form) => {
       fechaHora,
     } = formulario;
 
-    pdfContent.push(`Fecha: ${fecha}`);
-    pdfContent.push(`Responsable: ${responsable}`);
-    pdfContent.push(`Balanza: ${balanza}`);
-    pdfContent.push(`Verificado: ${verified}`);
-    pdfContent.push(`Fecha y Hora: ${fechaHora}`);
+    const inputTableBody = [];
 
-    pdfContent.push("Inputs:");
     inputs.forEach((input, index) => {
-      pdfContent.push(`Input #${index + 1}`);
-      Object.keys(input).forEach(key => {
-        pdfContent.push(`${key}: ${input[key]}`);
+      inputTableBody.push(
+        [
+          { text: `Balanza #${index + 1}`, style: 'subheader', alignment: 'left', colSpan: 2 },
+          '',
+        ]
+      );
+
+      // Iterar sobre las claves de los datos de la balanza y formatearlas
+      Object.keys(input).forEach((key) => {
+        const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'); // Formato de título
+        inputTableBody.push(
+          [
+            { text: `${formattedKey}:`, style: 'label' },
+            { text: input[key], style: 'value' },
+          ]
+        );
       });
-      pdfContent.push("-----");
     });
 
+    const inputTable = {
+      table: {
+        widths: ['50%', '50%'],
+        body: [
+          ...inputTableBody,
+        ],
+      },
+      layout: {
+        hLineWidth: () => 1, 
+        vLineWidth: () => 1, 
+        hLineColor: () => 'black', 
+        vLineColor: () => 'black',
+        paddingTop: (i) => (i === 0 ? 2 : 2),
+        paddingBottom: (i) => (i === 1 ? 2 : 2), 
+      },
+    };
+
+    const infoTable = {
+      table: {
+        widths: ['25%', '25%', '25%', '25%'],
+        body: [
+          [
+            { text: 'Fecha:', style: 'label' },
+            { text: fecha, style: 'value' },
+            { text: 'Responsable:', style: 'label' },
+            { text: responsable, style: 'value' },
+          ],
+          [
+            { text: 'Fecha y Hora:', style: 'label' },
+            { text: fechaHora, style: 'value' },
+            { text: 'Verificado:', style: 'label' },
+            { text: verified, style: 'value' },
+          ],
+
+        ],
+      },
+      layout: {
+        hLineWidth: () => 1, 
+        vLineWidth: () => 1, 
+        hLineColor: () => 'black', 
+        vLineColor: () => 'black',
+        paddingTop: (i) => (i === 0 ? 2 : 2),
+        paddingBottom: (i) => (i === 1 ? 0 : 2), 
+      },
+    };
+
+    const content = [
+      { text: 'Formulario Verificación de Balanza', style: 'header', alignment: 'center' },
+      { text: 'Verificación de Balanza', style: 'subheader', alignment: 'center' },
+      infoTable, // Agrega la tabla de información
+      { text: '', style: 'subheader', alignment: 'center' },
+
+      inputTable,
+    ];
+
+    const documentDefinition = {
+      content,
+      styles,
+    };
+
+    pdfMake.createPdf(documentDefinition).download(`verificacionbalanza_formulario.pdf`);
   }
   else if (form === "verificaciontermometros") {
     pdfContent.push("Verificación de Termómetros");
@@ -922,6 +1182,4 @@ export const generatePDF = (formulario, form) => {
   else {
     return null
   }
-
-
 };
