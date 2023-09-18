@@ -1,10 +1,9 @@
-import { Button, TextField } from '@mui/material'
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import styles from './AlergenosComida.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import axios from 'axios';
 import Alert from '../../shared/components/Alert/Alert';
 import { controlAlergenos } from '../../../services/FormsRequest';
 import { useLocation } from 'react-router';
@@ -22,26 +21,30 @@ function AlergenosComida() {
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Nombre Comensal' },
         { id: 3, label: 'Diagnóstico' },
-        { id: 4, label: 'Listado de ingredientes' },
-        { id: 5, label: 'Responsable' },
+        { id: 4, label: 'Requiere renovación' },
+        { id: 5, label: 'Fecha Renovación' },
+        { id: 6, label: 'Ingredientes/ Alimentos excluidos' },
+        { id: 7, label: 'Presenta Certificado' },
     ]);
     const [replicas, setReplicas] = useState(1);
     const [values, setValues] = useState()
-    const [objValues, setObjValues] = useState({ fecha: "", nombre: "", diagnostico: "", listado: "", responsable: "" })
+    const [objValues, setObjValues] = useState({ fecha: "", nombre: "", diagnostico: "", requiereRenovacion:"",fechaRenovacion:"", listado: "", presentaCertificado: "" })
     const [inputValues, setInputValues] = useState([])
     const [trigger, setTrigger] = useState(false)
     useEffect(() => {
-        if (replicas === 1 && objValues.fecha !== "" && objValues.nombre !== "" && objValues.diagnostico !== "" && objValues.listado !== "" && objValues.responsable !== "" && objValues.id !== "") {
+        if (replicas === 1 && objValues.fecha !== "" && objValues.nombre !== "" && objValues.diagnostico !== "" && objValues.requiereRenovacion !== "" && objValues.fechaRenovacion !== "" && objValues.listado !== "" && objValues.presentaCertificado !== "" && objValues.id !== "") {
             setInputValues([objValues])
-        } else if (replicas > 1 && objValues.fecha !== "" && objValues.nombre !== "" && objValues.diagnostico !== "" && objValues.listado !== "" && objValues.responsable !== "" && objValues.id !== "") {
+        } else if (replicas > 1 && objValues.fecha !== "" && objValues.nombre !== "" && objValues.diagnostico !== "" && objValues.requiereRenovacion !== "" && objValues.fechaRenovacion !== "" && objValues.listado !== "" && objValues.presentaCertificado !== "" && objValues.id !== "") {
             setInputValues([...inputValues, objValues])
         }
     }, [trigger])
+
     useEffect(() => {
         setValues({ ...values, inputs: inputValues })
     }, [inputValues])
+
     useEffect(() => {
-        if (objValues.fecha !== "" && objValues.nombre !== "" && objValues.diagnostico !== "" && objValues.listado !== "" && objValues.responsable !== "") {
+        if (objValues.fecha !== "" && objValues.nombre !== "" && objValues.diagnostico !== ""&& objValues.requiereRenovacion !== "" && objValues.fechaRenovacion !== "" && objValues.listado !== "" && objValues.presentaCertificado !== "") {
             setTrigger(true)
         }
     }, [objValues])
@@ -51,8 +54,10 @@ function AlergenosComida() {
         label === 'Fecha' ? setObjValues({ ...objValues, fecha: inputTarget.value, id: index }) :
             label === 'Nombre Comensal' ? setObjValues({ ...objValues, nombre: inputTarget.value }) :
                 label === 'Diagnóstico' ? setObjValues({ ...objValues, diagnostico: inputTarget.value }) :
-                    label === 'Listado de ingredientes' ? setObjValues({ ...objValues, listado: inputTarget.value }) :
-                        label === 'Responsable' && setObjValues({ ...objValues, responsable: inputTarget.value })
+                label === 'Requiere renovación' ? setObjValues({ ...objValues, requiereRenovacion: inputTarget.value }) :
+                    label === 'Fecha Renovación' ? setObjValues({ ...objValues, fechaRenovacion: inputTarget.value }) :
+                    label === 'Ingredientes/ Alimentos excluidos' ? setObjValues({ ...objValues, listado: inputTarget.value }) :
+                        label === 'Presenta Certificado' && setObjValues({ ...objValues, presentaCertificado: inputTarget.value })
     }
     const handleClick = () => {
         setReplicas(replicas + 1);
@@ -61,7 +66,6 @@ function AlergenosComida() {
     };
 
     const handleClickRemove = (index) => {
-        /* const inputsArrFiltered = inputValues.filter(inputs=>inputs.id !== index) */ //dejo comentado esperando respuestas de los audios jeje
         const inputsArrFiltered = inputValues.filter(input => input.id !== replicas - 1)
         setInputValues(inputsArrFiltered)
         setReplicas(replicas - 1);
@@ -98,8 +102,6 @@ function AlergenosComida() {
     useEffect(() => {
         const infoPrecargada = location.state?.objeto;
         if (infoPrecargada) { // muestro un form del historial
-            console.log("infoPrecargada", infoPrecargada)
-            console.log("sepudo")
             setValues({
                 comedor: infoPrecargada.comedor,
                 inputs: [infoPrecargada.inputs
@@ -121,7 +123,6 @@ function AlergenosComida() {
             })
         }
     }, [])
-    console.log("values", values)
 
 
 
@@ -154,7 +155,7 @@ return (
 
                                 {inputs.map((input) => (
                                     <div key={input.id}>
-                                        {input.label === "Fecha" ? (
+                                        {input.label === "Fecha" ||input.label === "Fecha Renovación" ? (
                                             <TextField
                                                 onBlur={(e) => {
                                                     inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
@@ -168,8 +169,31 @@ return (
                                                 InputLabelProps={{
                                                     shrink: true,
                                                 }}
+                                                 className='input'
+
                                             />
                                         ) : (
+                                            input.label === "Presenta Certificado" ||input.label === "Requiere renovación" ? (
+                                                <FormControl variant="outlined" className={`${styles.selectField} `}>
+                                                    <InputLabel id="select">{input.label}</InputLabel>
+                                                    <Select
+                                                        labelId="select"
+                                                            className='input'
+                                                            id={`input-${input.id}-${index}`}
+                                                            name={`input-${input.id}-${index}`}
+                                                        value={values.metodo}
+                                                        onChange={(e) => {
+                                                            inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                        }}
+                                                        // onChange={(e) => setValues({ ...values, metodo: e.target.value })}
+                                                        label={input.label}
+                                                    >
+                                                        <MenuItem value="SI">SI</MenuItem>
+                                                        <MenuItem value="NO">NO</MenuItem>
+
+                                                    </Select>
+                                                </FormControl>
+                                            ) :(
                                             <TextField
                                                 onBlur={(e) => {
                                                     inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
@@ -177,9 +201,17 @@ return (
                                                 id={`input-${input.id}-${index}`}
                                                 name={`input-${input.id}-${index}`}
                                                 label={`${input.label}`}
-                                                value={values.inputs[index].fecha || ''}
                                                 variant="outlined"
+                                                className='input'
+                                                onKeyUp={(e) => {
+                                                    inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                }}
+                                                 InputLabelProps={{
+                                                    shrink: true,
+                                                }}
                                             />
+                                            )
+                                            
                                         )}
                                     </div>
                                 ))}
@@ -194,26 +226,6 @@ return (
                             </div>
                         ))}
                 </div>
-            </div>
-            <div className={styles.personal}>
-                <TextField
-                    onChange={(e) => { setValues({ ...values, verified: e.target.value }) }}
-                    value={values.verified || ""}
-                    id="outlined-basic"
-                    label="Verificado por"
-                    variant="outlined"
-                />
-                <TextField
-                    onChange={(e) => { setValues({ ...values, date: e.target.value }) }}
-                    value={values.date || ""}
-                    id="outlined-basic"
-                    label="Fecha"
-                    variant="outlined"
-                    type="date"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
             </div>
 
             <div className="btn">

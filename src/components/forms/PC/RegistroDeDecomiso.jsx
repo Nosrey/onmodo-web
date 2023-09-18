@@ -1,4 +1,4 @@
-import { Button, TextField } from '@mui/material'
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './RegistroDeDecomiso.module.css'
@@ -20,11 +20,7 @@ function RegistroDeDecomiso() {
         { id: 2, label: 'Turno' },
         { id: 3, label: 'Producto decomisado' },
         { id: 4, label: 'Cantidad' },
-        { id: 5, label: 'Fuera fecha vida util' },
-        { id: 6, label: 'Fuera de aptitud' },
-        { id: 7, label: 'Otras causas' },
-        { id: 8, label: 'Destino final' },
-        { id: 9, label: 'Responsable' },
+        { id: 5, label: 'Causa' },
     ]);
     const [replicas, setReplicas] = useState(1);
     const [values, setValues] = useState({
@@ -105,9 +101,6 @@ function RegistroDeDecomiso() {
                         <h3 className="title">Registros de decomisos de materias primas</h3>
                     </div>
                     <div className="table">
-                        <div className={styles.subtituloTable}>
-                            <p style={{ textAlign: 'center', fontWeight: 'bold' }}>Causa de decomiso</p>
-                        </div>
                         <div className="tableSection">
                             {Array(replicas)
                                 .fill(0)
@@ -130,16 +123,64 @@ function RegistroDeDecomiso() {
 
                                                     />
                                                 ) : (
-                                                    <TextField
-                                                        className='input'
-                                                        onKeyUp={(e) => {
-                                                            inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                                        }}
-                                                        id={`input-${input.id}-${index}`}
-                                                        name={`input-${input.id}-${index}`}
-                                                        label={`${input.label}`}
-                                                        variant="outlined"
-                                                    />
+                                                    input.label === "Causa" ? (
+                                                        <FormControl variant="outlined" className={`${styles.selectField} `}>
+                                                            <InputLabel id="causa">Causa</InputLabel>
+                                                            <Select
+                                                                labelId="causa"
+                                                                 className='input'
+                                                                 id={`input-${input.id}-${index}`}
+                                                                 name={`input-${input.id}-${index}`}
+                                                                value={values.metodo}
+                                                                onChange={(e) => {
+                                                                    inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                                }}
+                                                                // onChange={(e) => setValues({ ...values, metodo: e.target.value })}
+                                                                label="Causa"
+                                                            >
+                                                                <MenuItem value="Recal">Recall</MenuItem>
+                                                                <MenuItem value="Desvíos de Proceso">Desvíos de Proceso</MenuItem>
+                                                                <MenuItem value="Fuera fecha de vida útil">Fuera fecha de vida útil</MenuItem>
+                                                                <MenuItem value="Fuera de aptitud">Fuera de aptitud</MenuItem>
+                                                                <MenuItem value="Otras Causas">Otras Causas</MenuItem>
+
+                                                            </Select>
+                                                        </FormControl>
+                                                    ): (
+                                                        input.label === "Turno" ? (
+                                                            <FormControl variant="outlined" className={`${styles.selectField} `}>
+                                                                <InputLabel id="turno">Turno</InputLabel>
+                                                                <Select
+                                                                    labelId="turno"
+                                                                     className='input'
+                                                                     id={`input-${input.id}-${index}`}
+                                                                     name={`input-${input.id}-${index}`}
+                                                                    value={values.metodo}
+                                                                    onChange={(e) => {
+                                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                                    }}
+                                                                    // onChange={(e) => setValues({ ...values, metodo: e.target.value })}
+                                                                    label="Turno"
+                                                                >
+                                                                    <MenuItem value="Mañana">Mañana</MenuItem>
+                                                                    <MenuItem value="Tarde">Tarde</MenuItem>
+                                                                    <MenuItem value="Noche">Noche</MenuItem>
+    
+                                                                </Select>
+                                                            </FormControl>
+                                                        ): (
+                                                            <TextField
+                                                            className='input'
+                                                            onKeyUp={(e) => {
+                                                                inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                            }}
+                                                            id={`input-${input.id}-${index}`}
+                                                            name={`input-${input.id}-${index}`}
+                                                            label={`${input.label}`}
+                                                            variant="outlined"
+                                                             />
+                                                        )
+                                                   )
                                                 )}
                                             </div>
                                         ))}

@@ -18,6 +18,8 @@
     font-weight: bold;
     font-size: 15px;
     color: rgb(37, 35, 35);
+    text-align: left;
+    margin-top: 30px;
 }
 
 .containerProcesoColumn {
@@ -79,4 +81,6 @@
 
 .itemText {
     margin: 0;
+    color: black;
+    text-align: left;
 }

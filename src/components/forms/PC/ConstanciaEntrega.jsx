@@ -155,7 +155,7 @@ function ConstanciaEntrega() {
                     <FormControlLabel control={<Checkbox checked = {check[0].check1} onChange={(e)=>{handleCheck("check1",e.target.checked)} }/>} label="Guantes" />
                     <FormControlLabel control={<Checkbox checked = {check[0].check2} onChange={(e)=>{handleCheck("check2",e.target.checked)} }/>} label="Calzado de seguridad" />
                     <FormControlLabel control={<Checkbox checked = {check[0].check3} onChange={(e)=>{handleCheck("check3",e.target.checked)} }/>} label="Antiparras" />
-                    <FormControlLabel control={<Checkbox checked = {check[0].check4} onChange={(e)=>{handleCheck("check4",e.target.checked)} }/>} label="Mascara" />
+                    <FormControlLabel control={<Checkbox checked = {check[0].check4} onChange={(e)=>{handleCheck("check4",e.target.checked)} }/>} label="Barbijo" />
                     <FormControlLabel control={<Checkbox checked = {check[0].check5} onChange={(e)=>{handleCheck("check5",e.target.checked)} } />} label="Cofia" />
                     <div>
 
@@ -183,10 +183,26 @@ function ConstanciaEntrega() {
 
                                     {inputs.map((input) => (
                                         <div key={input.id}>
+                                        {input.label === "Fecha de entrega" ? (
+                                            <TextField
+                                                onBlur={(e) => {
+                                                    inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                }}
+                                                id={`input-${input.id}-${index}`}
+                                                name={`input-${input.id}-${index}`}
+                                                label={`${input.label}`}
+                                                value={values.inputs[index]?.diagnostico || ''}
+                                                variant="outlined"
+                                                type="date"
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                            />
+                                        ) : (
                                             <TextField onKeyUp={(e)=>{
                                             inputsValuesConstructor(`input-${input.id}-${index}`,input.label, index);
                                             }} className='input'  id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
-
+                                        )}
                                         </div>
                                     ))}
                                     <div className="icon">

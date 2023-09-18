@@ -118,19 +118,25 @@ function RegistroSimulacro() {
                 </div>
 
                 <div className={styles.personalText}>
-                    <TextField onChange={(e) => { setValues({ ...values, razonSocial: e.target.value }) }} value={values.razonSocial} fullWidth id="outlined-basic" label="Razón Social" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, razonSocial: e.target.value }) }} value={values.razonSocial} fullWidth id="outlined-basic" label="Razón Social/Contrato" variant="outlined" />
                 </div>
 
                 <div className={styles.personal}>
                     <TextField onChange={(e) => { setValues({ ...values, ubicacion: e.target.value }) }} value={values.ubicacion}  id="outlined-basic" label="Ubicación" variant="outlined" />
                     <TextField onChange={(e) => { setValues({ ...values, localidad: e.target.value }) }} value={values.localidad}  id="outlined-basic" label="Localidad" variant="outlined" />
-                    <input
-                        onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
+                 
+                    <TextField
+                        label="Fecha"
+                        variant="outlined"
                         type="date"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         id="fecha"
                         name="fecha"
                         required
                         value={values.fecha} 
+                        onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
                     />
                 </div>
 
@@ -173,16 +179,6 @@ function RegistroSimulacro() {
                         <li>Presentación del plan de emergencias y evacuación.</li>
                         <li>Contenidos –Definiciones –Procedimiento de evacuación.</li>
                         <li>Recomendaciones prácticas y medidas de seguras –vías de evacuación –Roles.</li>
-                    </ul>
-                </div>
-
-                <div className={styles.responsableCont}>
-                    <div className={styles.subtitleCont}>
-                        <p className={styles.subtitle}>OBSERVACIONES:</p>
-                    </div>
-
-                    <ul>
-                        <li>Se entrega material didáctico.</li>
                     </ul>
                 </div>
 

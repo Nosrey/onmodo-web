@@ -343,13 +343,19 @@ const location = useLocation();
 
         <div className="tableSection">
           <div className={styles.personal}>
-          <input
-  onChange={(e) => { setValues({ ...values, dia: e.target.value }) }}
-  type="date"
-  id="fecha"
-  name="fecha"
-  required
-/>
+         
+              <TextField
+              label="Fecha"
+                variant="outlined"
+                type="date"
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                id="fecha"
+                name="fecha"
+                onChange={(e) => { setValues({ ...values, dia: e.target.value }) }}
+
+            />
 
             <TextField
               onChange = {(e)=>{
@@ -434,14 +440,14 @@ const location = useLocation();
                     {secondInputs.map((input) => (
                       <div className={styles.inputRow} key={input.id}>
                         <Checkbox onChange={(e)=>{checkboxValuesConstructor(input.id,e.target.checked)}} label={`${input.label}`} key={input.label} />
-                        <p>{input.label}</p>
+                        <p className={styles.itemText}>{input.label}</p>
                         <TextField
                         onKeyUp={(e)=>{
                           inputsValuesConstructor(input.id,e.target.value);
                           }}
                           id={`sectionInput-${input.id}-${index}`}
                           name={`sectionInput-${input.id}-${index}`}
-                          label={"Cant"}
+                          label={"Cantidad"}
                           variant="outlined"
                           multiline
                           fullWidth
@@ -463,7 +469,7 @@ const location = useLocation();
               setValues({...values,nombreAdministrador:e.target.value})
             }}
             id="outlined-basic"
-            label="Nombre Administrador/Encargado"
+            label="Firma Administrador/Encargado"
             variant="outlined"
             fullWidth
           />
@@ -472,7 +478,7 @@ const location = useLocation();
               setValues({...values,nombreProveedor:e.target.value})
             }}
             id="outlined-basic"
-            label="Nombre Proveedor"
+            label="Firma Proveedor"
             variant="outlined"
             fullWidth
           />
