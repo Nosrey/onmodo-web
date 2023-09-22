@@ -107,7 +107,7 @@ function ControlVidrios() {
                 </div>
 
                 <p>Registro de envases de vidrio y roturas</p>
-
+                <span>Recepción</span>
 
                 <div className="table">
                 <div className="tableSection">
@@ -133,7 +133,8 @@ function ControlVidrios() {
 
                 </div>
                 </div>
-                
+                <span>Daños</span>
+
                 <div className="table">
                 <div className="tableSection">
                     {Array(replicas2)
@@ -158,13 +159,7 @@ function ControlVidrios() {
 
                 </div>
                 </div>
-            
-
-
-                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,date:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
-                </div>
+        
                 <div className="btn">
                     <Button onClick={()=>{
                         dispatch(controlVidriosActions.logIn(values))}} variant="contained">Guardar</Button>

@@ -16,13 +16,14 @@ function ControlEquiposDeFrio() {
     const prueba = useSelector(state=>state.equiposFrioR.inputsValue)
     console.log("holi",prueba)
     const [inputs] = useState([
-        { id: 1, label: 'Día' },
-        { id: 2, label: 'Hora' },
-        { id: 3, label: 'Temp.Equipo' },
-        { id: 4, label: 'Alimento' },
-        { id: 5, label: 'Temperatura Alim.' },
-        { id: 6, label: 'Acción de corrección' },
-        { id: 7, label: 'Responsable' },
+        { id: 1, label: 'Equipo' },
+        { id: 2, label: 'Nro y Nombre' },
+        { id: 3, label: 'Hora' },
+        { id: 4, label: 'Temperatura Equipo' },
+        { id: 5, label: 'Alimento' },
+        { id: 6, label: 'Temperatura Alimento' },
+        { id: 7, label: 'Acción de corrección' },
+        { id: 8, label: 'Responsable' },
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
@@ -130,7 +131,7 @@ function ControlEquiposDeFrio() {
                 }
 
 <br />
-                <div className={styles.personalNro}>
+                {/* <div className={styles.personalNro}>
                     <p>Nro y nombre de cámara:</p>
                     <TextField onChange={(e)=>{setValues({...values,equipoNro:e.target.value})}} id="outlined-basic" label="Equipo Nro:" variant="outlined" />
                 </div>
@@ -139,32 +140,16 @@ function ControlEquiposDeFrio() {
                     <FormControlLabel control={<Checkbox onChange={(e)=>{checkboxValuesConstructor("HELADERA",e.target.checked)}} />} label="HELADERA" />
                     <FormControlLabel control={<Checkbox onChange={(e)=>{checkboxValuesConstructor("CÁMARA REFRIGERADOS",e.target.checked)}} />} label="CÁMARA REFRIGERADOS" />
                     <FormControlLabel control={<Checkbox onChange={(e)=>{checkboxValuesConstructor("CÁMARA CONGELADOS",e.target.checked)}} />} label="CÁMARA CONGELADOS" />
-                </div>
+                </div> */}
 
                 <div className={styles.personalSelects}> 
-                    <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Mes</InputLabel>
-                        <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={month}
-                        label="Mes"
-                        onChange={handleChange}
-                        >
-                        <MenuItem value={"enero"}>Enero</MenuItem>
-                        <MenuItem value={"febrero"}>Febrero</MenuItem>
-                        <MenuItem value={"marzo"}>Marzo</MenuItem>
-                        <MenuItem value={"abril"}>Abril</MenuItem>
-                        <MenuItem value={"mayo"}>Mayo</MenuItem>
-                        <MenuItem value={"junio"}>Junio</MenuItem>
-                        <MenuItem value={"julio"}>Julio</MenuItem>
-                        <MenuItem value={"agosto"}>Agosto</MenuItem>
-                        <MenuItem value={"septiembre"}>Septiembre</MenuItem>
-                        <MenuItem value={"octubre"}>Octubre</MenuItem>
-                        <MenuItem value={"noviembre"}>Noviembre</MenuItem>
-                        <MenuItem value={"diciembre"}>Diciembre</MenuItem>
-                        </Select>
-                    </FormControl>
+                    <TextField
+                        variant="outlined"
+                        type="date"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
 
                     <FormControl fullWidth >
                         <InputLabel id="demo-simple-select-label">Turno</InputLabel>
@@ -209,11 +194,11 @@ function ControlEquiposDeFrio() {
                </div>
                 
 
-
+{/* 
                  <div className={styles.personal}>
                     <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
                     <TextField onChange={(e)=>{setValues({...values,date:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
-                </div>
+                </div> */}
                 <div className="btn">
                     <Button onClick={()=>{
                         dispatch(equiposFrioActions.logIn(values))

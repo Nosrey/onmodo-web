@@ -4,6 +4,16 @@
     column-gap: 16px;
     margin-bottom: 5vh;
 }
+p {
+    color: black;
+    text-align: left;
+    font-weight: bold;
+}
+span {
+    text-align: left;
+    color: black;
+    font-size: 18px;
+}
 
 .subtituloTableDoble {
     display: flex;

@@ -12,12 +12,9 @@ function ControlDeCloro() {
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Punto de toma de agua evaluado' },
-        { id: 3, label: 'Menor 0,2 (Valor ppm)' },
-        { id: 4, label: '0,2 - 0,5 (Valor ppm)' },
-        { id: 5, label: '0,5 - 0,8 (Valor ppm)' },
-        { id: 6, label: 'Mayor a 0,8 (Valor ppm)' },
-        { id: 7, label: 'Acciones de correcion' },
-        { id: 8, label: 'Responsable' },
+        { id: 3, label: 'Punto de Corte' },
+        { id: 4, label: 'Acciones de correcion' },
+        { id: 5, label: 'Responsable' },
     ]);
 
     const [replicas, setReplicas] = useState(1);
@@ -77,11 +74,9 @@ function ControlDeCloro() {
 
                 <div className={styles.chipContainer}>
                     <div>
-                        <Chip label="Destino: Agua de pozo o tratadasde contratos Mineros." />
                         <div className={styles.chipIntern}>
                             <Chip label="Valor mínimo: 0,2 ppm." />
 
-                            <Chip label="Frecuencia: Semanal." />
                         </div>
                         <Chip label="Instrumento: Test Kit de cloro activo total." />
                     </div>
