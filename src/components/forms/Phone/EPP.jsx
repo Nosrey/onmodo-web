@@ -469,7 +469,7 @@ function EPP() {
                 <div className={styles.personal}>
                     <TextField onChange={(e) => { setValues({ ...values, nombreEmpleado: e.target.value }); } } id="outlined-basic" label="Nombre Del Empleado" variant="outlined" />
                     <TextField onChange={(e) => { setValues({ ...values, sector: e.target.value }); } } id="outlined-basic" label="Sector" variant="outlined" />
-                    <TextField onChange={(e) => { setValues({ ...values, puesto: e.target.value }); } } id="outlined-basic" label="Puesto" variant="outlined" />
+                    <TextField disabled onChange={(e) => { setValues({ ...values, puesto: e.target.value }); } } id="outlined-basic" label="Puesto" variant="outlined" />
                 </div>
 
                 <div className='contMonthTable'>
@@ -542,9 +542,6 @@ function EPP() {
                 </div>
                 <br />
                 <br />
-                <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, firma: e.target.value }); } } id="outlined-basic" label="Firma Responsable Comedor" variant="outlined" />
-                </div>
 
                 <div className="btn">
                     <Button onClick={async () => {
