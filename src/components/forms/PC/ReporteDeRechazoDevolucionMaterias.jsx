@@ -1,16 +1,18 @@
 import { Button, TextField, Checkbox } from "@mui/material";
-import React, { useState,useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ReporteDeRechazoDevolucionMaterias.module.css";
 import Modal from '../../shared/Modal';
 import RechazoInfo from "../../modales/RechazoInfo";
-import { useDispatch,useSelector } from "react-redux";
-import reporteRechazoActions from "../../../redux/actions/reporteRechazoActions";
-import axios from "axios";
+import Alert from "../../shared/components/Alert/Alert";
+import { reporteRechazo } from "../../../services/FormsRequest";
+import { useLocation } from "react-router-dom";
 
 function ReporteDeRechazoDevolucionMaterias() {
-  const dispatch = useDispatch()
-  const prueba = useSelector(state=>state.reporteRechazoR.inputsValues)
-  console.log("holi",prueba)
+  //** ALERTA */
+  const [textAlert, setTextAlert] = useState("");
+  const [typeAlert, setTypeAlert] = useState("");
+  const [showAlert, setShowlert] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
 
   const [inputs] = useState([
@@ -110,23 +112,6 @@ const [medidasValues,setMedidasValues] = useState([
   {rechazoCheck:false,rechazoDescription:""},  
   {devolucionCheck:false,devolucionDescription:""},
   {aceptadoCheck:false,aceptadoDescription:""}])
-
-
-/* useEffect(()=>{
-    if(replicas === 1) {
-        setInputValues([objValues])
-    }else if (replicas > 1 ) {
-        setInputValues([...inputValues,objValues])
-    }
-},[trigger])
-useEffect(()=>{
-    setValues({...values,inputsValues:inputValues})
-},[inputValues])
-useEffect(()=>{
-    if (objValues.fecha !== "" && objValues.nombre !== "" && objValues.preparacion !== "" && objValues.listado !== "" && objValues.responsable !== ""){
-        setTrigger(true)
-    }
-},[objValues]) */
 
 const inputsValuesConstructor = (index,value) => {
     /* const inputTarget = document.getElementById(id) */
@@ -304,7 +289,35 @@ const checkboxValuesConstructor = (index,value)=>{
   }
 }
 
+const handleSubmit = () => {
+  reporteRechazo(values).then((resp)=> {
+      setTextAlert("¡Formulario cargado exitosamente!");
+      setTypeAlert("success");
+  }).catch((resp)=> {
+      setTextAlert("Ocurrió un error")
+      setTypeAlert("error");
+  }).finally(()=> {
+      window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      setShowlert(true);
+      setTimeout(() => {
+          setShowlert(false);
+
+      }, 7000);
+  }
+  )
+};
+
+const location = useLocation();
+  useEffect(() => {
+    const infoPrecargada = location.state?.objeto;
+    console.log(infoPrecargada)
+  }, [])
+  
   return (
+    <>
     <div>
       <div className="form">
         <div className="titleContainer">
@@ -330,13 +343,19 @@ const checkboxValuesConstructor = (index,value)=>{
 
         <div className="tableSection">
           <div className={styles.personal}>
-          <input
-  onChange={(e) => { setValues({ ...values, dia: e.target.value }) }}
-  type="date"
-  id="fecha"
-  name="fecha"
-  required
-/>
+         
+              <TextField
+              label="Fecha"
+                variant="outlined"
+                type="date"
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                id="fecha"
+                name="fecha"
+                onChange={(e) => { setValues({ ...values, dia: e.target.value }) }}
+
+            />
 
             <TextField
               onChange = {(e)=>{
@@ -421,14 +440,14 @@ const checkboxValuesConstructor = (index,value)=>{
                     {secondInputs.map((input) => (
                       <div className={styles.inputRow} key={input.id}>
                         <Checkbox onChange={(e)=>{checkboxValuesConstructor(input.id,e.target.checked)}} label={`${input.label}`} key={input.label} />
-                        <p>{input.label}</p>
+                        <p className={styles.itemText}>{input.label}</p>
                         <TextField
                         onKeyUp={(e)=>{
                           inputsValuesConstructor(input.id,e.target.value);
                           }}
                           id={`sectionInput-${input.id}-${index}`}
                           name={`sectionInput-${input.id}-${index}`}
-                          label={"Cant"}
+                          label={"Cantidad"}
                           variant="outlined"
                           multiline
                           fullWidth
@@ -450,7 +469,7 @@ const checkboxValuesConstructor = (index,value)=>{
               setValues({...values,nombreAdministrador:e.target.value})
             }}
             id="outlined-basic"
-            label="Nombre Administrador/Encargado"
+            label="Firma Administrador/Encargado"
             variant="outlined"
             fullWidth
           />
@@ -459,21 +478,22 @@ const checkboxValuesConstructor = (index,value)=>{
               setValues({...values,nombreProveedor:e.target.value})
             }}
             id="outlined-basic"
-            label="Nombre Proveedor"
+            label="Firma Proveedor"
             variant="outlined"
             fullWidth
           />
         </div>
         <div className="btn">
           <Button
-           onClick={async()=>{
-            await axios.post('https://api.onmodoapp.com/api/reporterechazo', values)
-           }} 
+           onClick={handleSubmit} 
            variant="contained">Guardar</Button>
         </div>
       </div>
       <div></div>
     </div>
+    { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+    </>
+
   );
 }
 

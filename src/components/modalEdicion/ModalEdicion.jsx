@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import styles from './ModalEdicion.module.css';
+import { sendEditApplication } from '../../services/FormsRequest';
 
 Modal.setAppElement('#root');
 
-const ModalEdicion = ({ openModal, setOpenModal }) => {
+const ModalEdicion = ({ openModal, setOpenModal, idForm, urlForm, showAlert }) => {
   const [motivoEdicion, setMotivoEdicion] = useState('');
+  
+  
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -17,6 +20,18 @@ const ModalEdicion = ({ openModal, setOpenModal }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    
+    const data = {
+      status:"pending",
+      motivo: motivoEdicion,
+    }
+    
+    sendEditApplication({values: data, formId: idForm, form: urlForm}).then((resp)=>{
+      showAlert("success", "Solicitud enviada")
+    })
+    .catch((err) =>{
+      showAlert("error", "Ocurrió un error")
+    })
     handleCloseModal();
   };
 

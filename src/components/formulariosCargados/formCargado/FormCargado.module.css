@@ -13,6 +13,34 @@
   border-bottom: 1py solid black;
 } */
 
+
+/* FILTRO SELECT  */
+
+.orderContainer{
+  display:flex;
+  justify-content: flex-end;
+  padding: 20px 0 34px;
+  gap: 10px;
+  align-items: center;
+}
+#select {
+  box-sizing: border-box;
+  border: 1px solid #c3c3c3;
+  border-radius: 10px;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 18px;
+  padding: 5px 15px;
+  outline: none;
+}
+.spanOrder {
+  font-weight: 325;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+/* ------------------------- */
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -42,4 +70,28 @@
 
 .accion {
   text-align: center !important;
+}
+
+.pendingText {
+  font-weight: bold;
+  color:#FFB82F;
+
+}
+.deniedText {
+  font-weight: bold;
+  color:#FF2E11;
+
+}
+.aprovedText {
+  font-weight: bold;
+  color:#7BC100;
+}
+.pendingRow {
+  background: #FFB82F1A;
+}
+.deniedRow {
+  background: #FF2E111A;
+}
+.aprovedRow {
+  background: #7BC1001A;
 }

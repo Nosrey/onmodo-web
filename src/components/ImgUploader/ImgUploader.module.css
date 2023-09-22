@@ -1,0 +1,36 @@
+.imageUploader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 160px !important;
+    width: 200px !important;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .imageInputLabel {
+    display: block;
+  }
+  
+  .imagePreview {
+    width: 160px;
+    height: 160px;
+    .image {
+      width: 160px !important;
+    height: 160px !important;
+    }
+  }
+  
+  .imgContainerPlaceholer{
+    width: 100%;
+  }
+  .imagePlaceholder {
+    width: 100%;
+  }
+  /* Ocultar el input tipo file */
+  input[type='file'] {
+    display: none;
+  }
+  

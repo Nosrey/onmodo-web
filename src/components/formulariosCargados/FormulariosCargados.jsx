@@ -2,38 +2,17 @@ import React, { useEffect } from 'react';
 import Card from '../card/Card';
 import { useState } from 'react';
 import styles from './FormulariosCargados.module.css';
-import axios from 'axios';
+import { getUserInfo } from '../../services/Request';
 
 function FormulariosCargados() {
-  const [sortedForms, setSortedForms] = useState([]);
-  const [reload, setReload] = useState(true);
-  // // // [
-  // // //   {
-  // // //     title: 'Registros de decomisos de materias primas',
-  // // //     link: '',
-  // // //   },
-  // // //   {
-  // // //     title: 'Reporte de Rechazo/Devolución de Materias Primas',
-  // // //     link: '',
-  // // //   },
-  // // //   {
-  // // //     title: 'Verificación de balanzas',
-  // // //     link: '',
-  // // //   },
-  // // //   {
-  // // //     title: 'Verificación de termómetros',
-  // // //     link: '',
-  // // //   },
-  // // // ];
-
-  let forms = []
+  var idUser = localStorage.getItem("idUser");
+  const [forms, setForms] = useState([]);
+  const [sortedForms, setSortedForms] = useState(forms);
+  
   function transformarArrayForms(forms) {
-    return forms.map(form => ({ title: form, link: '' }));
+    return setSortedForms(forms.map(form => ({ title: form, link: `/formularios-cargados/${form}` })));
   }
 
-
-
-  var idUser = localStorage.getItem("idUser");
   const handleSortChange = (event) => {
     const value = event.target.value;
     if (value === 'A-Z') {
@@ -45,7 +24,6 @@ function FormulariosCargados() {
     }
   };
 
-
   function obtenerNombresPropiedadesConArraysNoVacios(objeto) {
     const nombresPropiedades = [];
     for (const clave in objeto) {
@@ -55,17 +33,6 @@ function FormulariosCargados() {
     }
     return nombresPropiedades;
   }
-  const handleButtonClick =async () => {
-
-console.log("forms", forms) // obtengo los nombres
-
-  };
-
-
-useEffect(() => {
-  fetchData()
-}, [forms])
-
 
   function filtrarObjetoPorObjetos(objeto) {
     const resultado = {};
@@ -86,39 +53,22 @@ useEffect(() => {
     return resultado;
   }
   
-
-async function fetchData() {
-  try {
-    const response = await axios.get(`https://api.onmodoapp.com/api/business/${idUser}`);
-    const datae = response.data.response[0];
-    const dataaa = [datae][0]
-    const datita = filtrarObjetoPorObjetos(dataaa)
-
-    const data2 = filtrarObjetoPorArraysNoVacios(datita)
-
-    const data3 = obtenerNombresPropiedadesConArraysNoVacios(data2)
-
- 
+ const fetchData = () => {
+  getUserInfo(idUser).then((resp)=> {   
+    const data = filtrarObjetoPorObjetos(resp[0]);
+    const data2 = filtrarObjetoPorArraysNoVacios(data);
+    const data3 = obtenerNombresPropiedadesConArraysNoVacios(data2); 
     const arrayFinal = transformarArrayForms(data3)
     transformarArrayForms(data3)
-    setReload(false)
-    console.log("final", arrayFinal)
 
-    return forms = arrayFinal;
-  } catch (error) {
-    console.error('Error:', error);
-
-    return null;
-  }
+    return setForms(arrayFinal);
+  }).catch((err) => {
+    console.error('Error:', err);
+  })
 }
-
-
-
-
-
-
-
-
+  useEffect(() => {
+    fetchData();
+  }, [])
 
   return (
     <div className={styles.container}>
@@ -131,9 +81,6 @@ async function fetchData() {
             <option value='Últimos utilizados'>Últimos utilizados</option>
             <option value='Z-A'>Fecha de modificación</option>
           </select>
-          <button onClick={handleButtonClick}>
-      Presiona para obtener formularios cargados
-    </button>
         </div>
         <div className={styles.cardContainer}>
           {sortedForms.length > 0

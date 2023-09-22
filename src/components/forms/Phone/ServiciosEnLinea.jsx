@@ -9,7 +9,7 @@ import { useSelector,useDispatch } from 'react-redux';
 function ServiciosEnLinea() {
     const dispatch = useDispatch()
     const prueba = useSelector(state => state.serviciosLineaR.inputsValues)
-    console.log("holi", prueba)
+    
     const [inputs] = useState([
         { id: 1, label: 'Servicio' },
         { id: 2, label: 'Preparación' },

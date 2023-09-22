@@ -1,4 +1,7 @@
+// const URL_API = 'http://localhost:8080';
+
 const URL_API = 'https://api.onmodoapp.com';
+
 
 export const login = async ({ legajo, password}) => {
     try {
@@ -18,7 +21,25 @@ export const login = async ({ legajo, password}) => {
     }
   };
 
-export const createNewUSer = async ({ 
+  export const createPassword = async ( token, password) => {
+    try {
+      const response = await fetch(`${URL_API}/api/forgotpassword/${token}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          password
+        }),
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error', error);
+      throw error;
+    }
+  };
+
+  // values?.upload[0],
+  export const createNewUSer  = async ({
     email,
     fullName,
     legajo,
@@ -29,33 +50,39 @@ export const createNewUSer = async ({
     business,
     provincia,
     localidad,
-    idChief
-}) => {
-try {
-    const response = await fetch(`${URL_API}/api/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ 
-        email,
-        fullName,
-        legajo,
-        number,
-        puesto,
-        contratoComedor,
-        rol,
-        business,
-        provincia,
-        localidad,
-        idChief
-    }),
-    });
-    const data = await response.json();
-    return data;
-} catch (error) {
-    console.error('Error', error);
-    throw error;
-}
-};
+    imgProfile,
+  }) => {
+    try {
+      const formData = new FormData();
+      formData.append('imgProfile', imgProfile);
+      formData.append('email', email);
+      formData.append('fullName', fullName);
+      formData.append('legajo', legajo);
+      formData.append('number', number);
+      formData.append('puesto', puesto);
+      formData.append('contratoComedor', contratoComedor);
+      formData.append('rol', rol); // No need to parseInt here
+      formData.append('business', business);
+      formData.append('provincia', provincia);
+      formData.append('localidad', localidad);
+  
+      const response = await fetch(`${URL_API}/api/register`, {
+        method: 'POST',
+        body: formData, // Use 'body' instead of 'data' for FormData
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP Error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  };
+  
 
 export const setPassword = async (password) => {
 try {
@@ -83,6 +110,30 @@ export const getUserInfo = async (id) => {
       console.error('Error:', error);
       throw new Error('No se pudo obtener los datos del usuario.');
     }
+};
+
+export const getProvincias = async () => {
+  try {
+    const resp = await fetch("https://apis.datos.gob.ar/georef/api/provincias?campos=id,nombre");
+    const data = await resp.json();
+
+    return data.provincias.sort((a, b) => a.nombre.localeCompare(b.nombre));
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('No se pudo obtener los datos del usuario.');
+  }
+};
+
+export const getLocalidades = async (idProv) => {
+  try {
+    const resp = await fetch(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${idProv}&campos=id,nombre&max=500`);
+    const data = await resp.json();
+
+    return data.municipios.sort((a, b) => a.nombre.localeCompare(b.nombre));
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('No se pudo obtener los datos del usuario.');
+  }
 };
 
 

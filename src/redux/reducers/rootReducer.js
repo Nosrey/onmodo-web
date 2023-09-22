@@ -24,6 +24,7 @@ import informeAccidenteReducer from "./informeAccidenteReducers";
 import cambioAceiteReducer from "./cambioAceiteReducers";
 import eppReducer from "./eppReducers";
 import verificacionTermometrosReducer from "./verificacionTermometrosReducers";
+import formularioReducer from "./formularioReducers";
 
 const rootReducer = combineReducers({
     userR: userReducer,
@@ -50,6 +51,7 @@ const rootReducer = combineReducers({
     informeAccidenteR:informeAccidenteReducer,
     cambioAceiteR:cambioAceiteReducer,
     eppR:eppReducer,
+    formularios: formularioReducer,
     verificacionTermometrosR:verificacionTermometrosReducer
 })
 

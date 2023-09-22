@@ -1,10 +1,17 @@
 import { Button, TextField } from '@mui/material'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './RegistroSimulacro.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import axios from 'axios';
+import Alert from '../../shared/components/Alert/Alert';
+import { registroSimulacro } from '../../../services/FormsRequest';
+import { useLocation } from 'react-router';
 
 function RegistroSimulacro() {
+    //** ALERTA */
+    const [textAlert, setTextAlert] = useState("");
+    const [typeAlert, setTypeAlert] = useState("");
+    const [showAlert, setShowlert] = useState(false);
+
     const [inputs] = useState([
         { id: 1, label: 'Apellido y Nombre' },
         { id: 2, label: 'Nro DNI' },
@@ -12,78 +19,126 @@ function RegistroSimulacro() {
     ]);
     var idUser = localStorage.getItem("idUser");
     const [replicas, setReplicas] = useState(1);
-    const [values, setValues] = useState({
-        razonSocial: "",
-        ubicacion: "",
-        localidad: "",
-        fecha: "",
-        inputsValues: [{
-        }],
-        firmaInstructor: "",
-        idUser: idUser
-    })
-    const [objValues, setObjValues] = useState({ nombreCompleto: "", dni: "", firma: "" })
-    const [inputValues, setInputValues] = useState([])
-    const [trigger, setTrigger] = useState(false)
-
-    useEffect(() => {
-        if (replicas === 1 && objValues.nombreCompleto !== "" && objValues.dni !== "" && objValues.firma !== "") {
-            setInputValues([objValues])
-        } else if (replicas > 1 && objValues.nombreCompleto !== "" && objValues.dni !== "" && objValues.firma !== "") {
-            setInputValues([...inputValues, objValues])
-        }
-    }, [trigger])
-
-    useEffect(() => {
-        setValues({ ...values, inputsValues: inputValues })
-    }, [inputValues])
-
-    useEffect(() => {
-        if (objValues.nombreCompleto !== "" && objValues.dni !== "" && objValues.firma !== "") {
-            setTrigger(true)
-        }
-    }, [objValues])
-
-    const inputsValuesConstructor = (id, label, index) => {
-        const inputTarget = document.getElementById(id)
-        label === 'Apellido y Nombre' ? setObjValues({ ...objValues, nombreCompleto: inputTarget.value, id: index }) :
-            label === 'Nro DNI' ? setObjValues({ ...objValues, dni: inputTarget.value }) :
-                label === 'Firma' && setObjValues({ ...objValues, firma: inputTarget.value })
-    }
+    const [values, setValues] = useState();
 
     const handleClick = () => {
         setReplicas(replicas + 1);
-        setObjValues({ nombreCompleto: "", dni: "", firma: "" })
-        setTrigger(false)
+        setValues({
+            ...values,
+            personas: [
+                ...values.personas,
+                {
+                    nombreCompleto: "",
+                    dni: "",
+                    firma: ""
+                }
+            ]
+        });
     };
 
+    const handleChangePerson = (index, field, value) => {
+        const updatedPersonas = [...values.personas];
+        updatedPersonas[index] = {
+            ...updatedPersonas[index],
+            [field]: value
+        };
+        setValues({
+            ...values,
+            personas: updatedPersonas
+        });
+    };
+    const handleSubmit = () => {
+        registroSimulacro(values).then((resp)=> {
+            setTextAlert("¡Formulario cargado exitosamente!");
+            setTypeAlert("success");
+        }).catch((resp)=> {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(()=> {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
+    };
+    const location = useLocation();
+    useEffect(() => {
+        const infoPrecargada = location.state?.objeto;
+        if (infoPrecargada) { // muestro un form del historial
+            console.log("infoPrecargada", infoPrecargada)
+            console.log("sepudo")
+            setValues({
+                razonSocial: infoPrecargada.razonSocial,
+                ubicacion: infoPrecargada.ubicacion,
+                localidad: infoPrecargada.localidad,
+                fecha: infoPrecargada.fecha,
+                personas: [
+                    {
+                        nombreCompleto: infoPrecargada.personas.nombreCompleto,
+                        dni: infoPrecargada.personas.dni,
+                        firma: infoPrecargada.personas.firma
+                    }
+                ],
+                firmaInstructor: infoPrecargada.firmaInstructor,
+                idUser: idUser
+            })
+            console.log("values", values)
+        } else { // creo un form desde cero
+            console.log("error")
+            setValues({
+                razonSocial: "",
+                ubicacion: "",
+                localidad: "",
+                fecha: "",
+                personas: [
+                    {
+                        nombreCompleto: "",
+                        dni: "",
+                        firma: ""
+                    }
+                ],
+                firmaInstructor: "",
+                idUser: idUser
+            })
+        }
+    }, [])
     return (
+        <>
+        {values &&
         <div>
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Registro de Simulacro</h3>
-                    {/* <h4 className="formNumber"> HS-02-R01</h4> */}
                 </div>
 
-                <div className={styles.personal}>
-                    <p>Curso: Manejo Extintores –Plan Emergencia y Evacuación –Simulacro Evacuación“Según Ley 1346/04” –Sistema de alarma y señal de evacuación.</p>
-                </div>
                 <div className={styles.personalText}>
-                    <TextField onChange={(e) => { setValues({ ...values, razonSocial: e.target.value }) }} fullWidth id="outlined-basic" label="Razón Social" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, razonSocial: e.target.value }) }} value={values.razonSocial} fullWidth id="outlined-basic" label="Razón Social/Contrato" variant="outlined" />
                 </div>
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, ubicacion: e.target.value }) }} id="outlined-basic" label="Ubicación" variant="outlined" />
-                    <TextField onChange={(e) => { setValues({ ...values, localidad: e.target.value }) }} id="outlined-basic" label="Localidad" variant="outlined" />
-                    <input
-                        onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
+                    <TextField onChange={(e) => { setValues({ ...values, ubicacion: e.target.value }) }} value={values.ubicacion}  id="outlined-basic" label="Ubicación" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, localidad: e.target.value }) }} value={values.localidad}  id="outlined-basic" label="Localidad" variant="outlined" />
+                 
+                    <TextField
+                        label="Fecha"
+                        variant="outlined"
                         type="date"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         id="fecha"
                         name="fecha"
                         required
+                        value={values.fecha} 
+                        onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
                     />
                 </div>
-
 
                 <div className="table">
                     <div className="tableSection">
@@ -92,13 +147,15 @@ function RegistroSimulacro() {
                             .map((_, index) => (
                                 <div className="tableRow" key={index}>
                                     <p className="index">{index + 1} </p>
-
                                     {inputs.map((input) => (
                                         <div key={input.id}>
-                                            <TextField onKeyUp={(e) => {
-                                                inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                            }} id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} label={`${input.label}`} variant="outlined" />
-
+                                            <TextField
+                                                onKeyUp={(e) => handleChangePerson(index, input.label, e.target.value)}
+                                                id={`input-${input.id}-${index}`}
+                                                name={`input-${input.id}-${index}`}
+                                                label={`${input.label}`}
+                                                variant="outlined"
+                                            />
                                         </div>
                                     ))}
                                     <div className="icon">
@@ -106,10 +163,8 @@ function RegistroSimulacro() {
                                     </div>
                                 </div>
                             ))}
-
                     </div>
                 </div>
-
 
                 <div className={styles.responsableCont}>
                     <div className={styles.subtitleCont}>
@@ -127,30 +182,20 @@ function RegistroSimulacro() {
                     </ul>
                 </div>
 
-                <div className={styles.responsableCont}>
-                    <div className={styles.subtitleCont}>
-                        <p className={styles.subtitle}>OBSERVACIONES:</p>
-                    </div>
-
-                    <ul>
-                        <li>Se entrega material didáctico.</li>
-                    </ul>
-                </div>
-
-
                 <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, firmaInstructor: e.target.value }) }} id="outlined-basic" label="Firma del Instructor" variant="outlined" />
+                    <TextField onChange={(e) => { setValues({ ...values, firmaInstructor: e.target.value }) }} value={values.firmaInstructor}  id="outlined-basic" label="Firma del Instructor" variant="outlined" />
                 </div>
+
                 <div className="btn">
-                    <Button onClick={async() => {
-                         await axios.post('https://api.onmodoapp.com/api/registrosimulacro', values)
-                    }} variant="contained">Guardar</Button>
-
+                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
                 </div>
-
             </div>
         </div>
+        }
+        { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+        </>
+
     )
 }
 
-export default RegistroSimulacro
+export default RegistroSimulacro;

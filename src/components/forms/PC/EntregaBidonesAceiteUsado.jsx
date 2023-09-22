@@ -2,6 +2,9 @@ import { Button, TextField } from '@mui/material'
 import React, { useState, useEffect } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import axios from 'axios';
+import { entregaBidones } from '../../../services/FormsRequest';
+import Alert from '../../shared/components/Alert/Alert';
+import { useLocation } from 'react-router';
 
 function EntregaBidonesAceiteUsado({ idUser }) {
     const [inputs] = useState([
@@ -16,24 +19,20 @@ function EntregaBidonesAceiteUsado({ idUser }) {
     var idUser = localStorage.getItem("idUser");
 
     const [replicas, setReplicas] = useState(1);
-    const [values, setValues] = useState({
-        inputsValues: [{}],
-        idUser: idUser
-    });
+    const [values, setValues] = useState();
     const [replicaValues, setReplicaValues] = useState([{}]);
     const [trigger, setTrigger] = useState(false);
 
-    const handleButtonClick = async () => {
-        await axios.post(`https://api.onmodoapp.com/api/entregabidones`, values);
-        console.log("Valor de idUser:", idUser);
-        console.log("Values", values);
-    };
+    //** ALERTA */
+    const [textAlert, setTextAlert] = useState("");
+    const [typeAlert, setTypeAlert] = useState("");
+    const [showAlert, setShowlert] = useState(false);
 
     useEffect(() => {
         if (replicas === 1 && areAllValuesFilled(replicaValues[0])) {
-            setValues({ ...values, inputsValues: [replicaValues[0]] });
+            setValues({ ...values, inputs: [replicaValues[0]] });
         } else if (replicas > 1 && replicaValues.every(areAllValuesFilled)) {
-            setValues({ ...values, inputsValues: replicaValues });
+            setValues({ ...values, inputs: replicaValues });
         }
     }, [replicaValues, replicas]);
 
@@ -55,8 +54,47 @@ function EntregaBidonesAceiteUsado({ idUser }) {
         setTrigger(false);
     };
 
+    const handleSubmit = () => {
+        entregaBidones(values).then((resp)=> {
+            setTextAlert("¡Formulario cargado exitosamente!");
+            setTypeAlert("success");
+        }).catch((resp)=> {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(()=> {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+              });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
+    };
+    const location = useLocation();
+    useEffect(() => {
+        const infoPrecargada = location.state?.objeto;
+        if (infoPrecargada) { // muestro un form del historial
+            console.log("infoPrecargada", infoPrecargada)
+            setValues({  
+                    inputs: [{}],
+                    idUser: idUser
+            })
+            console.log("value", values)
+        } else { // creo un form desde cero
+            
+            setValues({
+                inputs: [{}],
+                idUser: idUser
+            })
+        }
+    }, [])
     return (
-        <div>
+        <>
+         <div>
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Circuito de Aceite Usado</h3>
@@ -84,6 +122,7 @@ function EntregaBidonesAceiteUsado({ idUser }) {
                                                     id={`input-${input.id}-${index}`}
                                                     name={`input-${input.id}-${index}`}
                                                     label={`${input.label}`}
+                                                  
                                                     variant="outlined"
                                                 />
                                             )}
@@ -97,10 +136,12 @@ function EntregaBidonesAceiteUsado({ idUser }) {
                     </div>
                 </div>
                 <div className="btn">
-                    <Button onClick={() => handleButtonClick()} variant="contained">Guardar</Button>
+                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
                 </div>
             </div>
         </div>
+        { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
+        </>
     );
 }
 

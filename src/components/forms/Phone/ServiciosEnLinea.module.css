@@ -45,7 +45,7 @@
 .contTitTabla {
     display: flex;
     width: 1022px;
-    margin-left: 313px; 
+    margin-left: 406px !important; 
 }
 
 .subtitleCont {

@@ -12,7 +12,7 @@ function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentLocation === '/cuenta') setShowSearch(false);
+    if (currentLocation === '/cuenta' || currentLocation === '/inicio') setShowSearch(false);
     else setShowSearch(true);
   }, [currentLocation]);
 
@@ -42,6 +42,7 @@ function Header() {
               localStorage.removeItem('token');
               localStorage.removeItem('rol');
               localStorage.removeItem('idChief');
+              localStorage.removeItem('idUser');
               localStorage.removeItem('business');
               navigate('/inicio-de-sesion');
 

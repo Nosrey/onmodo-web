@@ -2,7 +2,9 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './CrearContraseña.module.css';
 import logo from '../../assets/image/on-modo-grande.png';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import axios, { Axios } from 'axios';
+import { createPassword } from '../../services/Request';
 
 function CrearContraseña() {
   const [iconPassword, setIconPassword] = useState(false);
@@ -11,10 +13,27 @@ function CrearContraseña() {
   const [validateBtn, setValidateBtn] = useState(true);
   const [btnPassword, setBtnPassword] = useState(false);
   const navigate = useNavigate();
+  const { token } = useParams();
   const [inputValue, setInputValue] = useState({
     contraseña: '',
     contraseñarep: '',
   });
+  const password = inputValue.contraseña
+
+  // Datos para crear cuenta
+  // {
+  //   "email":"mayef31829@tiuas.com",
+  //   "business":"asdaaaaaasdasdsadas",
+  //   "puesto":"teasdst",
+  //   "rol":1,
+  //   "fullName":"joaquin giorgis",
+  //   "number":"11322321211234209497",
+  //   "legajo":"1231222123123",
+  //   "provincia":"cordoba",
+  //   "localidad":"cordoba",
+  //   "contratoComedor":"test"
+  // }
+  
 
   const handleBlur = (e) => {
     const { name } = e.target;
@@ -55,13 +74,14 @@ const handleChange = (e) => {
     }
   }, [inputValue]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const validationErrors = validate(inputValue);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
       setErrors({});
+      createPassword(token, password)
       resetForm();
       navigate('/inicio-de-sesion');
     }

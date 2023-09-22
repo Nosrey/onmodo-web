@@ -1,121 +1,23 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Card from '../card/Card';
 import styles from './Inicio.module.css';
+import { MENU_OPTIONS } from '../shared/constants/menuOptions';
 
 function Inicio() {
   var idUser = localStorage.getItem('idUser');
   var nivelRol = localStorage.getItem('rol');
-  console.log(nivelRol);
-  console.log(idUser);
 
   // Definir las opciones del menú según el rol del usuario
-  let cards = [];
+  // let cards = [];
+  //   cards = ¨/// if else if elseif  TRABAJAR CON ESTADOS;
 
-  if (nivelRol == '1') {
-    cards = [
-      {
-        title: 'Formularios',
-        link: '/formularios',
-      },
-      {
-        title: 'Formularios cargados',
-        link: '/formularios-cargados',
-      },
-      {
-        title: 'Documentación',
-        link: '/documentacion',
-      },
-      {
-        title: 'Mi cuenta',
-        link: '/cuenta',
-      },
-    ];
-  } else if (nivelRol == '2') {
-    cards = [
-      {
-        title: 'Formularios',
-        link: '/formularios',
-      },
-      {
-        title: 'Formularios cargados',
-        link: '/formularios-cargados',
-      },
-      {
-        title: 'Documentación',
-        link: '/documentacion',
-      },
-      {
-        title: 'Recordatorios',
-        link: '/recordatorios',
-      },
-      {
-        title: 'Solicitudes de Edición',
-        link: '/solicitudes-edicion',
-      },
-      {
-        title: 'Legajos',
-        link: '/legajos',
-      },
-      {
-        title: 'Cuentas',
-        link: '/cuentas',
-      },
-    ];
-  } else if (nivelRol == '3') {
-    cards = [
-      {
-        title: 'Estadísticas',
-        link: '/estadisticas',
-      },
-      {
-        title: 'Formularios',
-        link: '/formularios',
-      },
-      {
-        title: 'Formularios cargados',
-        link: '/formularios-cargados',
-      },
-      {
-        title: 'Documentación',
-        link: '/documentacion',
-      },
-      {
-        title: 'Solicitudes de Edición',
-        link: '/solicitudes-edicion',
-      },
-      {
-        title: 'Legajos',
-        link: '/legajos',
-      },
-      {
-        title: 'Cuentas',
-        link: '/cuentas',
-      },
-    ];
-  } else if (nivelRol == '4') {
-    cards = [
-      {
-        title: 'Estadísticas',
-        link: '/estadisticas',
-      },
-      {
-        title: 'Solicitudes de Edición',
-        link: '/solicitudes-edicion',
-      },
-      {
-        title: 'Legajos',
-        link: '/legajos',
-      },
-      {
-        title: 'Crear Cuenta',
-        link: '/crear-cuenta',
-      },
-      {
-        title: 'Mi cuenta',
-        link: '/cuenta',
-      },
-    ];
-  }
+  const [cards, setCards] = useState([])
+
+  useEffect(() => {
+    if (nivelRol) setCards(MENU_OPTIONS.filter((item)=> item.showToRol.includes(parseInt(nivelRol))))
+      
+  }, [nivelRol])
+
 
   return (
     <div className={styles.container}>

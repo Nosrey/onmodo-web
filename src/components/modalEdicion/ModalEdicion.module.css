@@ -47,6 +47,7 @@ textarea {
   font-weight: 300;
   font-size: 18px;
   line-height: 22px;
+  color: black;
 }
 
 .contBtn {
@@ -56,7 +57,7 @@ textarea {
 }
 
 .contBtn button {
-  background: #a0b875;
+  background: #7bc100;
   border-radius: 10px;
   border: none;
   padding: 5px 10px;
