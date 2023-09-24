@@ -17,7 +17,7 @@ export const FORMS_LIST = [
     {
       title: 'Entrega de bidones de aceite usado',
       link: '/bidones-de-aceite',
-      rol:'superior'
+      rol:'all'
     },
     {
       title: 'Flash reporte de incidentes',
