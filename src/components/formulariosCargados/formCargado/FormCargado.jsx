@@ -223,6 +223,7 @@ function FormCargado() {
     </tr>
   );
 })}
+            {formularios.length === 0 && <p className={styles.placeholder}>No se encontraron formularios cargados en su historial.</p>}
 
             </tbody>
           </table>

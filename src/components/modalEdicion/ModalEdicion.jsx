@@ -25,7 +25,6 @@ const ModalEdicion = ({ openModal, setOpenModal, idForm, urlForm, showAlert }) =
       status:"pending",
       motivoPeticion: motivoEdicion,
     }
-    console.log({values: data, formId: idForm, form: urlForm})
     
     sendEditApplication({values: data, formId: idForm, form: urlForm}).then((resp)=>{
       showAlert("success", "Solicitud enviada")
