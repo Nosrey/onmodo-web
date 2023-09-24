@@ -122,7 +122,6 @@ function FormCargado() {
   }
 
   const openModalEdit = (form) => {
-    console.log(form._id)
     setFormSelected(form._id);
     if (formSelected && form.status !== "pending" && form.status !== "denied") {
       setOpenModal(true);

@@ -9,11 +9,11 @@ import { useLocation } from 'react-router';
 function EntregaBidonesAceiteUsado({ idUser }) {
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
-        { id: 2, label: 'Cantidad de Litros entregados' },
+        { id: 2, label: 'Litros entregados' },
         { id: 3, label: 'Responsable de Entrega' },
         { id: 4, label: 'Responsable de Retiro' },
-        { id: 5, label: 'Certificado de Transporte' },
-        { id: 6, label: 'Certificado de Disposición final' },
+        { id: 5, label: 'Certif. de Transporte' },
+        { id: 6, label: 'Certif. de Disposición final' },
     ]);
 
     var idUser = localStorage.getItem("idUser");
@@ -110,11 +110,16 @@ function EntregaBidonesAceiteUsado({ idUser }) {
                                     {inputs.map((input) => (
                                         <div key={input.id}>
                                             {input.label === 'Fecha' ? (
-                                                <input
-                                                    type="date"
-                                                    onBlur={(e) => handleInputChange(e, index, input.label)}
-                                                    id={`input-${input.id}-${index}`}
-                                                    name={`input-${input.id}-${index}`}
+                                                <TextField
+                                                label={input.label}
+                                                variant="outlined"
+                                                type="date"
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
+                                                onBlur={(e) => handleInputChange(e, index, input.label)}
+                                                id={`input-${input.id}-${index}`}
+                                                name={`input-${input.id}-${index}`}
                                                 />
                                             ) : (
                                                 <TextField

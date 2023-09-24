@@ -211,13 +211,19 @@ function InformeInternoAccidente() {
 
                 <div className={styles.personal}>
                     <TextField onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }} value={values.comedor} id="outlined-basic" style={{ width: "50%" }} label="Comedor donde ocurrió" variant="outlined" />
-                    <input
-                        onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
+                   
+                     <TextField
+                        label="Fecha"
+                        variant="outlined"
                         type="date"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
                         id="fecha"
                         value={values.fecha}
                         name="fecha"
-                    />
+                        />
                     <TextField onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} value={values.tipo} id="outlined-basic" label="Tipo de accidente" variant="outlined" />
                 </div>
 
@@ -237,25 +243,34 @@ function InformeInternoAccidente() {
                     <div className={styles.personal}>
                         <TextField onChange={(e) => { setValues({ ...values, nombreApellido: e.target.value }) }}  value={values.nombreApellido} id="outlined-basic" label="Nombre y Apellido" variant="outlined" />
                         <TextField onChange={(e) => { setValues({ ...values, cuil: e.target.value }) }}  value={values.cuil} id="outlined-basic" label="Nº de CUIL" variant="outlined" />
-                        <input
-                            onChange={(e) => { setValues({ ...values, fechaIngreso: e.target.value }) }}
-                            type="date"
-                            id="fecha-ingreso"
-                            name="fecha-ingreso"
-                            value={values.fechaIngreso} 
+                        <TextField
+                        label="Fecha de Ingreso"
+                        variant="outlined"
+                        type="date"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        onChange={(e) => { setValues({ ...values, fechaIngreso: e.target.value }) }}
+                        id="fecha-ingreso"
+                        name="fecha-ingreso"
+                        value={values.fechaIngreso} 
                         />
-
                     </div>
                     <div className={styles.personal}>
                         <TextField onChange={(e) => { setValues({ ...values, puesto: e.target.value }) }} value={values.puesto}  id="outlined-basic" label="Puesto de trabajo" variant="outlined" />
-                        <input
-                            onChange={(e) => { setValues({ ...values, hora: e.target.value }) }}
-                            type="time"
-                            id="hora-accidente"
-                            name="hora-accidente"
-                            value={values.hora} 
+                      
+                    <TextField
+                        label="Hora"
+                        variant="outlined"
+                        type="time"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        onChange={(e) => { setValues({ ...values, hora: e.target.value }) }}
+                        id="hora-accidente"
+                        name="hora-accidente"
+                        value={values.hora} 
                         />
-
                         <TextField onChange={(e) => { setValues({ ...values, lugar: e.target.value }) }}  value={values.lugar} id="outlined-basic" label="Lugar del accidente" variant="outlined" />
                     </div>
 
@@ -344,8 +359,6 @@ function InformeInternoAccidente() {
                         />
                     </div>
                 </div>
-
-                <p className={styles.boldLegend}>Enviar dentro de las 24 hs. de ocurrido el accidente a Administración de RRHH –Of. Central</p>
 
 
                 <div className={styles.personal}>

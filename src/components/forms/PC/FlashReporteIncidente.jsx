@@ -96,24 +96,37 @@ function FlashReporteIncidente() {
                 </div>
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,alcance:e.target.value})}} disabled={!!location.state?.objeto}  value={values.alcance} id="outlined-basic" label="Alcance" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,linea:e.target.value})}} disabled={!!location.state?.objeto}  value={values.linea} id="outlined-basic" label="Línea de negocios" variant="outlined" />
-                    <input
-            type="date"
-            onChange={(e) => {
-              setValues({ ...values, fecha: e.target.value });
-            }}
-            value={values.fecha}
-            disabled={!!location.state?.objeto} 
-          />
-          <input
-            type="time"
-            onChange={(e) => {
-              setValues({ ...values, hora: e.target.value });
-            }}
-            value={values.hora}
-            disabled={!!location.state?.objeto} 
-          />
+                   
+                    <TextField
+                    label="Fecha"
+                    variant="outlined"
+                    type="date"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    onChange={(e) => {
+                        setValues({ ...values, fecha: e.target.value });
+                        }}
+                    value={values.fecha}
+                    disabled={!!location.state?.objeto} 
+                    id="fechaInput"
+                    name="fecha"
+                    />
+                    <TextField
+                    label="Hora"
+                    variant="outlined"
+                    type="time"
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    onChange={(e) => {
+                        setValues({ ...values, hora: e.target.value });
+                      }}
+                      value={values.hora}
+                      disabled={!!location.state?.objeto} 
+                    id="horaInput"
+                    name="hora"
+                    />
                 </div>
                 <div className={styles.personal}>
                     <TextField onChange={(e)=>{setValues({...values,comedor:e.target.value})}} disabled={!!location.state?.objeto}  value={values.comedor} id="outlined-basic" label="Comedor" variant="outlined" />
@@ -126,16 +139,20 @@ function FlashReporteIncidente() {
                 </div>
 
                 <div className={styles.personalText}>
-                    <TextField
-                        fullWidth
-                        id="outlined-multiline-static"
-                        label="Descripción del Incidente:  (quién, qué, cómo, cuándo)"
-                        multiline
-                        value={values.descripcion}
-                        rows={4}
-                        disabled={!!location.state?.objeto} 
-                        onChange={(e)=>{setValues({...values,descripcion:e.target.value})}}
-                    />           
+                    <div className={styles.descripcion}>
+                        <TextField
+                            fullWidth
+                            id="outlined-multiline-static"
+                            label="Descripción del Incidente"
+                            multiline
+                            value={values.descripcion}
+                            rows={4}
+                            disabled={!!location.state?.objeto} 
+                            onChange={(e)=>{setValues({...values,descripcion:e.target.value})}}
+                        />           
+                        <p className={styles.aclaracion}>*En esta área no se debe nombrar a la persona que tuvo el accidente, tampoco plantear causales.</p>
+                    </div>
+                    
                     <TextField onChange={(e)=>{setValues({...values,fotografia:e.target.value})}} disabled={!!location.state?.objeto}  value={values.fotografia} id="outlined-basic" label="Fotografía" variant="outlined" />
      
                 </div>
