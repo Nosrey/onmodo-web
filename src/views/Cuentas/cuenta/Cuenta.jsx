@@ -117,6 +117,7 @@ function Cuenta() {
           localidad: resp[0].localidad,
           provincia: resp[0].provincia,
           contrato:resp[0].contratoComedor,
+          imgProfile: resp[0].imgProfile
         })
         setSrcImage(perfil);
         setIsANewProfile(false);
@@ -170,7 +171,7 @@ function Cuenta() {
               <span className={styles.toast}>¡Ups! Ocurrió un error</span>
             </div>
           )}
-          <ImageUploader uploadPhoto={handleChange}/>
+          <ImageUploader uploadPhoto={handleChange} photo={inputValue.imgProfile}/>
           <div className={styles.formContainer}>
             <form onSubmit={handleSubmit} action='' className={styles.formulario}>
               <div className={styles.inputContainer}>

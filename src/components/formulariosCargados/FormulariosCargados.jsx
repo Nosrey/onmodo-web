@@ -86,6 +86,7 @@ function FormulariosCargados() {
           {sortedForms.length > 0
             ? sortedForms.map((form, index) => <Card text={form} key={index} />)
             : forms.map((form, index) => <Card text={form} key={index} />)}
+            
         </div>
       </div>
     </div>

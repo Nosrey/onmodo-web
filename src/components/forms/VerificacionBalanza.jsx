@@ -135,14 +135,15 @@ function VerificacionBalanza() {
                     )
                     }
                     <div className={styles.personal}>
-                        <input
-                            onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
+                        
+                        <TextField
                             type="date"
+                            className='input'
+                            onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
                             id="fecha"
                             name="fecha"
                             required
                         />
-
                         <TextField onChange={(e) => { setValues({ ...values, responsable: e.target.value }) }} id="outlined-basic" label="Responsable de validación" variant="outlined" />
                         <TextField onChange={(e) => { setValues({ ...values, balanza: e.target.value }) }} id="outlined-basic" label="Balanza/Báscula" variant="outlined" />
 
@@ -190,20 +191,6 @@ function VerificacionBalanza() {
                     <span><b>*</b> BP(Balanza de producción) - BR (Balanza de recepción)</span>
                     <br />
                     <br />
-                    <div className={styles.personal}>
-                        <TextField onChange={(e) => { setValues({ ...values, verified: e.target.value }) }} id="outlined-basic" label="Verificado por" variant="outlined" />
-                        <input
-                            type="datetime-local"
-                            onChange={(e) => {
-                                setValues({ ...values, fechaHora: e.target.value });
-                            }}
-                            id="fechaHora"
-                            name="fechaHora"
-                            value={values.fechaHora}
-
-                        />
-
-                    </div>
                     <div className="btn">
                         <Button onClick={handleSubmit} variant="contained">Guardar</Button>
                     </div>

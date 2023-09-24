@@ -26,7 +26,6 @@ function ControlProcesos() {
         { id: 12, label: 'Temp.' },
         { id: 13, label: 'Temp.' },
         { id: 14, label: 'Acciones Correción' },
-        { id: 15, label: 'Responsable' },
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
@@ -37,14 +36,14 @@ function ControlProcesos() {
         fechaHora: "",
         idUser:"643ea98d5b44dd9765966ae7"
     })
-    const [objValues,setObjValues] = useState({alimento:"",fechaCoccion:"",tempCoccion:"",horaInicio:"",tempInicio:"",temp2hs:"",temp4hs:"",temp6hs:"",fechaRegFinal:"",tempRegFinal:"", tempMantInicio:"",tempMant1hs:"",tempMant2hs:"",accionesCorrectivas:"",responsable:""})
+    const [objValues,setObjValues] = useState({alimento:"",fechaCoccion:"",tempCoccion:"",horaInicio:"",tempInicio:"",temp2hs:"",temp4hs:"",temp6hs:"",fechaRegFinal:"",tempRegFinal:"", tempMantInicio:"",tempMant1hs:"",tempMant2hs:"",accionesCorrectivas:""})
     const [inputValues,setInputValues]= useState([])
     const [trigger,setTrigger] = useState(false)
 
     useEffect(()=>{
-        if(replicas === 1 && objValues.alimento !== "" && objValues.fechaCoccion !== "" && objValues.tempCoccion !== "" && objValues.horaInicio !== "" && objValues.tempInicio !== "" && objValues.temp2hs !== "" && objValues.temp4hs !== "" && objValues.temp6hs !== "" && objValues.fechaRegFinal !== "" && objValues.tempRegFinal !== "" && objValues.tempMantInicio !== "" && objValues.tempMant1hs !== "" && objValues.tempMant2hs !== "" && objValues.accionesCorrectivas !== "" && objValues.responsable !== "" && objValues.id !=="") {
+        if(replicas === 1 && objValues.alimento !== "" && objValues.fechaCoccion !== "" && objValues.tempCoccion !== "" && objValues.horaInicio !== "" && objValues.tempInicio !== "" && objValues.temp2hs !== "" && objValues.temp4hs !== "" && objValues.temp6hs !== "" && objValues.fechaRegFinal !== "" && objValues.tempRegFinal !== "" && objValues.tempMantInicio !== "" && objValues.tempMant1hs !== "" && objValues.tempMant2hs !== "" && objValues.accionesCorrectivas !== ""  && objValues.id !=="") {
             setInputValues([objValues])
-        }else if (replicas > 1 && objValues.alimento !== "" && objValues.fechaCoccion !== "" && objValues.tempCoccion !== "" && objValues.horaInicio !== "" && objValues.tempInicio !== "" && objValues.temp2hs !== "" && objValues.temp4hs !== "" && objValues.temp6hs !== "" && objValues.fechaRegFinal !== "" && objValues.tempRegFinal !== "" && objValues.tempMantInicio !== "" && objValues.tempMant1hs !== "" && objValues.tempMant2hs !== "" && objValues.accionesCorrectivas !== "" && objValues.responsable !== "" && objValues.id !=="") {
+        }else if (replicas > 1 && objValues.alimento !== "" && objValues.fechaCoccion !== "" && objValues.tempCoccion !== "" && objValues.horaInicio !== "" && objValues.tempInicio !== "" && objValues.temp2hs !== "" && objValues.temp4hs !== "" && objValues.temp6hs !== "" && objValues.fechaRegFinal !== "" && objValues.tempRegFinal !== "" && objValues.tempMantInicio !== "" && objValues.tempMant1hs !== "" && objValues.tempMant2hs !== "" && objValues.accionesCorrectivas !== ""  && objValues.id !=="") {
             setInputValues([...inputValues,objValues])
         }
     },[trigger])
@@ -52,7 +51,7 @@ function ControlProcesos() {
         setValues({...values,inputs:inputValues})
     },[inputValues])
     useEffect(()=>{
-        if (objValues.alimento !== "" && objValues.fechaCoccion !== "" && objValues.tempCoccion !== "" && objValues.horaInicio !== "" && objValues.tempInicio !== "" && objValues.temp2hs !== "" && objValues.temp4hs !== "" && objValues.temp6hs !== "" && objValues.fechaRegFinal !== "" && objValues.tempRegFinal !== "" && objValues.tempMantInicio !== "" && objValues.tempMant1hs !== "" && objValues.tempMant2hs !== "" && objValues.accionesCorrectivas !== "" && objValues.responsable !== ""){
+        if (objValues.alimento !== "" && objValues.fechaCoccion !== "" && objValues.tempCoccion !== "" && objValues.horaInicio !== "" && objValues.tempInicio !== "" && objValues.temp2hs !== "" && objValues.temp4hs !== "" && objValues.temp6hs !== "" && objValues.fechaRegFinal !== "" && objValues.tempRegFinal !== "" && objValues.tempMantInicio !== "" && objValues.tempMant1hs !== "" && objValues.tempMant2hs !== "" && objValues.accionesCorrectivas !== "" ){
             setTrigger(true)
         }
     },[objValues])
@@ -72,13 +71,11 @@ function ControlProcesos() {
         (label === 'Temp.' && inputID === 11) ? setObjValues({...objValues,tempMantInicio:inputTarget.value}):
         (label === 'Temp.' && inputID === 12) ? setObjValues({...objValues,tempMant1hs:inputTarget.value}):
         (label === 'Temp.' && inputID === 13) ? setObjValues({...objValues,tempMant2hs:inputTarget.value}):
-        label === 'Acciones Correción' ? setObjValues({...objValues,accionesCorrectivas:inputTarget.value}):
-        label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
-    }
+        label === 'Acciones Correción'&& setObjValues({...objValues,accionesCorrectivas:inputTarget.value})    }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
-        setObjValues({alimento:"",fechaCoccion:"",tempCoccion:"",horaInicio:"",tempInicio:"",temp2hs:"",temp4hs:"",temp6hs:"",fechaRegFinal:"",tempRegFinal:"", tempMantInicio:"",tempMant1hs:"",tempMant2hs:"",accionesCorrectivas:"",responsable:""})
+        setObjValues({alimento:"",fechaCoccion:"",tempCoccion:"",horaInicio:"",tempInicio:"",temp2hs:"",temp4hs:"",temp6hs:"",fechaRegFinal:"",tempRegFinal:"", tempMantInicio:"",tempMant1hs:"",tempMant2hs:"",accionesCorrectivas:""})
         setTrigger(false)
     };
 
@@ -174,10 +171,7 @@ function ControlProcesos() {
                     </div>
                     
                 </div>
-                <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
-                </div>
+              
                 <div className="btn">
                     <Button onClick={()=>{
                         dispatch(controlProcesosActions.logIn(values))}} variant="contained">Guardar</Button>

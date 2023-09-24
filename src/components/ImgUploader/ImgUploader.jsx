@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styles from './ImgUploader.module.css';
 import placeholder from '../../assets/image/download.png';
 
-const ImageUploader = ({uploadPhoto}) => {
+const ImageUploader = ({uploadPhoto, photo}) => {
   const [selectedImage, setSelectedImage] = useState(null);
-
+  const [ableToChangePhoto, setAbleToChangePhoto] = useState(true);
   const [file, setFile] = useState(null);
 
   const handleImageChange = (e) => {
@@ -16,12 +16,19 @@ const ImageUploader = ({uploadPhoto}) => {
       setFile(imageFile)
     }
   };
+
   useEffect(() => {
     if (file !== null) {
       uploadPhoto({target:{value:file , name:"imgProfile"}})
     }
   }, [file])
   
+  useEffect(() => {
+    if (photo) {
+      setSelectedImage(photo);
+      setAbleToChangePhoto(false);
+    }
+  }, [photo])
 
   return (
     <div className={styles.imageUploader}>
@@ -38,12 +45,16 @@ const ImageUploader = ({uploadPhoto}) => {
         )}
 
         {/* Input oculto para seleccionar la imagen */}
-        <input
-          type="file"
-          id="image-input"
-          accept="image/*"
-          onChange={handleImageChange}
-        />
+        {
+          ableToChangePhoto && 
+          <input
+            type="file"
+            id="image-input"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+        }
+        
       </label>
     </div>
   );

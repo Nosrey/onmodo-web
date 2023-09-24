@@ -215,7 +215,7 @@ function VerificacionTermometros() {
                             <p className={styles.subtitle}>TERMÓMETROS DE PINCHE/INFRARROJOS </p>
                         </div>
 
-                        <b>   FRECUENCIA: TRIMESTRAL</b>
+                        {/* <b>   FRECUENCIA: TRIMESTRAL</b> */}
 
                         <div className="table">
                             <div className={styles.contTitTabla}>
@@ -257,7 +257,7 @@ function VerificacionTermometros() {
                             <p className={styles.subtitle}>TERMÓMETROS DE CÁMARAS, ANTECAMARAS, HELADERAS Y FREEZER </p>
                         </div>
 
-                        <b>   FRECUENCIA: SEMESTRAL</b>
+                        {/* <b>   FRECUENCIA: SEMESTRAL</b> */}
 
 
                         <div className="table">
@@ -297,17 +297,6 @@ function VerificacionTermometros() {
                         <br />
                         <br />
 
-                        <div className={styles.personal}>
-                            <TextField value={values.verified} onChange={(e) => { setValues({ ...values, verified: e.target.value }) }} id="outlined-basic" placeholder="Verificado por" variant="outlined" />
-                            <TextField
-                                type="datetime-local"
-                                value={values.fechaHora}
-                                onChange={(e) => {
-                                    setValues({ ...values, fechaHora: e.target.value });
-                                }}
-                                placeholder="Fecha/hora"
-                            />
-                        </div>
                         <span><b>*</b> PIN(Termómetro de pinche) - IR (Termómetro infrarrojo)</span>
 
                         <div className="btn">
