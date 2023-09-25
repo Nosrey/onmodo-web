@@ -96,6 +96,10 @@ function FlashReporteIncidente() {
                 </div>
 
                 <div className={styles.personal}>
+
+                    <TextField onChange={(e)=>{setValues({...values,alcance:e.target.value})}} disabled={!!location.state?.objeto}  value={values.alcance} id="outlined-basic" label="Alcance" variant="outlined" />
+                    <TextField onChange={(e)=>{setValues({...values,linea:e.target.value})}} disabled={!!location.state?.objeto}  value={values.linea} id="outlined-basic" label="Línea de negocios" variant="outlined" />
+                    
                    
                     <TextField
                     label="Fecha"

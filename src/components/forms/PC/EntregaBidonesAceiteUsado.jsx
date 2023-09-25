@@ -52,6 +52,7 @@ function EntregaBidonesAceiteUsado({ idUser }) {
         setReplicas(replicas + 1);
         setReplicaValues([...replicaValues, {}]);
         setTrigger(false);
+        console.log("replicaValues", replicaValues);
     };
 
     const handleSubmit = () => {
@@ -74,24 +75,21 @@ function EntregaBidonesAceiteUsado({ idUser }) {
         }
         )
     };
+    
     const location = useLocation();
-    useEffect(() => {
-        const infoPrecargada = location.state?.objeto;
+    const infoPrecargada = location.state?.objeto;
+    useEffect( () => {
         if (infoPrecargada) { // muestro un form del historial
-            console.log("infoPrecargada", infoPrecargada)
-            setValues({  
-                    inputs: [{}],
-                    idUser: idUser
-            })
-            console.log("value", values)
+            console.log("infoPrecargada", infoPrecargada);
+            setReplicas(infoPrecargada.inputs.length);
+            setReplicaValues(infoPrecargada.inputs);
+            console.log("replicaValues", replicaValues);
         } else { // creo un form desde cero
-            
-            setValues({
-                inputs: [{}],
-                idUser: idUser
-            })
+            setReplicas(1);
+            setReplicaValues([{}]);
         }
-    }, [])
+    }, [location.state?.objeto]);
+   
     return (
         <>
          <div>
@@ -111,12 +109,15 @@ function EntregaBidonesAceiteUsado({ idUser }) {
                                         <div key={input.id}>
                                             {input.label === 'Fecha' ? (
                                                 <TextField
+
                                                 label={input.label}
                                                 variant="outlined"
                                                 type="date"
                                                 InputLabelProps={{
                                                     shrink: true,
                                                 }}
+                                                 value= {replicaValues[index].fecha}
+                                                    disabled={!!location.state?.objeto}
                                                 onBlur={(e) => handleInputChange(e, index, input.label)}
                                                 id={`input-${input.id}-${index}`}
                                                 name={`input-${input.id}-${index}`}
@@ -127,21 +128,22 @@ function EntregaBidonesAceiteUsado({ idUser }) {
                                                     id={`input-${input.id}-${index}`}
                                                     name={`input-${input.id}-${index}`}
                                                     label={`${input.label}`}
-                                                  
+                                                    value= {replicaValues[index][input.label.toLowerCase().replace(/\s/g, "")]}
                                                     variant="outlined"
+                                                    disabled={!!location.state?.objeto}
                                                 />
                                             )}
                                         </div>
                                     ))}
-                                    <div className="icon">
-                                        <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
-                                    </div>
+                                    {infoPrecargada ? <div></div> : <div className="icon">
+                                        <AddBoxIcon  style={{ color: 'grey' }} onClick={handleClick} />
+                                    </div>}
                                 </div>
                             ))}
                     </div>
                 </div>
                 <div className="btn">
-                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
+                    <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
                 </div>
             </div>
         </div>

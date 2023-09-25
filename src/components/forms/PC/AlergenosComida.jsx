@@ -9,13 +9,43 @@ import { controlAlergenos } from '../../../services/FormsRequest';
 import { useLocation } from 'react-router';
 
 function AlergenosComida() {
+    const location = useLocation();
+    const infoPrecargada = location.state?.objeto;
+    var idUser = localStorage.getItem("idUser");
+    useEffect(() => {
+        console.log(infoPrecargada)
+        if (infoPrecargada)  { // muestro un form del historial
+             setReplicas(infoPrecargada.inputs.length);
+            setObjValues(infoPrecargada.inputs)
+            setValues({
+                comedor: infoPrecargada.comedor,
+                
+                idUser: idUser,
+
+            })
+            console.log("objValues", objValues)
+            console.log("values", values)
+        } else { // creo un form desde cero
+            console.log("error")
+            setReplicas(1);
+            setValues({
+                comedor: "",
+                inputs: [{}
+                ],
+                idUser: idUser,
+                verified: "-",
+                date: "-",
+            })
+            
+        }
+    }, [])
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
     const [showAlert, setShowlert] = useState(false);
     const [renovacion, setRenovacion] = useState("NO")
     const formValue = useSelector(state => state.comensalesR.inputsValues)
-    var idUser = localStorage.getItem("idUser");
+    
     console.log(formValue)
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
@@ -27,7 +57,7 @@ function AlergenosComida() {
         { id: 7, label: 'Presenta Certificado' },
     ]);
     const [replicas, setReplicas] = useState(1);
-    const [values, setValues] = useState({ idUser: idUser })
+    const [values, setValues] = useState({ idUser: idUser , verified: "-", date: "-",})
     const [objValues, setObjValues] = useState({ fecha: "", nombre: "", diagnostico: "", fechaRenovacion: "", requiereRenovacion: "", presentaCertificado: "", listado: "" })
     const [inputValues, setInputValues] = useState([])
     const [trigger, setTrigger] = useState(false)
@@ -72,6 +102,7 @@ function AlergenosComida() {
     }
 
     const handleSubmit = () => {
+        console.log("objValues", objValues)
         console.log("values:", values)
 
         controlAlergenos(values).then((resp) => {
@@ -100,31 +131,7 @@ function AlergenosComida() {
         }
         )
     };
-    const location = useLocation();
-    useEffect(() => {
-        const infoPrecargada = location.state?.objeto;
-        if (infoPrecargada) { // muestro un form del historial
-            setValues({
-                comedor: infoPrecargada.comedor,
-                inputs: [infoPrecargada.inputs
-                ],
-                idUser: idUser,
-                verified: "-",
-                date: "-",
-            })
-            console.log("values", values)
-        } else { // creo un form desde cero
-            console.log("error")
-            setValues({
-                comedor: "",
-                inputs: [{}
-                ],
-                idUser: idUser,
-                verified: "-",
-                date: "-",
-            })
-        }
-    }, [])
+
 
 
 
@@ -140,11 +147,13 @@ function AlergenosComida() {
                         <div className={styles.personal}>
                             <TextField
                                 onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }}
-                                value={values.comedor || ""}
+                                
                                 fullWidth
                                 id="outlined-basic"
                                 label="Comedor"
                                 variant="outlined"
+                                value = {infoPrecargada?.comedor}
+                                disabled={!!location.state?.objeto}
                             />
                         </div>
                         <div className="table">
@@ -171,7 +180,8 @@ function AlergenosComida() {
                                                                 shrink: true,
                                                             }}
                                                             className='input'
-
+                                                            value={objValues[index]?.fecha}
+                                                            disabled={!!location.state?.objeto}
 
                                                         />
                                                     ) : input.label === "Fecha Renovación" ? (
@@ -189,7 +199,9 @@ function AlergenosComida() {
                                                                 shrink: true,
                                                             }}
                                                             className='input'
-                                                            disabled={renovacion === "NO"}
+                                                            disabled={renovacion === "NO" || !!location.state?.objeto}
+                                                            value= {objValues[index]?.fechaRenovacion}
+                                                            
 
                                                         />) : (
                                                         input.label === "Presenta Certificado" ? (
@@ -206,6 +218,8 @@ function AlergenosComida() {
                                                                     }}
                                                                     // onChange={(e) => setValues({ ...values, metodo: e.target.value })}
                                                                     label={`${input.label}`}
+                                                                    value= {objValues[index]?.presentaCertificado  || ''}
+                                                                    disabled={!!location.state?.objeto}
                                                                 >
                                                                     <MenuItem value="SI">SI</MenuItem>
                                                                     <MenuItem value="NO">NO</MenuItem>
@@ -228,6 +242,8 @@ function AlergenosComida() {
                                                                     }}
                                                                     // onChange={(e) => setValues({ ...values, metodo: e.target.value })}
                                                                     label={`${input.label}`}
+                                                                    value= {objValues[index]?.requiereRenovacion || ''}
+                                                                    disabled={!!location.state?.objeto}
                                                                 >
                                                                     <MenuItem value="SI" >SI</MenuItem>
                                                                     <MenuItem value="NO" >NO</MenuItem>
@@ -249,6 +265,16 @@ function AlergenosComida() {
                                                                 InputLabelProps={{
                                                                     shrink: true,
                                                                 }}
+                                                                value={
+                                                                    input.label === 'Diagnóstico'
+                                                                        ? objValues[index]?.diagnostico 
+                                                                        : input.label === 'Ingredientes/ Alimentos excluidos'
+                                                                        ? objValues[index]?.listado 
+                                                                        : input.label === 'Nombre Comensal'
+                                                                        ? objValues[index]?.nombre 
+                                                                        : ''
+                                                                }
+                                                                disabled={!!location.state?.objeto}
                                                             />
                                                         )
 
@@ -256,20 +282,20 @@ function AlergenosComida() {
                                                 </div>
                                             ))}
 
-                                            <div className="icon">
+                                            {infoPrecargada ? <div></div> : <div className="icon">
                                                 {
                                                     (index === 0 || index >= replicas) ?
                                                         <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
-                                                        : <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={() => { handleClickRemove(index) }} />
+                                                        : <IndeterminateCheckboxIcon  style={{ color: 'grey' }} onClick={() => { handleClickRemove(index) }} />
                                                 }
-                                            </div>
+                                            </div>}
                                         </div>
                                     ))}
                             </div>
                         </div>
 
                         <div className="btn">
-                            <Button onClick={handleSubmit} variant="contained">Guardar</Button>
+                            <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
                         </div>
                     </div>
                 </div>

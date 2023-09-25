@@ -5,12 +5,17 @@ import styles from './RegistroDeDecomiso.module.css'
 import { useSelector } from 'react-redux';
 import Alert from '../../shared/components/Alert/Alert';
 import { registroDecomiso } from '../../../services/FormsRequest';
+import { useLocation } from 'react-router-dom';
 
 function RegistroDeDecomiso() {
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
     const [showAlert, setShowlert] = useState(false);
+    const location = useLocation();
+    const infoPrecargada = location.state?.objeto;
+    
+    const prueba = useSelector(state => state.registroDecomisosR.inputsValues)
 
     var idUser = localStorage.getItem("idUser");
     const [inputs] = useState([
@@ -68,6 +73,7 @@ function RegistroDeDecomiso() {
     };
 
     const handleSubmit = () => {
+        console.log(objValues)
         registroDecomiso(values).then((resp) => {
             setTextAlert("¡Formulario cargado exitosamente!");
             setTypeAlert("success");
@@ -87,7 +93,23 @@ function RegistroDeDecomiso() {
         }
         )
     };
+    useEffect(() => {
+        console.log(infoPrecargada)
+        if (infoPrecargada)  { // muestro un form del historial
+             setReplicas(infoPrecargada.inputs.length);
 
+            setObjValues(infoPrecargada.inputs)
+setValues({
+    inputs: infoPrecargada.inputs,
+    idUser: idUser
+})
+            console.log("objValues", objValues)
+            console.log("values", values)
+        } else { // creo un form desde cero
+            
+            
+        }
+    }, [location.state?.objeto])
     return (
         <>
             <div>
@@ -103,18 +125,22 @@ function RegistroDeDecomiso() {
                                     <div className="tableRow" key={index}>
                                         <p className="index">{index + 1} </p>
 
+
                                         {inputs.map((input) => (
                                             <div key={input.id}>
                                                 {input.label === 'Fecha' ? (
                                                     <TextField
-                                                        type="date"
+                                                    type="date"
+                                                    value={values.inputs[index]?.fecha || ''}
                                                         className='input'
+                                                       
                                                         onChange={(e) => {
                                                             inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
                                                         }}
                                                         id={`input-${input.id}-${index}`}
                                                         name={`input-${input.id}-${index}`}
-                                                        value={objValues.fecha}
+                                                        
+                                                        disabled={!!location.state?.objeto} 
 
                                                     />
                                                 ) : (
@@ -126,7 +152,10 @@ function RegistroDeDecomiso() {
                                                                  className='input'
                                                                  id={`input-${input.id}-${index}`}
                                                                  name={`input-${input.id}-${index}`}
-                                                                 value={objValues.causa}
+
+                                                                value={objValues[index]?.otrasCausas || ''}
+                                                                disabled={!!location.state?.objeto} 
+
                                                                 onChange={(e) => {
                                                                     inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index,e.target.value );
                                                                 }}
@@ -146,10 +175,13 @@ function RegistroDeDecomiso() {
                                                                 <InputLabel id="turno">Turno</InputLabel>
                                                                 <Select
                                                                     labelId="turno"
+                                                                    disabled={!!location.state?.objeto} 
                                                                      className='input'
                                                                      id={`input-${input.id}-${index}`}
                                                                      name={`input-${input.id}-${index}`}
-                                                                    value={objValues.turno}
+
+                                                                     value={objValues[index]?.turno || ''}
+
                                                                     onChange={(e) => {
                                                                         inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index, e.target.value);
                                                                     }}
@@ -169,8 +201,16 @@ function RegistroDeDecomiso() {
                                                             }}
                                                             id={`input-${input.id}-${index}`}
                                                             name={`input-${input.id}-${index}`}
+                                                            disabled={!!location.state?.objeto} 
                                                             label={`${input.label}`}
                                                             variant="outlined"
+                                                            value={
+                                                                input.label === 'Producto decomisado'
+                                                                    ? objValues[index]?.productoDecomisado 
+                                                                    : input.label === 'Cantidad'
+                                                                    ? objValues[index]?.cantidad 
+                                                                    : ''
+                                                            }
                                                              />
                                                         )
                                                    )
