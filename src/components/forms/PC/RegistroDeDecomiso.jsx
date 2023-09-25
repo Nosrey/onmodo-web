@@ -128,6 +128,7 @@ setValues({
                                     <div className="tableRow" key={index}>
                                         <p className="index">{index + 1} </p>
 
+
                                         {inputs.map((input) => (
                                             <div key={input.id}>
                                                 {input.label === 'Fecha' ? (
