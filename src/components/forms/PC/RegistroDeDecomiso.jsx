@@ -5,13 +5,29 @@ import styles from './RegistroDeDecomiso.module.css'
 import { useSelector } from 'react-redux';
 import Alert from '../../shared/components/Alert/Alert';
 import { registroDecomiso } from '../../../services/FormsRequest';
+import { useLocation } from 'react-router-dom';
 
 function RegistroDeDecomiso() {
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
     const [showAlert, setShowlert] = useState(false);
+    const location = useLocation();
+    const infoPrecargada = location.state?.objeto;
+    useEffect(() => {
+        console.log(infoPrecargada)
+        if (infoPrecargada)  { // muestro un form del historial
+             setReplicas(infoPrecargada.inputs.length);
 
+            setObjValues(infoPrecargada.inputs)
+
+            console.log("objValues", objValues)
+            console.log("values", values)
+        } else { // creo un form desde cero
+            
+            
+        }
+    }, [location.state?.objeto])
     const prueba = useSelector(state => state.registroDecomisosR.inputsValues)
     var idUser = localStorage.getItem("idUser");
     console.log("holi", prueba)
@@ -73,6 +89,7 @@ function RegistroDeDecomiso() {
     };
 
     const handleSubmit = () => {
+        console.log(objValues)
         registroDecomiso(values).then((resp) => {
             setTextAlert("¡Formulario cargado exitosamente!");
             setTypeAlert("success");
@@ -112,14 +129,17 @@ function RegistroDeDecomiso() {
                                             <div key={input.id}>
                                                 {input.label === 'Fecha' ? (
                                                     <TextField
-                                                        type="date"
+                                                    type="date"
+                                                    value={objValues[index]?.fecha || ''}
                                                         className='input'
+                                                       
                                                         onChange={(e) => {
                                                             inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
                                                         }}
                                                         id={`input-${input.id}-${index}`}
                                                         name={`input-${input.id}-${index}`}
-                                                        value={objValues.fecha}
+                                                        
+                                                        disabled={!!location.state?.objeto} 
 
                                                     />
                                                 ) : (
@@ -131,7 +151,8 @@ function RegistroDeDecomiso() {
                                                                  className='input'
                                                                  id={`input-${input.id}-${index}`}
                                                                  name={`input-${input.id}-${index}`}
-                                                                value={values.metodo}
+                                                                value={objValues[index]?.otrasCausas || ''}
+                                                                disabled={!!location.state?.objeto} 
                                                                 onChange={(e) => {
                                                                     inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
                                                                 }}
@@ -152,10 +173,11 @@ function RegistroDeDecomiso() {
                                                                 <InputLabel id="turno">Turno</InputLabel>
                                                                 <Select
                                                                     labelId="turno"
+                                                                    disabled={!!location.state?.objeto} 
                                                                      className='input'
                                                                      id={`input-${input.id}-${index}`}
                                                                      name={`input-${input.id}-${index}`}
-                                                                    value={values.metodo}
+                                                                     value={objValues[index]?.turno || ''}
                                                                     onChange={(e) => {
                                                                         inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
                                                                     }}
@@ -176,8 +198,16 @@ function RegistroDeDecomiso() {
                                                             }}
                                                             id={`input-${input.id}-${index}`}
                                                             name={`input-${input.id}-${index}`}
+                                                            disabled={!!location.state?.objeto} 
                                                             label={`${input.label}`}
                                                             variant="outlined"
+                                                            value={
+                                                                input.label === 'Producto decomisado'
+                                                                    ? objValues[index]?.productoDecomisado 
+                                                                    : input.label === 'Cantidad'
+                                                                    ? objValues[index]?.cantidad 
+                                                                    : ''
+                                                            }
                                                              />
                                                         )
                                                    )

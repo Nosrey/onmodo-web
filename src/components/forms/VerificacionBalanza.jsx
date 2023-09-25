@@ -7,6 +7,7 @@ import Balanzas from '../modales/Balanzas';
 import axios from 'axios';
 import { verificacionBalanza } from '../../services/FormsRequest';
 import Alert from '../shared/components/Alert/Alert';
+import { useLocation } from 'react-router-dom';
 
 function VerificacionBalanza() {
     //** ALERTA */
@@ -112,7 +113,37 @@ function VerificacionBalanza() {
         }
         )
     };
-
+    const location = useLocation();
+    const infoPrecargada = location.state?.objeto;
+    useEffect(() => {
+        if (infoPrecargada) { // muestro un form del historial
+            console.log("infoPrecargada", infoPrecargada)
+            console.log("sepudo")
+            setValues({
+                fecha: infoPrecargada.fecha,
+                responsable: infoPrecargada.responsable,
+                balanza: infoPrecargada.balanza,
+                inputs: infoPrecargada.inputs,
+                verified: infoPrecargada.verified,
+                fechaHora: infoPrecargada.fechaHora,
+                idUser: idUser
+                
+            })
+            setReplicas(infoPrecargada.inputs.length)
+            console.log("values", values)
+        } else { // creo un form desde cero
+            console.log("error")
+            setValues({
+                fecha: "",
+                responsable: "",
+                balanza: "",
+                inputs: [{}],
+                verified: "",
+                fechaHora: "",
+                idUser: idUser
+            })
+        }
+    }, [])
     return (
         <>
             <div>
@@ -135,16 +166,18 @@ function VerificacionBalanza() {
                     )
                     }
                     <div className={styles.personal}>
-                        <input
+                        <TextField
+                        disabled={!!location.state?.objeto} 
                             onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
                             type="date"
                             id="fecha"
                             name="fecha"
+                            value={values.fecha || ''}
                             required
                         />
 
-                        <TextField onChange={(e) => { setValues({ ...values, responsable: e.target.value }) }} id="outlined-basic" label="Responsable de validación" variant="outlined" />
-                        <TextField onChange={(e) => { setValues({ ...values, balanza: e.target.value }) }} id="outlined-basic" label="Balanza/Báscula" variant="outlined" />
+                        <TextField disabled={!!location.state?.objeto} value={values.responsable} onChange={(e) => { setValues({ ...values, responsable: e.target.value }) }} id="outlined-basic" label="Responsable de validación" variant="outlined" />
+                        <TextField disabled={!!location.state?.objeto} value={values.balanza} onChange={(e) => { setValues({ ...values, balanza: e.target.value }) }} id="outlined-basic" label="Balanza/Báscula" variant="outlined" />
 
                     </div>
 
@@ -175,13 +208,33 @@ function VerificacionBalanza() {
                                                     name={`input-${input.id}-${index}`}
                                                     label={`${input.label}`}
                                                     variant="outlined"
+                                                    disabled={!!location.state?.objeto} 
+                                                    value={
+                                                        input.label === 'Código'
+                                                            ? values.inputs[index]?.codigo 
+                                                            : input.label === 'Tipo (BP/BR)'
+                                                            ? values.inputs[index]?.tipo 
+                                                            : input.label === 'Responsable del uso'
+                                                            ? values.inputs[index]?.responsableUso 
+                                                            : input.label === 'Área'
+                                                            ? values.inputs[index]?.area 
+                                                            : input.label === 'Peso Masa ref/Pto balanza'
+                                                            ? values.inputs[index]?.pesoMasa 
+                                                            : input.label === 'Peso real'
+                                                            ? values.inputs[index]?.pesoReal 
+                                                            : input.label === 'Desvío'
+                                                            ? values.inputs[index]?.desvio 
+                                                            : input.label === 'Acciones de corrección'
+                                                            ? values.inputs[index]?.accionesCorrecion 
+                                                            : ''
+                                                    }
                                                 />
-
+     
                                             </div>
                                         ))}
-                                        <div className="icon">
+                                       {infoPrecargada? <div></div> :  <div className="icon">
                                             <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
-                                        </div>
+                                        </div>}
                                     </div>
                                 ))}
 
@@ -191,8 +244,8 @@ function VerificacionBalanza() {
                     <br />
                     <br />
                     <div className={styles.personal}>
-                        <TextField onChange={(e) => { setValues({ ...values, verified: e.target.value }) }} id="outlined-basic" label="Verificado por" variant="outlined" />
-                        <input
+                        <TextField disabled={!!location.state?.objeto} value={values.verified} onChange={(e) => { setValues({ ...values, verified: e.target.value }) }} id="outlined-basic" label="Verificado por" variant="outlined" />
+                        <TextField
                             type="datetime-local"
                             onChange={(e) => {
                                 setValues({ ...values, fechaHora: e.target.value });
@@ -200,12 +253,13 @@ function VerificacionBalanza() {
                             id="fechaHora"
                             name="fechaHora"
                             value={values.fechaHora}
+                            disabled={!!location.state?.objeto} 
 
                         />
 
                     </div>
                     <div className="btn">
-                        <Button onClick={handleSubmit} variant="contained">Guardar</Button>
+                        <Button  disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
                     </div>
 
                 </div>

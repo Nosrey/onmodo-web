@@ -98,7 +98,7 @@ function FlashReporteIncidente() {
                 <div className={styles.personal}>
                     <TextField onChange={(e)=>{setValues({...values,alcance:e.target.value})}} disabled={!!location.state?.objeto}  value={values.alcance} id="outlined-basic" label="Alcance" variant="outlined" />
                     <TextField onChange={(e)=>{setValues({...values,linea:e.target.value})}} disabled={!!location.state?.objeto}  value={values.linea} id="outlined-basic" label="Línea de negocios" variant="outlined" />
-                    <input
+                    <TextField
             type="date"
             onChange={(e) => {
               setValues({ ...values, fecha: e.target.value });
@@ -106,7 +106,7 @@ function FlashReporteIncidente() {
             value={values.fecha}
             disabled={!!location.state?.objeto} 
           />
-          <input
+          <TextField
             type="time"
             onChange={(e) => {
               setValues({ ...values, hora: e.target.value });

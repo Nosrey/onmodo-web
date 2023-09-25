@@ -210,23 +210,24 @@ function InformeInternoAccidente() {
                 </div>
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }} value={values.comedor} id="outlined-basic" style={{ width: "50%" }} label="Comedor donde ocurrió" variant="outlined" />
-                    <input
+                    <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }} value={values.comedor} id="outlined-basic" style={{ width: "50%" }} label="Comedor donde ocurrió" variant="outlined" />
+                    <TextField
                         onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
                         type="date"
                         id="fecha"
                         value={values.fecha}
                         name="fecha"
+                        disabled={!!location.state?.objeto} 
                     />
-                    <TextField onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} value={values.tipo} id="outlined-basic" label="Tipo de accidente" variant="outlined" />
+                    <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} value={values.tipo} id="outlined-basic" label="Tipo de accidente" variant="outlined" />
                 </div>
 
                 <div className={styles.personal}>
-                    <FormControlLabel control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CDR', e.target.checked) }} />} label="CDR" />
-                    <FormControlLabel control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CMS', e.target.checked) }} />} label="CMS" />
-                    <FormControlLabel control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Laboral', e.target.checked) }} />} label="Laboral" />
-                    <FormControlLabel control={<Checkbox onChange={(e) => { checkboxValuesConstructor('In Itinere', e.target.checked) }} />} label="In Itinere" />
-                    <FormControlLabel control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Se adjunta denuncia policial', e.target.checked) }} />} label="Se adjunta denuncia policial" />
+                    <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CDR', e.target.checked) }} />} label="CDR" />
+                    <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CMS', e.target.checked) }} />} label="CMS" />
+                    <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Laboral', e.target.checked) }} />} label="Laboral" />
+                    <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('In Itinere', e.target.checked) }} />} label="In Itinere" />
+                    <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Se adjunta denuncia policial', e.target.checked) }} />} label="Se adjunta denuncia policial" />
                 </div>
 
 
@@ -235,28 +236,30 @@ function InformeInternoAccidente() {
                         <p className={styles.subtitle}>DATOS DEL ACCIDENTADO</p>
                     </div>
                     <div className={styles.personal}>
-                        <TextField onChange={(e) => { setValues({ ...values, nombreApellido: e.target.value }) }}  value={values.nombreApellido} id="outlined-basic" label="Nombre y Apellido" variant="outlined" />
-                        <TextField onChange={(e) => { setValues({ ...values, cuil: e.target.value }) }}  value={values.cuil} id="outlined-basic" label="Nº de CUIL" variant="outlined" />
-                        <input
+                        <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, nombreApellido: e.target.value }) }}  value={values.nombreApellido} id="outlined-basic" label="Nombre y Apellido" variant="outlined" />
+                        <TextField disabled={!!location.state?.objeto}  onChange={(e) => { setValues({ ...values, cuil: e.target.value }) }}  value={values.cuil} id="outlined-basic" label="Nº de CUIL" variant="outlined" />
+                        <TextField
                             onChange={(e) => { setValues({ ...values, fechaIngreso: e.target.value }) }}
                             type="date"
                             id="fecha-ingreso"
                             name="fecha-ingreso"
                             value={values.fechaIngreso} 
+                            disabled={!!location.state?.objeto} 
                         />
 
                     </div>
                     <div className={styles.personal}>
-                        <TextField onChange={(e) => { setValues({ ...values, puesto: e.target.value }) }} value={values.puesto}  id="outlined-basic" label="Puesto de trabajo" variant="outlined" />
-                        <input
+                        <TextField disabled={!!location.state?.objeto}  onChange={(e) => { setValues({ ...values, puesto: e.target.value }) }} value={values.puesto}  id="outlined-basic" label="Puesto de trabajo" variant="outlined" />
+                        <TextField
                             onChange={(e) => { setValues({ ...values, hora: e.target.value }) }}
                             type="time"
                             id="hora-accidente"
                             name="hora-accidente"
                             value={values.hora} 
+                            disabled={!!location.state?.objeto} 
                         />
 
-                        <TextField onChange={(e) => { setValues({ ...values, lugar: e.target.value }) }}  value={values.lugar} id="outlined-basic" label="Lugar del accidente" variant="outlined" />
+                        <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, lugar: e.target.value }) }}  value={values.lugar} id="outlined-basic" label="Lugar del accidente" variant="outlined" />
                     </div>
 
                     <div className={styles.personalText}>
@@ -268,23 +271,25 @@ function InformeInternoAccidente() {
                             multiline
                             rows={4}
                             value={values.descripcion} 
+                            disabled={!!location.state?.objeto} 
                         />
                     </div>
 
                     <div className={styles.listContainer}>
-                        <FormControlLabel control={<Checkbox onChange={(e) => { checkboxValuesConstructor('¿Era su trabajo habitual?', e.target.checked) }} />} label="¿Era su trabajo habitual?" />
-                        <FormControlLabel control={<Checkbox onChange={(e) => { checkboxValuesConstructor('¿Conocía la tarea asignada?', e.target.checked) }} />} label="¿Conocía la tarea asignada?" />
+                        <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('¿Era su trabajo habitual?', e.target.checked) }} />} label="¿Era su trabajo habitual?" />
+                        <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('¿Conocía la tarea asignada?', e.target.checked) }} />} label="¿Conocía la tarea asignada?" />
 
 
                         <FormControlLabel control={<Checkbox
                             id="showTextField"
+                            disabled={!!location.state?.objeto} 
                             name="showTextField"
                             onChange={($event) => handleCheckboxChange($event, 1)} />} label="¿Una máquina le causó la lesión?" />
                         <label htmlFor="showTextField"></label>
 
                         {showTextField1 && (
                             <div className={styles.personal}>
-                                <TextField onChange={(e) => { checkboxValuesConstructor("Cual Maquina", e.target.value) }} id="outlined-basic" multiline style={{ width: "50%" }}
+                                <TextField  disabled={!!location.state?.objeto} onChange={(e) => { checkboxValuesConstructor("Cual Maquina", e.target.value) }} id="outlined-basic" multiline style={{ width: "50%" }}
                                     rows={2} name="textField" variant="outlined" label="¿Cuál?" />
                             </div>
                         )}
@@ -293,12 +298,13 @@ function InformeInternoAccidente() {
                         <FormControlLabel control={<Checkbox
                             id="showTextField"
                             name="showTextField"
+                            disabled={!!location.state?.objeto} 
                             onChange={($event) => handleCheckboxChange($event, 2)} />} label="¿Hubo alguna acción o condición insegura que fuera la causante del accidente?" />
                         <label htmlFor="showTextField"></label>
 
                         {showTextField2 && (
                             <div className={styles.personal}>
-                                <TextField onChange={(e) => { checkboxValuesConstructor("Cual Accion", e.target.value) }} id="outlined-basic" multiline style={{ width: "50%" }}
+                                <TextField  disabled={!!location.state?.objeto} onChange={(e) => { checkboxValuesConstructor("Cual Accion", e.target.value) }} id="outlined-basic" multiline style={{ width: "50%" }}
                                     rows={2} name="textField" variant="outlined" label="¿Cuál?" />
                             </div>
                         )}
@@ -306,6 +312,7 @@ function InformeInternoAccidente() {
 
 
                         <FormControlLabel control={<Checkbox
+                         disabled={!!location.state?.objeto} 
                             id="showTextField"
                             name="showTextField"
                             onChange={($event) => handleCheckboxChange($event, 3)} />} label="¿Estaba usando su E.P.P.?" />
@@ -313,7 +320,7 @@ function InformeInternoAccidente() {
 
                         {!showTextField3 && (
                             <div className={styles.personal}>
-                                <TextField onChange={(e) => { setValues({ ...values, razon: e.target.value }) }}  value={values.razon} id="outlined-basic" multiline style={{ width: "50%" }}
+                                <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, razon: e.target.value }) }}  value={values.razon} id="outlined-basic" multiline style={{ width: "50%" }}
                                     rows={2} name="textField" variant="outlined" label=" ¿Por qué razón no lo usaba?" />
                             </div>
                         )}
@@ -329,6 +336,7 @@ function InformeInternoAccidente() {
                             multiline
                             rows={2}
                             value={values.lugarLesion} 
+                            disabled={!!location.state?.objeto} 
                         />
                     </div>
                     <div className={styles.personalText}>
@@ -340,7 +348,8 @@ function InformeInternoAccidente() {
                             label="¿Qué medidas cree conveniente adoptar para evitar futuros accidentes de este tipo?"
                             multiline
                             rows={4}
-                            value={values.medidas} 
+                            value={values.medidas}
+                            disabled={!!location.state?.objeto}  
                         />
                     </div>
                 </div>
@@ -349,13 +358,13 @@ function InformeInternoAccidente() {
 
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, firmaEmpleado: e.target.value }) }}  value={values.firmaEmpleado}  id="outlined-basic" label="Firma del Empleado" variant="outlined" />
-                    <TextField onChange={(e) => { setValues({ ...values, firmaAdm: e.target.value }) }}  value={values.firmaAdm} id="outlined-basic" label="Firma del Administrador o Encargado Contrato" variant="outlined" />
-                    <TextField onChange={(e) => { setValues({ ...values, encargado: e.target.value }) }}  value={values.encargado} id="outlined-basic" label="Encargado ContratoRevisado por" variant="outlined" />
+                    <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, firmaEmpleado: e.target.value }) }}  value={values.firmaEmpleado}  id="outlined-basic" label="Firma del Empleado" variant="outlined" />
+                    <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, firmaAdm: e.target.value }) }}  value={values.firmaAdm} id="outlined-basic" label="Firma del Administrador o Encargado Contrato" variant="outlined" />
+                    <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, encargado: e.target.value }) }}  value={values.encargado} id="outlined-basic" label="Encargado ContratoRevisado por" variant="outlined" />
                 </div>
 
                 <div className="btn">
-                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
+                    <Button  disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
 
                 </div>
 
