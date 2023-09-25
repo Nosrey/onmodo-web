@@ -166,10 +166,11 @@ function VerificacionBalanza() {
                     )
                     }
                     <div className={styles.personal}>
+                        
                         <TextField
-                        disabled={!!location.state?.objeto} 
-                            onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
                             type="date"
+                            className='input'
+                            onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
                             id="fecha"
                             name="fecha"
                             value={values.fecha || ''}
@@ -178,6 +179,7 @@ function VerificacionBalanza() {
 
                         <TextField disabled={!!location.state?.objeto} value={values.responsable} onChange={(e) => { setValues({ ...values, responsable: e.target.value }) }} id="outlined-basic" label="Responsable de validación" variant="outlined" />
                         <TextField disabled={!!location.state?.objeto} value={values.balanza} onChange={(e) => { setValues({ ...values, balanza: e.target.value }) }} id="outlined-basic" label="Balanza/Báscula" variant="outlined" />
+
 
                     </div>
 
@@ -258,6 +260,7 @@ function VerificacionBalanza() {
                         />
 
                     </div>
+
                     <div className="btn">
                         <Button  disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
                     </div>

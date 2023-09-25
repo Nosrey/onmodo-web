@@ -16,8 +16,8 @@ function RegistroDeDecomiso() {
     const infoPrecargada = location.state?.objeto;
     
     const prueba = useSelector(state => state.registroDecomisosR.inputsValues)
+
     var idUser = localStorage.getItem("idUser");
-    console.log("holi", prueba)
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Turno' },
@@ -31,16 +31,16 @@ function RegistroDeDecomiso() {
         }],
         idUser: idUser
     })
-    const [objValues, setObjValues] = useState({ fecha: "", turno: "", productoDecomisado: "", cantidad: "", fueraFecha: "", fueraAptitud: "", otrasCausas: "", destinoFinal: "", responsable: "" })
+    const [objValues, setObjValues] = useState({ fecha: "", turno: "", productoDecomisado: "", cantidad: "", causa:"" })
     const [inputValues, setInputValues] = useState([])
     const [trigger, setTrigger] = useState(false)
 
     useEffect(() => {
-        if (replicas === 1 && objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.fueraFecha !== "" && objValues.fueraAptitud !== "" && objValues.otrasCausas !== "" && objValues.destinoFinal !== "" && objValues.responsable !== "" && objValues.id !== "") {
+        if (replicas === 1 && objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.causa !== ""  ) {
 
             setInputValues([objValues])
         }
-        else if (replicas > 1 && objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.fueraFecha !== "" && objValues.fueraAptitud !== "" && objValues.otrasCausas !== "" && objValues.destinoFinal !== "" && objValues.responsable !== "" && objValues.id !== "") {
+        else if (replicas > 1 && objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.causa !== ""  ) {
 
             setInputValues([...inputValues, objValues])
         }
@@ -51,27 +51,24 @@ function RegistroDeDecomiso() {
     }, [inputValues])
 
     useEffect(() => {
-        if (objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.fueraFecha !== "" && objValues.fueraAptitud !== "" && objValues.otrasCausas !== "" && objValues.destinoFinal !== "" && objValues.responsable !== "") {
+        if (objValues.fecha !== "" && objValues.turno !== "" && objValues.productoDecomisado !== "" && objValues.cantidad !== "" && objValues.causa !== "") {
             setTrigger(true)
         }
     }, [objValues])
 
-    const inputsValuesConstructor = (id, label, index) => {
+    const inputsValuesConstructor = (id, label, index, value) => {
         const inputTarget = document.getElementById(id)
         label === 'Fecha' ? setObjValues({ ...objValues, fecha: inputTarget.value, id: index }) :
-            label === 'Turno' ? setObjValues({ ...objValues, turno: inputTarget.value }) :
+            label === 'Turno' ? setObjValues({ ...objValues, turno:value }) :
                 label === 'Producto decomisado' ? setObjValues({ ...objValues, productoDecomisado: inputTarget.value }) :
                     label === 'Cantidad' ? setObjValues({ ...objValues, cantidad: inputTarget.value }) :
-                        label === 'Fuera fecha vida util' ? setObjValues({ ...objValues, fueraFecha: inputTarget.value }) :
-                            label === 'Fuera de aptitud' ? setObjValues({ ...objValues, fueraAptitud: inputTarget.value }) :
-                                label === 'Otras causas' ? setObjValues({ ...objValues, otrasCausas: inputTarget.value }) :
-                                    label === 'Destino final' ? setObjValues({ ...objValues, destinoFinal: inputTarget.value }) :
-                                        label === 'Responsable' && setObjValues({ ...objValues, responsable: inputTarget.value })
+                        label === 'Causa' && setObjValues({ ...objValues, causa: value }) 
+                                   
     }
 
     const handleClick = () => {
         setReplicas(replicas + 1);
-        setObjValues({ fecha: "", turno: "", productoDecomisado: "", cantidad: "", fueraFecha: "", fueraAptitud: "", otrasCausas: "", destinoFinal: "", responsable: "" })
+        setObjValues({ fecha: "", turno: "", productoDecomisado: "", cantidad: "", causa: "" })
         setTrigger(false)
     };
 
@@ -155,12 +152,13 @@ setValues({
                                                                  className='input'
                                                                  id={`input-${input.id}-${index}`}
                                                                  name={`input-${input.id}-${index}`}
+
                                                                 value={objValues[index]?.otrasCausas || ''}
                                                                 disabled={!!location.state?.objeto} 
+
                                                                 onChange={(e) => {
-                                                                    inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                                    inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index,e.target.value );
                                                                 }}
-                                                                // onChange={(e) => setValues({ ...values, metodo: e.target.value })}
                                                                 label="Causa"
                                                             >
                                                                 <MenuItem value="Recal">Recall</MenuItem>
@@ -181,11 +179,12 @@ setValues({
                                                                      className='input'
                                                                      id={`input-${input.id}-${index}`}
                                                                      name={`input-${input.id}-${index}`}
+
                                                                      value={objValues[index]?.turno || ''}
+
                                                                     onChange={(e) => {
-                                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index, e.target.value);
                                                                     }}
-                                                                    // onChange={(e) => setValues({ ...values, metodo: e.target.value })}
                                                                     label="Turno"
                                                                 >
                                                                     <MenuItem value="Mañana">Mañana</MenuItem>

@@ -23,7 +23,7 @@ const ModalEdicion = ({ openModal, setOpenModal, idForm, urlForm, showAlert }) =
     
     const data = {
       status:"pending",
-      motivo: motivoEdicion,
+      motivoPeticion: motivoEdicion,
     }
     
     sendEditApplication({values: data, formId: idForm, form: urlForm}).then((resp)=>{
