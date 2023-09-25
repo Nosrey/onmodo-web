@@ -14,20 +14,7 @@ function RegistroDeDecomiso() {
     const [showAlert, setShowlert] = useState(false);
     const location = useLocation();
     const infoPrecargada = location.state?.objeto;
-    useEffect(() => {
-        console.log(infoPrecargada)
-        if (infoPrecargada)  { // muestro un form del historial
-             setReplicas(infoPrecargada.inputs.length);
-
-            setObjValues(infoPrecargada.inputs)
-
-            console.log("objValues", objValues)
-            console.log("values", values)
-        } else { // creo un form desde cero
-            
-            
-        }
-    }, [location.state?.objeto])
+    
     const prueba = useSelector(state => state.registroDecomisosR.inputsValues)
     var idUser = localStorage.getItem("idUser");
     console.log("holi", prueba)
@@ -109,7 +96,23 @@ function RegistroDeDecomiso() {
         }
         )
     };
+    useEffect(() => {
+        console.log(infoPrecargada)
+        if (infoPrecargada)  { // muestro un form del historial
+             setReplicas(infoPrecargada.inputs.length);
 
+            setObjValues(infoPrecargada.inputs)
+setValues({
+    inputs: infoPrecargada.inputs,
+    idUser: idUser
+})
+            console.log("objValues", objValues)
+            console.log("values", values)
+        } else { // creo un form desde cero
+            
+            
+        }
+    }, [location.state?.objeto])
     return (
         <>
             <div>
@@ -130,7 +133,7 @@ function RegistroDeDecomiso() {
                                                 {input.label === 'Fecha' ? (
                                                     <TextField
                                                     type="date"
-                                                    value={objValues[index]?.fecha || ''}
+                                                    value={values.inputs[index]?.fecha || ''}
                                                         className='input'
                                                        
                                                         onChange={(e) => {

@@ -103,7 +103,7 @@ function RegistroSimulacro() {
             })
         }
     }, [])
-    let nroDNI = ["Nro DNI"];
+
     return (
         <>
         {values &&

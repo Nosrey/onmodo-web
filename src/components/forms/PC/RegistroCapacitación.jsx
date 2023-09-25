@@ -255,12 +255,12 @@ function RegistroCapacitacion() {
                 <p>Selecciona la opción que corresponda:</p>
 
                 <div className={styles.listContainer}>
-                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Inducción", e.target.checked); } } />} label="Inducción" className={styles.listItem} />
-                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Campaña", e.target.checked); } } />} className={styles.listItem} label="Campaña" />
-                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Entrenamiento Puesto de trabajo", e.target.checked); } } />} className={styles.listItem} label="Entrenamiento Puesto de trabajo" />
-                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Capacitaciones gubernamentales", e.target.checked); } } />} className={styles.listItem} label="Capacitaciones gubernamentales" />
-                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Capacitación sobre Normas o Certificaciones", e.target.checked); } } />} className={styles.listItem} label="Capacitación sobre Normas o Certificaciones" />
-                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Cierre Auditoría", e.target.checked); } } />} className={styles.listItem} label="Cierre Auditoría" />
+                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox checked={values.checkboxes[0]?.check || false} onChange={(e) => { checkboxValuesConstructor("Inducción", e.target.checked); } } />} label="Inducción" className={styles.listItem} />
+                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox checked={values.checkboxes[1]?.check|| false} onChange={(e) => { checkboxValuesConstructor("Campaña", e.target.checked); } } />} className={styles.listItem} label="Campaña" />
+                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox checked={values.checkboxes[2]?.check|| false} onChange={(e) => { checkboxValuesConstructor("Entrenamiento Puesto de trabajo", e.target.checked); } } />} className={styles.listItem} label="Entrenamiento Puesto de trabajo" />
+                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox checked={values.checkboxes[3]?.check|| false} onChange={(e) => { checkboxValuesConstructor("Capacitaciones gubernamentales", e.target.checked); } } />} className={styles.listItem} label="Capacitaciones gubernamentales" />
+                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox checked={values.checkboxes[4]?.check|| false} onChange={(e) => { checkboxValuesConstructor("Capacitación sobre Normas o Certificaciones", e.target.checked); } } />} className={styles.listItem} label="Capacitación sobre Normas o Certificaciones" />
+                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox checked={values.checkboxes[5]?.check|| false} onChange={(e) => { checkboxValuesConstructor("Cierre Auditoría", e.target.checked); } } />} className={styles.listItem} label="Cierre Auditoría" />
                 </div>
 
                 <div className={styles.personalText}>
@@ -383,7 +383,7 @@ function RegistroCapacitacion() {
                                                     disabled={!!location.state?.objeto} 
                                                         labelId="metodo-evaluacion-label"
                                                         id="metodo-evaluacion"
-                                                        value={objValues[index]?.metodo || ''}
+                                                        value={values.asistentes?.metodo || ''}
                                                         onChange={(e) => setValues({ ...values, metodo: e.target.value })}
                                                         label="Método de Evaluación"
                                                         className={styles.largeSelectInput}

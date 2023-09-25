@@ -153,7 +153,7 @@ function InformeInternoAccidente() {
                 comedor: infoPrecargada.comedor,
                 fecha: infoPrecargada.fecha,
                 tipo: infoPrecargada.tipo,
-                checkboxes: [infoPrecargada.checkboxes],
+                checkboxes: infoPrecargada.checkboxes,
                 nombreApellido: infoPrecargada.nombreApellido,
                 cuil: infoPrecargada.cuil,
                 fechaIngreso: infoPrecargada.fechaIngreso,
@@ -161,7 +161,7 @@ function InformeInternoAccidente() {
                 hora: infoPrecargada.hora,
                 lugar: infoPrecargada.lugar,
                 descripcion: infoPrecargada.descripcion,
-                checkboxesAccidente: [infoPrecargada.checkboxesAccidente],
+                checkboxesAccidente: infoPrecargada.checkboxesAccidente,
                 lugarLesion: infoPrecargada.lugarLesion,
                 medidas: infoPrecargada.medidas,
                 razon: infoPrecargada.razon,
@@ -223,11 +223,11 @@ function InformeInternoAccidente() {
                 </div>
 
                 <div className={styles.personal}>
-                    <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CDR', e.target.checked) }} />} label="CDR" />
-                    <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CMS', e.target.checked) }} />} label="CMS" />
-                    <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Laboral', e.target.checked) }} />} label="Laboral" />
-                    <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('In Itinere', e.target.checked) }} />} label="In Itinere" />
-                    <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Se adjunta denuncia policial', e.target.checked) }} />} label="Se adjunta denuncia policial" />
+                    <FormControlLabel checked={values.checkboxes[0]?.check }  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CDR', e.target.checked) }} />} label="CDR" />
+                    <FormControlLabel checked={values.checkboxes[1]?.check } disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CMS', e.target.checked) }} />} label="CMS" />
+                    <FormControlLabel checked={values.checkboxes[2]?.check } disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Laboral', e.target.checked) }} />} label="Laboral" />
+                    <FormControlLabel checked={values.checkboxes[3]?.check } disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('In Itinere', e.target.checked) }} />} label="In Itinere" />
+                    <FormControlLabel checked={values.checkboxes[4]?.check } disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Se adjunta denuncia policial', e.target.checked) }} />} label="Se adjunta denuncia policial" />
                 </div>
 
 
@@ -276,11 +276,12 @@ function InformeInternoAccidente() {
                     </div>
 
                     <div className={styles.listContainer}>
-                        <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('¿Era su trabajo habitual?', e.target.checked) }} />} label="¿Era su trabajo habitual?" />
-                        <FormControlLabel  disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('¿Conocía la tarea asignada?', e.target.checked) }} />} label="¿Conocía la tarea asignada?" />
+                        <FormControlLabel checked={values.checkboxesAccidente[0]?.check } disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('¿Era su trabajo habitual?', e.target.checked) }} />} label="¿Era su trabajo habitual?" />
+                        <FormControlLabel checked={values.checkboxesAccidente[1]?.check} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('¿Conocía la tarea asignada?', e.target.checked) }} />} label="¿Conocía la tarea asignada?" />
 
 
                         <FormControlLabel control={<Checkbox
+                        checked={values.checkboxesAccidente[2]?.check}
                             id="showTextField"
                             disabled={!!location.state?.objeto} 
                             name="showTextField"
@@ -296,6 +297,7 @@ function InformeInternoAccidente() {
 
 
                         <FormControlLabel control={<Checkbox
+                        checked={values.checkboxesAccidente[3]?.check}
                             id="showTextField"
                             name="showTextField"
                             disabled={!!location.state?.objeto} 
@@ -312,6 +314,7 @@ function InformeInternoAccidente() {
 
 
                         <FormControlLabel control={<Checkbox
+                        checked={values.checkboxesAccidente[4]?.check}
                          disabled={!!location.state?.objeto} 
                             id="showTextField"
                             name="showTextField"
