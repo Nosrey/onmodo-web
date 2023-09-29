@@ -12,8 +12,8 @@ function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentLocation === '/cuenta' || currentLocation === '/inicio') setShowSearch(false);
-    else setShowSearch(true);
+    if (currentLocation === '/formularios' || currentLocation === '/formularios-cargados') setShowSearch(true);
+    else setShowSearch(false);
   }, [currentLocation]);
 
   return (
