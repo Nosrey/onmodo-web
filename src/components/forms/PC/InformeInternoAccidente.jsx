@@ -206,7 +206,6 @@ function InformeInternoAccidente() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Informe Interno de Accidente</h3>
-                    {/* <h4 className="formNumber"> HS-01-R04</h4> */}
                 </div>
 
                 <div className={styles.personal}>
@@ -224,7 +223,7 @@ function InformeInternoAccidente() {
                         id="fecha"
                         value={values.fecha}
                         name="fecha"
-
+                        />
                     <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} value={values.tipo} id="outlined-basic" label="Tipo de accidente" variant="outlined" />
 
                 </div>
