@@ -202,10 +202,10 @@ function FlashReporteIncidente() {
                                 onChange={(e) => { setValues({ ...values, descripcion: e.target.value }) }}
                             />
                             {/* Área de dropzone */}
-                            <div {...getRootProps()}>
-                                <input {...getInputProps()} />
+                            <div className={styles.border}   {...getRootProps()}>
+                                <input  {...getInputProps()} />
                                 <h2>Fotografias</h2>
-                                <h5>Arrastra y suelta las fotografias aquí o hace clic para seleccionar archivos.</h5>
+                                <h6>Arrastra y suelta las fotografias aquí o hace clic para seleccionar archivos.</h6>
                             </div>
 
                             {/* Previsualización de imágenes */}
