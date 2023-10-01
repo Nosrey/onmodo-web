@@ -9,7 +9,13 @@
     width: 61vw;
     min-width: 300px;
 }
-
+.descripcion {
+   
+}
+.aclaracion{
+    font-size: 14px;
+    color: rgb(46, 45, 45);
+}
 .subtitleCont {
     border-bottom: 2px solid rgb(37, 35, 35);
     margin-bottom: 24px;

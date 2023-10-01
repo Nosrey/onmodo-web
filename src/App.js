@@ -43,6 +43,7 @@ import FormulariosCargados from './components/formulariosCargados/FormulariosCar
 import FormCargado from './components/formulariosCargados/formCargado/FormCargado';
 import CrearContraseña from './components/CrearContraseña/CrearContraseña';
 import Cuentas from './views/Cuentas/Cuentas';
+import RecordatoriosContainer from './views/Recordatorios/RecordatoriosContainer';
 
 
 function App() {
@@ -65,23 +66,21 @@ function App() {
           <Routes>
           <Route path="/" element={<Navigate to={isLoggedIn ? '/inicio' : '/inicio-de-sesion'} />} />
 
-
             <Route path='/registro' element={<Register />} />
             <Route path='/forgotpassword' element={<RecoverPassword />} />
             <Route path='/inicio-de-sesion' element={<Login />} />
-
             <Route path='/restablecer-contrasena/:token' element={<CrearContraseña />} />
 
             <Route path='/inicio' element={<Inicio />} />
 
+            <Route path='/cuentas' element={<Cuentas />} />
             <Route path='/cuenta' element={<Cuenta />} />
             <Route path='/crear-cuenta' element={<Cuenta />} />
 
-            <Route path='/cuentas' element={<Cuentas />} />
+            <Route path='/recordatorios' element={<RecordatoriosContainer />} />
+
             <Route path='/formularios' element={<FormulariosContainer />} />
-
             <Route path='/formularios-cargados' element={<FormulariosCargados />} />
-
             <Route path='/formularios-cargados/:form' element={<FormCargado />} />
 
 
@@ -95,29 +94,28 @@ function App() {
             <Route path='/registro-decomisos-mp' element={<RegistroDeDecomiso />} />
             <Route path='/registro-simulacro' element={<RegistroSimulacro />} />
             {/* <Route path="/salud-manipuladores" element={ <SaludManipuladores/> } /> */}
-            <Route path='/control-cloro' element={<ControlDeCloro />} />
-            <Route path='/control-vidrios' element={<ControlVidrios />} />
-            <Route path='/despacho-produccion' element={<DespachoProduccion />} />
-            <Route path='/armado-fraccionamiento' element={<PlanillaDeArmadoFraccionamiento />} />
-            <Route path='/equipos-frio' element={<ControlEquiposDeFrio />} />
-            <Route path='/distribucion-expedicion' element={<DistribucionExpedicion />} />
             <Route path='/verificacion-balanza' element={<VerificacionBalanza />} />
             <Route path='/verificacion-termometro' element={<VerificacionTermometros />} />
-            <Route path='/recepcion' element={<Recepcion />} />
-            <Route path='/descongelamiento' element={<Descongelamiento />} />
             <Route path='/rechazo-mp' element={<ReporteDeRechazoDevolucionMaterias />} />
-            <Route path='/control-procesos' element={<ControlProcesos />} />
-            <Route path='/carga' element={<CargaRecepcion />} />
-            <Route path='/sanitizacion' element={<Sanitizacion />} />
-            <Route path='/uso-epp' element={<EPP />} />
 
             {/* mobile */}
             <Route path='/recuperacion-de-producto' element={<RecuperacionProducto />} />
             <Route path='/servicios-en-linea' element={<ServiciosEnLinea />} />
             <Route path='/cambio-aceite' element={<UsoCambioAceite />} />
+            <Route path='/control-vidrios' element={<ControlVidrios />} />
+            <Route path='/control-cloro' element={<ControlDeCloro />} />
+            <Route path='/equipos-frio' element={<ControlEquiposDeFrio />} />
+            <Route path='/uso-epp' element={<EPP />} />
+            {/* <Route path='/registro-decomisos-mp' element={<RegistroDeDecomiso />} /> */}
+            <Route path='/armado-fraccionamiento' element={<PlanillaDeArmadoFraccionamiento />} />
+            <Route path='/carga' element={<CargaRecepcion />} />
+            <Route path='/control-procesos' element={<ControlProcesos />} />
+            <Route path='/descongelamiento' element={<Descongelamiento />} />
+            <Route path='/despacho-produccion' element={<DespachoProduccion />} />
+          <Route path='/distribucion-expedicion' element={<DistribucionExpedicion />} />
+            <Route path='/recepcion' element={<Recepcion />} />
+            <Route path='/sanitizacion' element={<Sanitizacion />} />
 
-            {/* <Route path='/admin' element={<Admin/>}>
-              </Route> */}
           </Routes>
           {currentLocation !== '/inicio-de-sesion' &&
           currentLocation !== '/crear-contraseña' &&

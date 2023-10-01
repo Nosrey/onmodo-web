@@ -178,6 +178,7 @@ function FlashReporteIncidente() {
                             />
                         </div>
 
+
                         <div className={styles.personalText}>
                             <TextField
                                 onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }}

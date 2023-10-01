@@ -18,7 +18,6 @@ function PlanillaDeArmadoFraccionamiento() {
         { id: 5, label: 'Hora' },
         { id: 6, label: 'Temp. Interna' },
         { id: 7, label: 'Acciones Correcion' },
-        { id: 8, label: 'Responsable' },
 
     ]);
     const [replicas, setReplicas] = useState(1);
@@ -30,14 +29,14 @@ function PlanillaDeArmadoFraccionamiento() {
         date: "",
         idUser:"643ea98d5b44dd9765966ae7"
     })
-    const [objValues,setObjValues] = useState({fecha:"",producto:"",horaInicio:"",tempInternaInicio:"",horaFinal:"",tempInternaFinal:"",accionesCorreccion:"",responsable:""})
+    const [objValues,setObjValues] = useState({fecha:"",producto:"",horaInicio:"",tempInternaInicio:"",horaFinal:"",tempInternaFinal:"",accionesCorreccion:""})
     const [inputValues,setInputValues]= useState([])
     const [trigger,setTrigger] = useState(false)
 
     useEffect(()=>{
-        if(replicas === 1 && objValues.fecha !== "" && objValues.producto !== "" && objValues.horaInicio !== "" && objValues.tempInternaInicio !== "" && objValues.horaFinal !== "" && objValues.tempInternaFinal !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== "" && objValues.id !=="") {
+        if(replicas === 1 && objValues.fecha !== "" && objValues.producto !== "" && objValues.horaInicio !== "" && objValues.tempInternaInicio !== "" && objValues.horaFinal !== "" && objValues.tempInternaFinal !== "" && objValues.accionesCorreccion !== "" && objValues.id !=="") {
             setInputValues([objValues])
-        }else if (replicas > 1 && objValues.fecha !== "" && objValues.producto !== "" && objValues.horaInicio !== "" && objValues.tempInternaInicio !== "" && objValues.horaFinal !== "" && objValues.tempInternaFinal !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== "" && objValues.id !=="") {
+        }else if (replicas > 1 && objValues.fecha !== "" && objValues.producto !== "" && objValues.horaInicio !== "" && objValues.tempInternaInicio !== "" && objValues.horaFinal !== "" && objValues.tempInternaFinal !== "" && objValues.accionesCorreccion !== "" && objValues.id !=="") {
             setInputValues([...inputValues,objValues])
         }
     },[trigger])
@@ -45,7 +44,7 @@ function PlanillaDeArmadoFraccionamiento() {
         setValues({...values,inputsValues:inputValues})
     },[inputValues])
     useEffect(()=>{
-        if (objValues.fecha !== "" && objValues.producto !== "" && objValues.horaInicio !== "" && objValues.tempInternaInicio !== "" && objValues.horaFinal !== "" && objValues.tempInternaFinal !== "" && objValues.accionesCorreccion !== "" && objValues.responsable !== ""){
+        if (objValues.fecha !== "" && objValues.producto !== "" && objValues.horaInicio !== "" && objValues.tempInternaInicio !== "" && objValues.horaFinal !== "" && objValues.tempInternaFinal !== "" && objValues.accionesCorreccion !== "" ){
             setTrigger(true)
         }
     },[objValues])
@@ -58,12 +57,11 @@ function PlanillaDeArmadoFraccionamiento() {
         (label === 'Temp. Interna' && inputID === 4) ? setObjValues({...objValues,tempInternaInicio:inputTarget.value}):
         (label === 'Hora' && inputID === 5) ? setObjValues({...objValues,horaFinal:inputTarget.value}):
         (label === 'Temp. Interna' && inputID === 6) ? setObjValues({...objValues,tempInternaFinal:inputTarget.value}):
-        label === 'Acciones Correcion' ? setObjValues({...objValues,accionesCorreccion:inputTarget.value}):
-        label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value})
+        label === 'Acciones Correcion' && setObjValues({...objValues,accionesCorreccion:inputTarget.value})
     }
     const handleClick = () => {
         setReplicas(replicas + 1);
-        setObjValues({fecha:"",producto:"",horaInicio:"",tempInternaInicio:"",horaFinal:"",tempInternaFinal:"",accionesCorreccion:"",responsable:""})
+        setObjValues({fecha:"",producto:"",horaInicio:"",tempInternaInicio:"",horaFinal:"",tempInternaFinal:"",accionesCorreccion:""})
         setTrigger(false)
     };
 
@@ -81,7 +79,7 @@ function PlanillaDeArmadoFraccionamiento() {
                                     <p>TEMPERATURA INTERNA: Menor a 13ºC</p>
                                 </div><div>
                                         <p className={styles.subtitle}>PROCEDIMIENTO</p>
-                                        <p>1. Se prepara el primer plato (plato testigo)como muestra de referencia para armar el resto de los platos, teniendo en cuenta gramajes, ingredientes, formas, tamaños, presentación, entre otros.<br />2. Se registra en esta planillala temperatura inicial del alimento del plato testigo y se deja el termómetro colocado en él durante todo el proceso. El uso de porcionadores es mandatorio para la estandarización del producto final y uso racional de la materia prima.<br />3. El primer plato permanece a un lado conel termómetro mientras se continúa con la producción de todo el lote, siguiendo el plato testigo.<br />4. Del plato testigo se monitorea su temperatura, estando correcto el procedimiento si el alimento se encuentra a menos de 13ºC en el centro del alimento.<br />5. Finalizado  el  último  plato,  se  efectúa  la  lectura  del  termómetro  del  plato  testigo  y  se  registra  en esta  planillala  temperatura  final.  El armado de platos no debe superar los 45 minutos de exposición a temperatura ambiente.</p>
+                                        <p>1. Se prepara el primer plato (plato testigo) como muestra de referencia para armar el resto de los platos, teniendo en cuenta gramajes, ingredientes, formas, tamaños, presentación, entre otros.<br />2. Se registra en esta planillala temperatura inicial del alimento del plato testigo y se deja el termómetro colocado en él durante todo el proceso. El uso de porcionadores es mandatorio para la estandarización del producto final y uso racional de la materia prima.<br />3. El primer plato permanece a un lado con el termómetro mientras se continúa con la producción de todo el lote, siguiendo el plato testigo.<br />4. Del plato testigo se monitorea su temperatura, estando correcto el procedimiento si el alimento se encuentra a menos de 13ºC en el centro del alimento.<br />5. Finalizado  el  último  plato,  se  efectúa  la  lectura  del  termómetro  del  plato  testigo  y  se  registra  en esta  planillala  temperatura  final.  El armado de platos no debe superar los 45 minutos de exposición a temperatura ambiente.</p>
                                     </div><div>
                                         <p className={styles.subtitle}>ACCIONES DE CORRECCIÓN</p>
                                         <p>Si la temperatura interna del alimento:<br />-Está entre 13ºC y 15ºC, refrigerar el lote inmediatamente.<br />-Supera los 15ºC, desechar el lote.</p>
@@ -139,10 +137,7 @@ function PlanillaDeArmadoFraccionamiento() {
                     </div>
                     
                 </div>
-                <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,date:e.target.value})}} id="outlined-basic" label="Fecha" variant="outlined" />
-                </div>
+               
                 <div className="btn">
                     <Button onClick={()=>{
                         dispatch(armadoFraccionamientoActions.logIn(values))}} variant="contained">Guardar</Button>

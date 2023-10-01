@@ -13,17 +13,19 @@ function FormulariosContainer() {
   const handleSortChange = (event) => {
     const value = event.target.value;
     if (value === 'A-Z') {
-      const sorted = [...forms].sort((a, b) => a.title.localeCompare(b.title));
+      const sorted = [...sortedForms].sort((a, b) => a.title.localeCompare(b.title));
       setSortedForms(sorted);
     } else if (value === 'Z-A') {
-      const sorted = [...forms].sort((a, b) => b.title.localeCompare(a.title));
+      const sorted = [...sortedForms].sort((a, b) => b.title.localeCompare(a.title));
       setSortedForms(sorted);
     }
   };
 
   useEffect(() => {
-    if (myRol !== "1") {
-     setSortedForms(() => [... forms.filter((item) => item.rol === "superior")])
+    if (myRol === "1") {
+     setSortedForms(() => [...forms.filter((item) => item.rol === "all")])
+    } else {
+      setSortedForms(()=> [...forms])
     }
   }, [])
   

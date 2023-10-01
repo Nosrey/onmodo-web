@@ -151,10 +151,7 @@ function Descongelamiento() {
                 </div>
 
                 
-                <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verified:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
-                </div>
+        
                 <div className="btn">
                     <Button onClick={()=>{
                         dispatch(descongelamientoActions.logIn(values))}} variant="contained">Guardar</Button>

@@ -11,16 +11,16 @@ import { useLocation } from 'react-router';
 
 function CargaRecepcion() {
     const [inputs] = useState([
-        { id: 1, label: 'Carga' },
-        { id: 2, label: 'Recepción' },
+        { id: 1, label: 'Fecha de Carga' },
+        { id: 2, label: 'Fecha de Recepción' },
         { id: 3, label: 'Proveedor' },
         { id: 4, label: 'Producto' },
-        { id: 5, label: 'Comprada' },
-        { id: 6, label: 'Recibida' },
-        { id: 7, label: 'Carga' },
-        { id: 8, label: 'Recepción' },
-        { id: 9, label: 'Carga' },
-        { id: 10, label: 'Recepción' },
+        { id: 5, label: 'Cantidad Comprada' },
+        { id: 6, label: 'Cantidad Recibida' },
+        { id: 7, label: 'T° de Carga' },
+        { id: 8, label: 'T° de Recepción' },
+        { id: 9, label: 'T° de Carga' },
+        { id: 10, label: 'T° de Recepción' },
         { id: 11, label: 'Dentro de vida útil' },
         { id: 12, label: 'Nro. lote' },
         { id: 13, label: 'Fecha vto.' },
@@ -55,16 +55,16 @@ function CargaRecepcion() {
     const inputsValuesConstructor = (id,label,index,inputID) => {
         console.log(id)
         const inputTarget = document.getElementById(id);
-        (label === 'Carga' && inputID === 1) ?  setObjValues({...objValues,cargaFecha:inputTarget.value, id:index}) :
-        (label === 'Recepción' && inputID === 2) ? setObjValues({...objValues,recepcionFecha:inputTarget.value}) :
+        (label === 'Fecha de Carga' && inputID === 1) ?  setObjValues({...objValues,cargaFecha:inputTarget.value, id:index}) :
+        (label === 'Fecha de Recepción' && inputID === 2) ? setObjValues({...objValues,recepcionFecha:inputTarget.value}) :
         label === 'Proveedor' ? setObjValues({...objValues,proveedor:inputTarget.value}):
         label === 'Producto' ? setObjValues({...objValues,producto:inputTarget.value}):
-        label === 'Comprada' ? setObjValues({...objValues,comprada:inputTarget.value}):
-        label === 'Recibida' ? setObjValues({...objValues,recibida:inputTarget.value}):
-        (label === 'Carga' && inputID === 7) ? setObjValues({...objValues,cargaTempAlimento:inputTarget.value}):
-        (label === 'Recepción' && inputID === 8) ? setObjValues({...objValues,recepcionTempAlimento:inputTarget.value}):
-        (label === 'Carga' && inputID === 9) ? setObjValues({...objValues,cargaTempCamion:inputTarget.value}):
-        (label === 'Recepción' && inputID === 10) ? setObjValues({...objValues,recepcionTempCamion:inputTarget.value}):
+        label === 'Cantidad comprada' ? setObjValues({...objValues,comprada:inputTarget.value}):
+        label === 'Cantidad recibida' ? setObjValues({...objValues,recibida:inputTarget.value}):
+        (label === 'T° de Carga' && inputID === 7) ? setObjValues({...objValues,cargaTempAlimento:inputTarget.value}):
+        (label === 'T° de Recepción' && inputID === 8) ? setObjValues({...objValues,recepcionTempAlimento:inputTarget.value}):
+        (label === 'T° de Carga' && inputID === 9) ? setObjValues({...objValues,cargaTempCamion:inputTarget.value}):
+        (label === 'T° de Recepción' && inputID === 10) ? setObjValues({...objValues,recepcionTempCamion:inputTarget.value}):
         label === 'Dentro de vida útil' ? setObjValues({...objValues,vidaUtil:inputTarget.value}):
         label === 'Nro. lote' ? setObjValues({...objValues,nroLote:inputTarget.value}):
         label === 'Fecha vto.' ? setObjValues({...objValues,fechaVto:inputTarget.value}):
@@ -149,7 +149,7 @@ function CargaRecepcion() {
                     )
                 }
                         <div className={styles.subtitleCont}>
-                    <p className={styles.subtitle}>DATOS TRANSPORTE</p>
+                    <p className={styles.subtitle}>DATOS DE TRANSPORTE</p>
                 </div>
                <p>Estado sanitario: Cumple/no cumple.</p>
                <div className={styles.personal}>
@@ -158,11 +158,7 @@ function CargaRecepcion() {
                     <TextField onChange={(e)=>{setValues({...values,nPrecintoLateral:e.target.value})}} id="outlined-basic" label="Nº Precinto lateral" variant="outlined" />
                     <TextField onChange={(e)=>{setValues({...values,nPrecintoTrasero:e.target.value})}} id="outlined-basic" label="Nº Precinto trasero" variant="outlined" />
                 </div>
-                <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,respPrecinto:e.target.value})}} id="outlined-basic" label="Resp. control precintos" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,observacionesPrecinto:e.target.value})}} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
-                    
-                </div>
+              
             
                <p>Termógrafo:   SI     NO</p>
                <div className={styles.personal}>
@@ -177,7 +173,7 @@ function CargaRecepcion() {
                     <div className={styles.contTitTabla}>
                          <div className={styles.subtituloTableDoble}>
                             <div>
-                                <p style={{textAlign: 'center', fontWeight:'bold'}}>Fecha </p>
+                                <p style={{textAlign: 'center', fontWeight:'bold'}}>Fechas </p>
                             </div>
                         </div>
                         <div className={styles.subtituloTableEspacio}>
@@ -241,10 +237,7 @@ function CargaRecepcion() {
                     </div>
                     
                 </div>
-                <div className={styles.personal}>
-                    <TextField onChange={(e)=>{setValues({...values,verificado:e.target.value})}} id="outlined-basic" label="Verificado por" variant="outlined" />
-                    <TextField onChange={(e)=>{setValues({...values,fechaHora:e.target.value})}} id="outlined-basic" label="Fecha/hora" variant="outlined" />
-                </div>
+               
                 {location.state?.objeto  ? (
                     <div className="btn">
                     <Button onClick={handleSubmit} variant="contained">Editar</Button>

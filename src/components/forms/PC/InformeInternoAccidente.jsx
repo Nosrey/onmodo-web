@@ -206,20 +206,26 @@ function InformeInternoAccidente() {
             <div className="form">
                 <div className="titleContainer">
                     <h3 className="title">Informe Interno de Accidente</h3>
-                    {/* <h4 className="formNumber"> HS-01-R04</h4> */}
                 </div>
 
                 <div className={styles.personal}>
-                    <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }} value={values.comedor} id="outlined-basic" style={{ width: "50%" }} label="Comedor donde ocurrió" variant="outlined" />
-                    <TextField
-                        onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
+
+                    <TextField onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }} value={values.comedor} id="outlined-basic" style={{ width: "50%" }} label="Comedor donde ocurrió" variant="outlined" />
+                   
+                     <TextField
+                        label="Fecha"
+                        variant="outlined"
                         type="date"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
                         id="fecha"
                         value={values.fecha}
                         name="fecha"
-                        disabled={!!location.state?.objeto} 
-                    />
+                        />
                     <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} value={values.tipo} id="outlined-basic" label="Tipo de accidente" variant="outlined" />
+
                 </div>
 
                 <div className={styles.personal}>
@@ -236,30 +242,45 @@ function InformeInternoAccidente() {
                         <p className={styles.subtitle}>DATOS DEL ACCIDENTADO</p>
                     </div>
                     <div className={styles.personal}>
+
                         <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, nombreApellido: e.target.value }) }}  value={values.nombreApellido} id="outlined-basic" label="Nombre y Apellido" variant="outlined" />
                         <TextField disabled={!!location.state?.objeto}  onChange={(e) => { setValues({ ...values, cuil: e.target.value }) }}  value={values.cuil} id="outlined-basic" label="Nº de CUIL" variant="outlined" />
-                        <TextField
-                            onChange={(e) => { setValues({ ...values, fechaIngreso: e.target.value }) }}
-                            type="date"
-                            id="fecha-ingreso"
-                            name="fecha-ingreso"
-                            value={values.fechaIngreso} 
-                            disabled={!!location.state?.objeto} 
-                        />
 
+  
+                        <TextField
+                        label="Fecha de Ingreso"
+                        variant="outlined"
+                        type="date"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        onChange={(e) => { setValues({ ...values, fechaIngreso: e.target.value }) }}
+                        id="fecha-ingreso"
+                        name="fecha-ingreso"
+                        disabled={!!location.state?.objeto} 
+                        value={values.fechaIngreso} 
+                        />
                     </div>
                     <div className={styles.personal}>
+
                         <TextField disabled={!!location.state?.objeto}  onChange={(e) => { setValues({ ...values, puesto: e.target.value }) }} value={values.puesto}  id="outlined-basic" label="Puesto de trabajo" variant="outlined" />
-                        <TextField
-                            onChange={(e) => { setValues({ ...values, hora: e.target.value }) }}
-                            type="time"
-                            id="hora-accidente"
-                            name="hora-accidente"
-                            value={values.hora} 
-                            disabled={!!location.state?.objeto} 
+                       <TextField
+                        label="Hora"
+                        variant="outlined"
+                        type="time"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        onChange={(e) => { setValues({ ...values, hora: e.target.value }) }}
+                        id="hora-accidente"
+                        name="hora-accidente"
+                        value={values.hora} 
                         />
 
                         <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, lugar: e.target.value }) }}  value={values.lugar} id="outlined-basic" label="Lugar del accidente" variant="outlined" />
+    
+                    
+
                     </div>
 
                     <div className={styles.personalText}>
@@ -356,8 +377,6 @@ function InformeInternoAccidente() {
                         />
                     </div>
                 </div>
-
-                <p className={styles.boldLegend}>Enviar dentro de las 24 hs. de ocurrido el accidente a Administración de RRHH –Of. Central</p>
 
 
                 <div className={styles.personal}>

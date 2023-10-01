@@ -95,3 +95,8 @@
 .aprovedRow {
   background: #7BC1001A;
 }
+.placeholder{
+  color: grey;
+  margin-top: 30px;
+  font-weight: lighter;
+}

@@ -6,6 +6,7 @@ import { entregaBidones } from '../../../services/FormsRequest';
 import Alert from '../../shared/components/Alert/Alert';
 import { useLocation } from 'react-router';
 
+
 function EntregaBidonesAceiteUsado() {
   const [replicas, setReplicas] = useState(1);
   const [replicaValues, setReplicaValues] = useState([{}]);
@@ -19,13 +20,11 @@ function EntregaBidonesAceiteUsado() {
 
   const inputs = [
     { id: 1, label: 'Fecha' },
-    { id: 2, label: 'Cantidad de Litros entregados' },
+    { id: 2, label: 'Litros entregados' },
     { id: 3, label: 'Responsable de Entrega' },
     { id: 4, label: 'Responsable de Retiro' },
     { id: 5, label: 'Certificado de Transporte' },
     { id: 6, label: 'Certificado de Disposición final' },
-    { id: 7, label: 'Transporte' },
-    { id: 8, label: 'Disposición final' },
  
   ];
 
@@ -173,6 +172,7 @@ function EntregaBidonesAceiteUsado() {
                     </div>}
                   </div>
                 ))}
+
             </div>
           </div>
           <div className="btn">
