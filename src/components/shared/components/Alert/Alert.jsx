@@ -6,7 +6,7 @@ function Alert(props) {
   const notificationClass = props.type === "success" ? styles.notificationGreen : styles.notificationRed;
   return (
     <div className={notificationClass}>
-      <p>{props.text}</p>
+      <p className={styles.textAlert}>{props.text}</p>
     </div>
   );
 }

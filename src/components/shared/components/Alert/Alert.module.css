@@ -9,6 +9,7 @@
     width: 90vw;
     max-width: 400px;
     border-radius: 30px;
+    color: white;
 }
 .notificationGreen {
     background-color: #a0b875;
@@ -16,9 +17,10 @@
 .notificationRed {
     background-color: #f39d5e;
 }
-p{
+.textAlert{
     color: white;
     text-align: center;
     display: block;
+    font-weight: lighter;
     margin-top: 8px;
 }

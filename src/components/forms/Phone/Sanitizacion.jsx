@@ -21,8 +21,9 @@ function Sanitizacion() {
         { id: 7, label: '300' },
         { id: 8, label: '>400' },
         { id: 9, label: 'Minutos' },
-        { id: 10, label: 'Acciones de corrección' },
-        { id: 11, label: 'Responsable' },
+        { id: 10, label: 'SI/NO' },
+        { id: 11, label: 'Acciones de corrección' },
+        { id: 12, label: 'Responsable' },
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
@@ -109,7 +110,7 @@ function Sanitizacion() {
                             </div>
                             <div className={styles.subtituloTable2}>
                                 <p className={styles.subtituloTableTextCuadruple}>Concentración</p>
-                                <p className={styles.subtituloTableText}>Tiemp. inmersión</p>
+                                <p className={styles.subtituloTableText}>Tiempo inmersión</p>
                             </div>
                         </div>
                         <div className={styles.subtituloTable}>

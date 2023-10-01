@@ -12,7 +12,7 @@
     background-color: rgba(229, 224, 224, 0.772);
     border-radius: 2px;
     padding-top: 4px;
-    width: 285px;   
+    width: 355px;   
 }
 .subtituloTable2 {
     display: flex;
@@ -21,7 +21,7 @@
     background-color: rgba(229, 224, 224, 0.772);
     border-radius: 2px;
     padding-top: 4px;
-    width: 422px;   
+    width: 560px;   
 }
 .subtituloTable3 {
     display: flex;
@@ -30,7 +30,7 @@
     background-color: rgba(229, 224, 224, 0.772);
     border-radius: 2px;
     padding-top: 4px;
-    width: 285px;  
+    width: 355px;  
 }
 
 
@@ -50,8 +50,8 @@
 .contTitTabla {
     display: flex;
     gap: 10px;
-    width: 1318px ;
-    margin-left: 465px; 
+    width: fit-content ;
+    margin-left: 590px; 
 }
 
 .subtitleCont {
