@@ -41,6 +41,7 @@ function CreacionRecordatorio({updateRecordatorios}) {
     //     }, 7000);
     // }
     // )
+    
     if (values.titulo === "" || values.frecuencia === ""  ) {
       setTextAlert("Título y Frecuencia son datos obligatorios")
       setTypeAlert("error");

@@ -204,9 +204,13 @@ function VerificacionTermometros() {
                                 id="fecha"
                                 name="fecha"
                                 value={values.fecha}
-
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                             />
-                            <TextField value={values.responsable} onChange={(e) => { setValues({ ...values, responsable: e.target.value }) }} id="outlined-basic" placeholder="Responsable de validación" label="Responsable de validación" variant="outlined" />
+                            <TextField value={values.responsable} onChange={(e) => { setValues({ ...values, responsable: e.target.value }) }} id="outlined-basic" placeholder="Responsable de validación" label="Responsable de validación" variant="outlined" InputLabelProps={{
+                                shrink: true,
+                            }}/>
                         </div>
 
                         <br />
@@ -237,7 +241,12 @@ function VerificacionTermometros() {
                                                 <div key={input.id}>
                                                     <TextField onBlur={(e) => {
                                                         inputsValuesConstructor(`input-${input.id}-${index}`, input.placeholder, index, "input1", input.id, e.target.value);
-                                                    }} className="input" id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} placeholder={`${input.label}`} variant="outlined" />
+                                                    }} className="input"
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                    label={input.label}
+                                                    id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} placeholder={`${input.label}`} variant="outlined" />
 
                                                 </div>
                                             ))}
@@ -280,7 +289,12 @@ function VerificacionTermometros() {
                                                 <div key={input.id}>
                                                     <TextField onBlur={(e) => {
                                                         inputsValuesConstructor(`input-${input.id}-${index}`, input.placeholder, index, "input2", input.id, e.target.value);
-                                                    }} id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} placeholder={`${input.label}`} variant="outlined" />
+                                                    }} id={`input-${input.id}-${index}`}
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
+                                                    label={input.label}
+                                                    name={`input-${input.id}-${index}`} placeholder={`${input.label}`} variant="outlined" />
 
                                                 </div>
                                             ))}

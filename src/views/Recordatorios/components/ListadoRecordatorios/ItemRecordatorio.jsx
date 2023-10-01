@@ -9,7 +9,7 @@ function ItemRecordatorio({data}) {
       <div className={styles.item}>
         <div className={styles.header}>
           <span className={styles.title}>{data.titulo}</span>
-          <span className={styles.frecuencia}>{data.frecuencia !== "fecha especifica" ? data.frecuencia : data.fechaEspecifica}</span>
+          <span className={styles.frecuencia}>{data.frecuencia !== "Fecha específica" ? data.frecuencia : data.fechaEspecifica}</span>
 
         </div>
         <p className={styles.description}>{data.descripcion.trim()  !== ""  ? data.descripcion  : "Sin descripción"}</p>

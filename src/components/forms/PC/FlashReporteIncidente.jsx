@@ -13,8 +13,6 @@ function FlashReporteIncidente() {
     const idUser = localStorage.getItem("idUser");
     const location = useLocation();
     const [values, setValues] = useState({
-        alcance: "",
-        linea: "",
         fecha: "",
         hora: "",
         comedor: "",
@@ -68,8 +66,7 @@ function FlashReporteIncidente() {
         const infoPrecargada = location.state?.objeto;
         if (infoPrecargada) {
             setValues({
-                alcance: infoPrecargada.alcance,
-                linea: infoPrecargada.linea,
+                
                 fecha: infoPrecargada.fecha,
                 hora: infoPrecargada.hora,
                 comedor: infoPrecargada.comedor,
@@ -89,8 +86,7 @@ function FlashReporteIncidente() {
             });
         } else {
             setValues({
-                alcance: "",
-                linea: "",
+                
                 fecha: "",
                 hora: "",
                 comedor: "",
@@ -121,22 +117,7 @@ function FlashReporteIncidente() {
                         </div>
 
                         <div className={styles.personal}>
-                            <TextField
-                                onChange={(e) => { setValues({ ...values, alcance: e.target.value }) }}
-                                disabled={!!location.state?.objeto}
-                                value={values.alcance}
-                                id="outlined-basic"
-                                label="Alcance"
-                                variant="outlined"
-                            />
-                            <TextField
-                                onChange={(e) => { setValues({ ...values, linea: e.target.value }) }}
-                                disabled={!!location.state?.objeto}
-                                value={values.linea}
-                                id="outlined-basic"
-                                label="Línea de negocios"
-                                variant="outlined"
-                            />
+                            
                             <TextField
                                 type="date"
                                 onChange={(e) => { setValues({ ...values, fecha: e.target.value }) }}
@@ -192,16 +173,19 @@ function FlashReporteIncidente() {
                         </div>
 
                         <div className={styles.personalText}>
+                        <div className={styles.descripcion}>
                             <TextField
                                 fullWidth
                                 id="outlined-multiline-static"
-                                label="Descripción del Incidente:  (quién, qué, cómo, cuándo)"
+                                label="Descripción del Incidente"
                                 multiline
                                 value={values.descripcion}
                                 rows={4}
                                 disabled={!!location.state?.objeto}
                                 onChange={(e) => { setValues({ ...values, descripcion: e.target.value }) }}
                             />
+                            <p className={styles.aclaracion}>*En esta área no se debe nombrar a la persona que tuvo el accidente, tampoco plantear causales.</p>
+                         </div>
                             {/* Área de dropzone */}
                             <div className={styles.border}   {...getRootProps()}>
                                 <input  {...getInputProps()} />

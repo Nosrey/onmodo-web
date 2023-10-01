@@ -174,11 +174,19 @@ function VerificacionBalanza() {
                             id="fecha"
                             name="fecha"
                             value={values.fecha || ''}
+                            disabled={!!location.state?.objeto}
                             required
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
 
-                        <TextField disabled={!!location.state?.objeto} value={values.responsable} onChange={(e) => { setValues({ ...values, responsable: e.target.value }) }} id="outlined-basic" label="Responsable de validación" variant="outlined" />
-                        <TextField disabled={!!location.state?.objeto} value={values.balanza} onChange={(e) => { setValues({ ...values, balanza: e.target.value }) }} id="outlined-basic" label="Balanza/Báscula" variant="outlined" />
+                        <TextField disabled={!!location.state?.objeto} value={values.responsable} onChange={(e) => { setValues({ ...values, responsable: e.target.value }) }} id="outlined-basic" label="Responsable de validación" variant="outlined" InputLabelProps={{
+                                shrink: true,
+                            }} />
+                        <TextField disabled={!!location.state?.objeto} value={values.balanza} onChange={(e) => { setValues({ ...values, balanza: e.target.value }) }} id="outlined-basic" label="Balanza/Báscula" variant="outlined" InputLabelProps={{
+                                shrink: true,
+                            }} />
 
 
                     </div>
@@ -211,6 +219,9 @@ function VerificacionBalanza() {
                                                     label={`${input.label}`}
                                                     variant="outlined"
                                                     disabled={!!location.state?.objeto} 
+                                                    InputLabelProps={{
+                                                        shrink: true,
+                                                    }}
                                                     value={
                                                         input.label === 'Código'
                                                             ? values.inputs[index]?.codigo 
@@ -246,7 +257,9 @@ function VerificacionBalanza() {
                     <br />
                     <br />
                     <div className={styles.personal}>
-                        <TextField disabled={!!location.state?.objeto} value={values.verified} onChange={(e) => { setValues({ ...values, verified: e.target.value }) }} id="outlined-basic" label="Verificado por" variant="outlined" />
+                        <TextField disabled={!!location.state?.objeto} value={values.verified} onChange={(e) => { setValues({ ...values, verified: e.target.value }) }} id="outlined-basic" label="Verificado por" variant="outlined" InputLabelProps={{
+                                                                shrink: true,
+                                                            }}/>
                         <TextField
                             type="datetime-local"
                             onChange={(e) => {
@@ -256,7 +269,9 @@ function VerificacionBalanza() {
                             name="fechaHora"
                             value={values.fechaHora}
                             disabled={!!location.state?.objeto} 
-
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
 
                     </div>
