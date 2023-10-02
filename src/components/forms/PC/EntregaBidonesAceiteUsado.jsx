@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone';
 import { entregaBidones } from '../../../services/FormsRequest';
 import Alert from '../../shared/components/Alert/Alert';
 import { useLocation } from 'react-router';
-
+import styles from './EntregaBidonesAceiteUsado.module.css';
 
 function EntregaBidonesAceiteUsado() {
   const [replicas, setReplicas] = useState(1);
@@ -20,11 +20,13 @@ function EntregaBidonesAceiteUsado() {
 
   const inputs = [
     { id: 1, label: 'Fecha' },
-    { id: 2, label: 'Litros entregados' },
+    { id: 2, label: 'Cantidad de Litros entregados' },
     { id: 3, label: 'Responsable de Entrega' },
     { id: 4, label: 'Responsable de Retiro' },
     { id: 5, label: 'Certificado de Transporte' },
     { id: 6, label: 'Certificado de Disposición final' },
+    { id: 7, label: 'Transporte' },
+    { id: 8, label: 'Disposición final' },
  
   ];
 
@@ -60,19 +62,9 @@ function EntregaBidonesAceiteUsado() {
 
   const Dropzone = ({ onDrop, index, label }) => {
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
-    const dropzoneStyle = {
-                    border: '0.1px solid gray',
-                    borderColor: 'gray',
-                    borderRadius: '3px',
-                    color: 'gray',
-                    display: 'flex',
-                    flexDirection: 'column', // Align items in a column
-                    alignItems: 'center', // Center items horizontally
-                 
-                    padding: '3px', // Add padding for better appearance
-                };
+
     return (
-      <div {...getRootProps()} style={ dropzoneStyle }>
+      <div {...getRootProps()} className={ styles.border }>
         <input {...getInputProps()} />
         <h6>Selecciona una foto de {label}</h6>
         {replicaValues[index][label.toLowerCase().replace(/\s/g, '')] && (
@@ -172,7 +164,6 @@ function EntregaBidonesAceiteUsado() {
                     </div>}
                   </div>
                 ))}
-
             </div>
           </div>
           <div className="btn">
@@ -188,3 +179,6 @@ function EntregaBidonesAceiteUsado() {
 }
 
 export default EntregaBidonesAceiteUsado;
+
+
+
