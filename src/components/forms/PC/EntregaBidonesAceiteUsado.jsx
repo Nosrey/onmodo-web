@@ -68,7 +68,7 @@ function EntregaBidonesAceiteUsado() {
         <input {...getInputProps()} />
         <h6>Selecciona una foto de {label}</h6>
         {replicaValues[index][label.toLowerCase().replace(/\s/g, '')] && (
-          <h6>Archivo seleccionado: {replicaValues[index][label.toLowerCase().replace(/\s/g, '')].name}</h6>
+          <h6 className={styles.select}>Archivo seleccionado: {replicaValues[index][label.toLowerCase().replace(/\s/g, '')].name}</h6>
         )}
       </div>
     );
