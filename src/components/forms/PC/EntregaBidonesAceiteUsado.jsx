@@ -23,10 +23,8 @@ function EntregaBidonesAceiteUsado() {
     { id: 2, label: 'Cantidad de Litros entregados' },
     { id: 3, label: 'Responsable de Entrega' },
     { id: 4, label: 'Responsable de Retiro' },
-    { id: 5, label: 'Certificado de Transporte' },
-    { id: 6, label: 'Certificado de Disposición final' },
-    { id: 7, label: 'Transporte' },
-    { id: 8, label: 'Disposición final' },
+    { id: 5, label: 'Transporte' },
+    { id: 6, label: 'Disposición final' },
  
   ];
 
@@ -62,13 +60,17 @@ function EntregaBidonesAceiteUsado() {
 
   const Dropzone = ({ onDrop, index, label }) => {
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
+    console.log(replicaValues[index][label.toLowerCase().replace(/\s/g, '')])
     return (
       <div {...getRootProps()} className={ styles.border }>
-        <input {...getInputProps()} />
-        <h6>Selecciona una foto de {label}</h6>
+        <input {...getInputProps()}/>
+        {
+          replicaValues[index][label.toLowerCase().replace(/\s/g, '')] === undefined && 
+          <h6 style={{fontSize: "12px"}}>Selecciona una foto de {label}</h6>
+        }
+        
         {replicaValues[index][label.toLowerCase().replace(/\s/g, '')] && (
-          <h6 className={styles.select}>Archivo seleccionado: {replicaValues[index][label.toLowerCase().replace(/\s/g, '')].name}</h6>
+          <h6  style={{fontSize: "12px", width:"100%"}} className={styles.select}>Archivo seleccionado: <span style={{fontSize: "12px", fontWeight:"bold"}}>{replicaValues[index][label.toLowerCase().replace(/\s/g, '')].name.substring(0, 25)}</span></h6>
         )}
       </div>
     );
