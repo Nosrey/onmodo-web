@@ -18,7 +18,6 @@ function DistribucionExpedicion() {
         { id: 5, label: 'Hora' },
         { id: 6, label: 'Temp.' },
         { id: 7, label: 'Acciones correctivas' },
-        { id: 8, label: 'Responsable' },
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showModal, setShowModal] = useState(false);
