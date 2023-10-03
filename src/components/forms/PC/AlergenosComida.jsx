@@ -39,9 +39,6 @@ function AlergenosComida() {
             
         }
     }, [])
-
-    const [certificadoFile, setCertificadoFile] = useState(null);
-
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
@@ -229,7 +226,6 @@ function AlergenosComida() {
 
                                                                 </Select>
                                                             </FormControl>
-                                                             
                                                         ) : input.label === "Requiere renovación" ? (
                                                             <FormControl variant="outlined" className={`${styles.selectField} `}>
                                                                 <InputLabel id="select">{input.label}</InputLabel>
@@ -281,14 +277,10 @@ function AlergenosComida() {
                                                                 disabled={!!location.state?.objeto}
                                                             />
                                                         )
-                                                        
-                                                           
-                                                      
 
                                                     )}
                                                 </div>
                                             ))}
-                                            
 
                                             {infoPrecargada ? <div></div> : <div className="icon">
                                                 {
@@ -297,7 +289,6 @@ function AlergenosComida() {
                                                         : <IndeterminateCheckboxIcon  style={{ color: 'grey' }} onClick={() => { handleClickRemove(index) }} />
                                                 }
                                             </div>}
-                                          
                                         </div>
                                     ))}
                             </div>
