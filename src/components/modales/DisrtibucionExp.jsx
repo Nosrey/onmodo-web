@@ -18,7 +18,6 @@ function DisrtibucionExp() {
                     <p className={styles.subtitle}>ALIMENTOS FRÍOS</p>
                 </div>
                 <p>Las preparaciones servidas en frio, entradas, postres y ensaladas deben mantenerse a temperaturas inferiores  a 10ºC</p>
-                <p>Contratos certificados con IRAM BPM: mantener a menos de 4ºC-Veladero: mantener a menos de 5ºC.</p>
 
         </>
     )

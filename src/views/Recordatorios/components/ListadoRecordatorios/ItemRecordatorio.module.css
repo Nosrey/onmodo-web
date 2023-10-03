@@ -1,0 +1,39 @@
+.item {
+    /* border:1px solid grey; */
+    border-top: 4px solid #90C057;
+    box-shadow: 2px 4px 4px  rgb(195, 190, 190);
+    padding: 20px 20px;
+    padding-bottom: 15px;
+    background-color: rgb(234, 233, 233);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid grey;
+    cursor: default;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.frecuencia {
+    font-weight: lighter;
+    font-size: 14px;
+    color: grey;
+}
+.description {
+    font-size: 13px;
+    margin-top: 10px;
+    font-weight: lighter;
+    margin-bottom: 7px;
+    cursor: default;
+}
+
+.link {
+    color: blue;
+    font-size: 13px;
+}

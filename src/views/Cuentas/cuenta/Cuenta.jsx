@@ -6,6 +6,7 @@ import { createNewUSer, getLocalidades, getProvincias, getUserInfo } from '../..
 import { useLocation } from 'react-router-dom';
 import { PUESTOS_N1, PUESTOS_N2 } from '../../../components/shared/constants/Puestos';
 import ImageUploader from '../../../components/ImgUploader/ImgUploader';
+import Alert from '../../../components/shared/components/Alert/Alert';
 
 function Cuenta() {
   const idUser = localStorage.getItem("idUser");
@@ -13,8 +14,6 @@ function Cuenta() {
   const location = useLocation();
 
   const [errors, setErrors] = useState({});
-  const [showToast, setShowToast] = useState(false);
-  const [showToastError, setShowToastError] = useState(false);
   const [editInput, setEditInput] = useState(true);
   const [btnEdit, setBtnEdit] = useState(false);
   const [inputValue, setInputValue] = useState();
@@ -24,7 +23,13 @@ function Cuenta() {
   const [localidadesOptions, setLocalidadesOptions] = useState([]);
   const [isANewProfile, setIsANewProfile] = useState(true);
   const [hidePuestos, setHidePuestos] = useState(false);
-  const [nivelOptions, setNivelOptions] = useState()
+  const [nivelOptions, setNivelOptions] = useState();
+
+    //** ALERTA */
+    const [textAlert, setTextAlert] = useState("");
+    const [typeAlert, setTypeAlert] = useState("");
+    const [showAlert, setShowlert] = useState(false);
+
 
   const validate = (values) => {
     let errors = {};
@@ -84,29 +89,38 @@ function Cuenta() {
       }
       
       createNewUSer(data).then((resp) => {
-        setShowToast(true);
-        setTimeout(() => {
-          setShowToast(false);
-        }, 2000);
+        setTextAlert("Cuenta creada con éxito")
+        setTypeAlert("success");
         setBtnEdit(!btnEdit);
         setEditInput(true)
       })
       .catch((error) => {
-        console.log(error)
-        setShowToastError(true);
-        setTimeout(() => {
-          setShowToastError(false);
-        }, 2000);
+        setTextAlert("Ocurrió un problema")
+      setTypeAlert("error");
+      })
+      .finally(()=>{
+        showAlertAnimation();
       })
     ;
     }
   };
 
+  const showAlertAnimation = () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    setShowlert(true);
+    setTimeout(() => {
+        setShowlert(false);
+
+    }, 7000);
+  }
+
   useEffect(() => {
     getProvincias().then((resp) => setProvinciasOptions(resp));
     if (location.pathname === "/cuenta") {
       getUserInfo(idUser).then((resp) => {
-        console.log(resp)
         setInputValue({
           nombre: resp[0].fullName,
           legajo: resp[0].legajo,
@@ -158,19 +172,11 @@ function Cuenta() {
 
   return (
     
-      <div className={styles.container}>
+    <div className={styles.container}>
+        { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
         {inputValue && 
         <div className={styles.wrapper}>
-          {showToast && (
-            <div className={styles.toastContainer}>
-              <span className={styles.toast}>¡Cambios guardados exitosamente!</span>
-            </div>
-          )}
-              {showToastError && (
-            <div className={styles.toastContainer}>
-              <span className={styles.toast}>¡Ups! Ocurrió un error</span>
-            </div>
-          )}
+
           <ImageUploader uploadPhoto={handleChange} photo={inputValue.imgProfile}/>
           <div className={styles.formContainer}>
             <form onSubmit={handleSubmit} action='' className={styles.formulario}>

@@ -113,181 +113,41 @@ const [medidasValues,setMedidasValues] = useState([
   {devolucionCheck:false,devolucionDescription:""},
   {aceptadoCheck:false,aceptadoDescription:""}])
 
-const inputsValuesConstructor = (index,value) => {
-    /* const inputTarget = document.getElementById(id) */
-    if (index === 1) {
-      condicionesValues[1].atrasadoDescription=value
-      setValues({...values,condicionesEntrega:condicionesValues})
+  const inputsValuesConstructor = (category, index, value) => {
+    const updatedValues = { ...values };
+  
+    if (category === 'condicionesEntrega') {
+      updatedValues[category][index].adelantadoDescription = value;
+    } else if (category === 'calidad') {
+      updatedValues[category][index][`${value.label.toLowerCase()}Description`] = value;
+    } else if (category === 'diferencias') {
+      updatedValues[category][index][`${value.label.toLowerCase()}Description`] = value;
+    } else if (category === 'transporte') {
+      updatedValues[category][index][`${value.label.toLowerCase()}Description`] = value;
+    } else if (category === 'medidasTomadas') {
+      updatedValues[category][index][`${value.label.toLowerCase()}Description`] = value;
     }
-    else if (index === 2) {
-      condicionesValues[0].adelantadoDescription= value
-      setValues({...values,condicionesEntrega:condicionesValues})
+  
+    setValues(updatedValues);
+  };
+  
+  const checkboxValuesConstructor = (category, index, value) => {
+    const updatedValues = { ...values };
+    
+    if (category === 'condicionesEntrega') {
+      updatedValues[category][index].adelantadoCheck = value;
+    } else if (category === 'calidad') {
+      updatedValues[category][index][`${value.label.toLowerCase()}Check`] = value;
+    } else if (category === 'diferencias') {
+      updatedValues[category][index][`${value.label.toLowerCase()}Check`] = value;
+    } else if (category === 'transporte') {
+      updatedValues[category][index][`${value.label.toLowerCase()}Check`] = value;
+    } else if (category === 'medidasTomadas') {
+      updatedValues[category][index][`${value.label.toLowerCase()}Check`] = value;
     }
-    else if (index === 3) {
-      calidadValues[0].temperaturaDescription = value
-      setValues({...values,calidad:calidadValues})
-    }
-    else if (index === 4) {
-      calidadValues[1].vidaUtilDescription = value
-      setValues({...values,calidad:calidadValues})
-    }
-    else if (index === 5) {
-      calidadValues[2].embalajeDescription = value
-      setValues({...values,calidad:calidadValues})
-    }
-    else if (index === 6) {
-      calidadValues[3].rotuloDescription = value
-      setValues({...values,calidad:calidadValues})
-    }
-    else if (index === 7) {
-      calidadValues[4].calibreDescription = value
-      setValues({...values,calidad:calidadValues})
-    }
-    else if (index === 8) {
-      calidadValues[5].colorDescription = value
-      setValues({...values,calidad:calidadValues})
-    }
-    else if (index === 9) {
-      calidadValues[6].signosDescription = value
-      setValues({...values,calidad:calidadValues})
-    }
-    else if (index === 10) {
-      calidadValues[7].consistenciaDescription = value
-      setValues({...values,calidad:calidadValues})
-    }
-    else if (index === 11) {
-      calidadValues[8].olorDescription = value
-    }
-    else if (index === 12) {
-      diferenciasValues[0].precioDescription = value
-      setValues({...values,diferencias:diferenciasValues})
-    }
-    else if (index === 13) {
-      diferenciasValues[1].cantidadDescription = value
-      setValues({...values,diferencias:diferenciasValues})
-    }
-    else if (index === 14) {
-      transporteValues[0].temperaturaDescription = value
-      setValues({...values,transporte:transporteValues})
-    }
-    else if (index === 15) {
-      transporteValues[1].uniformeDescription = value
-      setValues({...values,transporte:transporteValues})
-    }
-    else if (index === 16) {
-      transporteValues[2].predisposicionDescription = value
-      setValues({...values,transporte:transporteValues})
-    }
-    else if (index === 17) {
-      transporteValues[3].vehiculoDescription = value
-      setValues({...values,transporte:transporteValues})
-    }
-    else if (index === 18) {
-      transporteValues[4].otrasFaltasDescription = value
-      setValues({...values,transporte:transporteValues})
-    }
-    else if (index === 19) {
-      medidasValues[0].rechazoDescription = value 
-      setValues({...values,medidasTomadas:medidasValues})
-    }else if (index === 20) {
-      medidasValues[1].devolucionDescription = value
-      setValues({...values,medidasTomadas:medidasValues})
-    }
-    else {
-      medidasValues[2].aceptadoDescription = value 
-      setValues({...values,medidasTomadas:medidasValues})
-    }
-    /* index === 1 ? setCondicionesValues([...condicionesValues])
-    label === 'Fecha' ?  setObjValues({...objValues,fecha:inputTarget.value, id:index}) :
-    label === 'Nombre Comensal' ? setObjValues({...objValues,nombre:inputTarget.value}) :
-    label === 'Diagnóstico' ? setObjValues({...objValues,preparacion:inputTarget.value}):
-    label === 'Listado de ingredientes' ? setObjValues({...objValues,listado:inputTarget.value}):
-    label === 'Responsable' && setObjValues({...objValues,responsable:inputTarget.value}) */
-}
-const checkboxValuesConstructor = (index,value)=>{
-  if (index === 1) {
-    condicionesValues[1].atrasadoCheck=value
-    setValues({...values,condicionesEntrega:condicionesValues})
-  }
-  else if (index === 2) {
-    condicionesValues[0].adelantadoCheck= value
-    setValues({...values,condicionesEntrega:condicionesValues})
-  }
-  else if (index === 3) {
-    calidadValues[0].temperaturaCheck = value
-    setValues({...values,calidad:calidadValues})
-  }
-  else if (index === 4) {
-    calidadValues[1].vidaUtilCheck = value
-    setValues({...values,calidad:calidadValues})
-  }
-  else if (index === 5) {
-    calidadValues[2].embalajeCheck = value
-    setValues({...values,calidad:calidadValues})
-  }
-  else if (index === 6) {
-    calidadValues[3].rotuloCheck = value
-    setValues({...values,calidad:calidadValues})
-  }
-  else if (index === 7) {
-    calidadValues[4].calibreCheck = value
-    setValues({...values,calidad:calidadValues})
-  }
-  else if (index === 8) {
-    calidadValues[5].colorCheck = value
-    setValues({...values,calidad:calidadValues})
-  }
-  else if (index === 9) {
-    calidadValues[6].signosCheck = value
-    setValues({...values,calidad:calidadValues})
-  }
-  else if (index === 10) {
-    calidadValues[7].consistenciaCheck = value
-    setValues({...values,calidad:calidadValues})
-  }
-  else if (index === 11) {
-    calidadValues[8].olorCheck = value
-  }
-  else if (index === 12) {
-    diferenciasValues[0].precioCheck = value
-    setValues({...values,diferencias:diferenciasValues})
-  }
-  else if (index === 13) {
-    diferenciasValues[1].cantidadCheck = value
-    setValues({...values,diferencias:diferenciasValues})
-  }
-  else if (index === 14) {
-    transporteValues[0].temperaturaCheck = value
-    setValues({...values,transporte:transporteValues})
-  }
-  else if (index === 15) {
-    transporteValues[1].uniformeCheck = value
-    setValues({...values,transporte:transporteValues})
-  }
-  else if (index === 16) {
-    transporteValues[2].predisposicionCheck = value
-    setValues({...values,transporte:transporteValues})
-  }
-  else if (index === 17) {
-    transporteValues[3].vehiculoCheck = value
-    setValues({...values,transporte:transporteValues})
-  }
-  else if (index === 18) {
-    transporteValues[3].otrasFaltasCheck = value
-    setValues({...values,transporte:transporteValues})
-  }
-  else if (index === 19) {
-    medidasValues[0].rechazoCheck = value 
-    setValues({...values,medidasTomadas:medidasValues})
-  }else if (index === 20) {
-    medidasValues[1].devolucionCheck = value
-    setValues({...values,medidasTomadas:medidasValues})
-  }
-  else {
-    medidasValues[2].aceptadoCheck = value 
-    setValues({...values,medidasTomadas:medidasValues})
-  }
-}
+  
+    setValues(updatedValues);
+  };
 
 const handleSubmit = () => {
   reporteRechazo(values).then((resp)=> {
@@ -311,10 +171,33 @@ const handleSubmit = () => {
 };
 
 const location = useLocation();
-  useEffect(() => {
-    const infoPrecargada = location.state?.objeto;
-    console.log(infoPrecargada)
-  }, [])
+const infoPrecargada = location.state?.objeto;
+useEffect(() => {
+  console.log(infoPrecargada)
+  if (infoPrecargada)  { // muestro un form del historial
+      
+setValues({
+  dia:infoPrecargada.dia,
+  proveedor:infoPrecargada.proveedor,
+  producto:infoPrecargada.producto,
+  nroLote:infoPrecargada.nroLote,
+  condicionesEntrega : infoPrecargada.condicionesEntrega,
+  calidad : infoPrecargada.calidad,
+  diferencias : infoPrecargada.diferencias,
+  transporte : infoPrecargada.transporte,
+  medidasTomadas : infoPrecargada.medidasTomadas,
+  nombreAdministrador: infoPrecargada.nombreAdministrador,
+  nombreProveedor:infoPrecargada.nombreProveedor,
+  date: infoPrecargada.date,
+  idUser: idUser
+})
+
+      console.log("values", values)
+  } else { // creo un form desde cero
+      
+      
+  }
+}, [location.state?.objeto])
   
   return (
     <>
@@ -353,6 +236,8 @@ const location = useLocation();
                 }}
                 id="fecha"
                 name="fecha"
+                value={values?.fecha || ''}
+                disabled={!!location.state?.objeto} 
                 onChange={(e) => { setValues({ ...values, dia: e.target.value }) }}
 
             />
@@ -364,6 +249,8 @@ const location = useLocation();
               id="outlined-basic"
               label="PROVEEDOR"
               variant="outlined"
+              value={values?.proveedor || ''}
+              disabled={!!location.state?.objeto} 
             />
             <TextField
               onChange = {(e)=>{
@@ -372,6 +259,8 @@ const location = useLocation();
               id="outlined-basic"
               label="PRODUCTO"
               variant="outlined"
+              value={values?.producto || ''}
+              disabled={!!location.state?.objeto} 
             />
             <TextField
               onChange = {(e)=>{
@@ -380,6 +269,8 @@ const location = useLocation();
               id="outlined-basic"
               label="NRO. LOTE"
               variant="outlined"
+              value={values?.nroLote || ''}
+              disabled={!!location.state?.objeto} 
             />
           </div>
           <br />
@@ -401,7 +292,7 @@ const location = useLocation();
                           {Object.keys(section)}
                         </p>
                       </div>
-                      {section[Object.keys(section)].map((value) => (
+                      {section[Object.keys(section)].map((value) =>   (
                         <div className={styles.inputRow} key={value.id}>
                           <Checkbox
                             onChange={(e)=>{checkboxValuesConstructor(value.id,e.target.checked)}}
@@ -417,6 +308,8 @@ const location = useLocation();
                             name={`sectionInput-${value.id}-${index}`}
                             label={"Descripción de no conformidad"}
                             variant="outlined"
+                            value={values?.condicionesEntrega[index].adelantadoDescription || ''}
+                            disabled={!!location.state?.objeto} 
                             fullWidth
                             multiline
                           />

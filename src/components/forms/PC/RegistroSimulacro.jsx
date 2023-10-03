@@ -68,8 +68,8 @@ function RegistroSimulacro() {
         )
     };
     const location = useLocation();
+    const infoPrecargada = location.state?.objeto;
     useEffect(() => {
-        const infoPrecargada = location.state?.objeto;
         if (infoPrecargada) { // muestro un form del historial
             console.log("infoPrecargada", infoPrecargada)
             console.log("sepudo")
@@ -78,16 +78,11 @@ function RegistroSimulacro() {
                 ubicacion: infoPrecargada.ubicacion,
                 localidad: infoPrecargada.localidad,
                 fecha: infoPrecargada.fecha,
-                personas: [
-                    {
-                        nombreCompleto: infoPrecargada.personas.nombreCompleto,
-                        dni: infoPrecargada.personas.dni,
-                        firma: infoPrecargada.personas.firma
-                    }
-                ],
+                personas: infoPrecargada.personas,
                 firmaInstructor: infoPrecargada.firmaInstructor,
                 idUser: idUser
             })
+            setReplicas(infoPrecargada.personas.length)
             console.log("values", values)
         } else { // creo un form desde cero
             console.log("error")
@@ -108,6 +103,7 @@ function RegistroSimulacro() {
             })
         }
     }, [])
+
     return (
         <>
         {values &&
@@ -118,14 +114,15 @@ function RegistroSimulacro() {
                 </div>
 
                 <div className={styles.personalText}>
-                    <TextField onChange={(e) => { setValues({ ...values, razonSocial: e.target.value }) }} value={values.razonSocial} fullWidth id="outlined-basic" label="Razón Social/Contrato" variant="outlined" />
+                    <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, razonSocial: e.target.value }) }} value={values.razonSocial} fullWidth id="outlined-basic" label="Razón Social/Contrato" variant="outlined" />
                 </div>
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, ubicacion: e.target.value }) }} value={values.ubicacion}  id="outlined-basic" label="Ubicación" variant="outlined" />
-                    <TextField onChange={(e) => { setValues({ ...values, localidad: e.target.value }) }} value={values.localidad}  id="outlined-basic" label="Localidad" variant="outlined" />
+                    <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, ubicacion: e.target.value }) }} value={values.ubicacion}  id="outlined-basic" label="Ubicación" variant="outlined" />
+                    <TextField  disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, localidad: e.target.value }) }} value={values.localidad}  id="outlined-basic" label="Localidad" variant="outlined" />
                  
                     <TextField
+                     disabled={!!location.state?.objeto} 
                         label="Fecha"
                         variant="outlined"
                         type="date"
@@ -150,17 +147,19 @@ function RegistroSimulacro() {
                                     {inputs.map((input) => (
                                         <div key={input.id}>
                                             <TextField
+                                             disabled={!!location.state?.objeto} 
                                                 onKeyUp={(e) => handleChangePerson(index, input.label, e.target.value)}
                                                 id={`input-${input.id}-${index}`}
                                                 name={`input-${input.id}-${index}`}
                                                 label={`${input.label}`}
                                                 variant="outlined"
+                                                value= {values.personas[index]?.[input.label] || ''}
                                             />
                                         </div>
                                     ))}
-                                    <div className="icon">
+                                    {infoPrecargada? <div></div>: <div className="icon">
                                         <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
-                                    </div>
+                                    </div>}
                                 </div>
                             ))}
                     </div>
@@ -183,11 +182,11 @@ function RegistroSimulacro() {
                 </div>
 
                 <div className={styles.personal}>
-                    <TextField onChange={(e) => { setValues({ ...values, firmaInstructor: e.target.value }) }} value={values.firmaInstructor}  id="outlined-basic" label="Firma del Instructor" variant="outlined" />
+                    <TextField disabled={!!location.state?.objeto}  onChange={(e) => { setValues({ ...values, firmaInstructor: e.target.value }) }} value={values.firmaInstructor}  id="outlined-basic" label="Firma del Instructor" variant="outlined" />
                 </div>
 
                 <div className="btn">
-                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
+                    <Button  disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
                 </div>
             </div>
         </div>

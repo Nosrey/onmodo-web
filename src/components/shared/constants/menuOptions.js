@@ -27,7 +27,7 @@ export const MENU_OPTIONS= [
     {
       title: 'Recordatorios',
       link: '/recordatorios',
-      showToRol:[2]
+      showToRol:[2,1]
     },
     {
       title: 'Solicitudes de Edición',

@@ -44,6 +44,7 @@ import FormCargado from './components/formulariosCargados/formCargado/FormCargad
 import CrearCuenta from './components/crearCuenta/CrearCuenta';
 import CrearContraseña from './components/CrearContraseña/CrearContraseña';
 import Cuentas from './views/Cuentas/Cuentas';
+import RecordatoriosContainer from './views/Recordatorios/RecordatoriosContainer';
 
 
 function App() {
@@ -66,23 +67,21 @@ function App() {
           <Routes>
           <Route path="/" element={<Navigate to={isLoggedIn ? '/inicio' : '/inicio-de-sesion'} />} />
 
-
             <Route path='/registro' element={<Register />} />
             <Route path='/forgotpassword' element={<RecoverPassword />} />
             <Route path='/inicio-de-sesion' element={<Login />} />
-
             <Route path='/restablecer-contrasena/:token' element={<CrearContraseña />} />
 
             <Route path='/inicio' element={<Inicio />} />
 
+            <Route path='/cuentas' element={<Cuentas />} />
             <Route path='/cuenta' element={<Cuenta />} />
             <Route path='/crear-cuenta' element={<Cuenta />} />
 
-            <Route path='/cuentas' element={<Cuentas />} />
+            <Route path='/recordatorios' element={<RecordatoriosContainer />} />
+
             <Route path='/formularios' element={<FormulariosContainer />} />
-
             <Route path='/formularios-cargados' element={<FormulariosCargados />} />
-
             <Route path='/formularios-cargados/:form' element={<FormCargado />} />
 
 

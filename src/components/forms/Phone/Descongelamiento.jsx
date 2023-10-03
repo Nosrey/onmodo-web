@@ -15,14 +15,14 @@ function Descongelamiento() {
         { id: 1, label: 'Fecha' },
         { id: 2, label: 'Alimento' },
         { id: 3, label: 'Nro. lote' },
-        { id: 4, label: 'Método* (C/A/M)' },
-        { id: 5, label: 'Fecha/ Hora' },
+        { id: 4, label: 'Método' },
+        { id: 5, label: 'Hora' },
         { id: 6, label: 'Temp' },
-        { id: 7, label: 'Fecha/ Hora' },
+        { id: 7, label: 'Hora' },
         { id: 8, label: 'Temp' },
-        { id: 9, label: 'Fecha/ Hora' },
+        { id: 9, label: 'Hora' },
         { id: 10, label: 'Temp' },
-        { id: 11, label: 'Fecha/ Hora' },
+        { id: 11, label: 'Hora' },
         { id: 12, label: 'Temp' },
         { id: 13, label: 'Acciones de correción' },
         { id: 14, label: 'Responsable' },
@@ -84,7 +84,7 @@ function Descongelamiento() {
         <div>
             <div className="form">
                 <div className="titleContainer">
-                    <h3 className="title">Descongelamiento</h3>
+                    <h3 className="title">Planilla de Descongelamiento</h3>
                 </div>
                 { showModal ? (
                     <Modal
