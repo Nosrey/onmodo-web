@@ -83,6 +83,7 @@ function EntregaBidonesAceiteUsado() {
   };
 
   const handleSubmit = () => {
+    console.log(replicaValues)
     entregaBidones(replicaValues)
       .then((resp) => {
         setTextAlert('¡Formulario cargado exitosamente!');
@@ -157,6 +158,7 @@ function EntregaBidonesAceiteUsado() {
                             value={replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]}
                             variant="outlined"
                             disabled={!!location.state?.objeto}
+                            className='input'
                           />
                         )}
                       </div>

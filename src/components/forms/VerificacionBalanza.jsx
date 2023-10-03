@@ -33,8 +33,6 @@ function VerificacionBalanza() {
         responsable: "",
         balanza: "",
         inputs: [{}],
-        verified: "",
-        fechaHora: "",
         idUser: idUser
     })
     const [objValues, setObjValues] = useState({
@@ -124,8 +122,6 @@ function VerificacionBalanza() {
                 responsable: infoPrecargada.responsable,
                 balanza: infoPrecargada.balanza,
                 inputs: infoPrecargada.inputs,
-                verified: infoPrecargada.verified,
-                fechaHora: infoPrecargada.fechaHora,
                 idUser: idUser
                 
             })
@@ -138,8 +134,6 @@ function VerificacionBalanza() {
                 responsable: "",
                 balanza: "",
                 inputs: [{}],
-                verified: "",
-                fechaHora: "",
                 idUser: idUser
             })
         }
@@ -256,25 +250,7 @@ function VerificacionBalanza() {
                     <span><b>*</b> BP(Balanza de producción) - BR (Balanza de recepción)</span>
                     <br />
                     <br />
-                    <div className={styles.personal}>
-                        <TextField disabled={!!location.state?.objeto} value={values.verified} onChange={(e) => { setValues({ ...values, verified: e.target.value }) }} id="outlined-basic" label="Verificado por" variant="outlined" InputLabelProps={{
-                                                                shrink: true,
-                                                            }}/>
-                        <TextField
-                            type="datetime-local"
-                            onChange={(e) => {
-                                setValues({ ...values, fechaHora: e.target.value });
-                            }}
-                            id="fechaHora"
-                            name="fechaHora"
-                            value={values.fechaHora}
-                            disabled={!!location.state?.objeto} 
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-
-                    </div>
+                    
 
                     <div className="btn">
                         <Button  disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
