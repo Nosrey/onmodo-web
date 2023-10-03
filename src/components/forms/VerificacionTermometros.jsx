@@ -293,6 +293,7 @@ function VerificacionTermometros() {
                                                     InputLabelProps={{
                                                         shrink: true,
                                                     }}
+                                                    className="input"
                                                     label={input.label}
                                                     name={`input-${input.id}-${index}`} placeholder={`${input.label}`} variant="outlined" />
 
