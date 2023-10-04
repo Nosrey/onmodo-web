@@ -72,7 +72,6 @@ function Cuenta() {
       setErrors(validationErrors);
     } else {
       setErrors({});
-      console.log(inputValue)
       const data = { 
         email: inputValue.email,
         fullName: inputValue.nombre,
@@ -118,7 +117,6 @@ function Cuenta() {
   }
 
   useEffect(() => {
-    getProvincias().then((resp) => setProvinciasOptions(resp));
     if (location.pathname === "/cuenta") {
       getUserInfo(idUser).then((resp) => {
         setInputValue({
@@ -133,6 +131,11 @@ function Cuenta() {
           contrato:resp[0].contratoComedor,
           imgProfile: resp[0].imgProfile
         })
+        getProvincias().then((provs) => {
+          setProvinciasOptions(provs);
+          const idProvSeleccionada = provs.find((item) => item.nombre ===  resp[0].provincia).id;
+          getLocalidades(idProvSeleccionada).then((resp) => setLocalidadesOptions(resp));
+        });
         setSrcImage(perfil);
         setIsANewProfile(false);
       })
