@@ -14,33 +14,32 @@ function RecepcionInfo() {
                 <ul>
                     <li>
                         <b>Congelados:</b>
-                        <span> -18ºC ± 6ºC, o según indicación rótulo.</span>
+                        <span> Hasta -12ºC.</span>
                     </li>
                     <li>
                         <b>Carnes Frescas:</b>
-                        <span> 1 a 5ºC .</span>
+                        <span>Hasta 5ºC .</span>
                     </li>
                     <li>
                         <b>Pollos:</b>
-                        <span> -2ºC a 2ºC, hasta 7ºC con notificación al proveedor.</span>
+                        <span>Hasta 2ºC. recepción normal, hasta 7ºC con notificación al proveedor.</span>
                     </li>
                     <li>
-                        <b>Lácteoss:</b>
-                        <span> 2ºC a 5ºC, hasta 7ºC con notificación al proveedor o según indicación en el envase.</span>
+                        <b>Lácteos:</b>
+                        <span>  Hasta 5ºC recepción normal, hasta 7ºC con notificación al proveedor.</span>
                     </li>
                     <li>
                         <b>Fiambres:</b>
-                        <span> Hasta 7ºC o según indicación en el envase.                        </span>
+                        <span>Hasta 7ºC o según indicación en el envase.                        </span>
                     </li>
                     <li>
                         <b>Huevos:</b>
-                        <span> Cascara: 8ºC a 13°C.
-Pasteurizado: hasta 7°C.
+                        <span> Cascara: hasta 10°C.
                         </span>
                     </li>
                     <li>
                         <b>Frutas y verduras frescas:</b>
-                        <span> Hasta 7°C o según indicación proveedor.
+                        <span> Hasta 10°C.
                         </span>
                     </li>
                     <li>
@@ -133,7 +132,7 @@ Requerir Nº SENASA. Envases íntegros y limpios.
                     <li>Constancia para el establecimiento</li>
                     <li>Constancia para el proveedor</li>
                 </ul>
-                <p>Desvíos encontrados en la recepción que se hayan repetido <b>más de 3 veces</b> correspondientes a un mismo proveedor y a un mismo desvío deben ser informados a: hseq@aramark.com.ar para su intervención, junto con los reportes correspondientes.</p>
+                <p>Si en la recepción se han repetido más de 3 veces desvíos correspondientes a un mismo proveedor, debe evaluarse una no conformidad al proveedor / coordinar una reunión / evaluar su reemplazo.</p>
 
         </>
     )
