@@ -13,14 +13,14 @@ function ControlProcesos() {
     
     const [inputs] = useState([
         { id: 1, label: 'Alimento' },
-        { id: 2, label: 'Fecha / Hora' },
+        { id: 2, label: 'Hora' },
         { id: 3, label: 'Temp.' },
         { id: 4, label: 'Hora' },
         { id: 5, label: 'Temp.' },
         { id: 6, label: 'Temp.' },
         { id: 7, label: 'Temp.' },
         { id: 8, label: 'Temp.' },
-        { id: 9, label: 'Fecha / Hora' },
+        { id: 9, label: ' Hora' },
         { id: 10, label: 'Temp.' },
         { id: 11, label: 'Temp.' },
         { id: 12, label: 'Temp.' },
@@ -100,7 +100,10 @@ function ControlProcesos() {
                     </div>
                     )
                 }
-       
+       <TextField
+                            type="date"
+                            label="Fecha"
+                          />
 
                 <div className="table">
                     <div className={styles.contTitTabla}>
