@@ -15,7 +15,6 @@ function RegistroSimulacro() {
     const [inputs] = useState([
         { id: 1, label: 'Apellido y Nombre' },
         { id: 2, label: 'Nro DNI' },
-        { id: 3, label: 'Firma' },
     ]);
     var idUser = localStorage.getItem("idUser");
     const [replicas, setReplicas] = useState(1);
@@ -30,7 +29,6 @@ function RegistroSimulacro() {
                 {
                     nombreCompleto: "",
                     dni: "",
-                    firma: ""
                 }
             ]
         });
@@ -48,6 +46,7 @@ function RegistroSimulacro() {
         });
     };
     const handleSubmit = () => {
+        console.log(values)
         registroSimulacro(values).then((resp)=> {
             setTextAlert("¡Formulario cargado exitosamente!");
             setTypeAlert("success");
@@ -79,7 +78,7 @@ function RegistroSimulacro() {
                 localidad: infoPrecargada.localidad,
                 fecha: infoPrecargada.fecha,
                 personas: infoPrecargada.personas,
-                firmaInstructor: infoPrecargada.firmaInstructor,
+                firmaDoc: infoPrecargada.firmaDoc,
                 idUser: idUser
             })
             setReplicas(infoPrecargada.personas.length)
@@ -95,10 +94,9 @@ function RegistroSimulacro() {
                     {
                         nombreCompleto: "",
                         dni: "",
-                        firma: ""
                     }
                 ],
-                firmaInstructor: "",
+                firmaDoc: "",
                 idUser: idUser
             })
         }
@@ -181,8 +179,14 @@ function RegistroSimulacro() {
                     </ul>
                 </div>
 
-                <div className={styles.personal}>
-                    <TextField disabled={!!location.state?.objeto}  onChange={(e) => { setValues({ ...values, firmaInstructor: e.target.value }) }} value={values.firmaInstructor}  id="outlined-basic" label="Firma del Instructor" variant="outlined" />
+
+                <div className={styles.responsableCont}>
+                            <div className={styles.subtitleCont}>
+                                <p className={styles.subtitle}>Firma de los participantes</p>
+                            </div>
+                            <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
+                            <TextField disabled={!!location.state?.objeto}  onChange={(e) => { setValues({ ...values, firmaDoc: e.target.value }) }} value={values.firmaDoc}  id="outlined-basic" label="Planilla Firmada" variant="outlined" />
+
                 </div>
 
                 <div className="btn">

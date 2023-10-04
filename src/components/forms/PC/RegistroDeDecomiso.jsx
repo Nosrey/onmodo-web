@@ -99,10 +99,10 @@ function RegistroDeDecomiso() {
              setReplicas(infoPrecargada.inputs.length);
 
             setObjValues(infoPrecargada.inputs)
-setValues({
-    inputs: infoPrecargada.inputs,
-    idUser: idUser
-})
+            setValues({
+                inputs: infoPrecargada.inputs,
+                idUser: idUser
+            })
             console.log("objValues", objValues)
             console.log("values", values)
         } else { // creo un form desde cero

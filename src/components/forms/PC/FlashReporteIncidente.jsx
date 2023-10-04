@@ -176,6 +176,7 @@ function FlashReporteIncidente() {
                         <div className={styles.descripcion}>
                             <TextField
                                 fullWidth
+                                style={{width:"450px"}}
                                 id="outlined-multiline-static"
                                 label="Descripción del Incidente"
                                 multiline
@@ -189,19 +190,24 @@ function FlashReporteIncidente() {
                             {/* Área de dropzone */}
                             <div className={styles.border}   {...getRootProps()}>
                                 <input  {...getInputProps()} />
-                                <h2>Fotografias</h2>
-                                <h6>Arrastra y suelta las fotografias aquí o hace clic para seleccionar archivos.</h6>
-                            </div>
-
-                            {/* Previsualización de imágenes */}
-                                {photoFiles.map((file, index) => (
+                                <h2 style={{fontSize:"18px", textAlign:"left", width:"100%", fontWeight:"bold"}}>Fotografias</h2>
+                                <h6 style={{fontSize:"14px", textAlign:"left", width:"100%"}}>Arrastra y suelta las fotografias aquí o hace clic para seleccionar archivos.</h6>
+                            
+                                <div style={{display:"flex", width:"100%"}}>
+                                    {/* Previsualización de imágenes */}
+                                    {photoFiles.map((file, index) => (
                                         <img
                                             src={URL.createObjectURL(file)}
                                             alt={`Preview-${index}`}
                                             className={styles.previewImage}
                                         />
                                   
-                                ))}
+                                    ))}
+                                </div>
+                                
+                            </div>
+
+                            
                         </div>
        
                         <div className={styles.personalText}>
@@ -222,66 +228,15 @@ function FlashReporteIncidente() {
                             <div className={styles.subtitleCont}>
                                 <p className={styles.subtitle}>Responsable (Accountable)</p>
                             </div>
-                            <div className={styles.personal}>
-                                <p className={styles.tableLabel}>Asesor HSEQ</p>
-                                <TextField
+                            <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por el Asesor HSEQ, el Supervisor Directo y el Gerente de Área. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
+                            <TextField
                                     onChange={(e) => { setValues({ ...values, nombreAsesor: e.target.value }) }}
                                     disabled={!!location.state?.objeto}
                                     value={values.nombreAsesor}
                                     id="outlined-basic"
-                                    label="Nombre"
+                                    label="Planilla Firmada"
                                     variant="outlined"
                                 />
-                                <TextField
-                                    onChange={(e) => { setValues({ ...values, firmaAsesor: e.target.value }) }}
-                                    disabled={!!location.state?.objeto}
-                                    value={values.firmaAsesor}
-                                    id="outlined-basic"
-                                    label="Firma"
-                                    variant="outlined"
-                                />
-                            </div>
-
-                            <div className={styles.personal}>
-                                <p className={styles.tableLabel}>Supervisor Directo</p>
-                                <TextField
-                                    onChange={(e) => { setValues({ ...values, nombreSupervisor: e.target.value }) }}
-                                    disabled={!!location.state?.objeto}
-                                    value={values.nombreSupervisor}
-                                    id="outlined-basic"
-                                    label="Nombre"
-                                    variant="outlined"
-                                />
-                                
-                                <TextField
-                                    onChange={(e) => { setValues({ ...values, firmaSupervisor: e.target.value }) }}
-                                    disabled={!!location.state?.objeto}
-                                    value={values.firmaSupervisor}
-                                    id="outlined-basic"
-                                    label="Firma"
-                                    variant="outlined"
-                                />
-                            </div>
-
-                            <div className={styles.personal}>
-                                <p className={styles.tableLabel}>Gerente del Área</p>
-                                <TextField
-                                    onChange={(e) => { setValues({ ...values, nombreGerente: e.target.value }) }}
-                                    disabled={!!location.state?.objeto}
-                                    value={values.nombreGerente}
-                                    id="outlined-basic"
-                                    label="Nombre"
-                                    variant="outlined"
-                                />
-                                <TextField
-                                    onChange={(e) => { setValues({ ...values, firmaGerente: e.target.value }) }}
-                                    disabled={!!location.state?.objeto}
-                                    value={values.firmaGerente}
-                                    id="outlined-basic"
-                                    label="Firma"
-                                    variant="outlined"
-                                />
-                            </div>
                         </div>
 
                         <div className="btn">
