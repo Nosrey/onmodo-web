@@ -19,10 +19,8 @@ function Recepcion() {
         { id: 5, label: 'Recibida' },
         { id: 6, label: 'Alimento' },
         { id: 7, label: 'Caja camión' },
-        { id: 8, label: 'Dentro de vida útil' },
         { id: 9, label: 'Nro. lote' },
         { id: 10, label: 'Fecha Vto.' },
-        { id: 11, label: 'Recibido' },
         { id: 12, label: 'Motivo del rechazo' },
     ]);
     const [replicas, setReplicas] = useState(1);
@@ -80,7 +78,7 @@ function Recepcion() {
         <div>
             <div className="form">
                 <div className="titleContainer">
-                    <h3 className="title">Recepción</h3>
+                    <h3 className="title">Planilla de Recepción</h3>
                 </div>
 
                 { showModal ? (
@@ -111,7 +109,7 @@ function Recepcion() {
                             <p style={{textAlign: 'center', fontWeight:'bold'}}>Temperatura (ºC) </p>
                         </div>
                     </div>
-                    <div className={styles.subtituloTable2}>
+                    <div className={styles.subtituloTable}>
                         <div>
                             <p style={{textAlign: 'center', fontWeight:'bold'}}>Rotulación</p>
                         </div>
