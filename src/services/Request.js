@@ -116,6 +116,7 @@ export const getProvincias = async () => {
   try {
     const resp = await fetch("https://apis.datos.gob.ar/georef/api/provincias?campos=id,nombre");
     const data = await resp.json();
+
     return data.provincias.sort((a, b) => a.nombre.localeCompare(b.nombre));
   } catch (error) {
     console.error('Error:', error);
