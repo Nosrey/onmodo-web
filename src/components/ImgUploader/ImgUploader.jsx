@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styles from './ImgUploader.module.css';
 import placeholder from '../../assets/image/download.png';
+import { useLocation } from 'react-router-dom';
 
-const ImageUploader = ({uploadPhoto, photo}) => {
+const ImageUploader = ({uploadPhoto, photo, cleanImageInput, setCleanImageInput}) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [ableToChangePhoto, setAbleToChangePhoto] = useState(true);
   const [file, setFile] = useState(null);
+  const location = useLocation();
 
   const handleImageChange = (e) => {
     const imageFile = e.target.files[0];
@@ -24,11 +26,21 @@ const ImageUploader = ({uploadPhoto, photo}) => {
   }, [file])
   
   useEffect(() => {
-    if (photo) {
+    if (photo && location.pathname === "/cuenta") {
       setSelectedImage(photo);
       setAbleToChangePhoto(false);
     }
   }, [photo])
+
+  useEffect(() => {
+    if(cleanImageInput){
+      const fileInput = document.getElementById('image-input');
+      fileInput.value = null;
+      setSelectedImage(null);
+      setFile(null);
+      setCleanImageInput(false);
+    }
+  },[cleanImageInput])
 
   return (
     <div className={styles.imageUploader}>
