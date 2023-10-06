@@ -24,6 +24,7 @@ function Cuenta() {
   const [isANewProfile, setIsANewProfile] = useState(true);
   const [hidePuestos, setHidePuestos] = useState(false);
   const [nivelOptions, setNivelOptions] = useState();
+  const [cleanImageInput, setCleanImageInput] = useState(false);
 
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
@@ -86,7 +87,7 @@ function Cuenta() {
         // idChief,
         imgProfile: inputValue.imgProfile
       }
-      
+
       createNewUSer(data).then((resp) => {
         setTextAlert("Cuenta creada con éxito")
         setTypeAlert("success");
@@ -99,8 +100,20 @@ function Cuenta() {
       })
       .finally(()=>{
         showAlertAnimation();
-      })
-    ;
+      });
+      setCleanImageInput(true);
+      setInputValue({
+        nombre: '',
+        legajo: '',
+        email: '',
+        celular: '',
+        nivel: myRol === "2" ? "1" : "",
+        puesto: '',
+        localidad: '',
+        provincia: '',
+        contrato:'',
+      });
+      setLocalidadesOptions([]);
     }
   };
 
@@ -117,6 +130,7 @@ function Cuenta() {
   }
 
   useEffect(() => {
+    if(location.pathname === "/crear-cuenta") getProvincias().then((resp) => setProvinciasOptions(resp));
     if (location.pathname === "/cuenta") {
       getUserInfo(idUser).then((resp) => {
         setInputValue({
@@ -180,7 +194,8 @@ function Cuenta() {
         {inputValue && 
         <div className={styles.wrapper}>
 
-          <ImageUploader uploadPhoto={handleChange} photo={inputValue.imgProfile}/>
+          <ImageUploader uploadPhoto={handleChange} photo={inputValue.imgProfile} 
+            cleanImageInput={cleanImageInput} setCleanImageInput={setCleanImageInput}/>
           <div className={styles.formContainer}>
             <form onSubmit={handleSubmit} action='' className={styles.formulario}>
               <div className={styles.inputContainer}>
