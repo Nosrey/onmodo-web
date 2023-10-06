@@ -19,9 +19,7 @@
     align-items: center;
     padding: 3px;
     width: 170px;
-    height: 55px;
-    /* overflow-x: scroll; */
-  
+    height: 55px;  
 }
 
 .select{

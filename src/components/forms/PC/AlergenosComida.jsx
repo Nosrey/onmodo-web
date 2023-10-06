@@ -34,8 +34,6 @@ function AlergenosComida() {
                 inputs: [{}
                 ],
                 idUser: idUser,
-                verified: "-",
-                date: "-",
             })
 
         }
@@ -60,7 +58,7 @@ function AlergenosComida() {
         { id: 8, label: 'Fotografia' },
     ]);
     const [replicas, setReplicas] = useState(1);
-    const [values, setValues] = useState({ idUser: idUser, verified: "-", date: "-", })
+    const [values, setValues] = useState({ idUser: idUser})
     const [objValues, setObjValues] = useState({ fecha: "", nombre: "", diagnostico: "", fechaRenovacion: "", requiereRenovacion: "", presentaCertificado: "", listado: "" })
     const [inputValues, setInputValues] = useState([])
     const [trigger, setTrigger] = useState(false)
@@ -270,8 +268,8 @@ function AlergenosComida() {
                                                         ) : input.label === "Fotografia" && fotografia === "SI" ? (
                                                             <div {...getRootProps()} className={styles.border}>
                                                                 <input {...getInputProps()} />
-                                                                <h6>Suelta el certificado aquí, o haz clic para seleccionar uno.</h6>
-                                                                {certificadoFile && <h6>Archivo seleccionado: {certificadoFile.name}</h6>}
+                                                                {!certificadoFile &&<h6  style={{fontSize: "12px"}}>Suelta el certificado aquí, o haz clic para seleccionar uno.</h6>}
+                                                                {certificadoFile && <h6 style={{fontSize: "12px", width:"100%"}} className={styles.select}>Archivo seleccionado: <span style={{fontSize: "12px", fontWeight:"bold"}}>{certificadoFile.name.substring(0, 25)}</span> </h6>}
                                                             </div>
                                                         ) : input.label !== "Fotografia" ?
                                                             (
