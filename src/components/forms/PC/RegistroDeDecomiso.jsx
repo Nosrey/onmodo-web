@@ -141,7 +141,9 @@ function RegistroDeDecomiso() {
                                                         name={`input-${input.id}-${index}`}
                                                         
                                                         disabled={!!location.state?.objeto} 
-
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
                                                     />
                                                 ) : (
                                                     input.label === "Causa" ? (
