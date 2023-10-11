@@ -1106,9 +1106,10 @@ export const generatePDF = (formulario, form) => {
           [
             { text: 'Fecha y Hora:', style: 'label' },
             { text: fechaHora, style: 'value' },
-            { text: 'Verificado:', style: 'label' },
-            { text: verified, style: 'value' },
+            { text: 'Balanza/ Báscula:', style: 'label' },
+            { text: balanza, style: 'value' },
           ],
+
 
         ],
       },
