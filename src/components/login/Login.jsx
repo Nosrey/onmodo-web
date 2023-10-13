@@ -70,6 +70,7 @@ function Login() {
           resetForm();
           localStorage.setItem("rol", resp.response.rol);
           localStorage.setItem("business", resp.response.business);
+          localStorage.setItem("userName", resp.response.fullName);
           localStorage.setItem("idChief", resp.response.idChief);
           localStorage.setItem("idUser", resp.response.id);
           navigate('/inicio');

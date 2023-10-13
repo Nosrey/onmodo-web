@@ -49,15 +49,6 @@ function RechazoInfo() {
             <li>Otra para el proveedor.</li>
           </ul>
         </div>
-        <div>
-          <p>
-            Si se encuentran desvíos en la recepción que se hayan repetidos más
-            de 3 veces correspondientes a un mismo proveedor y a un mismo desvío
-            deben ser informadas a hseq@aramark.com.arpara su intervención,
-            adjuntando los correspondientes reportes de rechazo de cada
-            oportunidad.
-          </p>
-        </div>
         </>
     )
  }

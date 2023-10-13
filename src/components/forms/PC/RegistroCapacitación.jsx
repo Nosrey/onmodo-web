@@ -18,9 +18,8 @@ function RegistroCapacitacion() {
         { id: 1, label: 'DNI' },
         { id: 2, label: 'Nombre y Apellido' },
         { id: 3, label: 'Area/Lugar de trabajo' },
-        { id: 4, label: 'Firma' },
-        { id: 5, label: 'Metodo de Evaluacion' },
-        { id: 6, label: 'Resultado Evaluación' },
+        { id: 4, label: 'Metodo de Evaluacion' },
+        { id: 5, label: 'Resultado Evaluación' },
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showTextField1, setShowTextField1] = useState(false);
@@ -39,13 +38,12 @@ function RegistroCapacitacion() {
         observaciones: "",
         instructor: "",
         cargo: "",
-        firma: "",
         date: "",
         idUser: idUser,
         metodo:""
 
     })
-    const [objValues, setObjValues] = useState({ dni: "", nombre: "", area: "", firma: "", resultado: "", metodo: "" })
+    const [objValues, setObjValues] = useState({ dni: "", nombre: "", area: "",  resultado: "", metodo: "" })
     const [checkboxesValues] = useState([
         { label: "Inducción", check: false },
         { label: "Campaña", check: false },
@@ -67,9 +65,9 @@ function RegistroCapacitacion() {
     const [inputValues, setInputValues] = useState([])
     const [trigger, setTrigger] = useState(false)
     useEffect(() => {
-        if (replicas === 1 && objValues.metodo !== "" && objValues.dni !== "" && objValues.nombre !== "" && objValues.area !== "" && objValues.firma !== "" && objValues.resultado !== "" && objValues.id !== "") {
+        if (replicas === 1 && objValues.metodo !== "" && objValues.dni !== "" && objValues.nombre !== "" && objValues.area !== "" && objValues.resultado !== "" && objValues.id !== "") {
             setInputValues([objValues])
-        } else if (replicas > 1 && objValues.metodo !== "" && objValues.dni !== "" && objValues.nombre !== "" && objValues.area !== "" && objValues.firma !== "" && objValues.resultado !== "" && objValues.id !== "") {
+        } else if (replicas > 1 && objValues.metodo !== "" && objValues.dni !== "" && objValues.nombre !== "" && objValues.area !== "" && objValues.resultado !== "" && objValues.id !== "") {
             setInputValues([...inputValues, objValues])
         }
     }, [trigger])
@@ -80,7 +78,7 @@ function RegistroCapacitacion() {
     }, [inputValues])
     
     useEffect(() => {
-        if (objValues.dni !== "" && objValues.metodo !== "" && objValues.nombre !== "" && objValues.area !== "" && objValues.firma !== "" && objValues.resultado !== "") {
+        if (objValues.dni !== "" && objValues.metodo !== "" && objValues.nombre !== "" && objValues.area !== "" && objValues.resultado !== "") {
             setTrigger(true)
         }
     }, [objValues])
@@ -92,7 +90,6 @@ function RegistroCapacitacion() {
             dni: label === "DNI" ? inputTarget.value : objValues.dni,
             nombre: label === "Nombre y Apellido" ? inputTarget.value : objValues.nombre,
             area: label === "Area/Lugar de trabajo" ? inputTarget.value : objValues.area,
-            firma: label === "Firma" ? inputTarget.value : objValues.firma,
             metodo: label === "Metodo de Evaluacion" ? inputTarget.value : objValues.metodo,
             resultado: label === "Resultado Evaluación" ? inputTarget.value : objValues.resultado,
             id: label === "DNI" ? index : objValues.id,
@@ -157,7 +154,6 @@ function RegistroCapacitacion() {
             dni: "",
             nombre: "",
             area: "",
-            firma: "",
             resultado: "",
             metodo: ""
         });
@@ -210,7 +206,6 @@ function RegistroCapacitacion() {
         observaciones: infoPrecargada.observaciones,
         instructor: infoPrecargada.instructor,
         cargo: infoPrecargada.cargo,
-        firma: infoPrecargada.firma,
         date: infoPrecargada.date,
         idUser: idUser,
         metodo:infoPrecargada.metodo});
@@ -238,6 +233,9 @@ function RegistroCapacitacion() {
                         label="Fecha"
                         variant="outlined" 
                         disabled={!!location.state?.objeto} 
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         />
                     <TextField
                         onChange={(e) => { setValues({ ...values, tiempoDuracion: e.target.value }); } }
@@ -365,8 +363,6 @@ function RegistroCapacitacion() {
                                                             ? objValues[index]?.nombre 
                                                             : input.label === 'Area/Lugar de trabajo'
                                                             ? objValues[index]?.area 
-                                                            : input.label === 'Firma'
-                                                            ? objValues[index]?.firma
                                                             : input.label === 'Resultado Evaluación'
                                                             ? objValues[index]?.resultado 
                                                             : input.label === 'DNI'
@@ -412,8 +408,7 @@ function RegistroCapacitacion() {
 
                 <div className={styles.firma}>
                     <TextField value={values.instructor || ''} disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, instructor: e.target.value }); } } id="outlined-basic" label="Instructor" variant="outlined" />
-                    <TextField value={values.cargo || ''} disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, cargo: e.target.value }); } } id="outlined-basic" label="Cargo / Función" variant="outlined" />
-                    <TextField value={values.firma || ''}  disabled={!!location.state?.objeto}  onChange={(e) => { setValues({ ...values, firma: e.target.value }); } } id="outlined-basic" label="Firma" variant="outlined" />
+                    <TextField value={values.firma || ''}  disabled={!!location.state?.objeto}  onChange={(e) => { setValues({ ...values, firma: e.target.value }); } } id="outlined-basic" label="Adjuntar Firmas" variant="outlined" />
                 </div>
 
                 <div className="btn">
