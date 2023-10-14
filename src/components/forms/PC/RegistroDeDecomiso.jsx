@@ -16,7 +16,12 @@ function RegistroDeDecomiso() {
     const infoPrecargada = location.state?.objeto;
     
     const prueba = useSelector(state => state.registroDecomisosR.inputsValues)
-
+    const [fecha, setFecha] = useState("");
+    const [causa, setCausa] = useState("");
+    const [turno, setTurno] = useState("");
+    
+    
+    
     var idUser = localStorage.getItem("idUser");
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
@@ -27,8 +32,7 @@ function RegistroDeDecomiso() {
     ]);
     const [replicas, setReplicas] = useState(1);
     const [values, setValues] = useState({
-        inputs: [{
-        }],
+        inputs: [{}],
         idUser: idUser
     })
     const [objValues, setObjValues] = useState({ fecha: "", turno: "", productoDecomisado: "", cantidad: "", causa:"" })
@@ -98,15 +102,20 @@ function RegistroDeDecomiso() {
         if (infoPrecargada)  { // muestro un form del historial
              setReplicas(infoPrecargada.inputs.length);
 
-            setObjValues(infoPrecargada.inputs)
-            setValues({
-                inputs: infoPrecargada.inputs,
-                idUser: idUser
-            })
+             setValues({
+                 inputs: infoPrecargada.inputs,
+                 idUser: idUser
+                })
+                setObjValues(infoPrecargada.inputs)
             console.log("objValues", objValues)
             console.log("values", values)
         } else { // creo un form desde cero
-            
+            console.log("error")
+            setValues({
+               
+                inputs: [{}],
+                idUser: idUser
+            })
             
         }
     }, [location.state?.objeto])
@@ -131,11 +140,14 @@ function RegistroDeDecomiso() {
                                                 {input.label === 'Fecha' ? (
                                                     <TextField
                                                     type="date"
-                                                    value={values.inputs[index]?.fecha || ''}
+                                                    
+                                                    value={objValues[index]?.fecha || fecha}
                                                         className='input'
                                                        
                                                         onChange={(e) => {
+                                                            const selectedValue = e.target.value;
                                                             inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                            setFecha(selectedValue)
                                                         }}
                                                         id={`input-${input.id}-${index}`}
                                                         name={`input-${input.id}-${index}`}
@@ -154,12 +166,13 @@ function RegistroDeDecomiso() {
                                                                  className='input'
                                                                  id={`input-${input.id}-${index}`}
                                                                  name={`input-${input.id}-${index}`}
-
-                                                                value={objValues[index]?.otrasCausas || ''}
+                                                                 value={objValues[index]?.causa || causa}
                                                                 disabled={!!location.state?.objeto} 
 
                                                                 onChange={(e) => {
+                                                                    const selectedValue = e.target.value;
                                                                     inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index,e.target.value );
+                                                                    setCausa(selectedValue)
                                                                 }}
                                                                 label="Causa"
                                                             >
@@ -182,10 +195,12 @@ function RegistroDeDecomiso() {
                                                                      id={`input-${input.id}-${index}`}
                                                                      name={`input-${input.id}-${index}`}
 
-                                                                     value={objValues[index]?.turno || ''}
+                                                                     value={objValues[index]?.turno || turno}
 
                                                                     onChange={(e) => {
+                                                                        const selectedValue = e.target.value;
                                                                         inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index, e.target.value);
+                                                                        setTurno(selectedValue)
                                                                     }}
                                                                     label="Turno"
                                                                 >
@@ -219,15 +234,16 @@ function RegistroDeDecomiso() {
                                                 )}
                                             </div>
                                         ))}
-                                        <div className="icon">
+                                        {!!infoPrecargada ?null:<div className="icon">
                                             <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
-                                        </div>
+                                        </div>}
+                                        
                                     </div>
                                 ))}
                         </div>
                     </div>
                     <div className="btn">
-                        <Button onClick={handleSubmit} variant="contained">Guardar</Button>
+                        <Button disabled={!!location.state?.objeto}  onClick={handleSubmit} variant="contained">Guardar</Button>
                     </div>
                 </div>
             </div>
