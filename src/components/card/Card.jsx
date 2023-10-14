@@ -18,9 +18,14 @@ function Card({ text }) {
   console.log(text)
   const { title, link } = text;
   const [titulo, setTitulo] = useState("");
-
+  const [reminders, setReminders] = useState(false);
   useEffect(() => {
-    getTitle()
+    getTitle();
+
+    if (title === "Recordatorios") { 
+      setReminders(true);
+      
+    }
   },)
   async function getTitle() {
 
@@ -59,9 +64,15 @@ function Card({ text }) {
     }
   }
 
+
+
   return (
     <Link to={link}>
-      <div className={styles.cardContainer}>
+      <div className={styles.cardContainer} style={ reminders ? {backgroundColor:"#7bc100"}: {}}>
+        {
+          reminders &&  <span className={styles.asterisco} >!</span>
+
+        }
         <div className={styles.cardWrapper}>
           <span className={styles.titleCard}>{titulo === "0" ? title : titulo}</span>
         </div>

@@ -39,6 +39,27 @@
     margin-top: 50px;
 }
 
+.selectContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.selectContainer label {
+  font-size: 12px;
+  color: grey;
+}
+.selectContainer select {
+  font-size: 12px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid grey;
+}
+
+.titleRdos {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
 @media screen and (max-width: 768px) {
   .eventos {
       height: fit-content;
