@@ -22,7 +22,6 @@ function ConstanciaEntrega() {
         { id: 4, label: 'Posee certificacion' },
         { id: 5, label: 'Cantidad' },
         { id: 6, label: 'Fecha de entrega' },
-        { id: 7, label: 'Firma del trabajador' },
     ]);
     const [replicas, setReplicas] = useState(1);
     const [showTextField, setShowTextField] = useState(false);
@@ -42,7 +41,7 @@ function ConstanciaEntrega() {
         date: "",
         idUser:"643ea98d5b44dd9765966ae7"
     })
-    const [objValues,setObjValues] = useState({producto:"",tipo:"",marca:"",certificacion:"",cantidad:"",fecha:"",firma:""})
+    const [objValues,setObjValues] = useState({producto:"",tipo:"",marca:"",certificacion:"",cantidad:"",fecha:"",})
     const [inputValues,setInputValues]= useState([])
     const [check,setCheck]=useState([{
         check0:false,
@@ -62,9 +61,9 @@ function ConstanciaEntrega() {
     })
     const [trigger,setTrigger] = useState(false)
     useEffect(()=>{
-        if(replicas === 1 && objValues.producto !== "" && objValues.tipo !== "" && objValues.marca !== "" && objValues.certificacion !== "" && objValues.cantidad !== "" &&objValues.fecha !== "" && objValues.firma !== ""&& objValues.id !=="") {
+        if(replicas === 1 && objValues.producto !== "" && objValues.tipo !== "" && objValues.marca !== "" && objValues.certificacion !== "" && objValues.cantidad !== "" &&objValues.fecha !== "" &&  objValues.id !=="") {
             setInputValues([objValues])
-        }else if (replicas > 1 && objValues.producto !== "" && objValues.tipo !== "" && objValues.marca !== "" && objValues.certificacion !== "" && objValues.cantidad !== "" &&objValues.fecha !== ""&& objValues.firma !== "" && objValues.id !=="") {
+        }else if (replicas > 1 && objValues.producto !== "" && objValues.tipo !== "" && objValues.marca !== "" && objValues.certificacion !== "" && objValues.cantidad !== "" &&objValues.fecha !== ""&& objValues.id !=="") {
             setInputValues([...inputValues,objValues])
         }
     },[trigger])
@@ -72,7 +71,7 @@ function ConstanciaEntrega() {
         setValues({...values,inputs:inputValues,checkboxes:check})
     },[inputValues,check])
     useEffect(()=>{
-        if (objValues.producto !== "" && objValues.tipo !== "" && objValues.marca !== "" && objValues.certificacion !== "" && objValues.cantidad !== "" && objValues.fecha !== "" && objValues.firma !== ""){
+        if (objValues.producto !== "" && objValues.tipo !== "" && objValues.marca !== "" && objValues.certificacion !== "" && objValues.cantidad !== "" && objValues.fecha !== "" ){
             setTrigger(true)
         }
     },[objValues])
@@ -86,8 +85,7 @@ function ConstanciaEntrega() {
         label === 'Marca' ? setObjValues({...objValues,marca:inputTarget.value}):
         label === 'Posee certificacion' ? setObjValues({...objValues,certificacion:inputTarget.value}):
         label === 'Cantidad' ? setObjValues({...objValues,cantidad:inputTarget.value}):
-        label === 'Fecha de entrega' ? setObjValues({...objValues,fecha:inputTarget.value}):
-        label === 'Firma del trabajador' && setObjValues({...objValues,firma:inputTarget.value})
+        label === 'Fecha de entrega' && setObjValues({...objValues,fecha:inputTarget.value})
     }
     const handleCheck = (n,v) => {
         setCheckValues({...checkValues,[n]:v})
@@ -95,13 +93,27 @@ function ConstanciaEntrega() {
     }
     const handleClick = () => {
         setReplicas(replicas + 1);
-        setObjValues({producto:"",tipo:"",marca:"",certificacion:"",cantidad:"",fecha:"",firma:""})
+        setObjValues({producto:"",tipo:"",marca:"",certificacion:"",cantidad:"",fecha:"",})
         setTrigger(false)
     };
+    const  todasLasPropiedadesLlenas = (obj) => {
+        for (let prop in obj) {
+          if (obj[prop] === "") {
+            return false;
+          }
+        }
+        return true;
+      }
+      
     const handleClickRemove = () => {
         const inputsArrFiltered = inputValues.filter(input=>input.id !== replicas - 1)
         setInputValues(inputsArrFiltered)
         setReplicas(replicas - 1);
+        if (values.inputs.every(todasLasPropiedadesLlenas)) {
+            setTrigger(true);
+        } else {
+            setTrigger(false);
+        }
     }
 
     const handleCheckboxChange = (event) => {
@@ -191,7 +203,7 @@ function ConstanciaEntrega() {
                                                 id={`input-${input.id}-${index}`}
                                                 name={`input-${input.id}-${index}`}
                                                 label={`${input.label}`}
-                                                value={values.inputs[index]?.diagnostico || ''}
+                                                value={values.inputs[index]?.fecha}
                                                 variant="outlined"
                                                 type="date"
                                                 InputLabelProps={{
@@ -222,7 +234,9 @@ function ConstanciaEntrega() {
                     <TextField onChange={(e)=>{setValues({...values,infoAdicional:e.target.value})}} fullWidth id="outlined-basic" label="Informacion adicional" variant="outlined" />
                 </div>
                 <div className="btn">
-                    <Button onClick={handleSubmit} variant="contained">Guardar</Button>
+                { !trigger && <span>*Completar todos los campos para poder  Guardar</span>}
+
+                    <Button onClick={handleSubmit} disabled={!trigger} variant="contained">Guardar</Button>
 
                 </div>
 
