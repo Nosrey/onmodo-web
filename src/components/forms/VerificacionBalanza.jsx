@@ -1,4 +1,4 @@
-import { Button, TextField } from '@mui/material'
+import { Box, Button, InputLabel, MenuItem, Select, TextField, FormControl } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionBalanza.module.css'
@@ -8,6 +8,7 @@ import axios from 'axios';
 import { verificacionBalanza } from '../../services/FormsRequest';
 import Alert from '../shared/components/Alert/Alert';
 import { useLocation } from 'react-router-dom';
+
 
 function VerificacionBalanza() {
     //** ALERTA */
@@ -26,6 +27,7 @@ function VerificacionBalanza() {
         { id: 8, label: 'Acciones de corrección' },
     ]);
     const [replicas, setReplicas] = useState(1);
+    const [tipo, setTipo] = useState("");
     const [showModal, setShowModal] = useState(false);
     var idUser = localStorage.getItem("idUser");
     const [values, setValues] = useState({
@@ -64,17 +66,28 @@ function VerificacionBalanza() {
         }
     }, [objValues])
 
-    const inputsValuesConstructor = (id, label, index) => {
-        const inputTarget = document.getElementById(id)
-        label === 'Código' ? setObjValues({ ...objValues, codigo: inputTarget.value, id: index }) :
-            label === 'Tipo (BP/BR)' ? setObjValues({ ...objValues, tipo: inputTarget.value }) :
-                label === 'Responsable del uso' ? setObjValues({ ...objValues, responsableUso: inputTarget.value }) :
-                    label === 'Área' ? setObjValues({ ...objValues, area: inputTarget.value }) :
-                        label === 'Peso Masa ref/Pto balanza' ? setObjValues({ ...objValues, pesoMasa: inputTarget.value }) :
-                            label === 'Peso real' ? setObjValues({ ...objValues, pesoReal: inputTarget.value }) :
-                                label === 'Desvío' ? setObjValues({ ...objValues, desvio: inputTarget.value }) :
-                                    label === 'Acciones de corrección' && setObjValues({ ...objValues, accionesCorrecion: inputTarget.value })
-    }
+    const inputsValuesConstructor = (id, label, index, selectedValue) => {
+        const inputTarget = document.getElementById(id);
+
+        if (label === 'Código') {
+            setObjValues({ ...objValues, codigo: inputTarget.value, id: index });
+        } else if (label === 'Tipo (BP/BR)') {
+            setObjValues({ ...objValues, tipo: selectedValue });
+        } else if (label === 'Responsable del uso') {
+            setObjValues({ ...objValues, responsableUso: inputTarget.value });
+        } else if (label === 'Área') {
+            setObjValues({ ...objValues, area: inputTarget.value });
+        } else if (label === 'Peso Masa ref/Pto balanza') {
+            setObjValues({ ...objValues, pesoMasa: inputTarget.value });
+        } else if (label === 'Peso real') {
+            setObjValues({ ...objValues, pesoReal: inputTarget.value });
+        } else if (label === 'Desvío') {
+            setObjValues({ ...objValues, desvio: inputTarget.value });
+        } else if (label === 'Acciones de corrección') {
+            setObjValues({ ...objValues, accionesCorrecion: inputTarget.value });
+        }
+    };
+
 
     const handleClick = () => {
         setReplicas(replicas + 1);
@@ -92,6 +105,7 @@ function VerificacionBalanza() {
     };
 
     const handleSubmit = () => {
+        console.log(values)
         verificacionBalanza(values).then((resp) => {
             setTextAlert("¡Formulario cargado exitosamente!");
             setTypeAlert("success");
@@ -123,7 +137,7 @@ function VerificacionBalanza() {
                 balanza: infoPrecargada.balanza,
                 inputs: infoPrecargada.inputs,
                 idUser: idUser
-                
+
             })
             setReplicas(infoPrecargada.inputs.length)
             console.log("values", values)
@@ -159,8 +173,9 @@ function VerificacionBalanza() {
                         </div>
                     )
                     }
+
                     <div className={styles.personal}>
-                        
+
                         <TextField
                             type="date"
                             className='input'
@@ -174,16 +189,29 @@ function VerificacionBalanza() {
                                 shrink: true,
                             }}
                         />
+                        <FormControl variant="outlined" disabled={!!location.state?.objeto}>
+                            <InputLabel>Instrumento</InputLabel>
+                            <Select
+                                onChange={(e) => { setValues({ ...values, balanza: e.target.value }) }}
+                                value={values.balanza}
+                                defaultValue={"Báscula"}
+                                className="input"
+                                label={`Instrumento`}
 
-                        <TextField disabled={!!location.state?.objeto} value={values.responsable} onChange={(e) => { setValues({ ...values, responsable: e.target.value }) }} id="outlined-basic" label="Responsable de validación" variant="outlined" InputLabelProps={{
-                                shrink: true,
-                            }} />
-                        <TextField disabled={!!location.state?.objeto} value={values.balanza} onChange={(e) => { setValues({ ...values, balanza: e.target.value }) }} id="outlined-basic" label="Balanza/Báscula" variant="outlined" InputLabelProps={{
-                                shrink: true,
-                            }} />
+                                variant="outlined"
+
+                            >
+                                <MenuItem value="Balanza">Balanza</MenuItem>
+                                <MenuItem value="Báscula">Báscula</MenuItem>
+                            </Select>
+                        </FormControl>
+
+
+
 
 
                     </div>
+
 
                     <div className="table">
                         <div className={styles.contTitTabla}>
@@ -203,43 +231,68 @@ function VerificacionBalanza() {
 
                                         {inputs.map((input) => (
                                             <div key={input.id}>
-                                                <TextField
-                                                    onKeyUp={(e) => {
-                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                                    }}
-                                                    className="input"
-                                                    id={`input-${input.id}-${index}`}
-                                                    name={`input-${input.id}-${index}`}
-                                                    label={`${input.label}`}
-                                                    variant="outlined"
-                                                    disabled={!!location.state?.objeto} 
-                                                    InputLabelProps={{
-                                                        shrink: true,
-                                                    }}
-                                                    value={
-                                                        input.label === 'Código'
-                                                            ? values.inputs[index]?.codigo 
-                                                            : input.label === 'Tipo (BP/BR)'
-                                                            ? values.inputs[index]?.tipo 
-                                                            : input.label === 'Responsable del uso'
-                                                            ? values.inputs[index]?.responsableUso 
-                                                            : input.label === 'Área'
-                                                            ? values.inputs[index]?.area 
-                                                            : input.label === 'Peso Masa ref/Pto balanza'
-                                                            ? values.inputs[index]?.pesoMasa 
-                                                            : input.label === 'Peso real'
-                                                            ? values.inputs[index]?.pesoReal 
-                                                            : input.label === 'Desvío'
-                                                            ? values.inputs[index]?.desvio 
-                                                            : input.label === 'Acciones de corrección'
-                                                            ? values.inputs[index]?.accionesCorrecion 
-                                                            : ''
-                                                    }
-                                                />
-     
+                                                {input.label === 'Tipo (BP/BR)' ? (
+                                                    <FormControl variant="outlined" >
+                                                        <InputLabel >Tipo (BP/BR)</InputLabel>
+                                                        <Select
+                                                            onChange={(e) => {
+                                                                const selectedValue = e.target.value;
+                                                                inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index, selectedValue);
+                                                                setTipo(selectedValue)
+                                                            }}
+                                                            className="input"
+                                                            id={`input-${input.id}-${index}`}
+                                                            label={`${input.label}`}
+                                                            variant="outlined"
+                                                            disabled={!!location.state?.objeto}
+                                                            InputLabelProps={{
+                                                                shrink: true,
+                                                            }}
+                                                            value= {
+                                                                values.inputs[index]?.tipo || tipo
+                                                            }
+                                                        >
+                                                            <MenuItem value="BP">BP</MenuItem>
+                                                            <MenuItem value="BR">BR</MenuItem>
+                                                        </Select>
+
+                                                    </FormControl>
+                                                ) : (
+                                                    <TextField
+                                                        onKeyUp={(e) => {
+                                                            inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                        }}
+                                                        className="input"
+                                                        id={`input-${input.id}-${index}`}
+                                                        name={`input-${input.id}-${index}`}
+                                                        label={`${input.label}`}
+                                                        variant="outlined"
+                                                        disabled={!!location.state?.objeto}
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        value={
+                                                            input.label === 'Código'
+                                                                ? values.inputs[index]?.codigo
+                                                                : input.label === 'Responsable del uso'
+                                                                    ? values.inputs[index]?.responsableUso
+                                                                    : input.label === 'Área'
+                                                                        ? values.inputs[index]?.area
+                                                                        : input.label === 'Peso Masa ref/Pto balanza'
+                                                                            ? values.inputs[index]?.pesoMasa
+                                                                            : input.label === 'Peso real'
+                                                                                ? values.inputs[index]?.pesoReal
+                                                                                : input.label === 'Desvío'
+                                                                                    ? values.inputs[index]?.desvio
+                                                                                    : input.label === 'Acciones de corrección'
+                                                                                        ? values.inputs[index]?.accionesCorrecion
+                                                                                        : ''
+                                                        }
+                                                    />
+                                                )}
                                             </div>
                                         ))}
-                                       {infoPrecargada? <div></div> :  <div className="icon">
+                                        {infoPrecargada ? <div></div> : <div className="icon">
                                             <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                                         </div>}
                                     </div>
@@ -250,10 +303,10 @@ function VerificacionBalanza() {
                     <span><b>*</b> BP(Balanza de producción) - BR (Balanza de recepción)</span>
                     <br />
                     <br />
-                    
+
 
                     <div className="btn">
-                        <Button  disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
+                        <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
                     </div>
 
                 </div>
