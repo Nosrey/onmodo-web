@@ -120,6 +120,12 @@ body {
 .btn {
   display: flex;
   justify-content: right;
+  align-items: center;
+  column-gap: 20px;
+}
+.btn span {
+  color: grey;
+
 }
 
 .form {
@@ -210,6 +216,9 @@ body {
 
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
   background-color: #90C057!important;
+}
+.css-sghohy-MuiButtonBase-root-MuiButton-root:disabled {
+  background-color: #d1d4cd!important;
 }
 
 .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked {
