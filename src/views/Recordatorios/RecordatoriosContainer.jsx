@@ -5,6 +5,7 @@ import ListadoRecordatorios from './components/ListadoRecordatorios/ListadoRecor
 import { useMedia } from '../../utils/hooks/UseMedia';
 import { Button } from '@mui/material';
 import Modal from '../../components/shared/Modal';
+import { getReminders } from '../../services/Request';
 const DATA_RECORDATORIOS = [
     {
         tarea: "2" ,
@@ -89,21 +90,25 @@ function RecordatoriosContainer() {
     const media = useMedia();
     const [showModal, setShowModal] = useState(false);
     var nivelRol = localStorage.getItem('rol');
-    const handleUpdateInfo = (item) => {
+    const handleUpdateInfo = () => {
         setShowModal(false)
-        // const updatedData = [...dataReminders, item];
-        // setDataReminders(updatedData);
+        getRecordatorios();
     }
 
     useEffect(() => {
         
-      // Filtrary ordenar por fecha creciente
-       
-      setDataReminders(()=>[...DATA_RECORDATORIOS])
+      // Filtrary ordenar por fecha creciente       
+      getRecordatorios();
     }, [])
+
+    const getRecordatorios = () => {
+        getReminders(localStorage.getItem("business")).then((resp)=> {   
+            setDataReminders(()=>[...resp])
+        }).catch((err) => {
+          console.error('Error:', err);
+        })
+    }
     
-
-
   return (
     <>
     <h2 className={styles.tituloRecord}>Recordatorios</h2>        
@@ -121,7 +126,7 @@ function RecordatoriosContainer() {
         {
             showModal &&
             <Modal
-                content={<CreacionRecordatorio updateRecordatorios={(e)=>handleUpdateInfo(e)}/>}
+                content={<CreacionRecordatorio updateRecordatorios={handleUpdateInfo}/>}
                 closeModal={() => setShowModal(false)}
                 />
         }

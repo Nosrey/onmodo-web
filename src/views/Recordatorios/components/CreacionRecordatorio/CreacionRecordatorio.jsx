@@ -3,6 +3,7 @@ import styles from './CreacionRecordatorio.module.css';
 import { Button, FormControl,  InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import Alert from '../../../../components/shared/components/Alert/Alert';
 import { RECORDATORIOS_INFO } from '../../../../components/shared/constants/recordatoriosInfo';
+import { createReminder } from '../../../../services/Request';
 
 
 function CreacionRecordatorio({updateRecordatorios}) {
@@ -24,6 +25,7 @@ function CreacionRecordatorio({updateRecordatorios}) {
       status: "En curso",
     }
   )
+
   const generarFechas = (fechaInicial, temporalidad) => {
     const fechas = [];
     const [year, month, day] = fechaInicial.split('-').map(Number);
@@ -72,31 +74,8 @@ function CreacionRecordatorio({updateRecordatorios}) {
   
     return fechas;
   }
-  
-
-  
 
   const handleSubmit = () => {
-    console.log(values)
-    // entregaRopa(values).then((resp)=> {
-    //     setTextAlert("¡Formulario cargado exitosamente!");
-    //     setTypeAlert("success");
-    // }).catch((resp)=> {
-    //     setTextAlert("Ocurrió un error")
-    //     setTypeAlert("error");
-    // }).finally(()=> {
-    //     window.scrollTo({
-    //         top: 0,
-    //         behavior: 'smooth',
-    //       });
-    //     setShowlert(true);
-    //     setTimeout(() => {
-    //         setShowlert(false);
-
-    //     }, 7000);
-    // }
-    // )
-    
     if (values.tarea === "") {
       setTextAlert("Tarea es un dato obligatorio");
       setTypeAlert("error");
@@ -110,12 +89,28 @@ function CreacionRecordatorio({updateRecordatorios}) {
         const fechasGeneradas = generarFechas(values.fechaInicio, values.frecuencia);
         values.fechas = fechasGeneradas;
       }
-      console.log(values);
-      setTextAlert("Recordatorio creado con éxito");
-      setTypeAlert("success");
-      showAlertAnimation();
+      createReminder(values).then((resp)=> {
+        setValues({
+          tarea: "" ,
+          descripcion: "",
+          link:"",
+          linkTitle:"",
+          frecuencia : "",
+          fechaInicio: "",
+          status: "En curso",
+        })
+        updateRecordatorios();
+        setTextAlert("Recordatorio creado con éxito");
+        setTypeAlert("success");
+      }).catch((resp)=> {
+          setTextAlert("Ocurrió un error")
+          setTypeAlert("error");
+      }).finally(()=> {
+        showAlertAnimation();  
+      })
     }
   };
+
   const showAlertAnimation = () => {
     window.scrollTo({
         top: 0,
@@ -127,6 +122,7 @@ function CreacionRecordatorio({updateRecordatorios}) {
 
     }, 7000);
   }
+
   return (
     <>
     <div className={styles.formNewRecordatorio}>

@@ -17,7 +17,14 @@ function ListadoRecordatorios({recordatorios}) {
       setFilteredReminders(() => [...reminders.filter(item => item.status === status)]);
     }
     
-  }, [status])
+  }, [status, reminders])
+
+  useEffect(() => {
+    if (recordatorios.length!== 0) {
+      setReminders(()=>[...recordatorios])
+    }
+    
+  }, [recordatorios])
   
   return (
     <div className={styles.eventos}>
