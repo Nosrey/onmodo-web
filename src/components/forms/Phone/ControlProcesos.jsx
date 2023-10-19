@@ -103,6 +103,9 @@ function ControlProcesos() {
        <TextField
                             type="date"
                             label="Fecha"
+                             InputLabelProps={{
+                                                    shrink: true,
+                                                }}
                           />
 
                 <div className="table">

@@ -124,6 +124,12 @@ body {
 .btn {
   display: flex;
   justify-content: right;
+  align-items: center;
+  column-gap: 20px;
+}
+.btn span {
+  color: grey;
+
 }
 
 .form {
@@ -215,6 +221,9 @@ body {
 .css-sghohy-MuiButtonBase-root-MuiButton-root {
   background-color: #90C057!important;
 }
+.css-sghohy-MuiButtonBase-root-MuiButton-root:disabled {
+  background-color: #d1d4cd!important;
+}
 
 .css-12wnr2w-MuiButtonBase-root-MuiCheckbox-root.Mui-checked {
   color: #90C057!important;
@@ -231,4 +240,46 @@ body {
     border-color:  #90C057 !important;
     border-width: 2px;
   }
-  
+ 
+  .MuiOutlinedInput-notchedOutline ,.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+    border-color:  #90C057 !important;
+    border-width: 2px;
+  }
+
+  .date-vencido {
+    font-weight: lighter;
+    font-size: 12px;
+    color: rgb(232, 18, 18);
+}
+
+.date-pendiente {
+  font-weight: lighter;
+  font-size: 12px;
+  color: #ffb600;
+}
+.date-normal {
+  font-weight: lighter;
+  font-size: 12px;
+  color: grey;
+}
+.card-normal {
+  border-top: 4px solid #90C057;
+  box-shadow: 2px 4px 4px  rgb(195, 190, 190);
+  padding: 20px 20px;
+  padding-bottom: 15px;
+  background-color: rgb(234, 233, 233);
+}
+.card-pendiente {
+  border-top: 4px solid  #90C057;
+  box-shadow: 2px 4px 4px  rgb(195, 190, 190);
+  padding: 20px 20px;
+  padding-bottom: 15px;
+  background-color: rgb(234, 233, 233);
+}
+.card-vencido {
+  border-top: 4px solid rgb(232, 18, 18);
+  box-shadow: 2px 4px 4px  rgb(195, 190, 190);
+  padding: 20px 20px;
+  padding-bottom: 15px;
+  background-color: rgb(234, 233, 233);
+}

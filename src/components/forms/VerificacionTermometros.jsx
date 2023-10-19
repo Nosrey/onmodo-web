@@ -1,4 +1,4 @@
-import { Button, TextField } from '@mui/material'
+import { Button, TextField, MenuItem, Select, InputLabel, FormControl } from '@mui/material'
 import React, { useState, useEffect } from 'react'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionTermometros.module.css'
@@ -13,110 +13,62 @@ function VerificacionTermometros() {
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
     const [showAlert, setShowlert] = useState(false);
+    const initialInputsValue = { codigo: "", tipo: "", responsable: "", area: "", punto0: "", desvio0: "", punto100: "", desvio100: "", acciones: "" };
+    const initialInputs2Value = { codigo: "", area: "", termoReferencia: "", termoEvaluado: "", desvio: "", acciones: "" };
 
     var idUser = localStorage.getItem("idUser");
     const [values, setValues] = useState()
     const [inputs] = useState([
-        { id: 1, label: 'Código' },
-        { id: 2, label: 'Tipo (PIN/IR)' },
-        { id: 3, label: 'Responsable del uso' },
-        { id: 4, label: 'Área' },
-        { id: 5, label: 'Punto 0' },
-        { id: 6, label: 'Desvío' },
-        { id: 7, label: 'Punto 100' },
-        { id: 8, label: 'Desvío' },
-        { id: 9, label: 'Acciones de corrección' },
+        { id: 1, label: 'Código', prop:  'codigo'},
+        { id: 2, label: 'Tipo (PIN/IR)', prop: 'tipo'},
+        { id: 3, label: 'Responsable del uso', prop: 'responsable'},
+        { id: 4, label: 'Área', prop: 'area'},
+        { id: 5, label: 'Punto 0', prop: 'punto0'},
+        { id: 6, label: 'Desvío', prop: 'desvio0'},
+        { id: 7, label: 'Punto 100', prop: 'punto100'},
+        { id: 8, label: 'Desvío', prop: 'desvio100'},
+        { id: 9, label: 'Acciones de corrección', prop: 'acciones'},
     ]);
     const [showModal, setShowModal] = useState(false);
-    const [objValues1, setObjValues1] = useState({ codigo: "", tipo: "", responsable: "", area: "", punto0: "", desvio0: "", punto100: "", desvio100: "", acciones: "" })
-    const [inputValues1, setInputValues1] = useState([])
-    const [trigger1, setTrigger1] = useState(false)
-    const [replicas, setReplicas] = useState(1);
-
-    useEffect(() => {
-        if (replicas === 1 && objValues1.codigo !== "" && objValues1.tipo !== "" && objValues1.responsable !== "" && objValues1.area !== "" && objValues1.punto0 !== "" && objValues1.desvio0 !== "" && objValues1.punto100 !== "" && objValues1.desvio100 !== "" && objValues1.acciones !== "" && objValues1.id !== "") {
-            setInputValues1([objValues1])
-        } else if (replicas > 1 && objValues1.codigo !== "" && objValues1.tipo !== "" && objValues1.responsable !== "" && objValues1.area !== "" && objValues1.punto0 !== "" && objValues1.desvio0 !== "" && objValues1.punto100 !== "" && objValues1.desvio100 !== "" && objValues1.acciones !== "" && objValues1.id !== "") {
-            setInputValues1([...inputValues1, objValues1])
-        }
-    }, [trigger1])
-
-    useEffect(() => {
-        setValues({ ...values, inputsTrimestral: inputValues1 })
-    }, [inputValues1])
-
-    useEffect(() => {
-        if (objValues1.codigo !== "" && objValues1.tipo !== "" && objValues1.responsable !== "" && objValues1.area !== "" && objValues1.punto0 !== "" && objValues1.desvio0 !== "" && objValues1.punto100 !== "" && objValues1.desvio100 !== "" && objValues1.acciones !== "") {
-            setTrigger1(true)
-        }
-    }, [objValues1])
+    const [objValues1, setObjValues1] = useState([initialInputsValue]);
 
     const [inputs2] = useState([
-        { id: 1, label: 'Código' },
-        { id: 2, label: 'Área' },
-        { id: 3, label: 'Temp. termóm referencia' },
-        { id: 4, label: 'Temp. termóm evaluado' },
-        { id: 5, label: 'Desvío' },
-        { id: 6, label: 'Acciones de corrección' },
+        { id: 1, label: 'Código', prop: 'codigo'},
+        { id: 2, label: 'Área', prop: 'area'},
+        { id: 3, label: 'Temp. termóm referencia', prop: 'termoReferencia'},
+        { id: 4, label: 'Temp. termóm evaluado', prop: 'termoEvaluado'},
+        { id: 5, label: 'Desvío', prop: 'desvio'},
+        { id: 6, label: 'Acciones de corrección', prop: 'acciones'},
     ]);
-    const [replicas2, setReplicas2] = useState(1);
-    const [objValues2, setObjValues2] = useState({ codigo: "", area: "", termoReferencia: "", termoEvaluado: "", desvio: "", acciones: "" })
-    const [inputValues2, setInputValues2] = useState([])
-    const [trigger2, setTrigger2] = useState(false)
+    const [objValues2, setObjValues2] = useState([initialInputs2Value])
 
-    useEffect(() => {
-        if (replicas2 === 1 && objValues2.codigo !== "" && objValues2.area !== "" && objValues2.termoReferencia !== "" && objValues2.termoEvaluado !== "" && objValues2.desvio !== "" && objValues2.acciones !== "" && objValues2.id !== "") {
-            setInputValues2([objValues2])
-        } else if (replicas2 > 1 && objValues2.codigo !== "" && objValues2.area !== "" && objValues2.termoReferencia !== "" && objValues2.termoEvaluado !== "" && objValues2.desvio !== "" && objValues2.acciones !== "" && objValues2.id !== "") {
-            setInputValues2([...inputValues2, objValues2])
-        }
-    }, [trigger2])
-
-    useEffect(() => {
-        setValues({ ...values, inputsSemestral: inputValues2 })
-    }, [inputValues2])
-
-    useEffect(() => {
-        if (objValues2.codigo !== "" && objValues2.area !== "" && objValues2.termoReferencia !== "" && objValues2.termoEvaluado !== "" && objValues2.desvio !== "" && objValues2.acciones !== "") {
-            setTrigger2(true)
-        }
-    }, [objValues2])
-
-    const inputsValuesConstructor = (id, label, index, input, inputID, value) => {
-        const inputTarget = document.getElementById(id)
-        if (input === "input1") {
-            label === 'Código' ? setObjValues1({ ...objValues1, codigo: inputTarget.value, id: index }) :
-                label === 'Tipo (PIN/IR)' ? setObjValues1({ ...objValues1, tipo: inputTarget.value }) :
-                    label === 'Responsable del uso' ? setObjValues1({ ...objValues1, responsable: inputTarget.value }) :
-                        label === 'Área' ? setObjValues1({ ...objValues1, area: inputTarget.value }) :
-                            label === 'Punto 0' ? setObjValues1({ ...objValues1, punto0: inputTarget.value }) :
-                                (label === 'Desvío' && inputID === 6) ? setObjValues1({ ...objValues1, desvio0: inputTarget.value }) :
-                                    label === 'Punto 100' ? setObjValues1({ ...objValues1, punto100: inputTarget.value }) :
-                                        (label === 'Desvío' && inputID === 8) ? setObjValues1({ ...objValues1, desvio100: inputTarget.value }) :
-                                            label === 'Acciones de corrección' && setObjValues1({ ...objValues1, acciones: inputTarget.value })
-        } else {
-            label === 'Código' ? setObjValues2({ ...objValues2, codigo: value, id: index == 0 ? 100 : (index + 1) * 100 }) :
-                label === 'Área' ? setObjValues2({ ...objValues2, area: value }) :
-                    label === 'Temp. termóm referencia' ? setObjValues2({ ...objValues2, termoReferencia: value }) :
-                        label === 'Temp. termóm evaluado' ? setObjValues2({ ...objValues2, termoEvaluado: value }) :
-                            label === 'Desvío' ? setObjValues2({ ...objValues2, desvio: value }) :
-                                label === 'Acciones de corrección' && setObjValues2({ ...objValues2, acciones: value })
-        }
-    }
-
-    const handleClick = () => {
-        setReplicas(replicas + 1);
-        setObjValues1({ codigo: "", tipo: "", responsable: "", area: "", punto0: "", desvio0: "", punto100: "", desvio100: "", acciones: "" })
-        setTrigger1(false)
+    const handleInputChange = (index, event, values, setValues) => {
+        const { name, value } = event.target;
+        const newValues = [...values];
+        newValues[index][name] = value;
+        setValues(newValues);
     };
-    const handleClick2 = () => {
-        setReplicas2(replicas2 + 1);
-        setObjValues2({ codigo: "", area: "", termoReferencia: "", termoEvaluado: "", desvio: "", acciones: "" })
-        setTrigger2(false);
+
+    const addRow = (kind) => {
+        switch (kind) {
+            case 1:
+                setObjValues1([...objValues1, initialInputsValue]);
+                break;
+            case 2: 
+                setObjValues2([...objValues2, initialInputs2Value]);
+                break;
+            default:
+                return;
+        }
+    };
+
+    const handleClick = (row) => {
+        addRow(row);
     };
 
     const handleSubmit = () => {
-        verificacionTermometros(values).then((resp) => {
+        const valuesToSend = {...values, inputsTrimestral: objValues2, inputsSemestral: objValues1}
+        verificacionTermometros(valuesToSend).then((resp) => {
             setTextAlert("¡Formulario cargado exitosamente!");
             setTypeAlert("success");
         }).catch((resp) => {
@@ -146,28 +98,18 @@ function VerificacionTermometros() {
                 responsable: infoPrecargada.responsable,
                 inputsTrimestral: infoPrecargada.inputsTrimestral,
                 inputsSemestral: infoPrecargada.inputsSemestral,
-                verified: infoPrecargada.verified,
-                fechaHora: infoPrecargada.fechaHora,
-                date: infoPrecargada.date,
                 idUser: idUser
             })
         } else { // creo un form desde cero
-
             setValues({
                 fecha: "",
                 responsable: "",
-                inputsTrimestral: [{
-                }],
-                inputsSemestral: [{
-                }],
-                verified: "",
-                fechaHora: "",
-                date: "",
+                inputsTrimestral: [initialInputsValue],
+                inputsSemestral: [initialInputs2Value],
                 idUser: idUser
             })
         }
     }, [])
-
 
     return (
         <>
@@ -189,7 +131,7 @@ function VerificacionTermometros() {
                             : (
                                 <div className='cont-btn'>
                                     <Button size="small" onClick={() => setShowModal(true)}>
-                                        <i class="ri-information-line" style={{ marginRight: "8px", fontSize: "22px" }}></i> Ver Más
+                                        <i className="ri-information-line" style={{ marginRight: "8px", fontSize: "22px" }}></i> Ver Más
                                     </Button>
                                 </div>
                             )
@@ -231,27 +173,42 @@ function VerificacionTermometros() {
                             </div>
 
                             <div className="tableSection">
-                                {Array(replicas)
-                                    .fill(0)
-                                    .map((_, index) => (
+                                {objValues1.map((input, index) => (
                                         <div className="tableRow" key={index}>
                                             <p className="index">{index + 1} </p>
-
-                                            {inputs.map((input, i) => (
-                                                <div key={input.id}>
-                                                    <TextField onBlur={(e) => {
-                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.placeholder, index, "input1", input.id, e.target.value);
-                                                    }} className="input"
-                                                    InputLabelProps={{
-                                                        shrink: true,
-                                                    }}
-                                                    label={input.label}
-                                                    id={`input-${input.id}-${index}`} name={`input-${input.id}-${index}`} placeholder={`${input.label}`} variant="outlined" />
-
+                                            {inputs.map((config, i) => (
+                                                <div key={i}>
+                                                    {config.label === 'Tipo (PIN/IR)' ? 
+                                                        <FormControl variant="outlined" className={`${styles.selectField} `}>
+                                                            <InputLabel id="select">{config.label}</InputLabel>                                                   
+                                                            <Select
+                                                                labelId="select"
+                                                                className='input'
+                                                                id={`config-${config.id}-${index}`}
+                                                                name={`${config.prop}`}
+                                                                onChange={(e) => handleInputChange(index, e, objValues1, setObjValues1)}
+                                                                label={`${config.label}`}
+                                                                value={input[config.prop]}
+                                                                >
+                                                                    <MenuItem value="PIN">PIN</MenuItem>
+                                                                    <MenuItem value="IR">IR</MenuItem>
+                                                            </Select>
+                                                        </FormControl>
+                                                    : <TextField 
+                                                        onChange={(e) => handleInputChange(index, e, objValues1, setObjValues1)}
+                                                        className="input"
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        name={`${config.prop}`}
+                                                        label={config.label}
+                                                        id={`config-${config.id}-${index}`} 
+                                                        placeholder={`${config.label}`} variant="outlined" />
+                                                    }
                                                 </div>
                                             ))}
                                             <div className="icon">
-                                                <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                                                <AddBoxIcon style={{ color: 'grey' }} onClick={() => handleClick(1)} />
                                             </div>
                                         </div>
                                     ))}
@@ -279,28 +236,28 @@ function VerificacionTermometros() {
                             </div>
 
                             <div className="tableSection">
-                                {Array(replicas2)
-                                    .fill(0)
-                                    .map((_, index) => (
+                                {objValues2.map((input, index) => (
                                         <div className="tableRow" key={index}>
                                             <p className="index">{index + 1} </p>
 
-                                            {inputs2.map((input) => (
-                                                <div key={input.id}>
-                                                    <TextField onBlur={(e) => {
-                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.placeholder, index, "input2", input.id, e.target.value);
-                                                    }} id={`input-${input.id}-${index}`}
+                                            {inputs2.map((config, i) => (
+                                                <div key={i}>
+                                                    <TextField 
+                                                    onChange={(e) => handleInputChange(index, e, objValues2, setObjValues2)}
+                                                    id={`config-${config.id}-${index}`}
                                                     InputLabelProps={{
                                                         shrink: true,
                                                     }}
                                                     className="input"
-                                                    label={input.label}
-                                                    name={`input-${input.id}-${index}`} placeholder={`${input.label}`} variant="outlined" />
+                                                    label={config.label}
+                                                    name={`${config.prop}`}
+                                                    placeholder={`${config.label}`} 
+                                                    variant="outlined" />
 
                                                 </div>
                                             ))}
                                             <div className="icon">
-                                                <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick2} />
+                                                <AddBoxIcon style={{ color: 'grey' }} onClick={() => handleClick(2)} />
                                             </div>
                                         </div>
                                     ))}

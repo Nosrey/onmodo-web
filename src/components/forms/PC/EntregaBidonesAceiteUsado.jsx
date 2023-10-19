@@ -137,6 +137,9 @@ function EntregaBidonesAceiteUsado() {
                         {input.label === 'Fecha' ? (
                           <TextField
                             type="date"
+                            InputLabelProps={{
+                              shrink: true,
+                          }}
                             onBlur={(e) => handleInputChange(e, index, input.label)}
                             id={`input-${input.id}-${index}`}
                             name={`input-${input.id}-${index}`}

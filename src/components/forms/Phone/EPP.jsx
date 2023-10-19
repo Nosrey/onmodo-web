@@ -545,7 +545,12 @@ function EPP() {
 
                 <div className="btn">
                     <Button onClick={async () => {
-                        await axios.post('http://localhost:8080/api/entregaropa', values);
+                        await axios.post('http://localhost:8080/api/entregaropa', {
+                            ...values,
+                            businessName: localStorage.getItem("business"),
+                            rol: localStorage.getItem("rol"),
+                            nombre: localStorage.getItem("userName"),
+                          });
                         console.log(values, idUserr);
                     } } variant="contained">Guardar</Button>
 

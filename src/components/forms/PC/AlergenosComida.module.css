@@ -10,3 +10,18 @@
         min-width: 300px;
     }
     
+    .border {
+        border: 0.5px solid rgba(220, 220, 220, 0.998);
+        border-color: rgb(182, 182, 182);
+        border-radius: 3px;
+        color: gray;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 3px;
+        width: 170px;
+        height: 55px;      
+    }
+    .select{
+        padding-left: 5px;
+    }

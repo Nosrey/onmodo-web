@@ -7,6 +7,7 @@ import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox
 import Alert from '../../shared/components/Alert/Alert';
 import { controlAlergenos } from '../../../services/FormsRequest';
 import { useLocation } from 'react-router';
+import { useDropzone } from 'react-dropzone';
 
 function AlergenosComida() {
     const location = useLocation();
@@ -14,12 +15,12 @@ function AlergenosComida() {
     var idUser = localStorage.getItem("idUser");
     useEffect(() => {
         console.log(infoPrecargada)
-        if (infoPrecargada)  { // muestro un form del historial
-             setReplicas(infoPrecargada.inputs.length);
+        if (infoPrecargada) { // muestro un form del historial
+            setReplicas(infoPrecargada.inputs.length);
             setObjValues(infoPrecargada.inputs)
             setValues({
                 comedor: infoPrecargada.comedor,
-                
+
                 idUser: idUser,
 
             })
@@ -33,10 +34,8 @@ function AlergenosComida() {
                 inputs: [{}
                 ],
                 idUser: idUser,
-                verified: "-",
-                date: "-",
             })
-            
+
         }
     }, [])
     //** ALERTA */
@@ -44,8 +43,9 @@ function AlergenosComida() {
     const [typeAlert, setTypeAlert] = useState("");
     const [showAlert, setShowlert] = useState(false);
     const [renovacion, setRenovacion] = useState("NO")
+    const [fotografia, setFotografia] = useState("NO")
     const formValue = useSelector(state => state.comensalesR.inputsValues)
-    
+
     console.log(formValue)
     const [inputs] = useState([
         { id: 1, label: 'Fecha' },
@@ -55,9 +55,10 @@ function AlergenosComida() {
         { id: 5, label: 'Fecha Renovación' },
         { id: 6, label: 'Ingredientes/ Alimentos excluidos' },
         { id: 7, label: 'Presenta Certificado' },
+        { id: 8, label: 'Fotografia' },
     ]);
     const [replicas, setReplicas] = useState(1);
-    const [values, setValues] = useState({ idUser: idUser , verified: "-", date: "-",})
+    const [values, setValues] = useState({ idUser: idUser})
     const [objValues, setObjValues] = useState({ fecha: "", nombre: "", diagnostico: "", fechaRenovacion: "", requiereRenovacion: "", presentaCertificado: "", listado: "" })
     const [inputValues, setInputValues] = useState([])
     const [trigger, setTrigger] = useState(false)
@@ -132,7 +133,14 @@ function AlergenosComida() {
         )
     };
 
+    const [certificadoFile, setCertificadoFile] = useState(null);
+    const onDrop = (acceptedFiles) => {
+        // Solo permitir un archivo, puedes ajustar según tus necesidades
+        const file = acceptedFiles[0];
+        setCertificadoFile(file);
+    };
 
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
 
     return (
@@ -147,12 +155,12 @@ function AlergenosComida() {
                         <div className={styles.personal}>
                             <TextField
                                 onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }}
-                                
+
                                 fullWidth
                                 id="outlined-basic"
                                 label="Comedor"
                                 variant="outlined"
-                                value = {infoPrecargada?.comedor}
+                                value={infoPrecargada?.comedor}
                                 disabled={!!location.state?.objeto}
                             />
                         </div>
@@ -200,11 +208,12 @@ function AlergenosComida() {
                                                             }}
                                                             className='input'
                                                             disabled={renovacion === "NO" || !!location.state?.objeto}
-                                                            value= {objValues[index]?.fechaRenovacion}
-                                                            
+                                                            value={objValues[index]?.fechaRenovacion}
+
 
                                                         />) : (
                                                         input.label === "Presenta Certificado" ? (
+
                                                             <FormControl variant="outlined" className={`${styles.selectField} `}>
                                                                 <InputLabel id="select">{input.label}</InputLabel>
                                                                 <Select
@@ -213,19 +222,24 @@ function AlergenosComida() {
                                                                     id={`input-${input.id}-${index}`}
                                                                     name={`input-${input.id}-${index}`}
                                                                     onChange={(e) => {
+                                                                        const selectedValue = e.target.value;
                                                                         inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                                                        setObjValues({ ...objValues, presentaCertificado: e.target.value });
+                                                                        setObjValues((prevObjValues) => {
+                                                                            const newObjValues = { ...prevObjValues, presentaCertificado: selectedValue };
+                                                                            return newObjValues;
+                                                                        });
+                                                                        setFotografia(selectedValue);
                                                                     }}
-                                                                    // onChange={(e) => setValues({ ...values, metodo: e.target.value })}
                                                                     label={`${input.label}`}
-                                                                    value= {objValues[index]?.presentaCertificado  || ''}
+                                                                    value={objValues[index]?.presentaCertificado}
                                                                     disabled={!!location.state?.objeto}
                                                                 >
                                                                     <MenuItem value="SI">SI</MenuItem>
                                                                     <MenuItem value="NO">NO</MenuItem>
-
                                                                 </Select>
                                                             </FormControl>
+
+
                                                         ) : input.label === "Requiere renovación" ? (
                                                             <FormControl variant="outlined" className={`${styles.selectField} `}>
                                                                 <InputLabel id="select">{input.label}</InputLabel>
@@ -237,47 +251,55 @@ function AlergenosComida() {
                                                                     onChange={(e) => {
                                                                         const selectedValue = e.target.value;
                                                                         inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                                                        setObjValues({ ...objValues, requiereRenovacion: e.target.value });
-                                                                        setRenovacion(selectedValue)
+                                                                        setObjValues((prevObjValues) => {
+                                                                            const newObjValues = { ...prevObjValues, requiereRenovacion: selectedValue };
+                                                                            return newObjValues;
+                                                                        });
+                                                                        setRenovacion(selectedValue);
                                                                     }}
-                                                                    // onChange={(e) => setValues({ ...values, metodo: e.target.value })}
                                                                     label={`${input.label}`}
-                                                                    value= {objValues[index]?.requiereRenovacion || ''}
+                                                                    value={objValues[index]?.requiereRenovacion}
                                                                     disabled={!!location.state?.objeto}
                                                                 >
-                                                                    <MenuItem value="SI" >SI</MenuItem>
-                                                                    <MenuItem value="NO" >NO</MenuItem>
+                                                                    <MenuItem value="SI">SI</MenuItem>
+                                                                    <MenuItem value="NO">NO</MenuItem>
                                                                 </Select>
                                                             </FormControl>
-                                                        ) : (
-                                                            <TextField
-                                                                onBlur={(e) => {
-                                                                    inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                                                }}
-                                                                id={`input-${input.id}-${index}`}
-                                                                name={`input-${input.id}-${index}`}
-                                                                label={`${input.label}`}
-                                                                variant="outlined"
-                                                                className='input'
-                                                                onKeyUp={(e) => {
-                                                                    inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                                                }}
-                                                                InputLabelProps={{
-                                                                    shrink: true,
-                                                                }}
-                                                                value={
-                                                                    input.label === 'Diagnóstico'
-                                                                        ? objValues[index]?.diagnostico 
-                                                                        : input.label === 'Ingredientes/ Alimentos excluidos'
-                                                                        ? objValues[index]?.listado 
-                                                                        : input.label === 'Nombre Comensal'
-                                                                        ? objValues[index]?.nombre 
-                                                                        : ''
-                                                                }
-                                                                disabled={!!location.state?.objeto}
-                                                            />
-                                                        )
-
+                                                        ) : input.label === "Fotografia" && fotografia === "SI" ? (
+                                                            <div {...getRootProps()} className={styles.border}>
+                                                                <input {...getInputProps()} />
+                                                                {!certificadoFile &&<h6  style={{fontSize: "12px"}}>Suelta el certificado aquí, o haz clic para seleccionar uno.</h6>}
+                                                                {certificadoFile && <h6 style={{fontSize: "12px", width:"100%"}} className={styles.select}>Archivo seleccionado: <span style={{fontSize: "12px", fontWeight:"bold"}}>{certificadoFile.name.substring(0, 25)}</span> </h6>}
+                                                            </div>
+                                                        ) : input.label !== "Fotografia" ?
+                                                            (
+                                                                <TextField
+                                                                    onBlur={(e) => {
+                                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                                    }}
+                                                                    id={`input-${input.id}-${index}`}
+                                                                    name={`input-${input.id}-${index}`}
+                                                                    label={`${input.label}`}
+                                                                    variant="outlined"
+                                                                    className='input'
+                                                                    onKeyUp={(e) => {
+                                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                                    }}
+                                                                    InputLabelProps={{
+                                                                        shrink: true,
+                                                                    }}
+                                                                    value={
+                                                                        input.label === 'Diagnóstico'
+                                                                            ? objValues[index]?.diagnostico
+                                                                            : input.label === 'Ingredientes/ Alimentos excluidos'
+                                                                                ? objValues[index]?.listado
+                                                                                : input.label === 'Nombre Comensal'
+                                                                                    ? objValues[index]?.nombre
+                                                                                    : ''
+                                                                    }
+                                                                    disabled={!!location.state?.objeto}
+                                                                />
+                                                            ) : null
                                                     )}
                                                 </div>
                                             ))}
@@ -286,7 +308,7 @@ function AlergenosComida() {
                                                 {
                                                     (index === 0 || index >= replicas) ?
                                                         <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
-                                                        : <IndeterminateCheckboxIcon  style={{ color: 'grey' }} onClick={() => { handleClickRemove(index) }} />
+                                                        : <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={() => { handleClickRemove(index) }} />
                                                 }
                                             </div>}
                                         </div>
@@ -307,3 +329,5 @@ function AlergenosComida() {
 }
 
 export default AlergenosComida
+
+

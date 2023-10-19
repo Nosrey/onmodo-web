@@ -706,24 +706,20 @@ export const generatePDF = (formulario, form) => {
 
     inputs.forEach((input, index) => {
       tableContent.table.body.push(
+        //cantidad causa fecha productoDecomisado turno
         [
-          { text: `Decomiso #${index + 1}`, style: 'label', rowSpan: 3, alignment: 'center' },
+          { text: `Decomiso #${index + 1}`, style: 'label', alignment: 'center' },
           { text: `Fecha: ${input.fecha}`, style: 'value' },
           { text: `Turno: ${input.turno}`, style: 'value' },
-          { text: `Producto Decomisado: ${input.productoDecomisado}`, style: 'value' },
+          { text: `Causa: ${input.causa}`, style: 'value' },
         ],
         [
-          { text: '', style: 'value' },
-          { text: `Cantidad: ${input.cantidad}`, style: 'value' },
-          { text: `Fuera de Fecha: ${input.fueraFecha}`, style: 'value' },
-          { text: `Fuera de Aptitud: ${input.fueraAptitud}`, style: 'value' },
+          { text: `Cantidad: ${input.cantidad}`, style: 'value', colSpan: 1 },
+          { text: `Producto Decomisado: ${input.productoDecomisado}`, style: 'value', colSpan: 3  },
+          { text: '' },
+          { text: '' },
         ],
-        [
-          { text: '', style: 'value' },
-          { text: `Otras Causas: ${input.otrasCausas}`, style: 'value' },
-          { text: `Destino Final: ${input.destinoFinal}`, style: 'value' },
-          { text: `Responsable: ${input.responsable}`, style: 'value' },
-        ],
+
 
       );
     });
@@ -1106,9 +1102,10 @@ export const generatePDF = (formulario, form) => {
           [
             { text: 'Fecha y Hora:', style: 'label' },
             { text: fechaHora, style: 'value' },
-            { text: 'Verificado:', style: 'label' },
-            { text: verified, style: 'value' },
+            { text: 'Balanza/ Báscula:', style: 'label' },
+            { text: balanza, style: 'value' },
           ],
+
 
         ],
       },
