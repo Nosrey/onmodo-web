@@ -68,25 +68,24 @@ function VerificacionTermometros() {
 
     const handleSubmit = () => {
         const valuesToSend = {...values, inputsTrimestral: objValues2, inputsSemestral: objValues1}
-        console.log('values to send? ', valuesToSend)
-        // verificacionTermometros(valuesToSend).then((resp) => {
-        //     setTextAlert("¡Formulario cargado exitosamente!");
-        //     setTypeAlert("success");
-        // }).catch((resp) => {
-        //     setTextAlert("Ocurrió un error")
-        //     setTypeAlert("error");
-        // }).finally(() => {
-        //     window.scrollTo({
-        //         top: 0,
-        //         behavior: 'smooth',
-        //     });
-        //     setShowlert(true);
-        //     setTimeout(() => {
-        //         setShowlert(false);
+        verificacionTermometros(valuesToSend).then((resp) => {
+            setTextAlert("¡Formulario cargado exitosamente!");
+            setTypeAlert("success");
+        }).catch((resp) => {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
 
-        //     }, 7000);
-        // }
-        // )
+            }, 7000);
+        }
+        )
     };
 
     const location = useLocation();
@@ -99,9 +98,6 @@ function VerificacionTermometros() {
                 responsable: infoPrecargada.responsable,
                 inputsTrimestral: infoPrecargada.inputsTrimestral,
                 inputsSemestral: infoPrecargada.inputsSemestral,
-                verified: infoPrecargada.verified,
-                fechaHora: infoPrecargada.fechaHora,
-                date: infoPrecargada.date,
                 idUser: idUser
             })
         } else { // creo un form desde cero
@@ -110,9 +106,6 @@ function VerificacionTermometros() {
                 responsable: "",
                 inputsTrimestral: [initialInputsValue],
                 inputsSemestral: [initialInputs2Value],
-                verified: "",
-                fechaHora: "",
-                date: "",
                 idUser: idUser
             })
         }
