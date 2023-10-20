@@ -42,8 +42,8 @@ function AlergenosComida() {
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
     const [showAlert, setShowlert] = useState(false);
-    const [renovacion, setRenovacion] = useState("NO")
-    const [fotografia, setFotografia] = useState("NO")
+    const [renovacion, setRenovacion] = useState("")
+    const [fotografia, setFotografia] = useState({});
     const formValue = useSelector(state => state.comensalesR.inputsValues)
 
     console.log(formValue)
@@ -58,8 +58,8 @@ function AlergenosComida() {
         { id: 8, label: 'Fotografia' },
     ]);
     const [replicas, setReplicas] = useState(1);
-    const [values, setValues] = useState({ idUser: idUser})
-    const [objValues, setObjValues] = useState({ fecha: "", nombre: "", diagnostico: "", fechaRenovacion: "", requiereRenovacion: "", presentaCertificado: "", listado: "" })
+    const [values, setValues] = useState({ idUser: idUser })
+    const [objValues, setObjValues] = useState({ fecha: "", nombre: "", diagnostico: "", fechaRenovacion: "", requiereRenovacion: "NO", presentaCertificado: "NO", listado: "" })
     const [inputValues, setInputValues] = useState([])
     const [trigger, setTrigger] = useState(false)
     useEffect(() => {
@@ -80,26 +80,37 @@ function AlergenosComida() {
         }
     }, [objValues])
 
-    const inputsValuesConstructor = (id, label, index) => {
+    const inputsValuesConstructor = (id, label, index, value) => {
         const inputTarget = document.getElementById(id)
         label === 'Fecha' ? setObjValues({ ...objValues, fecha: inputTarget.value, id: index }) :
             label === 'Nombre Comensal' ? setObjValues({ ...objValues, nombre: inputTarget.value }) :
                 label === 'Diagnóstico' ? setObjValues({ ...objValues, diagnostico: inputTarget.value }) :
-                    label === 'Requiere renovación' ? setObjValues({ ...objValues, requiereRenovacion: inputTarget.value }) :
-                        label === 'Fecha Renovación' ? setObjValues({ ...objValues, fechaRenovacion: inputTarget.value }) :
+                    label === 'Requiere renovación' ? setObjValues({ ...objValues, requiereRenovacion: value }) :
+                        label === 'Fecha Renovación' ? setObjValues({ ...objValues, fechaRenovacion: value }) :
                             label === 'Ingredientes/ Alimentos excluidos' ? setObjValues({ ...objValues, listado: inputTarget.value }) :
-                                label === 'Presenta Certificado' && setObjValues({ ...objValues, presentaCertificado: inputTarget.value })
+                                label === 'Presenta Certificado' && setObjValues({ ...objValues, presentaCertificado: value });
+                                 setFotografia((prevFotografia) => ({
+                                    ...prevFotografia,
+                                    [index]: value,
+                                }));
     }
+
     const handleClick = () => {
         setReplicas(replicas + 1);
         setObjValues({ fecha: "", nombre: "", diagnostico: "", listado: "", responsable: "", requiereRenovacion: "", fechaRenovacion: "", presentaCertificado: "" })
         setTrigger(false)
+
     };
 
     const handleClickRemove = (index) => {
         const inputsArrFiltered = inputValues.filter(input => input.id !== replicas - 1)
         setInputValues(inputsArrFiltered)
         setReplicas(replicas - 1);
+        if (replicas === 0) {
+            setFotografia([...fotografia, index.target.value]);
+        } else {
+            setFotografia([...fotografia, ""]); // Agrega un valor vacío en el nuevo índice
+        }
     }
 
     const handleSubmit = () => {
@@ -195,7 +206,7 @@ function AlergenosComida() {
                                                     ) : input.label === "Fecha Renovación" ? (
                                                         <TextField
                                                             onBlur={(e) => {
-                                                                inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
+                                                                inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index, e.target.value);
                                                             }}
                                                             id={`input-${input.id}-${index}`}
                                                             name={`input-${input.id}-${index}`}
@@ -222,13 +233,11 @@ function AlergenosComida() {
                                                                     id={`input-${input.id}-${index}`}
                                                                     name={`input-${input.id}-${index}`}
                                                                     onChange={(e) => {
-                                                                        const selectedValue = e.target.value;
-                                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                                                        setObjValues((prevObjValues) => {
-                                                                            const newObjValues = { ...prevObjValues, presentaCertificado: selectedValue };
-                                                                            return newObjValues;
-                                                                        });
-                                                                        setFotografia(selectedValue);
+
+                                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index, e.target.value);
+
+
+                                                                        console.log(fotografia)
                                                                     }}
                                                                     label={`${input.label}`}
                                                                     value={objValues[index]?.presentaCertificado}
@@ -249,13 +258,11 @@ function AlergenosComida() {
                                                                     id={`input-${input.id}-${index}`}
                                                                     name={`input-${input.id}-${index}`}
                                                                     onChange={(e) => {
-                                                                        const selectedValue = e.target.value;
-                                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                                                        setObjValues((prevObjValues) => {
-                                                                            const newObjValues = { ...prevObjValues, requiereRenovacion: selectedValue };
-                                                                            return newObjValues;
-                                                                        });
-                                                                        setRenovacion(selectedValue);
+
+                                                                        inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index, e.target.value);
+                                                                        console.log(e.target.value)
+
+                                                                        setRenovacion(e.target.value);
                                                                     }}
                                                                     label={`${input.label}`}
                                                                     value={objValues[index]?.requiereRenovacion}
@@ -265,11 +272,11 @@ function AlergenosComida() {
                                                                     <MenuItem value="NO">NO</MenuItem>
                                                                 </Select>
                                                             </FormControl>
-                                                        ) : input.label === "Fotografia" && fotografia === "SI" ? (
+                                                        ) : input.label === "Fotografia" && fotografia[index] === "SI" ? (
                                                             <div {...getRootProps()} className={styles.border}>
                                                                 <input {...getInputProps()} />
-                                                                {!certificadoFile &&<h6  style={{fontSize: "12px"}}>Suelta el certificado aquí, o haz clic para seleccionar uno.</h6>}
-                                                                {certificadoFile && <h6 style={{fontSize: "12px", width:"100%"}} className={styles.select}>Archivo seleccionado: <span style={{fontSize: "12px", fontWeight:"bold"}}>{certificadoFile.name.substring(0, 25)}</span> </h6>}
+                                                                {!certificadoFile && <h6 style={{ fontSize: "12px" }}>Suelta el certificado aquí, o haz clic para seleccionar uno.</h6>}
+                                                                {certificadoFile && <h6 style={{ fontSize: "12px", width: "100%" }} className={styles.select}>Archivo seleccionado: <span style={{ fontSize: "12px", fontWeight: "bold" }}>{certificadoFile.name.substring(0, 25)}</span> </h6>}
                                                             </div>
                                                         ) : input.label !== "Fotografia" ?
                                                             (
@@ -329,5 +336,4 @@ function AlergenosComida() {
 }
 
 export default AlergenosComida
-
 
