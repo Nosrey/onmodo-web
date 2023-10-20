@@ -55,6 +55,16 @@
 
 .firma {
     margin-bottom: 80px;
+    border: rgb(184, 172, 172) 1px solid;
+    border-radius: 5px;
+    justify-content: center;
+    margin-top: 4rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
   
@@ -62,7 +72,6 @@
     padding-left: 6rem;
   }
   .file {
-    border:rgb(184, 172, 172) 1px solid;
     border-radius: 5px;
     justify-content: center;
     padding-left: 10px;
@@ -71,4 +80,5 @@
     flex-direction: column;
     align-items: center;
         justify-content: center;
+        cursor: pointer;
 }

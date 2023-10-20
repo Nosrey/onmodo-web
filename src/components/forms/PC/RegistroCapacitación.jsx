@@ -41,16 +41,13 @@ function RegistroCapacitacion() {
         observaciones: "",
         instructor: "",
         cargo: file,
-        date: "",
         idUser: idUser,
-        metodo: ""
 
     })
     const handleMetodoChange = (value, index) => {
         const updatedMetodo = [...metodo];
         updatedMetodo[index] = value;
         setMetodo(updatedMetodo);
-
     };
     const [objValues, setObjValues] = useState({ dni: "", nombre: "", area: "", resultado: "", metodo: "" })
     const [checkboxesValues] = useState([
@@ -233,9 +230,7 @@ function RegistroCapacitacion() {
                 observaciones: infoPrecargada.observaciones,
                 instructor: infoPrecargada.instructor,
                 cargo: infoPrecargada.cargo,
-                date: infoPrecargada.date,
                 idUser: idUser,
-                metodo: infoPrecargada.metodo
             });
             setObjValues(infoPrecargada.asistentes);
             console.log("objValues", objValues);
@@ -455,17 +450,23 @@ function RegistroCapacitacion() {
                 <div className={styles.personal}>
                     <TextField value={values.observaciones || ''} disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, observaciones: e.target.value }); }} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
                 </div>
-
-
-                <div className={styles.firma}>
+                <div className={styles.personal}>                
                     <TextField value={values.instructor || ''} disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, instructor: e.target.value }); }} id="outlined-basic" label="Instructor" variant="outlined" />
-                    <div   {...getRootProps()} className={styles.file} >
-                        <input disabled={!!location.state?.objeto} {...getInputProps()} />
-                        <h6 >Arrastra y suelta la firma aqui, o haz clic para seleccionarla</h6>
-                        {file && <h6>Archivo seleccionado: {file.name}</h6>}
-                    </div>
                 </div>
-
+                <div className={styles.responsableCont}>
+                    <div className={styles.subtitleCont}>
+                        <p className={styles.subtitle}>Firma de los participantes</p>
+                    </div>
+                    <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
+                    <div className={styles.firma}>
+                        <div   {...getRootProps()} className={styles.file} >
+                            <input disabled={!!location.state?.objeto} {...getInputProps()} />
+                            <h6 >Arrastra y suelta la firma aqui, o haz clic para seleccionarla</h6>
+                            {file && <h6>Archivo seleccionado: {file.name}</h6>}
+                        </div>
+                    </div>
+                  
+                    </div>
                 <div className="btn">
                     <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
 

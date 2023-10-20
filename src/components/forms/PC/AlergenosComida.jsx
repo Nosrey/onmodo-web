@@ -236,8 +236,6 @@ function AlergenosComida() {
 
                                                                         inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index, e.target.value);
 
-
-                                                                        console.log(fotografia)
                                                                     }}
                                                                     label={`${input.label}`}
                                                                     value={objValues[index]?.presentaCertificado}

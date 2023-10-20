@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './RegistroSimulacro.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Alert from '../../shared/components/Alert/Alert';
+import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import { registroSimulacro } from '../../../services/FormsRequest';
 import { useLocation } from 'react-router';
 import { useDropzone } from 'react-dropzone';
@@ -14,8 +15,8 @@ function RegistroSimulacro() {
     const [showAlert, setShowlert] = useState(false);
 
     const [inputs] = useState([
-        { id: 1, label: 'Apellido y Nombre' },
-        { id: 2, label: 'Nro DNI' },
+        { id: 1, label: 'Apellido y Nombre', prop: "nombreCompleto" },
+        { id: 2, label: 'Nro DNI',  prop: "dni" },
     ]);
     var idUser = localStorage.getItem("idUser");
     const [replicas, setReplicas] = useState(1);
@@ -35,6 +36,12 @@ function RegistroSimulacro() {
         });
     };
 
+    const handleClickRemove = (index) => {
+        const inputsArrFiltered = values["personas"].filter((_, i) => i !== index);
+        setValues({ ...values, personas: inputsArrFiltered });
+        setReplicas(replicas - 1);
+    }
+
     const handleChangePerson = (index, field, value) => {
         const updatedPersonas = [...values.personas];
         updatedPersonas[index] = {
@@ -47,10 +54,25 @@ function RegistroSimulacro() {
         });
     };
     const handleSubmit = () => {
-        console.log(values)
         registroSimulacro(values).then((resp) => {
             setTextAlert("¡Formulario cargado exitosamente!");
             setTypeAlert("success");
+            // reinicio los valores del form
+            setValues({
+                razonSocial: "",
+                ubicacion: "",
+                localidad: "",
+                fecha: "",
+                personas: [
+                    {
+                        nombreCompleto: "",
+                        dni: "",
+                    }
+                ],
+                firmaDoc: "",
+                idUser: idUser
+            })
+            setReplicas(1);
         }).catch((resp) => {
             setTextAlert("Ocurrió un error")
             setTypeAlert("error");
@@ -71,8 +93,6 @@ function RegistroSimulacro() {
     const infoPrecargada = location.state?.objeto;
     useEffect(() => {
         if (infoPrecargada) { // muestro un form del historial
-            console.log("infoPrecargada", infoPrecargada)
-            console.log("sepudo")
             setValues({
                 razonSocial: infoPrecargada.razonSocial,
                 ubicacion: infoPrecargada.ubicacion,
@@ -157,17 +177,24 @@ function RegistroSimulacro() {
                                                 <div key={input.id}>
                                                     <TextField
                                                         disabled={!!location.state?.objeto}
-                                                        onKeyUp={(e) => handleChangePerson(index, input.label, e.target.value)}
+                                                        onChange={(e) => handleChangePerson(index, input.prop, e.target.value)}
                                                         id={`input-${input.id}-${index}`}
                                                         name={`input-${input.id}-${index}`}
                                                         label={`${input.label}`}
                                                         variant="outlined"
-                                                        value={values.personas[index]?.[input.label]}
+                                                        value={values.personas[index]?.[input.prop]}
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
                                                     />
                                                 </div>
                                             ))}
                                             {infoPrecargada ? <div></div> : <div className="icon">
-                                                <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                                            {
+                                                    (index === 0 || index >= replicas) ?
+                                                        <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                                                        : <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={() => { handleClickRemove(index) }} />
+                                                }
                                             </div>}
                                         </div>
                                     ))}
@@ -201,7 +228,7 @@ function RegistroSimulacro() {
                                 {acceptedFiles.length > 0 ? (
                                     <h6>Archivo cargado: {acceptedFiles[0].name}</h6>
                                 ) : (
-                                    <h6>Arrastra y suelta o haz clic para seleccionar la firma</h6>
+                                    <h6>Arrastra y suelta o haz clic para adjuntar documento</h6>
                                 )}
                             </div>
                         </div>

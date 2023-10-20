@@ -27,7 +27,6 @@ function VerificacionBalanza() {
         { id: 8, label: 'Acciones de corrección' },
     ]);
     const [replicas, setReplicas] = useState(1);
-    const [tipo, setTipo] = useState("");
     const [showModal, setShowModal] = useState(false);
     var idUser = localStorage.getItem("idUser");
     const [values, setValues] = useState({
@@ -238,7 +237,7 @@ function VerificacionBalanza() {
                                                             onChange={(e) => {
                                                                 const selectedValue = e.target.value;
                                                                 inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index, selectedValue);
-                                                                setTipo(selectedValue)
+                                                              
                                                             }}
                                                             className="input"
                                                             id={`input-${input.id}-${index}`}
@@ -249,7 +248,7 @@ function VerificacionBalanza() {
                                                                 shrink: true,
                                                             }}
                                                             value= {
-                                                                values.inputs[index]?.tipo || tipo
+                                                                objValues[index]?.tipo
                                                             }
                                                         >
                                                             <MenuItem value="BP">BP</MenuItem>
