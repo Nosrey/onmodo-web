@@ -22,7 +22,7 @@ function FlashReporteIncidente() {
         descripcion: "",
         fotografias: [],
         acciones: "",
-        nombreAsesor: "",
+        planilla: "",
         firmaAsesor: "",
         nombreSupervisor: "",
         firmaSupervisor: "",
@@ -30,36 +30,65 @@ function FlashReporteIncidente() {
         firmaGerente: "",
         idUser: idUser,
     });
+    const [planillaFile, setPlanillaFile] = useState(null);
+    const [blobUrls, setBlobUrls] =useState([]);
+    const PhotoFile = () => {
+        const { getRootProps, getInputProps } = useDropzone({
+            accept: 'image/*',
+            onDrop: (acceptedFiles) => {
+                const urls = acceptedFiles.map(file => URL.createObjectURL(file));
+                setBlobUrls(urls);
+                setValues({...values, fotografias: acceptedFiles.slice(0, 5)});
+            },
+        });
+        return (
+            <div {...getRootProps()}>
+                <input  {...getInputProps()} />
+                <h2 style={{fontSize:"18px", textAlign:"left", width:"100%", fontWeight:"bold"}}>Fotografias</h2>
+                <h6 style={{fontSize:"14px", textAlign:"left", width:"100%"}}>Arrastra y suelta las fotografias aquí o hace clic para seleccionar archivos.</h6>
+            </div>
+        );
+    };
 
-    const { getRootProps, getInputProps } = useDropzone({
-        accept: 'image/*',
-        onDrop: (acceptedFiles) => {
-            setPhotoFiles(acceptedFiles.slice(0, 5));
-        },
-    });
-
-    const [photoFiles, setPhotoFiles] = useState([]);
+    const PlanillaFile = () => {
+        const { getRootProps, getInputProps } = useDropzone({
+            onDrop: (acceptedFiles) => {
+                const file = acceptedFiles[0];
+                setPlanillaFile(file);
+                setValues({...values, planilla: file});
+            },
+        });
+        return (
+            <div {...getRootProps()} className={styles.border}>
+                <input {...getInputProps()} />
+                <h2 style={{fontSize:"18px", textAlign:"left", width:"100%", fontWeight:"bold"}}>Planilla Firmada</h2>
+                {!planillaFile && <h6 style={{ fontSize: "12px" }}>Suelta la planilla aquí, o haz clic para seleccionar una.</h6>}
+                {planillaFile && <h6 style={{ fontSize: "12px", width: "100%" }} className={styles.select}>Archivo seleccionado: <span style={{ fontSize: "12px", fontWeight: "bold" }}>{planillaFile.name.substring(0, 25)}</span> </h6>}
+            </div>
+        );
+    };
 
     const handleSubmit = () => {
-        flashIncidente(values)
-            .then((resp) => {
-                setTextAlert("¡Formulario cargado exitosamente!");
-                setTypeAlert("success");
-            })
-            .catch((resp) => {
-                setTextAlert("Ocurrió un error");
-                setTypeAlert("error");
-            })
-            .finally(() => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth',
-                });
-                setShowlert(true);
-                setTimeout(() => {
-                    setShowlert(false);
-                }, 7000);
-            });
+        console.log('values on button ', values)
+        // flashIncidente(values)
+        //     .then((resp) => {
+        //         setTextAlert("¡Formulario cargado exitosamente!");
+        //         setTypeAlert("success");
+        //     })
+        //     .catch((resp) => {
+        //         setTextAlert("Ocurrió un error");
+        //         setTypeAlert("error");
+        //     })
+        //     .finally(() => {
+        //         window.scrollTo({
+        //             top: 0,
+        //             behavior: 'smooth',
+        //         });
+        //         setShowlert(true);
+        //         setTimeout(() => {
+        //             setShowlert(false);
+        //         }, 7000);
+        //     });
     };
 
     useEffect(() => {
@@ -76,7 +105,7 @@ function FlashReporteIncidente() {
                 descripcion: infoPrecargada.descripcion,
                 fotografias: infoPrecargada.fotografias || [],
                 acciones: infoPrecargada.acciones,
-                nombreAsesor: infoPrecargada.nombreAsesor,
+                planilla: infoPrecargada.planilla,
                 firmaAsesor: infoPrecargada.firmaAsesor,
                 nombreSupervisor: infoPrecargada.nombreSupervisor,
                 firmaSupervisor: infoPrecargada.firmaSupervisor,
@@ -96,7 +125,7 @@ function FlashReporteIncidente() {
                 descripcion: "",
                 fotografias: [],
                 acciones: "",
-                nombreAsesor: "",
+                planilla: "",
                 firmaAsesor: "",
                 nombreSupervisor: "",
                 firmaSupervisor: "",
@@ -188,26 +217,20 @@ function FlashReporteIncidente() {
                             <p className={styles.aclaracion}>*En esta área no se debe nombrar a la persona que tuvo el accidente, tampoco plantear causales.</p>
                          </div>
                             {/* Área de dropzone */}
-                            <div className={styles.border}   {...getRootProps()}>
-                                <input  {...getInputProps()} />
-                                <h2 style={{fontSize:"18px", textAlign:"left", width:"100%", fontWeight:"bold"}}>Fotografias</h2>
-                                <h6 style={{fontSize:"14px", textAlign:"left", width:"100%"}}>Arrastra y suelta las fotografias aquí o hace clic para seleccionar archivos.</h6>
-                            
+                            <div className={styles.border}>
+                                <PhotoFile/>
                                 <div style={{display:"flex", width:"100%"}}>
                                     {/* Previsualización de imágenes */}
-                                    {photoFiles.map((file, index) => (
+                                    {blobUrls.map((url, index) => (
                                         <img
-                                            src={URL.createObjectURL(file)}
+                                            key={index}
+                                            src={url}
                                             alt={`Preview-${index}`}
                                             className={styles.previewImage}
                                         />
-                                  
                                     ))}
-                                </div>
-                                
+                                </div>    
                             </div>
-
-                            
                         </div>
        
                         <div className={styles.personalText}>
@@ -229,14 +252,7 @@ function FlashReporteIncidente() {
                                 <p className={styles.subtitle}>Responsable (Accountable)</p>
                             </div>
                             <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por el Asesor HSEQ, el Supervisor Directo y el Gerente de Área. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
-                            <TextField
-                                    onChange={(e) => { setValues({ ...values, nombreAsesor: e.target.value }) }}
-                                    disabled={!!location.state?.objeto}
-                                    value={values.nombreAsesor}
-                                    id="outlined-basic"
-                                    label="Planilla Firmada"
-                                    variant="outlined"
-                                />
+                            <PlanillaFile/>
                         </div>
 
                         <div className="btn">
