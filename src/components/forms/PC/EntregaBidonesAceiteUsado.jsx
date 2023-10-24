@@ -25,7 +25,6 @@ function EntregaBidonesAceiteUsado() {
     { id: 4, label: 'Responsable de Retiro' },
     { id: 5, label: 'Transporte' },
     { id: 6, label: 'Disposición final' },
- 
   ];
 
   const areAllValuesFilled = (valuesObj) => {
@@ -43,7 +42,9 @@ function EntregaBidonesAceiteUsado() {
   const handleInputChange = (event, index, label) => {
     const { value } = event.target;
     const newReplicaValues = replicaValues.map((replicaValue, i) => {
-      return i === index ? { ...replicaValue, [label.toLowerCase().replace(/\s/g, '')]: value, idUser: idUser } : replicaValue;
+      return i === index
+        ? { ...replicaValue, [label.toLowerCase().replace(/\s/g, '')]: value, idUser: idUser }
+        : replicaValue;
     });
     setReplicaValues(newReplicaValues);
   };
@@ -60,17 +61,21 @@ function EntregaBidonesAceiteUsado() {
 
   const Dropzone = ({ onDrop, index, label }) => {
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
-    console.log(replicaValues[index][label.toLowerCase().replace(/\s/g, '')])
+    console.log(replicaValues[index][label.toLowerCase().replace(/\s/g, '')]);
     return (
-      <div {...getRootProps()} className={ styles.border }>
-        <input {...getInputProps()}/>
-        {
-          replicaValues[index][label.toLowerCase().replace(/\s/g, '')] === undefined && 
-          <h6 style={{fontSize: "12px"}}>Selecciona una foto de {label}</h6>
-        }
-        
+      <div {...getRootProps()} className={styles.border}>
+        <input {...getInputProps()} />
+        {replicaValues[index][label.toLowerCase().replace(/\s/g, '')] === undefined && (
+          <h6 style={{ fontSize: '12px' }}>Selecciona una foto de {label}</h6>
+        )}
+
         {replicaValues[index][label.toLowerCase().replace(/\s/g, '')] && (
-          <h6  style={{fontSize: "12px", width:"100%"}} className={styles.select}>Archivo seleccionado: <span style={{fontSize: "12px", fontWeight:"bold"}}>{replicaValues[index][label.toLowerCase().replace(/\s/g, '')].name.substring(0, 25)}</span></h6>
+          <h6 style={{ fontSize: '12px', width: '100%' }} className={styles.select}>
+            Archivo seleccionado para {label}:{' '}
+            <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
+              {replicaValues[index][label.toLowerCase().replace(/\s/g, '')].name.substring(0, 25)}
+            </span>
+          </h6>
         )}
       </div>
     );
@@ -83,11 +88,13 @@ function EntregaBidonesAceiteUsado() {
   };
 
   const handleSubmit = () => {
-    console.log(replicaValues)
+    console.log(replicaValues);
     entregaBidones(replicaValues)
       .then((resp) => {
         setTextAlert('¡Formulario cargado exitosamente!');
         setTypeAlert('success');
+        // reiniciar form
+        window.location.href = window.location.href;
       })
       .catch((resp) => {
         setTextAlert('Ocurrió un error');
@@ -120,26 +127,26 @@ function EntregaBidonesAceiteUsado() {
   return (
     <>
       <div>
-        <div className="form">
-          <div className="titleContainer">
-            <h3 className="title">Circuito de Aceite Usado</h3>
+        <div className='form'>
+          <div className='titleContainer'>
+            <h3 className='title'>Circuito de Aceite Usado</h3>
           </div>
-          <div className="table">
-            <div className="tableSection">
+          <div className='table'>
+            <div className='tableSection'>
               {Array(replicas)
                 .fill(0)
                 .map((_, index) => (
-                  <div className="tableRow" key={index}>
-                    <p className="index">{index + 1} </p>
+                  <div className='tableRow' key={index}>
+                    <p className='index'>{index + 1} </p>
 
                     {inputs.map((input) => (
                       <div key={input.id}>
                         {input.label === 'Fecha' ? (
                           <TextField
-                            type="date"
+                            type='date'
                             InputLabelProps={{
                               shrink: true,
-                          }}
+                            }}
                             onBlur={(e) => handleInputChange(e, index, input.label)}
                             id={`input-${input.id}-${index}`}
                             name={`input-${input.id}-${index}`}
@@ -158,23 +165,29 @@ function EntregaBidonesAceiteUsado() {
                             id={`input-${input.id}-${index}`}
                             name={`input-${input.id}-${index}`}
                             label={`${input.label}`}
-                            value={replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]}
-                            variant="outlined"
+                            value={
+                              replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
+                            }
+                            variant='outlined'
                             disabled={!!location.state?.objeto}
                             className='input'
                           />
                         )}
                       </div>
                     ))}
-                    {infoPrecargada ? <div></div> : <div className="icon">
-                      <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
-                    </div>}
+                    {infoPrecargada ? (
+                      <div></div>
+                    ) : (
+                      <div className='icon'>
+                        <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                      </div>
+                    )}
                   </div>
                 ))}
             </div>
           </div>
-          <div className="btn">
-            <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">
+          <div className='btn'>
+            <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant='contained'>
               Guardar
             </Button>
           </div>
@@ -186,6 +199,3 @@ function EntregaBidonesAceiteUsado() {
 }
 
 export default EntregaBidonesAceiteUsado;
-
-
-
