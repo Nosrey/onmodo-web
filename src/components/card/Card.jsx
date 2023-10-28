@@ -3,29 +3,11 @@ import styles from './Card.module.css';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 
-
-// controlalergenos
-// entregabidones
-// flashincidente
-// informeintaccidente
-// registrocapacitacion
-// registrodecomiso
-// registrosimulacro
-// reporterechazo
-// verificacionbalanza
-// verificaciontermometros
-function Card({ text }) {
-  console.log(text)
+function Card({ text , isCloseToExpire }) {
   const { title, link } = text;
   const [titulo, setTitulo] = useState("");
-  const [reminders, setReminders] = useState(false);
   useEffect(() => {
     getTitle();
-
-    if (title === "Recordatorios") { 
-      setReminders(true);
-      
-    }
   },)
   async function getTitle() {
 
@@ -68,9 +50,9 @@ function Card({ text }) {
 
   return (
     <Link to={link}>
-      <div className={styles.cardContainer} style={ reminders ? {backgroundColor:"#7bc100"}: {}}>
+      <div className={styles.cardContainer} style={ title === "Recordatorios" && isCloseToExpire ? {backgroundColor:"#7bc100"} : {}}>
         {
-          reminders &&  <span className={styles.asterisco} >!</span>
+          title === "Recordatorios" && isCloseToExpire &&  <span className={styles.asterisco} >!</span>
 
         }
         <div className={styles.cardWrapper}>

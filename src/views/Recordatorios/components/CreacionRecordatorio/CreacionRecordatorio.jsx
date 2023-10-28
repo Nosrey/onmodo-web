@@ -4,6 +4,7 @@ import { Button, FormControl,  InputLabel, MenuItem, Select, TextField} from "@m
 import Alert from '../../../../components/shared/components/Alert/Alert';
 import { RECORDATORIOS_INFO } from '../../../../components/shared/constants/recordatoriosInfo';
 import { createReminder } from '../../../../services/Request';
+import { generarFechas } from '../../../../services/SharedService';
 
 
 function CreacionRecordatorio({updateRecordatorios}) {
@@ -25,55 +26,6 @@ function CreacionRecordatorio({updateRecordatorios}) {
       status: "En curso",
     }
   )
-
-  const generarFechas = (fechaInicial, temporalidad) => {
-    const fechas = [];
-    const [year, month, day] = fechaInicial.split('-').map(Number);
-    const fecha = new Date(year, month - 1, day); // Meses en JavaScript se cuentan desde 0 (enero) a 11 (diciembre).
-  
-    // Agregar la fecha inicial al array
-    // la tenemos en formato MM/DD/YYYY y la queremos en formato DD/MM/YYYY
-    const [mes, dia, año] = fecha.toLocaleDateString().split('/');
-    const fechaFormateada = `${dia.padStart(2, '0')}/${mes.padStart(2, '0')}/${año}`;
-    fechas.push({ fecha: fechaFormateada , ejecutado: false});
-  
-    // Determinar el incremento de tiempo en base a la temporalidad
-    let incremento = 1;
-    switch (temporalidad) {
-      case "Mensual":
-        incremento = 1;
-        break;
-      case "Bimestral":
-        incremento = 2;
-        break;
-      case "Trimestral":
-        incremento = 3;
-        break;
-      case "Semestral":
-        incremento = 6;
-        break;
-      case "Anual":
-        incremento = 12;
-        break;
-      case "Cada 2 años":
-        incremento = 24;
-        break;
-      default:
-        throw new Error("Temporalidad no válida");
-    }
-  
-    // Generar fechas para un período de 10 años
-    for (let i = 0; i < 10 * 12; i += incremento) {
-      fecha.setMonth(fecha.getMonth() + incremento);
-      // la tenemos en formato MM/DD/YYYY y la queremos en formato DD/MM/YYYY
-      const [mes, dia, año] = fecha.toLocaleDateString().split('/');
-      const fechaFormateada = `${dia.padStart(2, '0')}/${mes.padStart(2, '0')}/${año}`;
-
-      fechas.push({ fecha: fechaFormateada , ejecutado: false});
-    }
-  
-    return fechas;
-  }
 
   const handleSubmit = () => {
     if (values.tarea === "") {

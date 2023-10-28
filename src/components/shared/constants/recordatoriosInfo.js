@@ -6,7 +6,7 @@ export const RECORDATORIOS_INFO = [
     "Vencimiento de Matriz IPER.",
     "Vencimientos de Análisis de Agua Fisicoquímicos.",
     "Vencimientos de Análisis de Agua Bacteriológicos.",
-    "Vencimoiento de Extintores.",
+    "Vencimiento de Extintores.",
     "Vencimiento de Medición de Puesta a Tierra.",
     "Vencimiento de Evaluaciones Ergonómicos por Puesto.",
     "Vencimiento de Medición de Ruido.",
