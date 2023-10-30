@@ -14,7 +14,6 @@ function RegistroCapacitacion() {
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
     const [showAlert, setShowlert] = useState(false);
-    const [file, setFile] = useState(null);
     var idUser = localStorage.getItem("idUser");
     const [inputs] = useState([
         { id: 1, label: 'DNI', prop: 'dni' },
@@ -23,7 +22,6 @@ function RegistroCapacitacion() {
         { id: 5, label: 'Resultado Evaluación', prop: 'resultado' },
         { id: 4, label: 'Metodo de Evaluacion', prop: 'metodo' },
     ]);
-    const [replicas, setReplicas] = useState(1);
     const [showTextField1, setShowTextField1] = useState(false);
     const [showTextField2, setShowTextField2] = useState(false);
     const [otro1, setOtro1] = useState(false);
@@ -66,26 +64,6 @@ function RegistroCapacitacion() {
         { label: "Disertación", check: false },
         { label: "Otros2", check: false, desc: "" }
     ])
-    const [inputValues, setInputValues] = useState([])
-    const [trigger, setTrigger] = useState(false)
-    useEffect(() => {
-        if (replicas === 1 && objValues.metodo !== "" && objValues.dni !== "" && objValues.nombre !== "" && objValues.area !== "" && objValues.resultado !== "" && objValues.id !== "") {
-            setInputValues([objValues])
-        } else if (replicas > 1 && objValues.metodo !== "" && objValues.dni !== "" && objValues.nombre !== "" && objValues.area !== "" && objValues.resultado !== "" && objValues.id !== "") {
-            setInputValues([...inputValues, objValues])
-        }
-    }, [trigger])
-
-
-    useEffect(() => {
-        setValues({ ...values, asistentes: inputValues })
-    }, [inputValues])
-
-    useEffect(() => {
-        if (objValues.dni !== "" && objValues.metodo !== "" && objValues.nombre !== "" && objValues.area !== "" && objValues.resultado !== "") {
-            setTrigger(true)
-        }
-    }, [objValues])
 
     const handleInputChange = (index, event) => {
         const { name, value } = event.target;
@@ -207,7 +185,6 @@ function RegistroCapacitacion() {
     useEffect(() => {
         if (infoPrecargada) { // muestro un form del historial
             console.log("infoPrecargada", infoPrecargada);
-            setReplicas(infoPrecargada.asistentes.length);
             setValues({
                 fecha: infoPrecargada.fecha,
                 tiempoDuracion: infoPrecargada.tiempoDuracion,
