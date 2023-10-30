@@ -172,8 +172,9 @@ function RegistroCapacitacion() {
         //     setShowlert(true);
         //     setTimeout(() => {
         //         setShowlert(false);
-
-        //     }, 7000);
+        // // limpiar fomr
+        //     window.location.href = window.location.href;
+        //     }, 4000);
         // }
         // )
     };

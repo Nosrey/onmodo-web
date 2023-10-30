@@ -150,24 +150,25 @@ const [medidasValues,setMedidasValues] = useState([
   };
 
 const handleSubmit = () => {
-  reporteRechazo(values).then((resp)=> {
-      setTextAlert("¡Formulario cargado exitosamente!");
-      setTypeAlert("success");
-  }).catch((resp)=> {
-      setTextAlert("Ocurrió un error")
-      setTypeAlert("error");
-  }).finally(()=> {
-      window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-      setShowlert(true);
-      setTimeout(() => {
-          setShowlert(false);
+  console.log(values)
+  // reporteRechazo(values).then((resp)=> {
+  //     setTextAlert("¡Formulario cargado exitosamente!");
+  //     setTypeAlert("success");
+  // }).catch((resp)=> {
+  //     setTextAlert("Ocurrió un error")
+  //     setTypeAlert("error");
+  // }).finally(()=> {
+  //     window.scrollTo({
+  //         top: 0,
+  //         behavior: 'smooth',
+  //       });
+  //     setShowlert(true);
+  //     setTimeout(() => {
+  //         setShowlert(false);
 
-      }, 7000);
-  }
-  )
+  //     }, 7000);
+  // }
+  // )
 };
 
 const location = useLocation();

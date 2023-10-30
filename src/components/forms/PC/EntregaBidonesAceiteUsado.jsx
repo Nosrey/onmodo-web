@@ -89,27 +89,27 @@ function EntregaBidonesAceiteUsado() {
 
   const handleSubmit = () => {
     console.log(replicaValues);
-    entregaBidones(replicaValues)
-      .then((resp) => {
-        setTextAlert('¡Formulario cargado exitosamente!');
-        setTypeAlert('success');
-        // reiniciar form
-        window.location.href = window.location.href;
-      })
-      .catch((resp) => {
-        setTextAlert('Ocurrió un error');
-        setTypeAlert('error');
-      })
-      .finally(() => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        setShowAlert(true);
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 7000);
-      });
+    // entregaBidones(replicaValues)
+    //   .then((resp) => {
+    //     setTextAlert('¡Formulario cargado exitosamente!');
+    //     setTypeAlert('success');
+    //     // reiniciar form
+    //     window.location.href = window.location.href;
+    //   })
+    //   .catch((resp) => {
+    //     setTextAlert('Ocurrió un error');
+    //     setTypeAlert('error');
+    //   })
+    //   .finally(() => {
+    //     window.scrollTo({
+    //       top: 0,
+    //       behavior: 'smooth',
+    //     });
+    //     setShowAlert(true);
+    //     setTimeout(() => {
+    //       setShowAlert(false);
+    //     }, 7000);
+    //   });
   };
 
   const location = useLocation();

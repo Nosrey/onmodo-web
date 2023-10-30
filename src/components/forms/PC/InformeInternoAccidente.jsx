@@ -129,24 +129,25 @@ function InformeInternoAccidente() {
     };
 
     const handleSubmit = () => {
-        informeIntAccidente(values).then((resp) => {
-            setTextAlert("¡Formulario cargado exitosamente!");
-            setTypeAlert("success");
-        }).catch((resp) => {
-            setTextAlert("Ocurrió un error")
-            setTypeAlert("error");
-        }).finally(() => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
-            });
-            setShowlert(true);
-            setTimeout(() => {
-                setShowlert(false);
+        console.log(values)
+        // informeIntAccidente(values).then((resp) => {
+        //     setTextAlert("¡Formulario cargado exitosamente!");
+        //     setTypeAlert("success");
+        // }).catch((resp) => {
+        //     setTextAlert("Ocurrió un error")
+        //     setTypeAlert("error");
+        // }).finally(() => {
+        //     window.scrollTo({
+        //         top: 0,
+        //         behavior: 'smooth',
+        //     });
+        //     setShowlert(true);
+        //     setTimeout(() => {
+        //         setShowlert(false);
 
-            }, 7000);
-        }
-        )
+        //     }, 7000);
+        // }
+        // )
     };
     const location = useLocation();
     useEffect(() => {
@@ -495,12 +496,20 @@ function InformeInternoAccidente() {
                             </div>
                         </div>
 
-
-                        <div className={styles.personal}>
-                            <TextField disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, firmaEmpleado: e.target.value }) }} value={values.firmaEmpleado} id="outlined-basic" label="Firma del Empleado" variant="outlined" />
-                            <TextField disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, firmaAdm: e.target.value }) }} value={values.firmaAdm} id="outlined-basic" label="Firma del Administrador o Encargado Contrato" variant="outlined" />
-                            <TextField disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, encargado: e.target.value }) }} value={values.encargado} id="outlined-basic" label="Encargado ContratoRevisado por" variant="outlined" />
-                        </div>
+                         <div className={styles.responsableCont}>
+                            <div className={styles.subtitleCont}>
+                                <p className={styles.subtitle}>Firma de involucrados</p>
+                            </div>
+                            <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por las partes involucradas. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
+                            <div className={styles.firma}>
+                                <div   {...getRootProps()} className={styles.file} >
+                                    <input disabled={!!location.state?.objeto} {...getInputProps()} />
+                                    <h6 >Arrastra y suelta la firma aqui, o haz clic para seleccionarla</h6>
+                                    {values.firma && <h6>Archivo seleccionado: {values.firma.name}</h6>}
+                                </div>
+                            </div>
+                        
+                            </div>
 
                         <div className="btn">
                             <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
