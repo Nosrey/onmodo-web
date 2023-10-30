@@ -2,6 +2,7 @@ import { Button, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, 
 import React, { useState, useEffect } from 'react'
 import styles from './RegistroCapacitacion.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import Alert from '../../shared/components/Alert/Alert';
 import { registroCapacitacion } from '../../../services/FormsRequest';
 import { useLocation } from 'react-router-dom';
@@ -16,19 +17,19 @@ function RegistroCapacitacion() {
     const [file, setFile] = useState(null);
     var idUser = localStorage.getItem("idUser");
     const [inputs] = useState([
-        { id: 1, label: 'DNI' },
-        { id: 2, label: 'Nombre y Apellido' },
-        { id: 3, label: 'Area/Lugar de trabajo' },
-        { id: 5, label: 'Resultado Evaluación' },
-        { id: 4, label: 'Metodo de Evaluacion' },
+        { id: 1, label: 'DNI', prop: 'dni' },
+        { id: 2, label: 'Nombre y Apellido', prop: 'nombre' },
+        { id: 3, label: 'Area/Lugar de trabajo', prop: 'area' },
+        { id: 5, label: 'Resultado Evaluación', prop: 'resultado' },
+        { id: 4, label: 'Metodo de Evaluacion', prop: 'metodo' },
     ]);
     const [replicas, setReplicas] = useState(1);
-    const [metodo, setMetodo] = useState([]);
     const [showTextField1, setShowTextField1] = useState(false);
     const [showTextField2, setShowTextField2] = useState(false);
     const [otro1, setOtro1] = useState(false);
     const [otro2, setOtro2] = useState(false);
-
+    const valorInicialAsistentes = {dni: "", nombre: "", area: "", resultado: "", metodo: ""};
+    const [asistentes, setAsistentes] = useState([valorInicialAsistentes]);
     const [values, setValues] = useState({
         fecha: "",
         tiempoDuracion: "",
@@ -40,15 +41,10 @@ function RegistroCapacitacion() {
         }],
         observaciones: "",
         instructor: "",
-        cargo: file,
+        firma: null,
         idUser: idUser,
 
     })
-    const handleMetodoChange = (value, index) => {
-        const updatedMetodo = [...metodo];
-        updatedMetodo[index] = value;
-        setMetodo(updatedMetodo);
-    };
     const [objValues, setObjValues] = useState({ dni: "", nombre: "", area: "", resultado: "", metodo: "" })
     const [checkboxesValues] = useState([
         { label: "Inducción", check: false },
@@ -91,18 +87,13 @@ function RegistroCapacitacion() {
         }
     }, [objValues])
 
-    const inputsValuesConstructor = (id, label, index) => {
-        const inputTarget = document.getElementById(id)
-        setObjValues((prevObjValues) => ({
-            ...prevObjValues,
-            dni: label === "DNI" ? inputTarget.value : objValues.dni,
-            nombre: label === "Nombre y Apellido" ? inputTarget.value : objValues.nombre,
-            area: label === "Area/Lugar de trabajo" ? inputTarget.value : objValues.area,
-            metodo: label === "Metodo de Evaluacion" ? inputTarget.value : objValues.metodo,
-            resultado: label === "Resultado Evaluación" ? inputTarget.value : objValues.resultado,
-            id: label === "DNI" ? index : objValues.id,
-        }));
-    }
+    const handleInputChange = (index, event) => {
+        const { name, value } = event.target;
+        const newValues = [...asistentes];
+        newValues[index][name] = value;
+        setAsistentes(newValues)
+    };
+
     const checkboxValuesConstructor = (label, value, desc) => {
         console.log(value)
         if (label === 'Inducción') {
@@ -167,17 +158,14 @@ function RegistroCapacitacion() {
     }
 
     const handleClick = () => {
-        setReplicas(replicas + 1);
-        // setInputValues([...inputValues, objValues]);
-        setObjValues({
-            dni: "",
-            nombre: "",
-            area: "",
-            resultado: "",
-            metodo: ""
-        });
-        setTrigger(false);
+        setAsistentes([...asistentes, valorInicialAsistentes]);
     };
+
+    const handleClickRemove = (e) => {
+        const idToDelete = parseInt(e.currentTarget.id);
+        const attendeesFiltered = asistentes.filter((_, index) => index !== idToDelete);
+        setAsistentes(attendeesFiltered);
+      };
 
 
     const handleCheckboxChange = (event, id) => {
@@ -190,25 +178,26 @@ function RegistroCapacitacion() {
     };
 
     const handleSubmit = () => {
-        console.log(values)
-        registroCapacitacion(values).then((resp) => {
-            setTextAlert("¡Formulario cargado exitosamente!");
-            setTypeAlert("success");
-        }).catch((resp) => {
-            setTextAlert("Ocurrió un error")
-            setTypeAlert("error");
-        }).finally(() => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
-            });
-            setShowlert(true);
-            setTimeout(() => {
-                setShowlert(false);
+        const valuesToSend = {...values, asistentes}
+        console.log(valuesToSend)
+        // registroCapacitacion(values).then((resp) => {
+        //     setTextAlert("¡Formulario cargado exitosamente!");
+        //     setTypeAlert("success");
+        // }).catch((resp) => {
+        //     setTextAlert("Ocurrió un error")
+        //     setTypeAlert("error");
+        // }).finally(() => {
+        //     window.scrollTo({
+        //         top: 0,
+        //         behavior: 'smooth',
+        //     });
+        //     setShowlert(true);
+        //     setTimeout(() => {
+        //         setShowlert(false);
 
-            }, 7000);
-        }
-        )
+        //     }, 7000);
+        // }
+        // )
     };
   
     
@@ -229,7 +218,7 @@ function RegistroCapacitacion() {
                 asistentes: infoPrecargada.asistentes,
                 observaciones: infoPrecargada.observaciones,
                 instructor: infoPrecargada.instructor,
-                cargo: infoPrecargada.cargo,
+                firma: infoPrecargada.firma,
                 idUser: idUser,
             });
             setObjValues(infoPrecargada.asistentes);
@@ -246,7 +235,7 @@ function RegistroCapacitacion() {
 
     const onDrop = (acceptedFiles) => {
         // Solo toma el primer archivo si hay varios
-        setFile(acceptedFiles[0]);
+        setValues({...values, firma: acceptedFiles[0]});
     };
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
@@ -382,37 +371,21 @@ function RegistroCapacitacion() {
                 </div>
                 <div className="table">
                     <div className="tableSection">
-                        {Array(replicas)
-                            .fill(0)
-                            .map((_, index) => (
+                        {asistentes.map((_, index) => (
                                 <div className="tableRow" key={index}>
                                     <p className="index">{index + 1} </p>
-
                                     {inputs.map((input) => (
                                         <div key={input.id}>
                                             {input.label !==  "Metodo de Evaluacion" ? (
                                                  <TextField
-                                                 onKeyUp={(e) => {
-                                                     inputsValuesConstructor(`input-${input.id}-${index}`, input.label, index);
-                                                 }}
+                                                 onChange={(e) => handleInputChange(index, e)}
                                                  id={`input-${input.id}-${index}`}
-                                                 name={`input-${input.id}-${index}`}
+                                                 name={input.prop}
                                                  label={`${input.label}`}
                                                  variant="outlined"
                                                  disabled={!!location.state?.objeto}
-                                                 value={
-                                                     input.label === 'Nombre y Apellido'
-                                                         ? objValues[index]?.nombre
-                                                         : input.label === 'Area/Lugar de trabajo'
-                                                             ? objValues[index]?.area
-                                                             : input.label === 'Resultado Evaluación'
-                                                                 ? objValues[index]?.resultado
-                                                                 : input.label === 'DNI'
-                                                                     ? objValues[index]?.dni
-                                                                     : ''
-                                                 }
-                                             />
-                                        
+                                                 value={_[input.prop]}
+                                             />                                    
                                             ) : (
                                                 <>
                                                     <FormControl variant="outlined" className={`${styles.selectField} `}>
@@ -421,26 +394,35 @@ function RegistroCapacitacion() {
                                                             disabled={!!location.state?.objeto}
                                                             labelId={`metodo-evaluacion-label-${index}`}
                                                             id={`metodo-evaluacion-${index}`}
-                                                            value={objValues[index]?.metodo || metodo[index]}
-                                                            onChange={e => {setObjValues({...objValues, metodo: e.target.value}); handleMetodoChange(e.target.value, index)}}
+                                                            onChange={(e) => handleInputChange(index, e)}
+                                                            value={_[input.prop]}
+                                                            name={input.prop}
                                                             label="Método de Evaluación"
                                                             className={styles.largeSelectInput}
                                                         >
                                                             <MenuItem value="Oral">Oral</MenuItem>
                                                             <MenuItem value="Escrito">Escrito</MenuItem>
                                                         </Select>
-                                                    </FormControl>
-                                                 
-                                                    
+                                                    </FormControl>                                                 
                                                 </>
                                             )}
                                         </div>
                                     ))}
-
-
-                                    <div className="icon">
-                                        <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
-                                    </div>
+                                    {infoPrecargada ? (
+                                        <div></div>
+                                    ) : (
+                                        <div className='icon'>
+                                        {index === 0 ? (
+                                            <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                                        ) : (
+                                            <IndeterminateCheckboxIcon
+                                            style={{ color: 'grey' }}
+                                            id={index}
+                                            onClick={handleClickRemove}
+                                            />
+                                        )}
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                     </div>
@@ -462,7 +444,7 @@ function RegistroCapacitacion() {
                         <div   {...getRootProps()} className={styles.file} >
                             <input disabled={!!location.state?.objeto} {...getInputProps()} />
                             <h6 >Arrastra y suelta la firma aqui, o haz clic para seleccionarla</h6>
-                            {file && <h6>Archivo seleccionado: {file.name}</h6>}
+                            {values.firma && <h6>Archivo seleccionado: {values.firma.name}</h6>}
                         </div>
                     </div>
                   
