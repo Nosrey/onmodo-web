@@ -109,9 +109,7 @@ function AlergenosComida() {
     //     }, 7000);
     //   });
   };
-
-  const [certificadoFile, setCertificadoFile] = useState(null);
-
+  
   const DropCertificado = ({index, input}) => {
     const onDrop = (acceptedFiles) => {
         // Solo permitir un archivo, puedes ajustar según tus necesidades

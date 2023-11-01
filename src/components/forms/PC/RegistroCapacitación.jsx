@@ -67,8 +67,15 @@ function RegistroCapacitacion() {
 
     const handleInputChange = (index, event) => {
         const { name, value } = event.target;
-        const newValues = [...asistentes];
-        newValues[index][name] = value;
+        const newValues = asistentes.map((oldValue, i) => {
+            if (i === index) {
+                console.log('entra')
+              // Si el índice coincide, actualiza el objeto
+              return { ...oldValue, [name]: value };
+            } else {
+              // Si no coincide, no hagas cambios
+              return oldValue;
+            }})
         setAsistentes(newValues)
     };
 
@@ -155,8 +162,13 @@ function RegistroCapacitacion() {
         }
     };
 
+    const deleteEmptyRows = (inputs) => {
+        return inputs.filter((row) => 
+            Object.values(row).some((value) => value !== ''));
+    }
+
     const handleSubmit = () => {
-        const valuesToSend = {...values, asistentes}
+        const valuesToSend = {...values, asistentes: deleteEmptyRows(asistentes)}
         console.log(valuesToSend)
         // registroCapacitacion(values).then((resp) => {
         //     setTextAlert("¡Formulario cargado exitosamente!");

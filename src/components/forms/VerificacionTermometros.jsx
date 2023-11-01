@@ -63,8 +63,15 @@ function VerificacionTermometros() {
 
   const handleInputChange = (index, event, values, setValues) => {
     const { name, value } = event.target;
-    const newValues = [...values];
-    newValues[index][name] = value;
+    const newValues = values.map((oldValue, i) => {
+      if (i === index) {
+          console.log('entra')
+        // Si el índice coincide, actualiza el objeto
+        return { ...oldValue, [name]: value };
+      } else {
+        // Si no coincide, no hagas cambios
+        return oldValue;
+      }})
     setValues(newValues);
   };
 
@@ -110,8 +117,13 @@ function VerificacionTermometros() {
     addRow(row);
   };
 
+  const deleteEmptyRows = (inputs) => {
+    return inputs.filter((row) => 
+      Object.values(row).some((value) => value !== ''))
+  }
+
   const handleSubmit = () => {
-    const valuesToSend = { ...values, inputsTrimestral: objValues2, inputsSemestral: objValues1 };
+    const valuesToSend = { ...values, inputsTrimestral: deleteEmptyRows(objValues2), inputsSemestral: deleteEmptyRows(objValues1) };
     console.log(valuesToSend);
     // verificacionTermometros(valuesToSend)
     //   .then((resp) => {
