@@ -87,8 +87,8 @@ function ConstanciaEntrega() {
     };
 
     const deleteEmptyRows = (inputs) => {
-        return inputs.filter((row) => {
-            Object.values(row).some((value) => value !== '')});
+        return inputs.filter((row) => 
+            Object.values(row).some((value) => value !== ''));
     }
 
     const handleSubmit = () => {
