@@ -54,10 +54,8 @@ function ConstanciaEntrega() {
 
    const handleInputChange = (index, event) => {
        const { name, value } = event.target;
-       console.log('index? ', index, 'event? ', name, value)
        const newValues = objValues.map((oldValue, i) => {
             if (i === index) {
-                console.log('entra')
               // Si el índice coincide, actualiza el objeto
               return { ...oldValue, [name]: value };
             } else {
@@ -83,12 +81,6 @@ function ConstanciaEntrega() {
         const objValuesFiltered = objValues.filter((_, index) => index !== id);
         setObjValues(objValuesFiltered);
     };
-      
-    // const handleClickRemove = () => {
-    //     const inputsArrFiltered = inputValues.filter(input=>input.id !== replicas - 1)
-    //     setInputValues(inputsArrFiltered)
-    //     setReplicas(replicas - 1);
-    // }
 
     const handleCheckboxChange = (checked) => {
         setShowTextField(checked);
@@ -98,7 +90,6 @@ function ConstanciaEntrega() {
         return inputs.filter((row) => {
             Object.values(row).some((value) => value !== '')});
     }
-    
 
     const handleSubmit = () => {
         const valuesToSend = {
