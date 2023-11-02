@@ -40,7 +40,6 @@ function InformeInternoAccidente() {
     }
 
     const prueba = useSelector(state => state.informeAccidenteR.inputsValues)
-    console.log(prueba)
     const [showTextField1, setShowTextField1] = useState(false);
     const [showTextField2, setShowTextField2] = useState(false);
     const [showTextField3, setShowTextField3] = useState(false);
@@ -65,7 +64,6 @@ function InformeInternoAccidente() {
 
 
     const checkboxValuesConstructor = (label, value) => {
-        console.log(value)
         if (label === 'CDR') {
             checkboxesValues[0].check = value
             setValues({ ...values, checkboxes: checkboxesValues })
@@ -129,7 +127,76 @@ function InformeInternoAccidente() {
     };
 
     const handleSubmit = () => {
-        console.log(values)
+        let eppCheck = false
+        if (values.checkboxesAccidente[4]?.check === true) eppCheck = true
+
+        let objetoFinal = {
+            comedor: values?.comedor,
+            fecha: values?.fecha,
+            tipo: values?.tipo,
+            checkboxes: [
+                {
+                    label: values?.checkboxes[0]?.label,
+                    check: values?.checkboxes[0]?.check
+                },
+                {
+                    label: values?.checkboxes[1]?.label,
+                    check: values?.checkboxes[1]?.check
+                },
+                {
+                    label: values?.checkboxes[2]?.label,
+                    check: values?.checkboxes[2]?.check
+                },
+                {
+                    label: values?.checkboxes[3]?.label,
+                    check: values?.checkboxes[3]?.check
+                },
+                {
+                    label: values?.checkboxes[4]?.label,
+                    check: values?.checkboxes[4]?.check,
+                    denuncia: values?.checkboxes[4]?.denuncia
+                }
+            ],
+            nombreApellido: values?.nombreApellido,
+            cuil: values?.cuil,
+            fechaIngreso: values?.fechaIngreso,
+            puesto: values?.puesto,
+            hora: values?.hora,
+            lugar: values?.lugar,
+            descripcion: values?.descripcion,
+            checkboxesAccidente: [
+                {
+                    label: values?.checkboxesAccidente[0]?.label,
+                    check: values?.checkboxesAccidente[0]?.check
+                },
+                {
+                    label: values?.checkboxesAccidente[1]?.label,
+                    check: values?.checkboxesAccidente[1]?.check
+                },
+                {
+                    label: values?.checkboxesAccidente[2]?.label,
+                    check: values?.checkboxesAccidente[2]?.check,
+                    cualMaquina: values?.checkboxesAccidente[2]?.cualMaquina
+                },
+                {
+                    label: values?.checkboxesAccidente[3]?.label,
+                    check: values?.checkboxesAccidente[3]?.check,
+                    cualAccion: values?.checkboxesAccidente[3]?.cualAccion
+                },
+                {
+                    label: values?.checkboxesAccidente[4]?.label,
+                    check: eppCheck
+                }
+            ],
+            lugarLesion: values?.lugarLesion,
+            medidas: values?.medidas,
+            razon: values?.razon,
+            firma: values?.firma,
+            date: values?.date,
+            idUser: values?.idUser,
+        }
+
+        console.log(objetoFinal)
         // informeIntAccidente(values).then((resp) => {
         //     setTextAlert("¡Formulario cargado exitosamente!");
         //     setTypeAlert("success");
@@ -205,15 +272,24 @@ function InformeInternoAccidente() {
     }, [])
 
 
-    const [uploadedFile, setUploadedFile] = useState(null);
+    const [uploadedFile1, setUploadedFile1] = useState();
+    const [uploadedFile2, setUploadedFile2] = useState();
 
-    const { getRootProps, getInputProps } = useDropzone({
-        accept: 'image/*',
-        onDrop: (acceptedFiles) => {
-            setUploadedFile(acceptedFiles[0]);
-        },
+    const { getRootProps: getRootProps1, getInputProps: getInputProps1 } = useDropzone({
+        onDrop: acceptedFiles => {
+            setUploadedFile1(acceptedFiles[0]);
+            let valuesCopy = { ...values };
+            valuesCopy.checkboxes[4] = { ...values?.checkboxes[4], denuncia: acceptedFiles[0] }
+            setValues(valuesCopy);
+        }
     });
 
+    const { getRootProps: getRootProps2, getInputProps: getInputProps2 } = useDropzone({
+        onDrop: acceptedFiles => {
+            setUploadedFile2(acceptedFiles[0]);
+            setValues({ ...values, firma: acceptedFiles[0] })
+        }
+    });
 
 
     return (
@@ -252,11 +328,11 @@ function InformeInternoAccidente() {
                             <FormControlLabel checked={values.checkboxes[3]?.check} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('In Itinere', e.target.checked) }} />} label="In Itinere" />
                             <FormControlLabel checked={values.checkboxes[4]?.check} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Se adjunta denuncia policial', e.target.checked); setFiles(e.target.checked) }} />} label="Se adjunta denuncia policial" />
                             {files && (
-                                <div {...getRootProps()} className={styles.fileInput}>
-                                    <input {...getInputProps()} />
+                                <div {...getRootProps1()} className={styles.fileInput}>
+                                    <input {...getInputProps1()} />
                                     <h6>Arrastra y suelta una imagen aquí, o haz clic para seleccionarla</h6>
-                                    {uploadedFile && (
-                                        <img style={{ width: '30%', marginLeft: "8rem" }} src={URL.createObjectURL(uploadedFile)} alt="Previsualización" />
+                                    {uploadedFile1 && (
+                                        <img style={{ width: '30%', marginLeft: "8rem" }} src={URL.createObjectURL(uploadedFile1)} alt="Previsualización" />
                                     )}
                                 </div>
                             )}
@@ -323,7 +399,7 @@ function InformeInternoAccidente() {
                             </div>
 
                             <div className={styles.listContainer}>
-                                <FormControl disabled={!!location.state?.objeto} style={{marginBottom : "1rem", width: "20%", paddingTop: "0.4rem"}}>
+                                <FormControl disabled={!!location.state?.objeto} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-1">¿Era su trabajo habitual?</InputLabel>
                                     <Select
                                         labelId="select-label-1"
@@ -334,9 +410,9 @@ function InformeInternoAccidente() {
                                         <MenuItem value={'SI'}>SI</MenuItem>
                                         <MenuItem value={'NO'}>NO</MenuItem>
                                     </Select>
-                                    </FormControl>
-                                    
-                                    <FormControl disabled={!!location.state?.objeto} style={{marginBottom : "1rem", width: "20%", paddingTop: "0.4rem"}}>
+                                </FormControl>
+
+                                <FormControl disabled={!!location.state?.objeto} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-2">¿Conocía la tarea asignada?</InputLabel>
                                     <Select
                                         labelId="select-label-2"
@@ -350,7 +426,7 @@ function InformeInternoAccidente() {
                                 </FormControl>
 
 
-                                <FormControl disabled={!!location.state?.objeto} style={{marginBottom : "1rem", width: "20%", paddingTop: "0.4rem"}}>
+                                <FormControl disabled={!!location.state?.objeto} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-machine">
                                         ¿Una máquina le causó la lesión?
                                     </InputLabel>
@@ -389,7 +465,7 @@ function InformeInternoAccidente() {
 
 
 
-                                <FormControl disabled={!!location.state?.objeto} style={{marginBottom : "1rem", width: "20%", paddingTop: "0.4rem"}}>
+                                <FormControl disabled={!!location.state?.objeto} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-condition">
                                         ¿Hubo alguna acción o condición insegura que fuera la causante del accidente?
                                     </InputLabel>
@@ -428,13 +504,14 @@ function InformeInternoAccidente() {
 
 
 
-                                <FormControl disabled={!!location.state?.objeto} style={{marginBottom : "1rem", width: "20%", paddingTop: "0.4rem"}}>
+                                <FormControl disabled={!!location.state?.objeto} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-epp">
                                         ¿Estaba usando su E.P.P.?
                                     </InputLabel>
                                     <Select
                                         labelId="select-label-epp"
                                         id="select-epp"
+
                                         value={values.checkboxesAccidente[4]?.check ? "SI" : "NO"}
                                         onChange={(e) => {
                                             handleCheckboxChange(e.target.value === "SI" ? true : false, 3);
@@ -452,9 +529,11 @@ function InformeInternoAccidente() {
                                         <TextField
                                             disabled={!!location.state?.objeto}
                                             onChange={(e) => {
-                                                setValues({ ...values, razon: e.target.value });
+                                                let valuesCopy = { ...values };
+                                                valuesCopy.razon = e.target.value;
+                                                setValues(valuesCopy);
                                             }}
-                                            value={values.razon}
+                                            value={values.checkboxesAccidente[4]?.razon}
                                             id="outlined-basic"
                                             multiline
                                             style={{ width: "50%" }}
@@ -496,20 +575,20 @@ function InformeInternoAccidente() {
                             </div>
                         </div>
 
-                         <div className={styles.responsableCont}>
+                        <div className={styles.responsableCont}>
                             <div className={styles.subtitleCont}>
                                 <p className={styles.subtitle}>Firma de involucrados</p>
                             </div>
                             <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por las partes involucradas. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
                             <div className={styles.firma}>
-                                <div   {...getRootProps()} className={styles.file} >
-                                    <input disabled={!!location.state?.objeto} {...getInputProps()} />
+                                <div   {...getRootProps2()} className={styles.file} >
+                                    <input disabled={!!location.state?.objeto} {...getInputProps2()} />
                                     <h6 >Arrastra y suelta la firma aqui, o haz clic para seleccionarla</h6>
                                     {values.firma && <h6>Archivo seleccionado: {values.firma.name}</h6>}
                                 </div>
                             </div>
-                        
-                            </div>
+
+                        </div>
 
                         <div className="btn">
                             <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
