@@ -37,33 +37,13 @@ export const createPassword = async (token, password) => {
   }
 };
 
-// values?.upload[0],
-export const createNewUSer = async ({
-  email,
-  fullName,
-  legajo,
-  number,
-  puesto,
-  contratoComedor,
-  rol,
-  business,
-  provincia,
-  localidad,
-  imgProfile,
-}) => {
+export const createNewUSer = async (values) => {
   try {
     const formData = new FormData();
-    formData.append('imgProfile', imgProfile);
-    formData.append('email', email);
-    formData.append('fullName', fullName);
-    formData.append('legajo', legajo);
-    formData.append('number', number);
-    formData.append('puesto', puesto);
-    formData.append('contratoComedor', contratoComedor);
-    formData.append('rol', rol); // No need to parseInt here
-    formData.append('business', business);
-    formData.append('provincia', provincia);
-    formData.append('localidad', localidad);
+
+    for (const key in values) {
+      formData.append(key, values[key]);
+    }
 
     const response = await fetch(`${URL_API}/api/register`, {
       method: 'POST',

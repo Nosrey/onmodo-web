@@ -69,52 +69,53 @@ function Cuenta() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = validate(inputValue);
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      setErrors({});
-      const data = { 
-        email: inputValue.email,
-        fullName: inputValue.nombre,
-        legajo: inputValue.legajo,
-        number : inputValue.celular,
-        puesto : inputValue.puesto,
-        contratoComedor:  inputValue.contrato,
-        rol:  inputValue.nivel,
-        business: localStorage.getItem("business"),
-        provincia:  inputValue.provincia,
-        localidad :  inputValue.localidad,
-        // idChief,
-        imgProfile: inputValue.imgProfile
-      }
+    console.log(inputValue.imgProfile)
+    // if (Object.keys(validationErrors).length > 0) {
+    //   setErrors(validationErrors);
+    // } else {
+    //   setErrors({});
+    //   const data = { 
+    //     email: inputValue.email,
+    //     fullName: inputValue.nombre,
+    //     legajo: inputValue.legajo,
+    //     number : inputValue.celular,
+    //     puesto : inputValue.puesto,
+    //     contratoComedor:  inputValue.contrato,
+    //     rol:  inputValue.nivel,
+    //     business: localStorage.getItem("business"),
+    //     provincia:  inputValue.provincia,
+    //     localidad :  inputValue.localidad,
+    //     // idChief,
+    //     imgProfile: inputValue.imgProfile
+    //   }
 
-      createNewUSer(data).then((resp) => {
-        setTextAlert("Cuenta creada con éxito")
-        setTypeAlert("success");
-        setBtnEdit(!btnEdit);
-        setEditInput(true)
-      })
-      .catch((error) => {
-        setTextAlert("Ocurrió un problema")
-      setTypeAlert("error");
-      })
-      .finally(()=>{
-        showAlertAnimation();
-      });
-      setCleanImageInput(true);
-      setInputValue({
-        nombre: '',
-        legajo: '',
-        email: '',
-        celular: '',
-        nivel: myRol === "2" ? "1" : "",
-        puesto: '',
-        localidad: '',
-        provincia: '',
-        contrato:'',
-      });
-      setLocalidadesOptions([]);
-    }
+    //   createNewUSer(data).then((resp) => {
+    //     setTextAlert("Cuenta creada con éxito")
+    //     setTypeAlert("success");
+    //     setBtnEdit(!btnEdit);
+    //     setEditInput(true)
+    //   })
+    //   .catch((error) => {
+    //     setTextAlert("Ocurrió un problema")
+    //   setTypeAlert("error");
+    //   })
+    //   .finally(()=>{
+    //     showAlertAnimation();
+    //   });
+    //   setCleanImageInput(true);
+    //   setInputValue({
+    //     nombre: '',
+    //     legajo: '',
+    //     email: '',
+    //     celular: '',
+    //     nivel: myRol === "2" ? "1" : "",
+    //     puesto: '',
+    //     localidad: '',
+    //     provincia: '',
+    //     contrato:'',
+    //   });
+    //   setLocalidadesOptions([]);
+    // }
   };
 
   const showAlertAnimation = () => {

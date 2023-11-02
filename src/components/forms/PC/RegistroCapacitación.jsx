@@ -170,25 +170,25 @@ function RegistroCapacitacion() {
     const handleSubmit = () => {
         const valuesToSend = {...values, asistentes: deleteEmptyRows(asistentes)}
         console.log(valuesToSend)
-        // registroCapacitacion(values).then((resp) => {
-        //     setTextAlert("¡Formulario cargado exitosamente!");
-        //     setTypeAlert("success");
-        // }).catch((resp) => {
-        //     setTextAlert("Ocurrió un error")
-        //     setTypeAlert("error");
-        // }).finally(() => {
-        //     window.scrollTo({
-        //         top: 0,
-        //         behavior: 'smooth',
-        //     });
-        //     setShowlert(true);
-        //     setTimeout(() => {
-        //         setShowlert(false);
-        // // limpiar fomr
-        //     window.location.href = window.location.href;
-        //     }, 4000);
-        // }
-        // )
+        registroCapacitacion(valuesToSend).then((resp) => {
+            setTextAlert("¡Formulario cargado exitosamente!");
+            setTypeAlert("success");
+        }).catch((resp) => {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+        // limpiar fomr
+            // window.location.href = window.location.href;
+            }, 4000);
+        }
+        )
     };
   
     
@@ -198,6 +198,7 @@ function RegistroCapacitacion() {
     useEffect(() => {
         if (infoPrecargada) { // muestro un form del historial
             console.log("infoPrecargada", infoPrecargada);
+            console.log("parseaar info para poder mostrar los arrays", JSON.parse(infoPrecargada.checkboxes));
             setValues({
                 fecha: infoPrecargada.fecha,
                 tiempoDuracion: infoPrecargada.tiempoDuracion,
