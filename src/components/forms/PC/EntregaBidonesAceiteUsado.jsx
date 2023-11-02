@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextField } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import { useDropzone } from 'react-dropzone';
 import { entregaBidones } from '../../../services/FormsRequest';
 import Alert from '../../shared/components/Alert/Alert';
@@ -61,7 +62,6 @@ function EntregaBidonesAceiteUsado() {
 
   const Dropzone = ({ onDrop, index, label }) => {
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
-    console.log(replicaValues[index][label.toLowerCase().replace(/\s/g, '')]);
     return (
       <div {...getRootProps()} className={styles.border}>
         <input {...getInputProps()} />
@@ -81,11 +81,21 @@ function EntregaBidonesAceiteUsado() {
     );
   };
 
-  const handleClick = () => {
+  const handleClick = (index) => {
     setReplicas(replicas + 1);
-    setReplicaValues([...replicaValues, {}]);
+    setReplicaValues([...replicaValues, { id: replicas }]);
     setTrigger(false);
   };
+
+  const handleClickRemove = (index) => {
+    let copyReplicas = replicaValues.filter(replica => replica.id !== index)
+    console.log("copyReplicas", copyReplicas)
+    for (let i = 0; i <= copyReplicas.length; i++) {
+      if (copyReplicas[i]) copyReplicas[i].id = i
+    }
+    setReplicaValues(copyReplicas);
+    setReplicas(replicas - 1);
+  }
 
   const handleSubmit = () => {
     console.log(replicaValues);
@@ -147,7 +157,11 @@ function EntregaBidonesAceiteUsado() {
                             InputLabelProps={{
                               shrink: true,
                             }}
-                            onBlur={(e) => handleInputChange(e, index, input.label)}
+                            onChange={(e) => {
+                              let replicaCopy = [...replicaValues];
+                              replicaCopy[index].fecha = e.target.value;
+                              setReplicaValues(replicaCopy);
+                            }}
                             id={`input-${input.id}-${index}`}
                             name={`input-${input.id}-${index}`}
                             value={replicaValues[index].fecha}
@@ -160,14 +174,20 @@ function EntregaBidonesAceiteUsado() {
                             label={input.label}
                           />
                         ) : (
-                          <TextField
-                            onBlur={(e) => handleInputChange(e, index, input.label)}
+                          <TextField                            
                             id={`input-${input.id}-${index}`}
                             name={`input-${input.id}-${index}`}
                             label={`${input.label}`}
                             value={
                               replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
                             }
+                            onChange={(e) => {
+                              let replicaCopy = [...replicaValues];
+                              replicaCopy[index][
+                                input.label.toLowerCase().replace(/\s/g, '')
+                              ] = e.target.value;
+                              setReplicaValues(replicaCopy);
+                            }}
                             variant='outlined'
                             disabled={!!location.state?.objeto}
                             className='input'
@@ -178,8 +198,12 @@ function EntregaBidonesAceiteUsado() {
                     {infoPrecargada ? (
                       <div></div>
                     ) : (
-                      <div className='icon'>
-                        <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                      <div className="icon">
+                      {
+                          (index == 0 || index > Array(replicas).fill(0).length) ? 
+                          <AddBoxIcon style={{ color: 'grey' }} onClick={() => handleClick(index)} />
+                          :  <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={() => handleClickRemove(index)} />
+                      }
                       </div>
                     )}
                   </div>
