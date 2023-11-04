@@ -184,8 +184,6 @@ function ReporteDeRechazoDevolucionMaterias() {
         "checked": false
       }
     ],
-    nombreAdministrador: "",
-    nombreProveedor: "",
     idUser: idUser
   })
   const [condicionesValues, setCondicionesValues] = useState([
@@ -230,8 +228,6 @@ function ReporteDeRechazoDevolucionMaterias() {
       diferencias: values.checksNoConformidades[2],
       transporte: values.checksNoConformidades[3],
       medidasTomadas: values.checksMedidas,
-      nombreAdministrador: values.nombreAdministrador,
-      nombreProveedor: values.nombreProveedor,
       idUser: idUser
     }
     return objetoFinal;
@@ -276,8 +272,6 @@ function ReporteDeRechazoDevolucionMaterias() {
         diferencias: infoPrecargada.diferencias,
         transporte: infoPrecargada.transporte,
         medidasTomadas: infoPrecargada.medidasTomadas,
-        nombreAdministrador: infoPrecargada.nombreAdministrador,
-        nombreProveedor: infoPrecargada.nombreProveedor,
         date: infoPrecargada.date,
         idUser: idUser
       })
@@ -503,26 +497,6 @@ function ReporteDeRechazoDevolucionMaterias() {
           <br />
           <br />
           <br />
-          <div className={styles.personal}>
-            <TextField
-              onChange={(e) => {
-                setValues({ ...values, nombreAdministrador: e.target.value })
-              }}
-              id="outlined-basic"
-              label="Firma Administrador/Encargado"
-              variant="outlined"
-              fullWidth
-            />
-            <TextField
-              onChange={(e) => {
-                setValues({ ...values, nombreProveedor: e.target.value })
-              }}
-              id="outlined-basic"
-              label="Firma Proveedor"
-              variant="outlined"
-              fullWidth
-            />
-          </div>
           <div className="btn">
             <Button
               onClick={handleSubmit}
