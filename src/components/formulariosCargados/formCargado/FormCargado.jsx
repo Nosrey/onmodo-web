@@ -7,7 +7,6 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { setFormulario } from '../../../redux/actions/formulariosActions';
 import Alert from '../../shared/components/Alert/Alert';
-import moment from 'moment';
 import 'moment-timezone';
 
 import { generatePDF } from '../../../services/PDF';

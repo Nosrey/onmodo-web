@@ -2,119 +2,97 @@ const URL_API = 'http://localhost:8080';
 
 // const URL_API = 'https://api.onmodoapp.com';
 
-
-export const login = async ({ legajo, password}) => {
-    try {
-      const response = await fetch(`${URL_API}/api/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          legajo,
-          password
-        }),
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error', error);
-      throw error;
-    }
-  };
-
-  export const createPassword = async ( token, password) => {
-    try {
-      const response = await fetch(`${URL_API}/api/forgotpassword/${token}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          password
-        }),
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error', error);
-      throw error;
-    }
-  };
-
-  // values?.upload[0],
-  export const createNewUSer  = async ({
-    email,
-    fullName,
-    legajo,
-    number,
-    puesto,
-    contratoComedor,
-    rol,
-    business,
-    provincia,
-    localidad,
-    imgProfile,
-  }) => {
-    try {
-      const formData = new FormData();
-      formData.append('imgProfile', imgProfile);
-      formData.append('email', email);
-      formData.append('fullName', fullName);
-      formData.append('legajo', legajo);
-      formData.append('number', number);
-      formData.append('puesto', puesto);
-      formData.append('contratoComedor', contratoComedor);
-      formData.append('rol', rol); // No need to parseInt here
-      formData.append('business', business);
-      formData.append('provincia', provincia);
-      formData.append('localidad', localidad);
-  
-      const response = await fetch(`${URL_API}/api/register`, {
-        method: 'POST',
-        body: formData, // Use 'body' instead of 'data' for FormData
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP Error! Status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error:', error);
-      throw error;
-    }
-  };
-  
-
-export const setPassword = async (password) => {
-try {
+export const login = async ({ legajo, password }) => {
+  try {
     const response = await fetch(`${URL_API}/api/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-        password
-    }),
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        legajo,
+        password,
+      }),
     });
     const data = await response.json();
     return data;
-} catch (error) {
+  } catch (error) {
     console.error('Error', error);
     throw error;
-}
+  }
+};
+
+export const createPassword = async (token, password) => {
+  try {
+    const response = await fetch(`${URL_API}/api/forgotpassword/${token}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        password,
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
+
+export const createNewUSer = async (values) => {
+  try {
+    const formData = new FormData();
+
+    for (const key in values) {
+      formData.append(key, values[key]);
+    }
+
+    const response = await fetch(`${URL_API}/api/register`, {
+      method: 'POST',
+      body: formData, // Use 'body' instead of 'data' for FormData
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP Error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+export const setPassword = async (password) => {
+  try {
+    const response = await fetch(`${URL_API}/api/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        password,
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
 };
 
 export const getUserInfo = async (id) => {
-    try {
-      const resp = await fetch(`${URL_API}/api/business/${id}`);
-      const data = await resp.json();
-      return data.response;
-    } catch (error) {
-      console.error('Error:', error);
-      throw new Error('No se pudo obtener los datos del usuario.');
-    }
+  try {
+    const resp = await fetch(`${URL_API}/api/business/${id}`);
+    const data = await resp.json();
+    return data.response;
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('No se pudo obtener los datos del usuario.');
+  }
 };
 
 export const getProvincias = async () => {
   try {
-    const resp = await fetch("https://apis.datos.gob.ar/georef/api/provincias?campos=id,nombre");
+    const resp = await fetch('https://apis.datos.gob.ar/georef/api/provincias?campos=id,nombre');
     const data = await resp.json();
 
     return data.provincias.sort((a, b) => a.nombre.localeCompare(b.nombre));
@@ -126,7 +104,9 @@ export const getProvincias = async () => {
 
 export const getLocalidades = async (idProv) => {
   try {
-    const resp = await fetch(`https://apis.datos.gob.ar/georef/api/municipios?provincia=${idProv}&campos=id,nombre&max=500`);
+    const resp = await fetch(
+      `https://apis.datos.gob.ar/georef/api/municipios?provincia=${idProv}&campos=id,nombre&max=500`
+    );
     const data = await resp.json();
 
     return data.municipios.sort((a, b) => a.nombre.localeCompare(b.nombre));
@@ -136,24 +116,32 @@ export const getLocalidades = async (idProv) => {
   }
 };
 
-
 //** REMINDERS */
-export const createReminder = async ({tarea, descripcion, link, linkTitle, frecuencia, fechaInicio, fechas, status}) => {
+export const createReminder = async ({
+  tarea,
+  descripcion,
+  link,
+  linkTitle,
+  frecuencia,
+  fechaInicio,
+  fechas,
+  status,
+}) => {
   try {
     const response = await fetch(`${URL_API}/api/recordatorio`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         tarea,
-        descripcion, 
+        descripcion,
         link,
-        linkTitle, 
+        linkTitle,
         frecuencia,
         fechaInicio,
         fechas,
-        status, 
-        idUser: localStorage.getItem("idUser") , 
-        businessName: localStorage.getItem("business") , 
+        status,
+        idUser: localStorage.getItem('idUser'),
+        businessName: localStorage.getItem('business'),
       }),
     });
     const data = await response.json();
@@ -162,7 +150,7 @@ export const createReminder = async ({tarea, descripcion, link, linkTitle, frecu
     console.error('Error', error);
     throw error;
   }
-}
+};
 
 export const getReminders = async (businessName) => {
   try {
@@ -180,7 +168,7 @@ export const deleteReminder = async (recordatorioId) => {
     const response = await fetch(`${URL_API}/api/recordatorio/${recordatorioId}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
-      // sin body ? 
+      // sin body ?
     });
     const data = await response.json();
     return data;
@@ -190,16 +178,15 @@ export const deleteReminder = async (recordatorioId) => {
   }
 };
 
-export const editReminder = async ({values, recordatorioId, businessName}) => {
+export const editReminder = async ({ values, recordatorioId }) => {
   try {
-    const response = await fetch(`${URL_API}/api/recordatorio/${businessName}/${recordatorioId}`, {
+    const response = await fetch(`${URL_API}/api/recordatorio/${recordatorioId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values),
     });
     const data = await response.json();
     return data;
-
   } catch (error) {
     console.error('Error', error);
     throw error;

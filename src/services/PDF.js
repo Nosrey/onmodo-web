@@ -1096,17 +1096,9 @@ export const generatePDF = (formulario, form) => {
           [
             { text: 'Fecha:', style: 'label' },
             { text: fecha, style: 'value' },
-            { text: 'Responsable:', style: 'label' },
-            { text: responsable, style: 'value' },
-          ],
-          [
-            { text: 'Fecha y Hora:', style: 'label' },
-            { text: fechaHora, style: 'value' },
             { text: 'Balanza/ Báscula:', style: 'label' },
             { text: balanza, style: 'value' },
           ],
-
-
         ],
       },
       layout: {
@@ -1179,4 +1171,4 @@ export const generatePDF = (formulario, form) => {
   else {
     return null
   }
-};
+}
