@@ -234,8 +234,8 @@ function ReporteDeRechazoDevolucionMaterias() {
   };
 
   const handleSubmit = () => {
-    console.log('here we go')
-    console.log(inputsValuesConstructor())
+    let objetoFinal = inputsValuesConstructor();
+    console.log(objetoFinal)
     // reporteRechazo(values).then((resp)=> {
     //     setTextAlert("¡Formulario cargado exitosamente!");
     //     setTypeAlert("success");
