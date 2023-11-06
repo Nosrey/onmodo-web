@@ -69,7 +69,6 @@ function RegistroCapacitacion() {
         const { name, value } = event.target;
         const newValues = asistentes.map((oldValue, i) => {
             if (i === index) {
-                console.log('entra')
               // Si el índice coincide, actualiza el objeto
               return { ...oldValue, [name]: value };
             } else {
@@ -80,7 +79,6 @@ function RegistroCapacitacion() {
     };
 
     const checkboxValuesConstructor = (label, value, desc) => {
-        console.log(value)
         if (label === 'Inducción') {
             checkboxesValues[0].check = value
             setValues({ ...values, checkboxes: checkboxesValues })
@@ -169,7 +167,6 @@ function RegistroCapacitacion() {
 
     const handleSubmit = () => {
         const valuesToSend = {...values, asistentes: deleteEmptyRows(asistentes)}
-        console.log(valuesToSend)
         registroCapacitacion(valuesToSend).then((resp) => {
             setTextAlert("¡Formulario cargado exitosamente!");
             setTypeAlert("success");
@@ -197,8 +194,6 @@ function RegistroCapacitacion() {
     const infoPrecargada = location.state?.objeto;
     useEffect(() => {
         if (infoPrecargada) { // muestro un form del historial
-            console.log("infoPrecargada", infoPrecargada);
-            console.log("parseaar info para poder mostrar los arrays", JSON.parse(infoPrecargada.checkboxes));
             setValues({
                 fecha: infoPrecargada.fecha,
                 tiempoDuracion: infoPrecargada.tiempoDuracion,
@@ -213,8 +208,6 @@ function RegistroCapacitacion() {
                 idUser: idUser,
             });
             setObjValues(infoPrecargada.asistentes);
-            console.log("objValues", objValues);
-            console.log("values", values);
            
         } else { // creo un form desde cero
 
