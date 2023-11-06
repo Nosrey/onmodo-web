@@ -76,38 +76,38 @@ function AlergenosComida() {
     const valuesToSend = {...values, inputs: objValues}
     console.log('values:', valuesToSend);
 
-    // controlAlergenos(values)
-    //   .then((resp) => {
-    //     if (resp.error) {
-    //       setTextAlert('Ocurrió un error');
-    //       setTypeAlert('error');
-    //     } else {
-    //       setTextAlert('¡Formulario cargado exitosamente!');
-    //       setTypeAlert('success');
-    //       // limpiar formulario
-    //       setInputValues([]);
-    //       setReplicas(1);
-    //       setValues({
-    //         comedor: '',
-    //         inputs: [{}],
-    //         idUser: idUser,
-    //       });
-    //     }
-    //   })
-    //   .catch((resp) => {
-    //     setTextAlert('Ocurrió un error');
-    //     setTypeAlert('error');
-    //   })
-    //   .finally(() => {
-    //     window.scrollTo({
-    //       top: 0,
-    //       behavior: 'smooth',
-    //     });
-    //     setShowlert(true);
-    //     setTimeout(() => {
-    //       setShowlert(false);
-    //     }, 7000);
-    //   });
+    controlAlergenos(valuesToSend)
+      .then((resp) => {
+        if (resp.error) {
+          setTextAlert('Ocurrió un error');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('¡Formulario cargado exitosamente!');
+          setTypeAlert('success');
+          // limpiar formulario
+          // setInputValues([]);
+          // setReplicas(1);
+          // setValues({
+          //   comedor: '',
+          //   inputs: [{}],
+          //   idUser: idUser,
+          // });
+        }
+      })
+      .catch((resp) => {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      })
+      .finally(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+        setShowlert(true);
+        setTimeout(() => {
+          setShowlert(false);
+        }, 7000);
+      });
   };
   
   const DropCertificado = ({index, input}) => {
