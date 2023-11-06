@@ -34,6 +34,7 @@ function InformeInternoAccidente() {
             firmaEmpleado: "",
             firmaAdm: "",
             encargado: "",
+            date: "",
             idUser: idUser,
         });
     }
@@ -184,13 +185,14 @@ function InformeInternoAccidente() {
                 },
                 {
                     label: values?.checkboxesAccidente[4]?.label,
-                    check: eppCheck
+                    check: eppCheck,
+                    razon: values?.razon,
                 }
             ],
             lugarLesion: values?.lugarLesion,
             medidas: values?.medidas,
-            razon: values?.razon,
             firma: values?.firma,
+            date: values?.date,
             idUser: values?.idUser,
         }
 
@@ -238,6 +240,7 @@ function InformeInternoAccidente() {
                 firmaEmpleado: infoPrecargada.firmaEmpleado,
                 firmaAdm: infoPrecargada.firmaAdm,
                 encargado: infoPrecargada.encargado,
+                date: infoPrecargada.date,
                 idUser: idUser
             })
             console.log("value", values)
@@ -262,6 +265,7 @@ function InformeInternoAccidente() {
                 firmaEmpleado: "",
                 firmaAdm: "",
                 encargado: "",
+                date: "",
                 idUser: idUser
             })
         }
