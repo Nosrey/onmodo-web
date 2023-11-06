@@ -185,12 +185,12 @@ function InformeInternoAccidente() {
                 },
                 {
                     label: values?.checkboxesAccidente[4]?.label,
-                    check: eppCheck
+                    check: eppCheck,
+                    razon: values?.razon,
                 }
             ],
             lugarLesion: values?.lugarLesion,
             medidas: values?.medidas,
-            razon: values?.razon,
             firma: values?.firma,
             date: values?.date,
             idUser: values?.idUser,

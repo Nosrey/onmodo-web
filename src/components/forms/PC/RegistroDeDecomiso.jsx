@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import Alert from '../../shared/components/Alert/Alert';
 import { registroDecomiso } from '../../../services/FormsRequest';
 import { useLocation } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 function RegistroDeDecomiso() {
   //** ALERTA */
@@ -30,7 +31,7 @@ function RegistroDeDecomiso() {
     { id: 5, label: 'Causa' },
   ]);
   const [replicas, setReplicas] = useState(1);
-  const [replicaValues, setReplicaValues] = useState([{}]);
+  const [replicaValues, setReplicaValues] = useState([{ id: 0 }]);
 
   const [values, setValues] = useState({
     inputs: [{}],
@@ -73,7 +74,6 @@ function RegistroDeDecomiso() {
   }, [inputValues, objValues]);
 
   useEffect(() => {
-    console.log('BNUEVO VLRO ', objValues);
     if (
       objValues.fecha !== '' &&
       objValues.turno !== '' &&
@@ -85,23 +85,35 @@ function RegistroDeDecomiso() {
     }
   }, [objValues]);
 
+  useEffect(() => {
+    let confirmado = false
+    for (let i = 0; i < replicaValues.length; i++) {
+      if (replicaValues[i]?.["turno"]?.length && replicaValues[i]?.["productodecomisado"]?.length && replicaValues[i]?.["cantidad"]?.length && replicaValues[i]?.["causa"]?.length && replicaValues[i]?.["fecha"]?.length) {
+        confirmado = true
+      } else {
+        confirmado = false
+        break
+      }
+    }
+    console.log('confirmado ', confirmado)
+    if (confirmado) {
+      setTrigger(true)
+    } else {
+      setTrigger(false)
+    }
+  }, [values, replicaValues])
+
   const inputsValuesConstructor = (id, label, index, value) => {
     const inputTarget = document.getElementById(id);
     label === 'Fecha'
       ? setObjValues({ ...objValues, fecha: inputTarget.value, id: index })
       : label === 'Turno'
-      ? setObjValues({ ...objValues, turno: value })
-      : label === 'Producto decomisado'
-      ? setObjValues({ ...objValues, productoDecomisado: inputTarget.value })
-      : label === 'Cantidad'
-      ? setObjValues({ ...objValues, cantidad: inputTarget.value })
-      : label === 'Causa' && setObjValues({ ...objValues, causa: value });
-  };
-
-  const handleClick = () => {
-    setReplicas(replicas + 1);
-    setObjValues({ fecha: '', turno: '', productoDecomisado: '', cantidad: '', causa: '' });
-    setTrigger(false);
+        ? setObjValues({ ...objValues, turno: value })
+        : label === 'Producto decomisado'
+          ? setObjValues({ ...objValues, productoDecomisado: inputTarget.value })
+          : label === 'Cantidad'
+            ? setObjValues({ ...objValues, cantidad: inputTarget.value })
+            : label === 'Causa' && setObjValues({ ...objValues, causa: value });
   };
 
   const todasLasPropiedadesLlenas = (obj) => {
@@ -112,40 +124,43 @@ function RegistroDeDecomiso() {
     }
     return true;
   };
-  const handleClickRemove = (index) => {
-    const inputsArrFiltered = inputValues.filter((input) => input.id !== replicas - 1);
-    setInputValues(inputsArrFiltered);
-    setReplicas(replicas - 1);
-    if (values.inputs.every(todasLasPropiedadesLlenas)) {
-      setTrigger(true);
-    } else {
-      setTrigger(false);
-    }
+
+  const handleClick = (index) => {
+    setReplicas(replicas + 1);
+    const id = uuidv4();
+    setReplicaValues([...replicaValues, { id: id }]);
+    setTrigger(false);
   };
 
+  const handleClickRemove = (index) => {
+    let copyReplicas = replicaValues.filter(replica => replica.id !== index)
+    setReplicaValues(copyReplicas);
+    setReplicas(replicas - 1);
+  }
+
   const handleSubmit = () => {
-    console.log('form ', values);
-    registroDecomiso(values)
-      .then((resp) => {
-        setTextAlert('¡Formulario cargado exitosamente!');
-        setTypeAlert('success');
-        // limpiar fomr
-        window.location.href = window.location.href;
-      })
-      .catch((resp) => {
-        setTextAlert('Ocurrió un error');
-        setTypeAlert('error');
-      })
-      .finally(() => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        setShowlert(true);
-        setTimeout(() => {
-          setShowlert(false);
-        }, 7000);
-      });
+    console.log('form ', replicaValues);
+    // registroDecomiso(values)
+    //   .then((resp) => {
+    //     setTextAlert('¡Formulario cargado exitosamente!');
+    //     setTypeAlert('success');
+    //     // limpiar fomr
+    //     window.location.href = window.location.href;
+    //   })
+    //   .catch((resp) => {
+    //     setTextAlert('Ocurrió un error');
+    //     setTypeAlert('error');
+    //   })
+    //   .finally(() => {
+    //     window.scrollTo({
+    //       top: 0,
+    //       behavior: 'smooth',
+    //     });
+    //     setShowlert(true);
+    //     setTimeout(() => {
+    //       setShowlert(false);
+    //     }, 7000);
+    //   });
   };
 
   useEffect(() => {
@@ -179,22 +194,20 @@ function RegistroDeDecomiso() {
               {Array(replicas)
                 .fill(0)
                 .map((_, index) => (
-                  <div className='tableRow' key={index}>
+                  <div className='tableRow' key={replicaValues[index].id}>
                     <p className='index'>{index + 1} </p>
 
-                    {inputs.map((input) => (
-                      <div key={input.id}>
+                    {inputs.map((input, index2) => (
+                      <div key={replicaValues[index].id + index2}>
                         {input.label === 'Fecha' ? (
                           <TextField
                             type='date'
-                            value={objValues[index]?.fecha}
                             className='input'
+                            value={replicaValues[index]?.fecha}
                             onChange={(e) => {
-                              inputsValuesConstructor(
-                                `input-${input.id}-${index}`,
-                                input.label,
-                                index
-                              );
+                              let replicaCopy = [...replicaValues];
+                              replicaCopy[index].fecha = e.target.value;
+                              setReplicaValues(replicaCopy);
                             }}
                             id={`input-${input.id}-${index}`}
                             name={`input-${input.id}-${index}`}
@@ -203,93 +216,26 @@ function RegistroDeDecomiso() {
                               shrink: true,
                             }}
                           />
-                        ) : input.label === 'Causa' ? (
-                          <FormControl variant='outlined' className={`${styles.selectField} `}>
-                            <InputLabel id='causa'>Causa</InputLabel>
-                            <Select
-                              labelId='causa'
-                              className='input'
-                              id={`input-${input.id}-${index}`}
-                              name={`input-${input.id}-${index}`}
-                              disabled={!!location.state?.objeto}
-                              onChange={(e) => {
-                                inputsValuesConstructor(
-                                  `input-${input.id}-${index}`,
-                                  input.label,
-                                  index,
-                                  e.target.value
-                                );
-                              }}
-                              label='Causa'
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                              value={objValues[index] && objValues[index]['causa']}
-                            >
-                              <MenuItem value='Recal'>Recall</MenuItem>
-                              <MenuItem value='Desvíos de Proceso'>Desvíos de Proceso</MenuItem>
-                              <MenuItem value='Fuera fecha de vida útil'>
-                                Fuera fecha de vida útil
-                              </MenuItem>
-                              <MenuItem value='Fuera de aptitud'>Fuera de aptitud</MenuItem>
-                              <MenuItem value='Otras Causas'>Otras Causas</MenuItem>
-                            </Select>
-                          </FormControl>
-                        ) : input.label === 'Turno' ? (
-                          <FormControl variant='outlined' className={`${styles.selectField} `}>
-                            <InputLabel id='turno'>Turno</InputLabel>
-                            <Select
-                              labelId='turno'
-                              disabled={!!location.state?.objeto}
-                              className='input'
-                              id={`input-${input.id}-${index}`}
-                              name={`input-${input.id}-${index}`}
-                              value={objValues[index]?.turno}
-                              onChange={(e) => {
-                                inputsValuesConstructor(
-                                  `input-${input.id}-${index}`,
-                                  input.label,
-                                  index,
-                                  e.target.value
-                                );
-                              }}
-                              label='Turno'
-                              InputLabelProps={{
-                                shrink: true,
-                              }}
-                            >
-                              <MenuItem value='Mañana'>Mañana</MenuItem>
-                              <MenuItem value='Tarde'>Tarde</MenuItem>
-                              <MenuItem value='Noche'>Noche</MenuItem>
-                            </Select>
-                          </FormControl>
-                        ) : (
+                        ) :
                           <TextField
-                            className='input'
-                            onKeyUp={(e) => {
-                              inputsValuesConstructor(
-                                `input-${input.id}-${index}`,
-                                input.label,
-                                index
-                              );
-                            }}
                             id={`input-${input.id}-${index}`}
                             name={`input-${input.id}-${index}`}
-                            disabled={!!location.state?.objeto}
                             label={`${input.label}`}
-                            variant='outlined'
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
                             value={
-                              input.label === 'Producto decomisado'
-                                ? objValues[index]?.productoDecomisado
-                                : input.label === 'Cantidad'
-                                ? objValues[index]?.cantidad
-                                : ''
+                              replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
                             }
+                            onChange={(e) => {
+                              let replicaCopy = [...replicaValues];
+                              replicaCopy[index][
+                                input.label.toLowerCase().replace(/\s/g, '')
+                              ] = e.target.value;
+                              setReplicaValues(replicaCopy);
+                            }}
+                            variant='outlined'
+                            disabled={!!location.state?.objeto}
+                            className='input'
                           />
-                        )}
+                        }
                       </div>
                     ))}
                     {!!infoPrecargada ? null : (
@@ -300,7 +246,7 @@ function RegistroDeDecomiso() {
                           <IndeterminateCheckboxIcon
                             style={{ color: 'grey' }}
                             onClick={() => {
-                              handleClickRemove(index);
+                              handleClickRemove(replicaValues[index].id);
                             }}
                           />
                         )}

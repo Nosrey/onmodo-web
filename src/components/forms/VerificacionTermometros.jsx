@@ -7,6 +7,7 @@ import Modal from '../shared/Modal';
 import Alert from '../shared/components/Alert/Alert';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import { useLocation } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 
 function VerificacionTermometros() {
   //** ALERTA */
@@ -60,18 +61,21 @@ function VerificacionTermometros() {
   const [objValues2, setObjValues2] = useState([initialInputs2Value]);
   const [replicas, setReplicas] = useState(1);
   const [replicas2, setReplicas2] = useState(1);
+  const [replicaValues, setReplicaValues] = useState([{ id: 0 }]);
+  const [replicaValues2, setReplicaValues2] = useState([{ id: 0 }]);
 
   const handleInputChange = (index, event, values, setValues) => {
     const { name, value } = event.target;
     const newValues = values.map((oldValue, i) => {
       if (i === index) {
-          console.log('entra')
+        console.log('entra')
         // Si el índice coincide, actualiza el objeto
         return { ...oldValue, [name]: value };
       } else {
         // Si no coincide, no hagas cambios
         return oldValue;
-      }})
+      }
+    })
     setValues(newValues);
   };
 
@@ -113,18 +117,38 @@ function VerificacionTermometros() {
     }
   };
 
-  const handleClick = (row) => {
-    addRow(row);
+  const handleClick = (index) => {
+    setReplicas(replicas + 1);
+    const id = uuidv4();
+    setReplicaValues([...replicaValues, { id: id }]);
   };
 
+  const handleClickRemove = (index) => {
+    let copyReplicas = replicaValues.filter(replica => replica.id !== index)
+    setReplicaValues(copyReplicas);
+    setReplicas(replicas - 1);
+  }
+
+  const handleClick2 = (index) => {
+    setReplicas2(replicas2 + 1);
+    const id = uuidv4();
+    setReplicaValues2([...replicaValues2, { id: id }]);
+  };
+
+  const handleClickRemove2 = (index) => {
+    let copyReplicas = replicaValues2.filter(replica => replica.id !== index)
+    setReplicaValues2(copyReplicas);
+    setReplicas2(replicas2 - 1);
+  }
+
   const deleteEmptyRows = (inputs) => {
-    return inputs.filter((row) => 
+    return inputs.filter((row) =>
       Object.values(row).some((value) => value !== ''))
   }
 
   const handleSubmit = () => {
-    const valuesToSend = { ...values, inputsTrimestral: deleteEmptyRows(objValues2), inputsSemestral: deleteEmptyRows(objValues1) };
-    console.log(valuesToSend);
+    const valuesToSend = { ...values, inputsTrimestral: replicaValues, inputsSemestral: replicaValues2};
+    console.log("valuesToSend", valuesToSend)
     // verificacionTermometros(valuesToSend)
     //   .then((resp) => {
     //     setTextAlert('¡Formulario cargado exitosamente!');
@@ -246,59 +270,72 @@ function VerificacionTermometros() {
               </div>
 
               <div className='tableSection'>
-                {objValues1.map((input, index) => (
-                  <div className='tableRow' key={index}>
-                    <p className='index'>{index + 1} </p>
-                    {inputs.map((config, i) => (
-                      <div key={i}>
-                        {config.label === 'Tipo (PIN/IR)' ? (
-                          <FormControl variant='outlined' className={`${styles.selectField} `}>
-                            <InputLabel id='select'>{config.label}</InputLabel>
-                            <Select
-                              labelId='select'
-                              className='input'
-                              id={`config-${config.id}-${index}`}
-                              name={`${config.prop}`}
-                              onChange={(e) =>
-                                handleInputChange(index, e, objValues1, setObjValues1)
+                {Array(replicas)
+                  .fill(0)
+                  .map((_, index) => (
+                    <div className='tableRow' key={replicaValues[index].id}>
+                      <p className='index'>{index + 1} </p>
+                      {inputs.map((input, index2) => (
+                        <div key={replicaValues[index].id + index2}>
+                          {input.label === 'Tipo (PIN/IR)' ? (
+                            <FormControl variant='outlined' className={`${styles.selectField} `}>
+                              <InputLabel id='select'>{input.label}</InputLabel>
+                              <Select
+                                value={replicaValues[index]?.["Tipo (PIN/IR)"]}
+                                onChange={(e) => {
+                                  let replicaCopy = [...replicaValues];
+                                  replicaCopy[index]["Tipo (PIN/IR)"] = e.target.value;
+                                  setReplicaValues(replicaCopy);
+                                }}
+                                labelId='select'
+                                className='input'
+                                id={`input-${input.id}-${index}`}
+                                name={`${input.prop}`}
+                                label={`${input.label}`}
+                              >
+                                <MenuItem value='PIN'>PIN</MenuItem>
+                                <MenuItem value='IR'>IR</MenuItem>
+                              </Select>
+                            </FormControl>
+                          ) : (
+                            <TextField
+                              value={
+                                replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
                               }
-                              label={`${config.label}`}
-                              value={input[config.prop]}
-                            >
-                              <MenuItem value='PIN'>PIN</MenuItem>
-                              <MenuItem value='IR'>IR</MenuItem>
-                            </Select>
-                          </FormControl>
+                              onChange={(e) => {
+                                let replicaCopy = [...replicaValues];
+                                replicaCopy[index][
+                                  input.label.toLowerCase().replace(/\s/g, '')
+                                ] = e.target.value;
+                                setReplicaValues(replicaCopy);
+                              }}
+                              className='input'
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              name={`${input.prop}`}
+                              label={input.label}
+                              id={`input-${input.id}-${index}`}
+                              placeholder={`${input.label}`}
+                              variant='outlined'
+                            />
+                          )}
+                        </div>
+                      ))}
+                      <div className='icon'>
+                        {index === 0 || index >= replicas ? (
+                          <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                         ) : (
-                          <TextField
-                            onChange={(e) => handleInputChange(index, e, objValues1, setObjValues1)}
-                            className='input'
-                            InputLabelProps={{
-                              shrink: true,
+                          <IndeterminateCheckboxIcon
+                            style={{ color: 'grey' }}
+                            onClick={() => {
+                              handleClickRemove(replicaValues[index].id);
                             }}
-                            name={`${config.prop}`}
-                            label={config.label}
-                            id={`config-${config.id}-${index}`}
-                            placeholder={`${config.label}`}
-                            variant='outlined'
                           />
                         )}
                       </div>
-                    ))}
-                    <div className='icon'>
-                      {index === 0 || index >= replicas ? (
-                        <AddBoxIcon style={{ color: 'grey' }} onClick={() => handleClick(1)} />
-                      ) : (
-                        <IndeterminateCheckboxIcon
-                          style={{ color: 'grey' }}
-                          onClick={() => {
-                            RemoveRow(1, index);
-                          }}
-                        />
-                      )}
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
 
@@ -324,38 +361,49 @@ function VerificacionTermometros() {
               </div>
 
               <div className='tableSection'>
-                {objValues2.map((input, index) => (
-                  <div className='tableRow' key={index}>
+                {Array(replicas2)
+                .fill(0)
+                .map((_, index) => (
+                  <div className='tableRow' key={replicaValues2[index].id}>
                     <p className='index'>{index + 1} </p>
 
-                    {inputs2.map((config, i) => (
-                      <div key={i}>
+                    {inputs2.map((input, index2) => (
+                      <div key={replicaValues2[index].id + index2}>
                         <TextField
-                          onChange={(e) => handleInputChange(index, e, objValues2, setObjValues2)}
-                          id={`config-${config.id}-${index}`}
+                          value={
+                            replicaValues2[index][input.label.toLowerCase().replace(/\s/g, '')]
+                          }
+                          onChange={(e) => {
+                            let replicaCopy = [...replicaValues2];
+                            replicaCopy[index][
+                              input.label.toLowerCase().replace(/\s/g, '')
+                            ] = e.target.value;
+                            setReplicaValues2(replicaCopy);
+                          }}
+                          id={`input-${input.id}-${index}`}
                           InputLabelProps={{
                             shrink: true,
                           }}
                           className='input'
-                          label={config.label}
-                          name={`${config.prop}`}
-                          placeholder={`${config.label}`}
+                          label={input.label}
+                          name={`${input.prop}`}
+                          placeholder={`${input.label}`}
                           variant='outlined'
                         />
                       </div>
                     ))}
                     <div className='icon'>
-                      {index === 0 || index >= replicas2 ? (
-                        <AddBoxIcon style={{ color: 'grey' }} onClick={() => handleClick(2)} />
-                      ) : (
-                        <IndeterminateCheckboxIcon
-                          style={{ color: 'grey' }}
-                          onClick={() => {
-                            RemoveRow(2, index);
-                          }}
-                        />
-                      )}
-                    </div>
+                        {index === 0 || index >= replicas ? (
+                          <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick2} />
+                        ) : (
+                          <IndeterminateCheckboxIcon
+                            style={{ color: 'grey' }}
+                            onClick={() => {
+                              handleClickRemove2(replicaValues2[index].id);
+                            }}
+                          />
+                        )}
+                      </div>
                   </div>
                 ))}
               </div>

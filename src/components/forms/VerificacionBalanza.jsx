@@ -8,6 +8,8 @@ import axios from 'axios';
 import { verificacionBalanza } from '../../services/FormsRequest';
 import Alert from '../shared/components/Alert/Alert';
 import { useLocation } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 
 function VerificacionBalanza() {
   //** ALERTA */
@@ -26,6 +28,7 @@ function VerificacionBalanza() {
     { id: 8, label: 'Acciones de corrección' },
   ]);
   const [replicas, setReplicas] = useState(1);
+  const [replicaValues, setReplicaValues] = useState([{ id: 0 }]);
   const [showModal, setShowModal] = useState(false);
   var idUser = localStorage.getItem('idUser');
   const [values, setValues] = useState({
@@ -117,44 +120,43 @@ function VerificacionBalanza() {
     }
   };
 
-  const handleClick = () => {
+  const handleClick = (index) => {
     setReplicas(replicas + 1);
-    setObjValues({
-      codigo: '',
-      tipo: '',
-      responsableUso: '',
-      area: '',
-      pesoMasa: '',
-      pesoReal: '',
-      desvio: '',
-      accionesCorrecion: '',
-    });
+    const id = uuidv4();
+    setReplicaValues([...replicaValues, { id: id }]);
     setTrigger(false);
   };
 
+  const handleClickRemove = (index) => {
+    let copyReplicas = replicaValues.filter(replica => replica.id !== index)
+    setReplicaValues(copyReplicas);
+    setReplicas(replicas - 1);
+  }
+
   const handleSubmit = () => {
-    console.log(values);
-    verificacionBalanza(values)
-      .then((resp) => {
-        setTextAlert('¡Formulario cargado exitosamente!');
-        setTypeAlert('success');
-        // limpiar fomr
-        window.location.href = window.location.href;
-      })
-      .catch((resp) => {
-        setTextAlert('Ocurrió un error');
-        setTypeAlert('error');
-      })
-      .finally(() => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        setShowlert(true);
-        setTimeout(() => {
-          setShowlert(false);
-        }, 7000);
-      });
+    let objFinal = {...values, inputs: replicaValues}
+    console.log("objFinal", objFinal);
+    // verificacionBalanza(values)
+    //   .then((resp) => {
+    //     setTextAlert('¡Formulario cargado exitosamente!');
+    //     setTypeAlert('success');
+    //     // limpiar fomr
+    //     window.location.href = window.location.href;
+    //   })
+    //   .catch((resp) => {
+    //     setTextAlert('Ocurrió un error');
+    //     setTypeAlert('error');
+    //   })
+    //   .finally(() => {
+    //     window.scrollTo({
+    //       top: 0,
+    //       behavior: 'smooth',
+    //     });
+    //     setShowlert(true);
+    //     setTimeout(() => {
+    //       setShowlert(false);
+    //     }, 7000);
+    //   });
   };
   const location = useLocation();
   const infoPrecargada = location.state?.objeto;
@@ -222,7 +224,9 @@ function VerificacionBalanza() {
               <InputLabel>Instrumento</InputLabel>
               <Select
                 onChange={(e) => {
-                  setValues({ ...values, balanza: e.target.value });
+                  let copyValues = { ...values };
+                  copyValues = { ...copyValues, balanza: e.target.value };
+                  setValues(copyValues);
                 }}
                 value={values.balanza}
                 defaultValue={'Báscula'}
@@ -249,23 +253,20 @@ function VerificacionBalanza() {
               {Array(replicas)
                 .fill(0)
                 .map((_, index) => (
-                  <div className='tableRow' key={index}>
+                  <div className='tableRow' key={replicaValues[index].id}>
                     <p className='index'>{index + 1} </p>
 
-                    {inputs.map((input) => (
-                      <div key={input.id}>
+                    {inputs.map((input, index2) => (
+                      <div key={replicaValues[index].id + index2}>
                         {input.label === 'Tipo (BP/BR)' ? (
                           <FormControl variant='outlined'>
                             <InputLabel>Tipo (BP/BR)</InputLabel>
                             <Select
+                              value={replicaValues[index]?.["Tipo (BP/BR)"]}
                               onChange={(e) => {
-                                const selectedValue = e.target.value;
-                                inputsValuesConstructor(
-                                  `input-${input.id}-${index}`,
-                                  input.label,
-                                  index,
-                                  selectedValue
-                                );
+                                let replicaCopy = [...replicaValues];
+                                replicaCopy[index]["Tipo (BP/BR)"] = e.target.value;
+                                setReplicaValues(replicaCopy);
                               }}
                               className='input'
                               id={`input-${input.id}-${index}`}
@@ -275,7 +276,6 @@ function VerificacionBalanza() {
                               InputLabelProps={{
                                 shrink: true,
                               }}
-                              value={objValues[index]?.tipo}
                             >
                               <MenuItem value='BP'>BP</MenuItem>
                               <MenuItem value='BR'>BR</MenuItem>
@@ -283,13 +283,6 @@ function VerificacionBalanza() {
                           </FormControl>
                         ) : (
                           <TextField
-                            onKeyUp={(e) => {
-                              inputsValuesConstructor(
-                                `input-${input.id}-${index}`,
-                                input.label,
-                                index
-                              );
-                            }}
                             className='input'
                             id={`input-${input.id}-${index}`}
                             name={`input-${input.id}-${index}`}
@@ -300,22 +293,15 @@ function VerificacionBalanza() {
                               shrink: true,
                             }}
                             value={
-                              input.label === 'Código'
-                                ? values.inputs[index]?.codigo
-                                : input.label === 'Responsable del uso'
-                                ? values.inputs[index]?.responsableUso
-                                : input.label === 'Área'
-                                ? values.inputs[index]?.area
-                                : input.label === 'Peso Masa ref/Pto balanza'
-                                ? values.inputs[index]?.pesoMasa
-                                : input.label === 'Peso real'
-                                ? values.inputs[index]?.pesoReal
-                                : input.label === 'Desvío'
-                                ? values.inputs[index]?.desvio
-                                : input.label === 'Acciones de corrección'
-                                ? values.inputs[index]?.accionesCorrecion
-                                : ''
+                              replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
                             }
+                            onChange={(e) => {
+                              let replicaCopy = [...replicaValues];
+                              replicaCopy[index][
+                                input.label.toLowerCase().replace(/\s/g, '')
+                              ] = e.target.value;
+                              setReplicaValues(replicaCopy);
+                            }}
                           />
                         )}
                       </div>
@@ -324,7 +310,16 @@ function VerificacionBalanza() {
                       <div></div>
                     ) : (
                       <div className='icon'>
-                        <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                        {index === 0 || index >= replicas ? (
+                          <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
+                        ) : (
+                          <IndeterminateCheckboxIcon
+                            style={{ color: 'grey' }}
+                            onClick={() => {
+                              handleClickRemove(replicaValues[index].id);
+                            }}
+                          />
+                        )}
                       </div>
                     )}
                   </div>
