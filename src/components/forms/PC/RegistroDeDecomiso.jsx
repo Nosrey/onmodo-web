@@ -10,12 +10,14 @@ import { useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 function RegistroDeDecomiso() {
+  const location = useLocation();
+  const infoPrecargada = location.state?.objeto;
+  const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
+  
   //** ALERTA */
   const [textAlert, setTextAlert] = useState('');
   const [typeAlert, setTypeAlert] = useState('');
   const [showAlert, setShowlert] = useState(false);
-  const location = useLocation();
-  const infoPrecargada = location.state?.objeto;
 
   const prueba = useSelector((state) => state.registroDecomisosR.inputsValues);
   const [fecha, setFecha] = useState('');
@@ -211,7 +213,7 @@ function RegistroDeDecomiso() {
                             }}
                             id={`input-${input.id}-${index}`}
                             name={`input-${input.id}-${index}`}
-                            disabled={!!location.state?.objeto}
+                            disabled={currentStatus === 'view'}
                             InputLabelProps={{
                               shrink: true,
                             }}
@@ -232,7 +234,7 @@ function RegistroDeDecomiso() {
                               setReplicaValues(replicaCopy);
                             }}
                             variant='outlined'
-                            disabled={!!location.state?.objeto}
+                            disabled={currentStatus === 'view'}
                             className='input'
                           />
                         }
@@ -256,16 +258,17 @@ function RegistroDeDecomiso() {
                 ))}
             </div>
           </div>
-          <div className='btn'>
-            {!trigger && <span>*Completar todos los campos para poder Guardar</span>}
-            <Button
-              disabled={!!location.state?.objeto || !trigger}
-              onClick={handleSubmit}
-              variant='contained'
-            >
-              Guardar
-            </Button>
-          </div>
+          {
+            (currentStatus === 'edit' || infoPrecargada === undefined) &&
+            <div className='btn'>
+                <Button
+                onClick={handleSubmit}
+                variant='contained'
+                >
+                Guardar
+                </Button>
+            </div>
+            }
         </div>
       </div>
       {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}

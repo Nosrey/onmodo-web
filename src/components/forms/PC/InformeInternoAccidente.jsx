@@ -8,6 +8,9 @@ import { useLocation } from 'react-router';
 import { useDropzone } from 'react-dropzone';
 
 function InformeInternoAccidente() {
+    const location = useLocation();
+    const infoPrecargada = location.state?.objeto;
+    const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
@@ -216,9 +219,8 @@ function InformeInternoAccidente() {
         // }
         // )
     };
-    const location = useLocation();
+   
     useEffect(() => {
-        const infoPrecargada = location.state?.objeto;
         if (infoPrecargada) { // muestro un form del historial
             console.log("infoPrecargada", infoPrecargada)
             setValues({
@@ -317,16 +319,16 @@ function InformeInternoAccidente() {
                                 value={values.fecha}
                                 name="fecha"
                             />
-                            <TextField disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} value={values.tipo} id="outlined-basic" label="Tipo de accidente" variant="outlined" />
+                            <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} value={values.tipo} id="outlined-basic" label="Tipo de accidente" variant="outlined" />
 
                         </div>
 
                         <div className={styles.personal}>
-                            <FormControlLabel checked={values.checkboxes[0]?.check} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CDR', e.target.checked) }} />} label="CDR" />
-                            <FormControlLabel checked={values.checkboxes[1]?.check} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CMS', e.target.checked) }} />} label="CMS" />
-                            <FormControlLabel checked={values.checkboxes[2]?.check} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Laboral', e.target.checked) }} />} label="Laboral" />
-                            <FormControlLabel checked={values.checkboxes[3]?.check} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('In Itinere', e.target.checked) }} />} label="In Itinere" />
-                            <FormControlLabel checked={values.checkboxes[4]?.check} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Se adjunta denuncia policial', e.target.checked); setFiles(e.target.checked) }} />} label="Se adjunta denuncia policial" />
+                            <FormControlLabel checked={values.checkboxes[0]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CDR', e.target.checked) }} />} label="CDR" />
+                            <FormControlLabel checked={values.checkboxes[1]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CMS', e.target.checked) }} />} label="CMS" />
+                            <FormControlLabel checked={values.checkboxes[2]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Laboral', e.target.checked) }} />} label="Laboral" />
+                            <FormControlLabel checked={values.checkboxes[3]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('In Itinere', e.target.checked) }} />} label="In Itinere" />
+                            <FormControlLabel checked={values.checkboxes[4]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Se adjunta denuncia policial', e.target.checked); setFiles(e.target.checked) }} />} label="Se adjunta denuncia policial" />
                             {files && (
                                 <div {...getRootProps1()} className={styles.fileInput}>
                                     <input {...getInputProps1()} />
@@ -345,8 +347,8 @@ function InformeInternoAccidente() {
                             </div>
                             <div className={styles.personal}>
 
-                                <TextField disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, nombreApellido: e.target.value }) }} value={values.nombreApellido} id="outlined-basic" label="Nombre y Apellido" variant="outlined" />
-                                <TextField disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, cuil: e.target.value }) }} value={values.cuil} id="outlined-basic" label="Nº de CUIL" variant="outlined" />
+                                <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, nombreApellido: e.target.value }) }} value={values.nombreApellido} id="outlined-basic" label="Nombre y Apellido" variant="outlined" />
+                                <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, cuil: e.target.value }) }} value={values.cuil} id="outlined-basic" label="Nº de CUIL" variant="outlined" />
 
 
                                 <TextField
@@ -359,13 +361,13 @@ function InformeInternoAccidente() {
                                     onChange={(e) => { setValues({ ...values, fechaIngreso: e.target.value }) }}
                                     id="fecha-ingreso"
                                     name="fecha-ingreso"
-                                    disabled={!!location.state?.objeto}
+                                    disabled={currentStatus === 'view'}
                                     value={values.fechaIngreso}
                                 />
                             </div>
                             <div className={styles.personal}>
 
-                                <TextField disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, puesto: e.target.value }) }} value={values.puesto} id="outlined-basic" label="Puesto de trabajo" variant="outlined" />
+                                <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, puesto: e.target.value }) }} value={values.puesto} id="outlined-basic" label="Puesto de trabajo" variant="outlined" />
                                 <TextField
                                     label="Hora"
                                     variant="outlined"
@@ -379,7 +381,7 @@ function InformeInternoAccidente() {
                                     value={values.hora}
                                 />
 
-                                <TextField disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, lugar: e.target.value }) }} value={values.lugar} id="outlined-basic" label="Lugar del accidente" variant="outlined" />
+                                <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, lugar: e.target.value }) }} value={values.lugar} id="outlined-basic" label="Lugar del accidente" variant="outlined" />
 
 
 
@@ -394,12 +396,12 @@ function InformeInternoAccidente() {
                                     multiline
                                     rows={4}
                                     value={values.descripcion}
-                                    disabled={!!location.state?.objeto}
+                                    disabled={currentStatus === 'view'}
                                 />
                             </div>
 
                             <div className={styles.listContainer}>
-                                <FormControl disabled={!!location.state?.objeto} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-1">¿Era su trabajo habitual?</InputLabel>
                                     <Select
                                         labelId="select-label-1"
@@ -412,7 +414,7 @@ function InformeInternoAccidente() {
                                     </Select>
                                 </FormControl>
 
-                                <FormControl disabled={!!location.state?.objeto} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-2">¿Conocía la tarea asignada?</InputLabel>
                                     <Select
                                         labelId="select-label-2"
@@ -426,7 +428,7 @@ function InformeInternoAccidente() {
                                 </FormControl>
 
 
-                                <FormControl disabled={!!location.state?.objeto} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-machine">
                                         ¿Una máquina le causó la lesión?
                                     </InputLabel>
@@ -438,7 +440,7 @@ function InformeInternoAccidente() {
                                             handleCheckboxChange(e.target.value === "SI" ? true : false, 1);
                                             checkboxValuesConstructor("¿Una máquina le causó la lesión?", e.target.value === 'SI' ? true : false);
                                         }}
-                                        disabled={!!location.state?.objeto}
+                                        disabled={currentStatus === 'view'}
                                     >
                                         <MenuItem value={"SI"}>SI</MenuItem>
                                         <MenuItem value={"NO"}>NO</MenuItem>
@@ -448,7 +450,7 @@ function InformeInternoAccidente() {
                                 {showTextField1 && (
                                     <div className={styles.personal}>
                                         <TextField
-                                            disabled={!!location.state?.objeto}
+                                            disabled={currentStatus === 'view'}
                                             onChange={(e) => {
                                                 checkboxValuesConstructor("Cual Maquina", e.target.value);
                                             }}
@@ -465,7 +467,7 @@ function InformeInternoAccidente() {
 
 
 
-                                <FormControl disabled={!!location.state?.objeto} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-condition">
                                         ¿Hubo alguna acción o condición insegura que fuera la causante del accidente?
                                     </InputLabel>
@@ -477,7 +479,7 @@ function InformeInternoAccidente() {
                                             handleCheckboxChange(e.target.value === "SI" ? true : false, 2);
                                             checkboxValuesConstructor("¿Hubo alguna acción o condición insegura que fuera la causante del accidente?", e.target.value === 'SI' ? true : false);
                                         }}
-                                        disabled={!!location.state?.objeto}
+                                        disabled={currentStatus === 'view'}
                                     >
                                         <MenuItem value={"SI"}>SI</MenuItem>
                                         <MenuItem value={"NO"}>NO</MenuItem>
@@ -487,7 +489,7 @@ function InformeInternoAccidente() {
                                 {showTextField2 && (
                                     <div className={styles.personal}>
                                         <TextField
-                                            disabled={!!location.state?.objeto}
+                                            disabled={currentStatus === 'view'}
                                             onChange={(e) => {
                                                 checkboxValuesConstructor("Cual Accion", e.target.value);
                                             }}
@@ -504,7 +506,7 @@ function InformeInternoAccidente() {
 
 
 
-                                <FormControl disabled={!!location.state?.objeto} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-epp">
                                         ¿Estaba usando su E.P.P.?
                                     </InputLabel>
@@ -517,7 +519,7 @@ function InformeInternoAccidente() {
                                             handleCheckboxChange(e.target.value === "SI" ? true : false, 3);
                                             checkboxValuesConstructor("¿Estaba usando su E.P.P.?", e.target.value === "SI" ? true : false);
                                         }}
-                                        disabled={!!location.state?.objeto}
+                                        disabled={currentStatus === 'view'}
                                     >
                                         <MenuItem value={"SI"}>SI</MenuItem>
                                         <MenuItem value={"NO"}>NO</MenuItem>
@@ -527,7 +529,7 @@ function InformeInternoAccidente() {
                                 {!showTextField3 && (
                                     <div className={styles.personal}>
                                         <TextField
-                                            disabled={!!location.state?.objeto}
+                                            disabled={currentStatus === 'view'}
                                             onChange={(e) => {
                                                 let valuesCopy = { ...values };
                                                 valuesCopy.razon = e.target.value;
@@ -557,7 +559,7 @@ function InformeInternoAccidente() {
                                     multiline
                                     rows={2}
                                     value={values.lugarLesion}
-                                    disabled={!!location.state?.objeto}
+                                    disabled={currentStatus === 'view'}
                                 />
                             </div>
                             <div className={styles.personalText}>
@@ -570,7 +572,7 @@ function InformeInternoAccidente() {
                                     multiline
                                     rows={4}
                                     value={values.medidas}
-                                    disabled={!!location.state?.objeto}
+                                    disabled={currentStatus === 'view'}
                                 />
                             </div>
                         </div>
@@ -582,7 +584,7 @@ function InformeInternoAccidente() {
                             <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por las partes involucradas. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
                             <div className={styles.firma}>
                                 <div   {...getRootProps2()} className={styles.file} >
-                                    <input disabled={!!location.state?.objeto} {...getInputProps2()} />
+                                    <input disabled={currentStatus === 'view'} {...getInputProps2()} />
                                     <h6 >Arrastra y suelta la firma aqui, o haz clic para seleccionarla</h6>
                                     {values.firma && <h6>Archivo seleccionado: {values.firma.name}</h6>}
                                 </div>
@@ -590,10 +592,17 @@ function InformeInternoAccidente() {
 
                         </div>
 
-                        <div className="btn">
-                            <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
-
+                        {
+                        (currentStatus === 'edit' || infoPrecargada === undefined) &&
+                        <div className='btn'>
+                            <Button
+                            onClick={handleSubmit}
+                            variant='contained'
+                            >
+                            Guardar
+                            </Button>
                         </div>
+                        }
 
                     </div>
                 </div>

@@ -8,6 +8,9 @@ import { reporteRechazo } from "../../../services/FormsRequest";
 import { useLocation } from "react-router-dom";
 
 function ReporteDeRechazoDevolucionMaterias() {
+  const location = useLocation();
+  const infoPrecargada = location.state?.objeto;
+  const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
   //** ALERTA */
   const [textAlert, setTextAlert] = useState("");
   const [typeAlert, setTypeAlert] = useState("");
@@ -256,8 +259,6 @@ function ReporteDeRechazoDevolucionMaterias() {
     // )
   };
 
-  const location = useLocation();
-  const infoPrecargada = location.state?.objeto;
   useEffect(() => {
     console.log(infoPrecargada)
     if (infoPrecargada) { // muestro un form del historial
@@ -321,7 +322,7 @@ function ReporteDeRechazoDevolucionMaterias() {
                 id="fecha"
                 name="fecha"
                 value={values?.dia || ''}
-                disabled={!!location.state?.objeto}
+                disabled={currentStatus === 'view'}
                 onChange={(e) => { setValues({ ...values, dia: e.target.value }) }}
 
               />
@@ -334,7 +335,7 @@ function ReporteDeRechazoDevolucionMaterias() {
                 label="PROVEEDOR"
                 variant="outlined"
                 value={values?.proveedor || ''}
-                disabled={!!location.state?.objeto}
+                disabled={currentStatus === 'view'}
               />
               <TextField
                 onChange={(e) => {
@@ -344,7 +345,7 @@ function ReporteDeRechazoDevolucionMaterias() {
                 label="PRODUCTO"
                 variant="outlined"
                 value={values?.producto || ''}
-                disabled={!!location.state?.objeto}
+                disabled={currentStatus === 'view'}
               />
               <TextField
                 onChange={(e) => {
@@ -354,7 +355,7 @@ function ReporteDeRechazoDevolucionMaterias() {
                 label="NRO. LOTE"
                 variant="outlined"
                 value={values?.nroLote || ''}
-                disabled={!!location.state?.objeto}
+                disabled={currentStatus === 'view'}
               />
             </div>
             <br />
@@ -419,7 +420,7 @@ function ReporteDeRechazoDevolucionMaterias() {
                                 }
                                 setValues(newValues);
                               }}
-                              disabled={!!location.state?.objeto}
+                              disabled={currentStatus === 'view'}
                               fullWidth
                               multiline
                             />
@@ -497,11 +498,17 @@ function ReporteDeRechazoDevolucionMaterias() {
           <br />
           <br />
           <br />
-          <div className="btn">
-            <Button
-              onClick={handleSubmit}
-              variant="contained">Guardar</Button>
-          </div>
+          {
+            (currentStatus === 'edit' || infoPrecargada === undefined) &&
+            <div className='btn'>
+                <Button
+                onClick={handleSubmit}
+                variant='contained'
+                >
+                Guardar
+                </Button>
+            </div>
+            }
         </div>
         <div></div>
       </div>

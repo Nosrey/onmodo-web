@@ -32,8 +32,8 @@ function FormCargado() {
   const [isLoading, setIsLoading] = useState(true);
 
 
-  const goToForm = (form) => {
-    navigate(url, { state: { objeto: form } });
+  const goToForm = (form, status) => {
+    navigate(url, { state: { objeto: form , status} });
   };
 
   useEffect(() => {
@@ -109,7 +109,7 @@ function FormCargado() {
 
     if (data.hasOwnProperty(form)) {
       const info = data[form];
-      setFormularios(info);
+      setFormularios(info.reverse());
       setIsLoading(false)
     } else {
       console.log("error");
@@ -132,7 +132,7 @@ function FormCargado() {
       setOpenModal(true);
     }
     if(form.status === "approved"){
-      goToForm(form)
+      goToForm(form, 'edit')
       // abrir modal con mensaje y enviar a editar
     }
     if(form.status === "denied"){
@@ -156,6 +156,15 @@ function FormCargado() {
     }
   }
 
+  const handleEdit = (formulario) => {
+    const formsDeVariasEtapas = ['controlalergenos','entregabidones','flashincidente', 'informeintaccidente',
+    'registrocapacitacion', 'registrosimulacro']
+    if (formsDeVariasEtapas.includes(form)) {
+      goToForm(form, 'edit')
+    } else {
+      openModalEdit(formulario);
+    }
+  }
 
   return (
     <>
@@ -203,7 +212,7 @@ function FormCargado() {
               </tr>
             </thead>
             <tbody>
-            {formularios.reverse().map((formulario, index) => {
+            {formularios.map((formulario, index) => {
               const createdAtUTC = new Date(formulario.createdAt);
               const argentinaTime = new Date(createdAtUTC.getTime() );
 
@@ -231,10 +240,10 @@ function FormCargado() {
                     )}
                   </td>
                   <td className={styles.contEdicion}>
-                    <span onClick={() => goToForm(formulario)} className={styles.actionIcon}>
+                    <span onClick={() => goToForm(formulario, 'view')} className={styles.actionIcon}>
                       <i className='ri-eye-line' ></i>
                     </span>
-                    <span onClick={() => openModalEdit(formulario)} className={styles.actionIcon}>
+                    <span onClick={() => handleEdit(formulario)} className={styles.actionIcon}>
                       <i className='ri-pencil-line'></i>
                     </span>
                     <span onClick={() => openDeleteModal(formulario._id)} className={styles.actionIcon}>

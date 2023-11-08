@@ -10,6 +10,10 @@ import styles from './EntregaBidonesAceiteUsado.module.css';
 import { v4 as uuidv4 } from 'uuid';
 
 function EntregaBidonesAceiteUsado() {
+  const location = useLocation();
+  const infoPrecargada = location.state?.objeto;
+  const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
+  
   const [replicas, setReplicas] = useState(1);
   const [replicaValues, setReplicaValues] = useState([{id: 0}]);
   const [trigger, setTrigger] = useState(false);
@@ -120,8 +124,6 @@ function EntregaBidonesAceiteUsado() {
     //   });
   };
 
-  const location = useLocation();
-  const infoPrecargada = location.state?.objeto;
   useEffect(() => {
     if (infoPrecargada) {
       setReplicas(infoPrecargada.inputs.length);
@@ -165,7 +167,7 @@ function EntregaBidonesAceiteUsado() {
                             id={`input-${input.id}-${index}`}
                             name={`input-${input.id}-${index}`}
                             value={replicaValues[index].fecha}
-                            disabled={!!location.state?.objeto}
+                            disabled={currentStatus === 'view'}
                           />
                         ) : input.label === 'Transporte' || input.label === 'Disposición final' ? (
                           <Dropzone
@@ -189,7 +191,7 @@ function EntregaBidonesAceiteUsado() {
                               setReplicaValues(replicaCopy);
                             }}
                             variant='outlined'
-                            disabled={!!location.state?.objeto}
+                            disabled={currentStatus === 'view'}
                             className='input'
                           />
                         )}
@@ -211,11 +213,17 @@ function EntregaBidonesAceiteUsado() {
                 )}
             </div>
           </div>
-          <div className='btn'>
-            <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant='contained'>
-              Guardar
-            </Button>
-          </div>
+          {
+            (currentStatus === 'edit' || infoPrecargada === undefined) &&
+            <div className='btn'>
+                <Button
+                onClick={handleSubmit}
+                variant='contained'
+                >
+                Guardar
+                </Button>
+            </div>
+            }
         </div>
       </div>
       {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}

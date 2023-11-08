@@ -12,6 +12,10 @@ import { v4 as uuidv4 } from 'uuid';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 
 function VerificacionBalanza() {
+  const location = useLocation();
+  const infoPrecargada = location.state?.objeto;
+  const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
+
   //** ALERTA */
   const [textAlert, setTextAlert] = useState('');
   const [typeAlert, setTypeAlert] = useState('');
@@ -157,8 +161,7 @@ function VerificacionBalanza() {
         }, 7000);
       });
   };
-  const location = useLocation();
-  const infoPrecargada = location.state?.objeto;
+  
   useEffect(() => {
     if (infoPrecargada) {
       // muestro un form del historial
@@ -213,13 +216,13 @@ function VerificacionBalanza() {
               id='fecha'
               name='fecha'
               value={values.fecha || ''}
-              disabled={!!location.state?.objeto}
+              disabled={currentStatus === 'view'}
               required
               InputLabelProps={{
                 shrink: true,
               }}
             />
-            <FormControl variant='outlined' disabled={!!location.state?.objeto}>
+            <FormControl variant='outlined' disabled={currentStatus === 'view'}>
               <InputLabel>Instrumento</InputLabel>
               <Select
                 onChange={(e) => {
@@ -271,7 +274,7 @@ function VerificacionBalanza() {
                               id={`input-${input.id}-${index}`}
                               label={`${input.label}`}
                               variant='outlined'
-                              disabled={!!location.state?.objeto}
+                              disabled={currentStatus === 'view'}
                               InputLabelProps={{
                                 shrink: true,
                               }}
@@ -287,7 +290,7 @@ function VerificacionBalanza() {
                             name={`input-${input.id}-${index}`}
                             label={`${input.label}`}
                             variant='outlined'
-                            disabled={!!location.state?.objeto}
+                            disabled={currentStatus === 'view'}
                             InputLabelProps={{
                               shrink: true,
                             }}
@@ -331,11 +334,17 @@ function VerificacionBalanza() {
           <br />
           <br />
 
-          <div className='btn'>
-            <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant='contained'>
-              Guardar
-            </Button>
-          </div>
+          {
+            (currentStatus === 'edit' || infoPrecargada === undefined) &&
+            <div className='btn'>
+                <Button
+                onClick={handleSubmit}
+                variant='contained'
+                >
+                Guardar
+                </Button>
+            </div>
+            }
         </div>
       </div>
       {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}

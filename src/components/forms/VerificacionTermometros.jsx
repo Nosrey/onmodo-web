@@ -10,6 +10,9 @@ import { useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 function VerificacionTermometros() {
+  const location = useLocation();
+  const infoPrecargada = location.state?.objeto;
+  const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
   //** ALERTA */
   const [textAlert, setTextAlert] = useState('');
   const [typeAlert, setTypeAlert] = useState('');
@@ -172,9 +175,7 @@ function VerificacionTermometros() {
     //   });
   };
 
-  const location = useLocation();
   useEffect(() => {
-    const infoPrecargada = location.state?.objeto;
     if (infoPrecargada) {
       // muestro un form del historial
       console.log('infoPrecargada', infoPrecargada);
@@ -416,11 +417,17 @@ function VerificacionTermometros() {
               <b>*</b> PIN(Termómetro de pinche) - IR (Termómetro infrarrojo)
             </span>
 
+            {
+            (currentStatus === 'edit' || infoPrecargada === undefined) &&
             <div className='btn'>
-              <Button onClick={handleSubmit} variant='contained'>
+                <Button
+                onClick={handleSubmit}
+                variant='contained'
+                >
                 Guardar
-              </Button>
+                </Button>
             </div>
+            }
           </div>
         </div>
       )}

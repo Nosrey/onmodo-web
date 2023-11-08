@@ -11,6 +11,8 @@ import { useLocation } from 'react-router-dom';
 
 function ConstanciaEntrega() {
     const location = useLocation();
+  const infoPrecargada = location.state?.objeto;
+  const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
@@ -226,7 +228,7 @@ function ConstanciaEntrega() {
                                                         value={replicaValues[index].fecha}
                                                         id={`input-${input.id}-${index}`}
                                                         name={`input-${input.id}-${index}`}
-                                                        disabled={!!location.state?.objeto}
+                                                        disabled={currentStatus === 'view'}
                                                     />
                                                 ) : (
                                                     <TextField
@@ -244,7 +246,7 @@ function ConstanciaEntrega() {
                                                             setReplicaValues(replicaCopy);
                                                         }}
                                                         variant='outlined'
-                                                        disabled={!!location.state?.objeto}
+                                                        disabled={currentStatus === 'view'}
                                                         className='input'
                                                     />
                                                 )}
@@ -286,7 +288,7 @@ function ConstanciaEntrega() {
                                                     setReplicaValues(replicaCopy);
                                                 }}
                                                 variant='outlined'
-                                                disabled={!!location.state?.objeto}
+                                                disabled={currentStatus === 'view'}
                                                 className='input'
                                             />
                                         </div>
@@ -305,7 +307,7 @@ function ConstanciaEntrega() {
                                                     setReplicaValues(replicaCopy);
                                                 }}
                                                 variant='outlined'
-                                                disabled={!!location.state?.objeto}
+                                                disabled={currentStatus === 'view'}
                                                 className='input'
                                             />
                                         </div>
@@ -324,7 +326,7 @@ function ConstanciaEntrega() {
                                                     setReplicaValues(replicaCopy);
                                                 }}
                                                 variant='outlined'
-                                                disabled={!!location.state?.objeto}
+                                                disabled={currentStatus === 'view'}
                                                 className='input'
                                             />
                                         </div>
@@ -343,7 +345,7 @@ function ConstanciaEntrega() {
                                                     setReplicaValues(replicaCopy);
                                                 }}
                                                 variant='outlined'
-                                                disabled={!!location.state?.objeto}
+                                                disabled={currentStatus === 'view'}
                                                 className='input'
                                             />
                                         </div>
@@ -362,7 +364,7 @@ function ConstanciaEntrega() {
                                                     setReplicaValues(replicaCopy);
                                                 }}
                                                 variant='outlined'
-                                                disabled={!!location.state?.objeto}
+                                                disabled={currentStatus === 'view'}
                                                 className='input'
                                             />
                                         </div>
@@ -381,7 +383,7 @@ function ConstanciaEntrega() {
                                                 value={replicaValues[index]?.fecha}
                                                 id={`input-${input.id}-${index}`}
                                                 name={`input-${input.id}-${index}`}
-                                                disabled={!!location.state?.objeto}
+                                                disabled={currentStatus === 'view'}
                                             />
                                         </div>
 
@@ -403,14 +405,18 @@ function ConstanciaEntrega() {
                     <div className={styles.personal}>
                         <TextField onChange={(e) => { setValues({ ...values, infoAdicional: e.target.value }) }} fullWidth id="outlined-basic" label="Informacion adicional" variant="outlined" />
                     </div>
-                    <div className="btn">
-                        {!trigger && <span>*Completar todos los campos para poder  Guardar</span>}
 
-                        <Button onClick={handleSubmit}
-                            disabled={!trigger}
-                            variant="contained">Guardar</Button>
-
-                    </div>
+                    {
+                        (currentStatus === 'edit' || infoPrecargada === undefined) &&
+                        <div className='btn'>
+                            <Button
+                            onClick={handleSubmit}
+                            variant='contained'
+                            >
+                            Guardar
+                            </Button>
+                        </div>
+                        }
 
                 </div>
             </div>

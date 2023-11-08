@@ -9,6 +9,9 @@ import { useLocation } from 'react-router';
 import { useDropzone } from 'react-dropzone';
 
 function RegistroSimulacro() {
+    const location = useLocation();
+    const infoPrecargada = location.state?.objeto;
+    const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
@@ -89,8 +92,7 @@ function RegistroSimulacro() {
         }
         )
     };
-    const location = useLocation();
-    const infoPrecargada = location.state?.objeto;
+    
     useEffect(() => {
         if (infoPrecargada) { // muestro un form del historial
             setValues({
@@ -143,15 +145,15 @@ function RegistroSimulacro() {
                         </div>
 
                         <div className={styles.personalText}>
-                            <TextField disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, razonSocial: e.target.value }) }} value={values.razonSocial} fullWidth id="outlined-basic" label="Razón Social/Contrato" variant="outlined" />
+                            <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, razonSocial: e.target.value }) }} value={values.razonSocial} fullWidth id="outlined-basic" label="Razón Social/Contrato" variant="outlined" />
                         </div>
 
                         <div className={styles.personal}>
-                            <TextField disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, ubicacion: e.target.value }) }} value={values.ubicacion} id="outlined-basic" label="Ubicación" variant="outlined" />
-                            <TextField disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, localidad: e.target.value }) }} value={values.localidad} id="outlined-basic" label="Localidad" variant="outlined" />
+                            <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, ubicacion: e.target.value }) }} value={values.ubicacion} id="outlined-basic" label="Ubicación" variant="outlined" />
+                            <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, localidad: e.target.value }) }} value={values.localidad} id="outlined-basic" label="Localidad" variant="outlined" />
 
                             <TextField
-                                disabled={!!location.state?.objeto}
+                                disabled={currentStatus === 'view'}
                                 label="Fecha"
                                 variant="outlined"
                                 type="date"
@@ -176,7 +178,7 @@ function RegistroSimulacro() {
                                             {inputs.map((input) => (
                                                 <div key={input.id}>
                                                     <TextField
-                                                        disabled={!!location.state?.objeto}
+                                                        disabled={currentStatus === 'view'}
                                                         onChange={(e) => handleChangePerson(index, input.prop, e.target.value)}
                                                         id={`input-${input.id}-${index}`}
                                                         name={`input-${input.id}-${index}`}
@@ -233,9 +235,17 @@ function RegistroSimulacro() {
                             </div>
                         </div>
 
-                        <div className="btn">
-                            <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
+                        {
+                        (currentStatus === 'edit' || infoPrecargada === undefined) &&
+                        <div className='btn'>
+                            <Button
+                            onClick={handleSubmit}
+                            variant='contained'
+                            >
+                            Guardar
+                            </Button>
                         </div>
+                        }
                     </div>
                 </div>
             }
