@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import './index.css';
 import Login from './components/login/Login';
@@ -51,6 +51,35 @@ function App() {
   const location = useLocation();
   const currentLocation = location?.pathname;
   const isLoggedIn = !!localStorage.getItem('rol')
+  const [keySearchForms, setKeySearchForms] = useState();
+  const [keySearchHistorial, setKeySearchHistorial] = useState();
+
+  const handleSearchData = (value) => {
+    switch (currentLocation) {
+      case '/formularios':
+        setKeySearchForms(value)
+        break;
+      case '/formularios-cargados':
+        setKeySearchHistorial(value)
+        break;
+      // case '/formularios':
+        // setKeySearchForms(value)
+        // break;
+      // case '/formularios':
+        // setKeySearchForms(value)
+        // break;
+        
+      default:
+        break;
+    }
+
+  }
+
+  useEffect(() => {
+    setKeySearchForms('');
+    setKeySearchHistorial('') 
+  }, [currentLocation])
+
   return (
     <div className='App'>
       <>
@@ -62,7 +91,8 @@ function App() {
           currentLocation !== '/crear-contraseña' &&
           currentLocation !== '/registro' &&
           currentLocation !== '/restablecer-contrasena' ? (
-            <Header />
+            <Header  
+            search={(value)=> handleSearchData(value)} />
           ) : null}
           <Routes>
           <Route path="/" element={<Navigate to={isLoggedIn ? '/inicio' : '/inicio-de-sesion'} />} />
@@ -80,8 +110,8 @@ function App() {
 
             <Route path='/recordatorios' element={<RecordatoriosContainer />} />
 
-            <Route path='/formularios' element={<FormulariosContainer />} />
-            <Route path='/formularios-cargados' element={<FormulariosCargados />} />
+            <Route path='/formularios' element={<FormulariosContainer filterByKey={keySearchForms}/>} />
+            <Route path='/formularios-cargados' element={<FormulariosCargados filterByKey={keySearchHistorial} />} />
             <Route path='/formularios-cargados/:form' element={<FormCargado />} />
 
 

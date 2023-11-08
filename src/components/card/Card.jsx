@@ -12,33 +12,36 @@ function Card({ text , isCloseToExpire }) {
   async function getTitle() {
 
     if (title == "controlalergenos") {
-      setTitulo("Control Alergenos")
+      setTitulo("Control de comensales con dietas Especiales")
     } else if (title == "entregabidones") {
-      setTitulo("Entrega Bidones")
+      setTitulo("Entrega de bidones de aceite usado")
     }
     else if (title == "flashincidente") {
-      setTitulo("Flash Incidente")
+      setTitulo("Flash reporte de incidentes")
     }
     else if (title == "informeintaccidente") {
-      setTitulo("Informe Accidente")
+      setTitulo("Informe interno de accidente")
     }
     else if (title == "registrocapacitacion") {
-      setTitulo("Registro Capacitacion")
+      setTitulo("Registro de Capacitación")
     }
     else if (title == "registrodecomiso") {
-      setTitulo("Registro Decomiso")
+      setTitulo("Decomiso de materias primas")
     }
     else if (title == "registrosimulacro") {
-      setTitulo("Registro Simulacro")
+      setTitulo("Registro de Simulacro")
     }
     else if (title == "reporterechazo") {
-      setTitulo("Reporte Rechazo")
+      setTitulo("Rechazo - Devolución de mat primas")
     }
     else if (title == "verificacionbalanza") {
-      setTitulo("Verificacion Balanza")
+      setTitulo("Verificación Balanzas")
     }
     else if (title == "verificaciontermometros") {
-      setTitulo("Verificacion Termómetros")
+      setTitulo("Verificación Termómetros")
+    }
+    else if (title == "entregaropa") {
+      setTitulo("Entrega de ropa de trabajo y EPP")
     }
     else{
       // setTitulo("0")

@@ -10,6 +10,7 @@ import Alert from '../../shared/components/Alert/Alert';
 import 'moment-timezone';
 
 import { generatePDF } from '../../../services/PDF';
+import { Oval } from 'react-loader-spinner';
 
 
 function FormCargado() {
@@ -28,6 +29,7 @@ function FormCargado() {
   const [textAlert, setTextAlert] = useState("");
   const [typeAlert, setTypeAlert] = useState("");
   const [showAlert, setShowlert] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
 
   const goToForm = (form) => {
@@ -44,11 +46,11 @@ function FormCargado() {
   async function getTitle() {
 
     if (form == "controlalergenos") {
-      setTitulo("Control Alergenos")
+      setTitulo("Control de comensales con dietas Especiales")
       setUrl("/dietas-especiales")
 
     } else if (form == "entregabidones") {
-      setTitulo("Entrega de Bidones de aceite usado")
+      setTitulo("Entrega de bidones de aceite usado")
       setUrl("/bidones-de-aceite")
     }
     else if (form == "flashincidente") {
@@ -60,28 +62,31 @@ function FormCargado() {
       setUrl("/informe-accidente")
     }
     else if (form == "registrocapacitacion") {
-      setTitulo("Registro de capacitación")
+      setTitulo("Registro de Capacitación")
       setUrl("/registro-de-capacitacion")
     }
     else if (form == "registrodecomiso") {
-      setTitulo("Registro Decomiso")
+      setTitulo("Decomiso de materias primas")
       setUrl("/registro-decomisos-mp")
     }
     else if (form == "registrosimulacro") {
-      setTitulo("Registro de simulacro")
+      setTitulo("Registro de Simulacro")
       setUrl("/registro-simulacro")
     }
     else if (form == "reporterechazo") {
-      setTitulo("Reporte de rechazo de materia prima");
+      setTitulo("Rechazo - Devolución de mat primas");
       setUrl("/rechazo-mp")
     }
     else if (form == "verificacionbalanza") {
-      setTitulo("Verificacion Balanza")
+      setTitulo("Verificación Balanzas")
       setUrl("/verificacion-balanza")
     }
     else if (form == "verificaciontermometros") {
-      setTitulo("Verificacion Termometros");
+      setTitulo("Verificación Termómetros");
       setUrl("/verificacion-termometro")
+    }
+    else if (form == "entregaropa") {
+      setTitulo("Entrega de ropa de trabajo y EPP")
     }
     else {
       setTitulo("0")
@@ -104,7 +109,8 @@ function FormCargado() {
 
     if (data.hasOwnProperty(form)) {
       const info = data[form];
-      setFormularios(info)
+      setFormularios(info);
+      setIsLoading(false)
     } else {
       console.log("error");
     }
@@ -153,6 +159,26 @@ function FormCargado() {
 
   return (
     <>
+    {isLoading ? (
+      <Oval
+        height={30}
+        width={30}
+        color='#4fa94d'
+        wrapperStyle={{
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          paddingTop: '60px',
+          paddingBottom: '60px',
+          justifyContent: 'center'
+        }}
+        wrapperClass=''
+        visible={true}
+        ariaLabel='oval-loading'
+        secondaryColor='#4fa94d'
+        strokeWidth={5}
+        strokeWidthSecondary={2}
+      />
+    ) : (
       <div className={styles.container}>
         <div className={styles.wrapper}>
           <div className={styles.orderContainer}>
@@ -177,50 +203,50 @@ function FormCargado() {
               </tr>
             </thead>
             <tbody>
-            {formularios.map((formulario, index) => {
-  const createdAtUTC = new Date(formulario.createdAt);
-  const argentinaTime = new Date(createdAtUTC.getTime() );
+            {formularios.reverse().map((formulario, index) => {
+              const createdAtUTC = new Date(formulario.createdAt);
+              const argentinaTime = new Date(createdAtUTC.getTime() );
 
-  return (
-    <tr key={index} className={styles.fila}>
-      <td>{titulo}</td>
-      <td>{argentinaTime.getFullYear()}</td>
-      <td>{argentinaTime.getMonth() + 1}</td>
-      <td>{argentinaTime.getDate()}</td>
-      <td>{argentinaTime.getHours()}:{String(argentinaTime.getMinutes()).padStart(2, '0')}</td>
-      <td>{name}</td>
-      <td className={formulario.status === "" ? "" : (
-          formulario.status === "pending" ? styles.pendingText : (
-            formulario.status === "approved" ? styles.aprovedText : (
-              formulario.status === "denied" ? styles.deniedText : ""
-            )
-          )
-        )}>
-        {formulario.status === "" ? "-" : (
-          formulario.status === "pending" ? "Pendiente" : (
-            formulario.status === "approved" ? "Aprobado" : (
-              formulario.status === "denied" ? "Denegado" : ""
-            )
-          )
-        )}
-      </td>
-      <td className={styles.contEdicion}>
-        <span onClick={() => goToForm(formulario)} className={styles.actionIcon}>
-          <i className='ri-eye-line' ></i>
-        </span>
-        <span onClick={() => openModalEdit(formulario)} className={styles.actionIcon}>
-          <i className='ri-pencil-line'></i>
-        </span>
-        <span onClick={() => openDeleteModal(formulario._id)} className={styles.actionIcon}>
-          <i className='ri-delete-bin-line'></i>
-        </span>
-        <span onClick={() => generatePDF(formulario, form)} className={styles.actionIcon}>
-          <i className='ri-printer-line'></i>
-        </span>
-      </td>
-    </tr>
-  );
-})}
+              return (
+                <tr key={index} className={styles.fila}>
+                  <td className={styles.titulo}>{titulo}</td>
+                  <td>{argentinaTime.getFullYear()}</td>
+                  <td>{argentinaTime.getMonth() + 1}</td>
+                  <td>{argentinaTime.getDate()}</td>
+                  <td>{argentinaTime.getHours()}:{String(argentinaTime.getMinutes()).padStart(2, '0')}</td>
+                  <td style={{textTransform:'capitalize'}}>{name}</td>
+                  <td className={formulario.status === "" ? "" : (
+                      formulario.status === "pending" ? styles.pendingText : (
+                        formulario.status === "approved" ? styles.aprovedText : (
+                          formulario.status === "denied" ? styles.deniedText : ""
+                        )
+                      )
+                    )}>
+                    {formulario.status === "" ? "-" : (
+                      formulario.status === "pending" ? "Pendiente" : (
+                        formulario.status === "approved" ? "Aprobado" : (
+                          formulario.status === "denied" ? "Denegado" : ""
+                        )
+                      )
+                    )}
+                  </td>
+                  <td className={styles.contEdicion}>
+                    <span onClick={() => goToForm(formulario)} className={styles.actionIcon}>
+                      <i className='ri-eye-line' ></i>
+                    </span>
+                    <span onClick={() => openModalEdit(formulario)} className={styles.actionIcon}>
+                      <i className='ri-pencil-line'></i>
+                    </span>
+                    <span onClick={() => openDeleteModal(formulario._id)} className={styles.actionIcon}>
+                      <i className='ri-delete-bin-line'></i>
+                    </span>
+                    <span onClick={() => generatePDF(formulario, form)} className={styles.actionIcon}>
+                      <i className='ri-printer-line'></i>
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
             {formularios.length === 0 && <p className={styles.placeholder}>No se encontraron formularios cargados en su historial.</p>}
 
             </tbody>
@@ -228,7 +254,7 @@ function FormCargado() {
           <ModalEdicion openModal={openModal} setOpenModal={setOpenModal} idForm={formSelected} urlForm={form} showAlert={(type, msg) => showAlertNotif(type, msg)}/>
           <ModalBorrar modalDelete={modalDelete} setModalDelete={setModalDelete} idForm={formSelected} url={form} showAlert={(type, msg) => showAlertNotif(type, msg)} />
         </div>
-      </div>
+      </div>)}
       {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}
     </>
 

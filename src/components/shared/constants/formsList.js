@@ -1,10 +1,5 @@
 export const FORMS_LIST = [
     {
-      title: 'CARGA',
-      link: '/carga',
-      rol:'all'
-    },
-    {
       title: 'Entrega de ropa de trabajo y EPP',
       link: '/ropa-de-trabajo',
       rol:'superior'
@@ -45,7 +40,7 @@ export const FORMS_LIST = [
       rol:'superior'
     },
     {
-      title: 'Rechazo-devolución de mat primas',
+      title: 'Rechazo - Devolución de mat primas',
       link: '/rechazo-mp',
       rol:'all'
     },
