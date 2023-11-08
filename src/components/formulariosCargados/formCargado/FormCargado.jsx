@@ -11,6 +11,7 @@ import 'moment-timezone';
 
 import { generatePDF } from '../../../services/PDF';
 import { Oval } from 'react-loader-spinner';
+import { FORMS_DE_VARIAS_ETAPAS } from '../../../utils/constants/data';
 
 
 function FormCargado() {
@@ -157,8 +158,7 @@ function FormCargado() {
   }
 
   const handleEdit = (formulario) => {
-    const formsDeVariasEtapas = ['controlalergenos','entregabidones','flashincidente', 'informeintaccidente',
-    'registrocapacitacion', 'registrosimulacro']
+    const formsDeVariasEtapas = FORMS_DE_VARIAS_ETAPAS;
     if (formsDeVariasEtapas.includes(form)) {
       goToForm(form, 'edit')
     } else {

@@ -93,32 +93,31 @@ function FormulariosContainer({filterByKey}) {
         strokeWidthSecondary={2}
       />
     ) : (
+      <><h2 className={styles.tituloRecord}>Formularios</h2>
       <div className={styles.container}>
-        <div className={styles.wrapper}>
-          <div className={styles.orderContainer}>
-            <span className={styles.spanOrder}>Ordenar por:</span>
-            <select name='' id={styles.select} onChange={handleSortChange}>
-              {/* <option value='Más utilizado'>Más utilizado</option> */}
-              <option value='A-Z'>A - Z</option>
-              <option value='Z-A'>Z - A</option>
-            </select> 
-          </div>
-          {filterByKey && filterByKey.length !== 0 && !noResultMsg && <div><span>Resultados para:  "{filterByKey}"</span></div> }
+            <div className={styles.wrapper}>
+              <div className={styles.orderContainer}>
+                <span className={styles.spanOrder}>Ordenar por:</span>
+                <select name='' id={styles.select} onChange={handleSortChange}>
+                  {/* <option value='Más utilizado'>Más utilizado</option> */}
+                  <option value='A-Z'>A - Z</option>
+                  <option value='Z-A'>Z - A</option>
+                </select>
+              </div>
+              {filterByKey && filterByKey.length !== 0 && !noResultMsg && <div><span>Resultados para:  "{filterByKey}"</span></div>}
 
-          <div className={styles.cardContainer}>
-          {noResultMsg ? 
-              <span>No hay resultados para su búsqueda</span>
-              : 
-              <>
-                {sortedForms.length > 0 
-                  ? sortedForms.map((form, index) => <Card text={form} key={index} />)
-                  : forms.map((form, index) => <Card text={form} key={index} />)
-                }
-              </>
-            }
-          </div>
-        </div>
-      </div>
+              <div className={styles.cardContainer}>
+                {noResultMsg ?
+                  <span>No hay resultados para su búsqueda</span>
+                  :
+                  <>
+                    {sortedForms.length > 0
+                      ? sortedForms.map((form, index) => <Card text={form} key={index} />)
+                      : forms.map((form, index) => <Card text={form} key={index} />)}
+                  </>}
+              </div>
+            </div>
+          </div></>
     )
   }
   </>

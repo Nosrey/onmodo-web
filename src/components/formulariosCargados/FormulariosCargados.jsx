@@ -4,6 +4,7 @@ import { useState } from 'react';
 import styles from './FormulariosCargados.module.css';
 import { getUserInfo } from '../../services/Request';
 import { Oval } from 'react-loader-spinner';
+import { FORMS_WEB } from '../../utils/constants/data';
 
 function FormulariosCargados({filterByKey}) {
   var idUser = localStorage.getItem("idUser");
@@ -84,13 +85,24 @@ function FormulariosCargados({filterByKey}) {
     }
     return resultado;
   }
+  
+  const obtenerSoloFormsDeWeb = (data) =>{
+    const objetoFiltrado = {};
 
+    for (const propiedad in data) {
+      if (FORMS_WEB.includes(propiedad)) {
+        objetoFiltrado[propiedad] = data[propiedad];
+      }
+    }
+    return objetoFiltrado;
+  }
   
  const fetchData = () => {
   getUserInfo(idUser).then((resp)=> {   
     const data = filtrarObjetoPorObjetos(resp[0]);
     const data2 = filtrarObjetoPorArraysNoVacios(data);
-    const data3 = obtenerNombresPropiedadesConArraysNoVacios(data2); 
+    const dataWeb = obtenerSoloFormsDeWeb(data2)
+    const data3 = obtenerNombresPropiedadesConArraysNoVacios(dataWeb); 
     const arrayFinal = transformarArrayForms(data3)
     transformarArrayForms(data3)
     setIsLoading(false)
@@ -157,33 +169,34 @@ function FormulariosCargados({filterByKey}) {
         strokeWidthSecondary={2}
       />
     ) : (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <div className={styles.orderContainer}>
-          <span className={styles.spanOrder}>Ordenar por:</span>
-          <select name='' id={styles.select} onChange={handleSortChange}>
-            <option value='A-Z'>A - Z</option>
-            <option value='Z-A'>Z - A</option>
-            <option value='Más utilizados'>Más utilizados</option>
-            <option value='Último modificado'>Último modificado</option>
-          </select>
-        </div>
-        {filterByKey && filterByKey.length !== 0 && !noResultMsg && sortedForms.length !==0 && <div><span>Resultados para:  "{filterByKey}"</span></div> }
+            <><h2 className={styles.tituloRecord}>Formularios Cargados</h2>
+            <div className={styles.container}>
 
-          <div className={styles.cardContainer}>
-          {noResultMsg ? 
-              <span>No hay resultados para su búsqueda</span>
-              : 
-              <>
-            {sortedForms.length > 0
-              ? sortedForms.map((form, index) => <Card text={form} key={index} />)
-              : <span>No hay Formularios cargados en su historial</span>}
-            </>
-            }
-          </div>
-        
-      </div>
-    </div>
+            <div className={styles.wrapper}>
+              <div className={styles.orderContainer}>
+                <span className={styles.spanOrder}>Ordenar por:</span>
+                <select name='' id={styles.select} onChange={handleSortChange}>
+                  <option value='A-Z'>A - Z</option>
+                  <option value='Z-A'>Z - A</option>
+                  <option value='Más utilizados'>Más utilizados</option>
+                  <option value='Último modificado'>Último modificado</option>
+                </select>
+              </div>
+              {filterByKey && filterByKey.length !== 0 && !noResultMsg && sortedForms.length !== 0 && <div><span>Resultados para:  "{filterByKey}"</span></div>}
+
+              <div className={styles.cardContainer}>
+                {noResultMsg ?
+                  <span>No hay resultados para su búsqueda</span>
+                  :
+                  <>
+                    {sortedForms.length > 0
+                      ? sortedForms.map((form, index) => <Card text={form} key={index} />)
+                      : <span>No hay Formularios cargados en su historial</span>}
+                  </>}
+              </div>
+
+            </div>
+          </div></>
     )}
     </>
   );
