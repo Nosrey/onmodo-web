@@ -16,6 +16,7 @@
 
 .text {
   font-size: 12px;
+  cursor: default;
 }
 
 @media screen and (max-width: 768px) {

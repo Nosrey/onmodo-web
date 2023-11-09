@@ -142,27 +142,28 @@ function RegistroDeDecomiso() {
 
   const handleSubmit = () => {
     console.log('form ', replicaValues);
-    // registroDecomiso(values)
-    //   .then((resp) => {
-    //     setTextAlert('¡Formulario cargado exitosamente!');
-    //     setTypeAlert('success');
-    //     // limpiar fomr
-    //     window.location.href = window.location.href;
-    //   })
-    //   .catch((resp) => {
-    //     setTextAlert('Ocurrió un error');
-    //     setTypeAlert('error');
-    //   })
-    //   .finally(() => {
-    //     window.scrollTo({
-    //       top: 0,
-    //       behavior: 'smooth',
-    //     });
-    //     setShowlert(true);
-    //     setTimeout(() => {
-    //       setShowlert(false);
-    //     }, 7000);
-    //   });
+    const data= {...values , inputs:replicaValues}
+    registroDecomiso(data)
+      .then((resp) => {
+        setTextAlert('¡Formulario cargado exitosamente!');
+        setTypeAlert('success');
+        // limpiar fomr
+        window.location.href = window.location.href;
+      })
+      .catch((resp) => {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      })
+      .finally(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+        setShowlert(true);
+        setTimeout(() => {
+          setShowlert(false);
+        }, 7000);
+      });
   };
 
   useEffect(() => {

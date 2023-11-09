@@ -10,6 +10,7 @@
     max-width: 400px;
     border-radius: 30px;
     color: white;
+    z-index: 100;
 }
 .notificationGreen {
     background-color: #a0b875;
