@@ -189,7 +189,10 @@ function ItemRecordatorio({ data, updateInfo }) {
             <a className={styles.link} href={infoReminder.link} target='_blank' rel='noreferrer'>
               {infoReminder.linkTitle ? infoReminder.linkTitle : infoReminder.link}
             </a>
-            <span onClick={() => handleDeleteReminder(infoReminder._id)}>Eliminar</span>
+            {
+              nivelRol !== '1' &&    <span onClick={() => handleDeleteReminder(infoReminder._id)}>Eliminar</span>
+
+            }
             {nivelRol === '2' &&  (
               <div className={styles.selectContainer}>
                 <select
