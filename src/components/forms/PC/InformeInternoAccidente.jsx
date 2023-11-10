@@ -139,23 +139,23 @@ function InformeInternoAccidente() {
             tipo: values?.tipo,
             checkboxes: [
                 {
-                    label: values?.checkboxes[0]?.label,
+                    label: checkboxesValues[0]?.label,
                     check: values?.checkboxes[0]?.check
                 },
                 {
-                    label: values?.checkboxes[1]?.label,
+                    label: checkboxesValues[1]?.label,
                     check: values?.checkboxes[1]?.check
                 },
                 {
-                    label: values?.checkboxes[2]?.label,
+                    label: checkboxesValues[2]?.label,
                     check: values?.checkboxes[2]?.check
                 },
                 {
-                    label: values?.checkboxes[3]?.label,
+                    label: checkboxesValues[3]?.label,
                     check: values?.checkboxes[3]?.check
                 },
                 {
-                    label: values?.checkboxes[4]?.label,
+                    label: checkboxesValues[4]?.label,
                     check: values?.checkboxes[4]?.check,
                     denuncia: values?.checkboxes[4]?.denuncia
                 }
@@ -169,25 +169,25 @@ function InformeInternoAccidente() {
             descripcion: values?.descripcion,
             checkboxesAccidente: [
                 {
-                    label: values?.checkboxesAccidente[0]?.label,
+                    label: checkboxesAccidenteValues[0]?.label,
                     check: values?.checkboxesAccidente[0]?.check
                 },
                 {
-                    label: values?.checkboxesAccidente[1]?.label,
+                    label: checkboxesAccidenteValues[1]?.label,
                     check: values?.checkboxesAccidente[1]?.check
                 },
                 {
-                    label: values?.checkboxesAccidente[2]?.label,
+                    label: checkboxesAccidenteValues[2]?.label,
                     check: values?.checkboxesAccidente[2]?.check,
                     cualMaquina: values?.checkboxesAccidente[2]?.cualMaquina
                 },
                 {
-                    label: values?.checkboxesAccidente[3]?.label,
+                    label: checkboxesAccidenteValues[3].label,
                     check: values?.checkboxesAccidente[3]?.check,
                     cualAccion: values?.checkboxesAccidente[3]?.cualAccion
                 },
                 {
-                    label: values?.checkboxesAccidente[4]?.label,
+                    label: checkboxesAccidenteValues[4].label,
                     check: eppCheck,
                     razon: values?.razon,
                 }
