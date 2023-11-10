@@ -76,16 +76,19 @@
 .pendingText {
   font-weight: bold;
   color:#FFB82F;
+  cursor: default;
 
 }
 .deniedText {
   font-weight: bold;
   color:#FF2E11;
+  cursor: default;
 
 }
 .aprovedText {
   font-weight: bold;
   color:#7BC100;
+  cursor: default;
 }
 .pendingRow {
   background: #FFB82F1A;

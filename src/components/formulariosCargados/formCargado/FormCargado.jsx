@@ -12,11 +12,13 @@ import 'moment-timezone';
 import { generatePDF } from '../../../services/PDF';
 import { Oval } from 'react-loader-spinner';
 import { FORMS_DE_VARIAS_ETAPAS } from '../../../utils/constants/data';
+import ModalEdicionInfo from '../../modalEdicionInfo/ModalEdicionInfo';
 
 
 function FormCargado() {
   const [openModal, setOpenModal] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
+  const [openModalInfo, setOpenModalInfo] = useState(false);
   const [formSelected, setFormSelected] = useState();
   const [formularios, setFormularios] = useState([]);
   const [name, setName] = useState("");
@@ -129,17 +131,20 @@ function FormCargado() {
 
   const openModalEdit = (form) => {
     setFormSelected(form._id);
-    if (formSelected && form.status !== "pending" && form.status !== "denied") {
+    if (form.status !== "pending" && form.status !== "denied") {
       setOpenModal(true);
     }
     if(form.status === "approved"){
       goToForm(form, 'edit')
       // abrir modal con mensaje y enviar a editar
     }
-    if(form.status === "denied"){
-      // abrir modal con mensaje
-    }
   }
+
+  const handleViewInfo = (formulario) => {
+    setFormSelected(formulario);
+    setOpenModalInfo(true);
+  }
+
   const showAlertNotif = (type, msg) => {
     setTextAlert(msg);
     setTypeAlert(type);
@@ -243,9 +248,17 @@ function FormCargado() {
                     <span onClick={() => goToForm(formulario, 'view')} className={styles.actionIcon}>
                       <i className='ri-eye-line' ></i>
                     </span>
-                    <span onClick={() => handleEdit(formulario)} className={styles.actionIcon}>
-                      <i className='ri-pencil-line'></i>
-                    </span>
+                    {
+                      formulario.status === 'denied' ?
+                        <span onClick={() => handleViewInfo(formulario)} className={styles.actionIcon}>
+                          <i class="ri-information-line"></i>
+                        </span>
+                      :
+                      <span onClick={() => handleEdit(formulario)} className={styles.actionIcon}>
+                        <i className='ri-pencil-line'></i>
+                      </span>
+                    }
+                    
                     <span onClick={() => openDeleteModal(formulario._id)} className={styles.actionIcon}>
                       <i className='ri-delete-bin-line'></i>
                     </span>
@@ -260,6 +273,8 @@ function FormCargado() {
 
             </tbody>
           </table>
+          <ModalEdicionInfo openModal={openModalInfo} setOpenModal={setOpenModalInfo} form={formSelected}/>
+
           <ModalEdicion openModal={openModal} setOpenModal={setOpenModal} idForm={formSelected} urlForm={form} showAlert={(type, msg) => showAlertNotif(type, msg)}/>
           <ModalBorrar modalDelete={modalDelete} setModalDelete={setModalDelete} idForm={formSelected} url={form} showAlert={(type, msg) => showAlertNotif(type, msg)} />
         </div>

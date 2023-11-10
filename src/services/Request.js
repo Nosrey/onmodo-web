@@ -116,6 +116,18 @@ export const getLocalidades = async (idProv) => {
   }
 };
 
+export const getSolicitudesDeEdicion = async () => {
+  const businessName = localStorage.getItem('business')
+  try {
+    const resp = await fetch(`${URL_API}/api/pendingedition/${businessName}`);
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('No se pudo obtener los datos del usuario.');
+  }
+};
+
 //** REMINDERS */
 export const createReminder = async ({
   tarea,

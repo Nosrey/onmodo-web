@@ -45,6 +45,7 @@ import CrearCuenta from './components/crearCuenta/CrearCuenta';
 import CrearContraseña from './components/CrearContraseña/CrearContraseña';
 import Cuentas from './views/Cuentas/Cuentas';
 import RecordatoriosContainer from './views/Recordatorios/RecordatoriosContainer';
+import SolicitudesDeEdicion from './views/SolicitudesDeEdicion/SolicitudesDeEdicion';
 
 
 function App() {
@@ -114,6 +115,7 @@ function App() {
             <Route path='/formularios-cargados' element={<FormulariosCargados filterByKey={keySearchHistorial} />} />
             <Route path='/formularios-cargados/:form' element={<FormCargado />} />
 
+            <Route path='/solicitudes-edicion' element={<SolicitudesDeEdicion filterByKey={keySearchHistorial} />} />
 
             <Route path='/crear-cuenta' element={<CrearCuenta />} />
 
