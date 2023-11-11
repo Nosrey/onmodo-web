@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionTermometros.module.css';
 import Termometros from '../modales/Termometros';
+import { verificacionTermometros } from '../../services/FormsRequest';
+
 import Modal from '../shared/Modal';
 import Alert from '../shared/components/Alert/Alert';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
@@ -45,9 +47,9 @@ function VerificacionTermometros() {
     { id: 3, label: 'Responsable del uso', prop: 'responsable' },
     { id: 4, label: 'Área', prop: 'area' },
     { id: 5, label: 'Punto 0', prop: 'punto0' },
-    { id: 6, label: 'Desvío', prop: 'desvio0' },
+    { id: 6, label: 'Desvío 0', prop: 'desvio0' },
     { id: 7, label: 'Punto 100', prop: 'punto100' },
-    { id: 8, label: 'Desvío', prop: 'desvio100' },
+    { id: 8, label: 'Desvío 100', prop: 'desvio100' },
     { id: 9, label: 'Acciones de corrección', prop: 'acciones' },
   ]);
   const [showModal, setShowModal] = useState(false);
@@ -67,58 +69,7 @@ function VerificacionTermometros() {
   const [replicaValues, setReplicaValues] = useState([{ id: 0 }]);
   const [replicaValues2, setReplicaValues2] = useState([{ id: 0 }]);
 
-  const handleInputChange = (index, event, values, setValues) => {
-    const { name, value } = event.target;
-    const newValues = values.map((oldValue, i) => {
-      if (i === index) {
-        console.log('entra')
-        // Si el índice coincide, actualiza el objeto
-        return { ...oldValue, [name]: value };
-      } else {
-        // Si no coincide, no hagas cambios
-        return oldValue;
-      }
-    })
-    setValues(newValues);
-  };
 
-  const addRow = (kind) => {
-    switch (kind) {
-      case 1:
-        setObjValues1([...objValues1, initialInputsValue]);
-        setReplicas(replicas + 1);
-        break;
-      case 2:
-        setObjValues2([...objValues2, initialInputs2Value]);
-        setReplicas2(replicas2 + 1);
-        break;
-      default:
-        return;
-    }
-  };
-
-  const RemoveRow = (kind, position) => {
-    switch (kind) {
-      case 1:
-        let nuevoArray = objValues1.filter(function (elemento, indice) {
-          return indice !== position;
-        });
-        setObjValues1(nuevoArray);
-        setReplicas(replicas - 1);
-
-        break;
-      case 2:
-        let nuevoArray2 = objValues2.filter(function (elemento, indice) {
-          return indice !== position;
-        });
-        setObjValues2(nuevoArray2);
-        setReplicas2(replicas2 - 1);
-
-        break;
-      default:
-        return;
-    }
-  };
 
   const handleClick = (index) => {
     setReplicas(replicas + 1);
@@ -144,35 +95,30 @@ function VerificacionTermometros() {
     setReplicas2(replicas2 - 1);
   }
 
-  const deleteEmptyRows = (inputs) => {
-    return inputs.filter((row) =>
-      Object.values(row).some((value) => value !== ''))
-  }
-
   const handleSubmit = () => {
     const valuesToSend = { ...values, inputsTrimestral: replicaValues, inputsSemestral: replicaValues2};
     console.log("valuesToSend", valuesToSend)
-    // verificacionTermometros(valuesToSend)
-    //   .then((resp) => {
-    //     setTextAlert('¡Formulario cargado exitosamente!');
-    //     setTypeAlert('success');
-    //     // limpiar fomr
-    //     window.location.href = window.location.href;
-    //   })
-    //   .catch((resp) => {
-    //     setTextAlert('Ocurrió un error');
-    //     setTypeAlert('error');
-    //   })
-    //   .finally(() => {
-    //     window.scrollTo({
-    //       top: 0,
-    //       behavior: 'smooth',
-    //     });
-    //     setShowlert(true);
-    //     setTimeout(() => {
-    //       setShowlert(false);
-    //     }, 7000);
-    //   });
+    verificacionTermometros(valuesToSend)
+      .then((resp) => {
+        setTextAlert('¡Formulario cargado exitosamente!');
+        setTypeAlert('success');
+        // limpiar fomr
+        // window.location.href = window.location.href;
+      })
+      .catch((resp) => {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      })
+      .finally(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+        setShowlert(true);
+        setTimeout(() => {
+          setShowlert(false);
+        }, 7000);
+      });
   };
 
   useEffect(() => {

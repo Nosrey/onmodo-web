@@ -124,6 +124,7 @@ function RegistroSimulacro() {
             })
         }
     }, [])
+    
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
         onDrop: (acceptedFiles) => {
 
