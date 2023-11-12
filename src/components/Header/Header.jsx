@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, Link, useNavigate,  } from 'react-router-dom';
 
 
-function Header() {
+function Header({search}) {
   const location = useLocation();
   const currentLocation = location.pathname;
   const [showSearch, setShowSearch] = useState(true);
@@ -16,6 +16,20 @@ function Header() {
     else setShowSearch(false);
   }, [currentLocation]);
 
+  const handleSearch = (e) => {
+    if (e.keyCode === 13 || (e.keyCode === 8 && e.target.value=== '' )) {
+      search(e.target.value)
+    }
+  }
+  const handleSChangeSearch = (e) => {
+    if (e.target.value=== '' ) {
+      search(e.target.value)
+    }
+  }
+  const handleSearchRemove = () => {
+    search('');
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -23,11 +37,15 @@ function Header() {
           <img src={logo} alt='logo On Modo' />
           {showSearch && (
             <div className={styles.inputContainer}>
-              <input className={styles.search} type='search' placeholder='¿Qué estás buscando?' />
+              <input className={styles.search} type='search' placeholder='¿Qué estás buscando?' onKeyUp={(e)=> handleSearch(e)} onChange={(e)=>handleSChangeSearch(e)}/>
+              <div onClick={()=>   handleSearchRemove()}>
               <i
-                style={{ position: 'absolute', left: '20px', bottom: '7px', color: '#959595' }}
+                style={{ position: 'absolute', left: '20px', bottom: '7px', color: '#000' }}
+                
                 className='ri-search-line'
               ></i>
+              </div>
+             
             </div>
           )}
         </div>

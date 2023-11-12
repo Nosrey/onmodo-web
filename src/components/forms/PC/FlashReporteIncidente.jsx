@@ -7,11 +7,13 @@ import { flashIncidente } from '../../../services/FormsRequest';
 import { useLocation } from 'react-router';
 
 function FlashReporteIncidente() {
+  const location = useLocation();
+  const infoPrecargada = location.state?.objeto;
+  const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
   const [textAlert, setTextAlert] = useState('');
   const [typeAlert, setTypeAlert] = useState('');
   const [showAlert, setShowlert] = useState(false);
   const idUser = localStorage.getItem('idUser');
-  const location = useLocation();
   const [values, setValues] = useState({
     fecha: '',
     hora: '',
@@ -120,7 +122,6 @@ function FlashReporteIncidente() {
   };
 
   useEffect(() => {
-    const infoPrecargada = location.state?.objeto;
     if (infoPrecargada) {
       setValues({
         fecha: infoPrecargada.fecha,
@@ -168,7 +169,7 @@ function FlashReporteIncidente() {
                   setValues({ ...values, fecha: e.target.value });
                 }}
                 value={values.fecha}
-                disabled={!!location.state?.objeto}
+                disabled={currentStatus === 'view'}
               />
               <TextField
                 type='time'
@@ -176,7 +177,7 @@ function FlashReporteIncidente() {
                   setValues({ ...values, hora: e.target.value });
                 }}
                 value={values.hora}
-                disabled={!!location.state?.objeto}
+                disabled={currentStatus === 'view'}
               />
             </div>
 
@@ -185,7 +186,7 @@ function FlashReporteIncidente() {
                 onChange={(e) => {
                   setValues({ ...values, comedor: e.target.value });
                 }}
-                disabled={!!location.state?.objeto}
+                disabled={currentStatus === 'view'}
                 value={values.comedor}
                 id='outlined-basic'
                 label='Comedor'
@@ -195,7 +196,7 @@ function FlashReporteIncidente() {
                 onChange={(e) => {
                   setValues({ ...values, responsable: e.target.value });
                 }}
-                disabled={!!location.state?.objeto}
+                disabled={currentStatus === 'view'}
                 value={values.responsable}
                 id='outlined-basic'
                 label='Responsable del contrato'
@@ -205,7 +206,7 @@ function FlashReporteIncidente() {
                 onChange={(e) => {
                   setValues({ ...values, incidentePotencial: e.target.value });
                 }}
-                disabled={!!location.state?.objeto}
+                disabled={currentStatus === 'view'}
                 value={values.incidentePotencial}
                 id='outlined-basic'
                 label='Incidente Potencial/Real'
@@ -218,7 +219,7 @@ function FlashReporteIncidente() {
                 onChange={(e) => {
                   setValues({ ...values, tipo: e.target.value });
                 }}
-                disabled={!!location.state?.objeto}
+                disabled={currentStatus === 'view'}
                 value={values.tipo}
                 fullWidth
                 id='outlined-basic'
@@ -237,7 +238,7 @@ function FlashReporteIncidente() {
                   multiline
                   value={values.descripcion}
                   rows={4}
-                  disabled={!!location.state?.objeto}
+                  disabled={currentStatus === 'view'}
                   onChange={(e) => {
                     setValues({ ...values, descripcion: e.target.value });
                   }}
@@ -272,7 +273,7 @@ function FlashReporteIncidente() {
                 value={values.acciones}
                 multiline
                 rows={4}
-                disabled={!!location.state?.objeto}
+                disabled={currentStatus === 'view'}
                 onChange={(e) => {
                   setValues({ ...values, acciones: e.target.value });
                 }}
@@ -292,15 +293,17 @@ function FlashReporteIncidente() {
               <PlanillaFile />
             </div>
 
+            {
+            (currentStatus === 'edit' || infoPrecargada === undefined) &&
             <div className='btn'>
-              <Button
+                <Button
                 onClick={handleSubmit}
-                disabled={!!location.state?.objeto}
                 variant='contained'
-              >
+                >
                 Guardar
-              </Button>
+                </Button>
             </div>
+            }
           </div>
         </div>
       )}

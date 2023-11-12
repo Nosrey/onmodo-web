@@ -9,7 +9,9 @@ import { useLocation } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 
 function RegistroCapacitacion() {
-
+    const location = useLocation();
+    const infoPrecargada = location.state?.objeto;
+    const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
@@ -69,7 +71,6 @@ function RegistroCapacitacion() {
         const { name, value } = event.target;
         const newValues = asistentes.map((oldValue, i) => {
             if (i === index) {
-                console.log('entra')
               // Si el índice coincide, actualiza el objeto
               return { ...oldValue, [name]: value };
             } else {
@@ -80,7 +81,6 @@ function RegistroCapacitacion() {
     };
 
     const checkboxValuesConstructor = (label, value, desc) => {
-        console.log(value)
         if (label === 'Inducción') {
             checkboxesValues[0].check = value
             setValues({ ...values, checkboxes: checkboxesValues })
@@ -169,7 +169,6 @@ function RegistroCapacitacion() {
 
     const handleSubmit = () => {
         const valuesToSend = {...values, asistentes: deleteEmptyRows(asistentes)}
-        console.log(valuesToSend)
         registroCapacitacion(valuesToSend).then((resp) => {
             setTextAlert("¡Formulario cargado exitosamente!");
             setTypeAlert("success");
@@ -192,13 +191,8 @@ function RegistroCapacitacion() {
     };
   
     
-    
-    const location = useLocation();
-    const infoPrecargada = location.state?.objeto;
     useEffect(() => {
         if (infoPrecargada) { // muestro un form del historial
-            console.log("infoPrecargada", infoPrecargada);
-            console.log("parseaar info para poder mostrar los arrays", JSON.parse(infoPrecargada.checkboxes));
             setValues({
                 fecha: infoPrecargada.fecha,
                 tiempoDuracion: infoPrecargada.tiempoDuracion,
@@ -213,8 +207,6 @@ function RegistroCapacitacion() {
                 idUser: idUser,
             });
             setObjValues(infoPrecargada.asistentes);
-            console.log("objValues", objValues);
-            console.log("values", values);
            
         } else { // creo un form desde cero
 
@@ -252,7 +244,7 @@ function RegistroCapacitacion() {
                         id="outlined-basic"
                         label="Fecha"
                         variant="outlined"
-                        disabled={!!location.state?.objeto}
+                        disabled={currentStatus === 'view'}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -263,7 +255,7 @@ function RegistroCapacitacion() {
                         value={values.tiempoDuracion || ''}
                         id="tiempo-duracion"
                         name="tiempo-duracion"
-                        disabled={!!location.state?.objeto}
+                        disabled={currentStatus === 'view'}
                     />
 
 
@@ -273,12 +265,12 @@ function RegistroCapacitacion() {
                 <p>Selecciona la opción que corresponda:</p>
 
                 <div className={styles.listContainer}>
-                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox checked={values.checkboxes[0]?.check || false} onChange={(e) => { checkboxValuesConstructor("Inducción", e.target.checked); }} />} label="Inducción" className={styles.listItem} />
-                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox checked={values.checkboxes[1]?.check || false} onChange={(e) => { checkboxValuesConstructor("Campaña", e.target.checked); }} />} className={styles.listItem} label="Campaña" />
-                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox checked={values.checkboxes[2]?.check || false} onChange={(e) => { checkboxValuesConstructor("Entrenamiento Puesto de trabajo", e.target.checked); }} />} className={styles.listItem} label="Entrenamiento Puesto de trabajo" />
-                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox checked={values.checkboxes[3]?.check || false} onChange={(e) => { checkboxValuesConstructor("Capacitaciones gubernamentales", e.target.checked); }} />} className={styles.listItem} label="Capacitaciones gubernamentales" />
-                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox checked={values.checkboxes[4]?.check || false} onChange={(e) => { checkboxValuesConstructor("Capacitación sobre Normas o Certificaciones", e.target.checked); }} />} className={styles.listItem} label="Capacitación sobre Normas o Certificaciones" />
-                    <FormControlLabel disabled={!!location.state?.objeto} control={<Checkbox checked={values.checkboxes[5]?.check || false} onChange={(e) => { checkboxValuesConstructor("Cierre Auditoría", e.target.checked); }} />} className={styles.listItem} label="Cierre Auditoría" />
+                    <FormControlLabel disabled={currentStatus === 'view'} control={<Checkbox checked={values.checkboxes[0]?.check || false} onChange={(e) => { checkboxValuesConstructor("Inducción", e.target.checked); }} />} label="Inducción" className={styles.listItem} />
+                    <FormControlLabel disabled={currentStatus === 'view'} control={<Checkbox checked={values.checkboxes[1]?.check || false} onChange={(e) => { checkboxValuesConstructor("Campaña", e.target.checked); }} />} className={styles.listItem} label="Campaña" />
+                    <FormControlLabel disabled={currentStatus === 'view'} control={<Checkbox checked={values.checkboxes[2]?.check || false} onChange={(e) => { checkboxValuesConstructor("Entrenamiento Puesto de trabajo", e.target.checked); }} />} className={styles.listItem} label="Entrenamiento Puesto de trabajo" />
+                    <FormControlLabel disabled={currentStatus === 'view'} control={<Checkbox checked={values.checkboxes[3]?.check || false} onChange={(e) => { checkboxValuesConstructor("Capacitaciones gubernamentales", e.target.checked); }} />} className={styles.listItem} label="Capacitaciones gubernamentales" />
+                    <FormControlLabel disabled={currentStatus === 'view'} control={<Checkbox checked={values.checkboxes[4]?.check || false} onChange={(e) => { checkboxValuesConstructor("Capacitación sobre Normas o Certificaciones", e.target.checked); }} />} className={styles.listItem} label="Capacitación sobre Normas o Certificaciones" />
+                    <FormControlLabel disabled={currentStatus === 'view'} control={<Checkbox checked={values.checkboxes[5]?.check || false} onChange={(e) => { checkboxValuesConstructor("Cierre Auditoría", e.target.checked); }} />} className={styles.listItem} label="Cierre Auditoría" />
                 </div>
 
                 <div className={styles.personalText}>
@@ -290,7 +282,7 @@ function RegistroCapacitacion() {
                         multiline
                         value={values.temas || ''}
                         rows={4}
-                        disabled={!!location.state?.objeto}
+                        disabled={currentStatus === 'view'}
                     />
 
                 </div>
@@ -303,16 +295,16 @@ function RegistroCapacitacion() {
                         </div>
 
                         <div className={styles.listContainer}>
-                            <FormControlLabel checked={values.materialEntregado[0]?.check || false} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Manual /instructivo", e.target.checked); }} />} className={styles.listItem} label="Manual /instructivo" />
-                            <FormControlLabel checked={values.materialEntregado[1]?.check || false} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Folleto", e.target.checked); }} />} className={styles.listItem} label="Folleto" />
-                            <FormControlLabel checked={values.materialEntregado[2]?.check || false} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Procedimiento", e.target.checked); }} />} className={styles.listItem} label="Procedimiento" />
+                            <FormControlLabel checked={values.materialEntregado[0]?.check || false} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Manual /instructivo", e.target.checked); }} />} className={styles.listItem} label="Manual /instructivo" />
+                            <FormControlLabel checked={values.materialEntregado[1]?.check || false} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Folleto", e.target.checked); }} />} className={styles.listItem} label="Folleto" />
+                            <FormControlLabel checked={values.materialEntregado[2]?.check || false} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Procedimiento", e.target.checked); }} />} className={styles.listItem} label="Procedimiento" />
                             <div>
 
                                 <FormControlLabel checked={values.materialEntregado[3]?.check || otro1} onClick={ e=> setOtro1(e.target.checked)} control={<Checkbox
                                     id="showTextField"
                                     name="showTextField"
                                     
-                                    disabled={!!location.state?.objeto}
+                                    disabled={currentStatus === 'view'}
                                     onChange={($event) => handleCheckboxChange($event, 1)} />} label="Otros" />
                                 <label htmlFor="showTextField"></label>
 
@@ -320,7 +312,7 @@ function RegistroCapacitacion() {
                         </div>
                         <div className={styles.personal}>
                             {showTextField1 && (
-                                <TextField value={values.materialEntregado[3]?.desc} disabled={!!location.state?.objeto}  onChange={e => checkboxValuesConstructor("Otros2", true, e.target.value)}  id="outlined-basic" name="textField" variant="outlined" label="Otros" />
+                                <TextField value={values.materialEntregado[3]?.desc} disabled={currentStatus === 'view'}  onChange={e => checkboxValuesConstructor("Otros2", true, e.target.value)}  id="outlined-basic" name="textField" variant="outlined" label="Otros" />
                             )}
                         </div>
                     </div>
@@ -332,15 +324,15 @@ function RegistroCapacitacion() {
                         </div>
 
                         <div className={styles.listContainer}>
-                            <FormControlLabel checked={values.materialExpuesto[0]?.check || false} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Video", e.target.checked); }} />} className={styles.listItem} label="Video" />
-                            <FormControlLabel checked={values.materialExpuesto[1]?.check || false} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Filminas", e.target.checked); }} />} className={styles.listItem} label="Filminas" />
-                            <FormControlLabel checked={values.materialExpuesto[2]?.check || false} disabled={!!location.state?.objeto} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Disertación", e.target.checked); }} />} className={styles.listItem} label="Disertación" />
+                            <FormControlLabel checked={values.materialExpuesto[0]?.check || false} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Video", e.target.checked); }} />} className={styles.listItem} label="Video" />
+                            <FormControlLabel checked={values.materialExpuesto[1]?.check || false} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Filminas", e.target.checked); }} />} className={styles.listItem} label="Filminas" />
+                            <FormControlLabel checked={values.materialExpuesto[2]?.check || false} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Disertación", e.target.checked); }} />} className={styles.listItem} label="Disertación" />
 
                             <div>
                                 <FormControlLabel checked={values.materialExpuesto[3]?.check || otro2} onClick={e=> setOtro2(e.target.checked)} control={<Checkbox
                                     id="showTextField"
                                     name="showTextField"
-                                    disabled={!!location.state?.objeto}
+                                    disabled={currentStatus === 'view'}
                                     onChange={($event) => handleCheckboxChange($event, 2)} />} label="Otros" />
                                 <label htmlFor="showTextField"></label>
                             </div>
@@ -349,7 +341,7 @@ function RegistroCapacitacion() {
                         <div className={styles.personal}>
                             
                             {showTextField2 && (
-                                <TextField id="outlined-basic" disabled={!!location.state?.objeto} value={values.materialExpuesto[3]?.desc} onChange={e => checkboxValuesConstructor("Otros1", true, e.target.value)} name="textField" variant="outlined" label="Otros" />
+                                <TextField id="outlined-basic" disabled={currentStatus === 'view'} value={values.materialExpuesto[3]?.desc} onChange={e => checkboxValuesConstructor("Otros1", true, e.target.value)} name="textField" variant="outlined" label="Otros" />
                             )}
                         </div>
                     </div>
@@ -374,7 +366,7 @@ function RegistroCapacitacion() {
                                                  name={input.prop}
                                                  label={`${input.label}`}
                                                  variant="outlined"
-                                                 disabled={!!location.state?.objeto}
+                                                 disabled={currentStatus === 'view'}
                                                  value={_[input.prop]}
                                              />                                    
                                             ) : (
@@ -382,7 +374,7 @@ function RegistroCapacitacion() {
                                                     <FormControl variant="outlined" className={`${styles.selectField} `}>
                                                         <InputLabel id={`metodo-evaluacion-label-${index}`}>Método de Evaluación</InputLabel>
                                                         <Select
-                                                            disabled={!!location.state?.objeto}
+                                                            disabled={currentStatus === 'view'}
                                                             labelId={`metodo-evaluacion-label-${index}`}
                                                             id={`metodo-evaluacion-${index}`}
                                                             onChange={(e) => handleInputChange(index, e)}
@@ -421,10 +413,10 @@ function RegistroCapacitacion() {
 
 
                 <div className={styles.personal}>
-                    <TextField value={values.observaciones || ''} disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, observaciones: e.target.value }); }} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
+                    <TextField value={values.observaciones || ''} disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, observaciones: e.target.value }); }} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
                 </div>
                 <div className={styles.personal}>                
-                    <TextField value={values.instructor || ''} disabled={!!location.state?.objeto} onChange={(e) => { setValues({ ...values, instructor: e.target.value }); }} id="outlined-basic" label="Instructor" variant="outlined" />
+                    <TextField value={values.instructor || ''} disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, instructor: e.target.value }); }} id="outlined-basic" label="Instructor" variant="outlined" />
                 </div>
                 <div className={styles.responsableCont}>
                     <div className={styles.subtitleCont}>
@@ -433,17 +425,24 @@ function RegistroCapacitacion() {
                     <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
                     <div className={styles.firma}>
                         <div   {...getRootProps()} className={styles.file} >
-                            <input disabled={!!location.state?.objeto} {...getInputProps()} />
+                            <input disabled={currentStatus === 'view'} {...getInputProps()} />
                             <h6 >Arrastra y suelta la firma aqui, o haz clic para seleccionarla</h6>
                             {values.firma && <h6>Archivo seleccionado: {values.firma.name}</h6>}
                         </div>
                     </div>
                   
                     </div>
-                <div className="btn">
-                    <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant="contained">Guardar</Button>
-
-                </div>
+                    {
+                        (currentStatus === 'edit' || infoPrecargada === undefined) &&
+                        <div className='btn'>
+                            <Button
+                            onClick={handleSubmit}
+                            variant='contained'
+                            >
+                            Guardar
+                            </Button>
+                        </div>
+                        }
 
             </div>
         </div>

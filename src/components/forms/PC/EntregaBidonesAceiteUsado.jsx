@@ -7,10 +7,15 @@ import { entregaBidones } from '../../../services/FormsRequest';
 import Alert from '../../shared/components/Alert/Alert';
 import { useLocation } from 'react-router';
 import styles from './EntregaBidonesAceiteUsado.module.css';
+import { v4 as uuidv4 } from 'uuid';
 
 function EntregaBidonesAceiteUsado() {
+  const location = useLocation();
+  const infoPrecargada = location.state?.objeto;
+  const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
+  
   const [replicas, setReplicas] = useState(1);
-  const [replicaValues, setReplicaValues] = useState([{}]);
+  const [replicaValues, setReplicaValues] = useState([{id: 0}]);
   const [trigger, setTrigger] = useState(false);
 
   const [textAlert, setTextAlert] = useState('');
@@ -83,16 +88,13 @@ function EntregaBidonesAceiteUsado() {
 
   const handleClick = (index) => {
     setReplicas(replicas + 1);
-    setReplicaValues([...replicaValues, { id: replicas }]);
+    const id = uuidv4();
+    setReplicaValues([...replicaValues, { id: id }]);
     setTrigger(false);
   };
 
   const handleClickRemove = (index) => {
     let copyReplicas = replicaValues.filter(replica => replica.id !== index)
-    console.log("copyReplicas", copyReplicas)
-    for (let i = 0; i <= copyReplicas.length; i++) {
-      if (copyReplicas[i]) copyReplicas[i].id = i
-    }
     setReplicaValues(copyReplicas);
     setReplicas(replicas - 1);
   }
@@ -122,8 +124,6 @@ function EntregaBidonesAceiteUsado() {
     //   });
   };
 
-  const location = useLocation();
-  const infoPrecargada = location.state?.objeto;
   useEffect(() => {
     if (infoPrecargada) {
       setReplicas(infoPrecargada.inputs.length);
@@ -145,12 +145,14 @@ function EntregaBidonesAceiteUsado() {
             <div className='tableSection'>
               {Array(replicas)
                 .fill(0)
-                .map((_, index) => (
-                  <div className='tableRow' key={index}>
+                .map((_, index) => 
+                { 
+                  return (
+                  <div className='tableRow' key={replicaValues[index].id}>
                     <p className='index'>{index + 1} </p>
 
-                    {inputs.map((input) => (
-                      <div key={input.id}>
+                    {inputs.map((input, index2) => (
+                      <div key={replicaValues[index].id + index2}>
                         {input.label === 'Fecha' ? (
                           <TextField
                             type='date'
@@ -165,7 +167,7 @@ function EntregaBidonesAceiteUsado() {
                             id={`input-${input.id}-${index}`}
                             name={`input-${input.id}-${index}`}
                             value={replicaValues[index].fecha}
-                            disabled={!!location.state?.objeto}
+                            disabled={currentStatus === 'view'}
                           />
                         ) : input.label === 'Transporte' || input.label === 'Disposición final' ? (
                           <Dropzone
@@ -189,7 +191,7 @@ function EntregaBidonesAceiteUsado() {
                               setReplicaValues(replicaCopy);
                             }}
                             variant='outlined'
-                            disabled={!!location.state?.objeto}
+                            disabled={currentStatus === 'view'}
                             className='input'
                           />
                         )}
@@ -202,19 +204,26 @@ function EntregaBidonesAceiteUsado() {
                       {
                           (index == 0 || index > Array(replicas).fill(0).length) ? 
                           <AddBoxIcon style={{ color: 'grey' }} onClick={() => handleClick(index)} />
-                          :  <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={() => handleClickRemove(index)} />
+                          :  <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={() => handleClickRemove(replicaValues[index].id)} />
                       }
                       </div>
                     )}
                   </div>
-                ))}
+                )}
+                )}
             </div>
           </div>
-          <div className='btn'>
-            <Button disabled={!!location.state?.objeto} onClick={handleSubmit} variant='contained'>
-              Guardar
-            </Button>
-          </div>
+          {
+            (currentStatus === 'edit' || infoPrecargada === undefined) &&
+            <div className='btn'>
+                <Button
+                onClick={handleSubmit}
+                variant='contained'
+                >
+                Guardar
+                </Button>
+            </div>
+            }
         </div>
       </div>
       {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}

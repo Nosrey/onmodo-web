@@ -1,0 +1,116 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 140px;
+}
+
+.wrapper {
+  width: 90%;
+}
+
+/* .titleCont {
+  display: flex;
+  border-bottom: 1py solid black;
+} */
+
+
+/* FILTRO SELECT  */
+
+.orderContainer{
+  display:flex;
+  justify-content: flex-end;
+  padding: 20px 0 34px;
+  gap: 10px;
+  align-items: center;
+}
+#select {
+  box-sizing: border-box;
+  border: 1px solid #c3c3c3;
+  border-radius: 10px;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 18px;
+  padding: 5px 15px;
+  outline: none;
+}
+.spanOrder {
+  font-weight: 325;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+/* ------------------------- */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.fila:hover {
+  background-color: #d9d9d9 !important;
+}
+
+.contEdicion {
+  display: flex !important;
+  justify-content: space-evenly;
+}
+
+.actionIcon {
+  margin-right: 8px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.accion {
+  text-align: center !important;
+}
+
+.pendingText {
+  font-weight: bold;
+  color:#FFB82F;
+  cursor: default;
+
+}
+.deniedText {
+  font-weight: bold;
+  color:#FF2E11;
+  cursor: default;
+
+}
+.tituloRecord{
+  font-weight: bold;
+  font-size: 21px;
+  margin-bottom: -10px;
+  margin-top: 20px;
+  display: block;
+  width: 92%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.aprovedText {
+  font-weight: bold;
+  color:#7BC100;
+  cursor: default;
+}
+.pendingRow {
+  background: #FFB82F1A;
+}
+.deniedRow {
+  background: #FF2E111A;
+}
+.aprovedRow {
+  background: #7BC1001A;
+}
+.placeholder{
+  color: grey;
+  margin-top: 30px;
+  font-weight: lighter;
+}

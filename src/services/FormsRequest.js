@@ -24,16 +24,11 @@ export const ejemplo = async ({ dato1, dato2}) => {
   export const registroCapacitacion = async (values) => {
     try {
       const formData = new FormData();
-
       // Agregar las propiedades de "values" al FormData
       for (const key in values) {
         if (Array.isArray(values[key])) {
-          // Si es un array, como propiedades que son arrays de objetos,
-          // puedes serializarlo a JSON y luego agregarlo al FormData
           formData.append(key, JSON.stringify(values[key]));
         } else if (key === 'firma') {
-          // Si es una propiedad de tipo "file", debes manejarla por separado
-          // Aquí asumo que "firma" es el nombre de la propiedad de tipo "file"
           formData.append('firma', values[key]); // Puedes ajustar el índice según sea necesario
         } else {
           formData.append(key, values[key]);
@@ -108,8 +103,6 @@ export const ejemplo = async ({ dato1, dato2}) => {
                 rol: localStorage.getItem("rol"),
                 nombre: localStorage.getItem("userName"),
               }
-      console.log("adentro",info)
-  
       // Recorre el array de inputs y agrega los archivos a formData
       values.inputs.forEach((input, index) => {
         const inputFormData = new FormData();
@@ -232,16 +225,27 @@ export const ejemplo = async ({ dato1, dato2}) => {
   };
 
   export const registroSimulacro = async (values) => {
+    const formData = new FormData();
+      // Agregar las propiedades de "values" al FormData
+      for (const key in values) {
+        if (Array.isArray(values[key])) {
+          formData.append(key, JSON.stringify(values[key]));
+        } else if (key === 'firmaDoc') {
+          formData.append('firmaDoc', values[key]); // Puedes ajustar el índice según sea necesario
+        } else {
+          formData.append(key, values[key]);
+        }
+      }
+  
+      // Agregar otras propiedades como businessName, rol, nombre, etc., al FormData
+      formData.append('businessName', localStorage.getItem('business'));
+      formData.append('rol', localStorage.getItem('rol'));
+      formData.append('nombre', localStorage.getItem('userName'));
+
     try {
       const response = await fetch(`${URL_API}/api/registrosimulacro`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...values,
-          businessName: localStorage.getItem("business"),
-          rol: localStorage.getItem("rol"),
-          nombre: localStorage.getItem("userName"),
-        }),
+        body: formData,
       });
       const data = await response.json();
       return data;

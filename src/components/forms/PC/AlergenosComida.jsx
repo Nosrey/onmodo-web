@@ -12,6 +12,8 @@ import { useDropzone } from 'react-dropzone';
 function AlergenosComida() {
   const location = useLocation();
   const infoPrecargada = location.state?.objeto;
+  const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
+
   var idUser = localStorage.getItem('idUser');
   useEffect(() => {
     console.log(infoPrecargada);
@@ -162,12 +164,12 @@ function AlergenosComida() {
                 label='Comedor'
                 variant='outlined'
                 value={infoPrecargada?.comedor}
-                disabled={!!location.state?.objeto}
+                disabled={currentStatus === 'view'}
               />
             </div>
             <div className='table'>
               <div className='tableSection'>
-                {objValues.map((_, index) => (
+                {objValues?.map((_, index) => (
                     <div className='tableRow' key={index}>
                       <p className='index'>{index + 1} </p>
                       {inputs.map((input) => (
@@ -185,7 +187,7 @@ function AlergenosComida() {
                               }}
                               className='input'
                               value={_[input.prop]}
-                              disabled={!!location.state?.objeto}
+                              disabled={currentStatus === 'view'}
                             />
                           ) : input.label === 'Fecha Renovación' ? (
                             <TextField
@@ -199,7 +201,7 @@ function AlergenosComida() {
                                 shrink: true,
                               }}
                               className='input'
-                              disabled={_.requiereRenovacion === 'NO' || !!location.state?.objeto}
+                              disabled={_.requiereRenovacion === 'NO' || currentStatus === 'view'}
                               value={_[input.prop]}
                             />
                           ) : input.label === 'Presenta Certificado' ? (
@@ -213,7 +215,7 @@ function AlergenosComida() {
                                 onChange={(e) => handleInputChange(index, e)}
                                 label={`${input.label}`}
                                 value={_[input.prop]}
-                                disabled={!!location.state?.objeto}
+                                disabled={currentStatus === 'view'}
                               >
                                 <MenuItem value='SI'>SI</MenuItem>
                                 <MenuItem value='NO'>NO</MenuItem>
@@ -231,7 +233,7 @@ function AlergenosComida() {
                                 label={`${input.label}`}
                                 defaultValue={'NO'}
                                 value={_[input.prop]}
-                                disabled={!!location.state?.objeto}
+                                disabled={currentStatus === 'view'}
                               >
                                 <MenuItem value='SI'>SI</MenuItem>
                                 <MenuItem value='NO'>NO</MenuItem>
@@ -251,7 +253,7 @@ function AlergenosComida() {
                                 shrink: true,
                               }}
                               value={_[input.prop]}
-                              disabled={!!location.state?.objeto}
+                              disabled={currentStatus === 'view'}
                             />
                           ) : null}
                         </div>
@@ -276,16 +278,20 @@ function AlergenosComida() {
                   ))}
               </div>
             </div>
-
-            <div className='btn'>
-              <Button
-                disabled={!!location.state?.objeto}
-                onClick={handleSubmit}
-                variant='contained'
-              >
-                Guardar
-              </Button>
-            </div>
+           
+          
+            {
+              (currentStatus === 'edit' || infoPrecargada === undefined) &&
+              <div className='btn'>
+                <Button
+                  onClick={handleSubmit}
+                  variant='contained'
+                >
+                  Guardar
+                </Button>
+              </div>
+            }
+       
           </div>
         </div>
       )}
