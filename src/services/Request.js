@@ -1,6 +1,6 @@
-const URL_API = 'http://localhost:8080';
+// const URL_API = 'http://localhost:8080';
 
-// const URL_API = 'https://api.onmodoapp.com';
+const URL_API = 'https://api.onmodoapp.com';
 
 export const login = async ({ legajo, password }) => {
   try {
@@ -117,7 +117,7 @@ export const getLocalidades = async (idProv) => {
 };
 
 export const getSolicitudesDeEdicion = async () => {
-  const businessName = localStorage.getItem('business')
+  const businessName = localStorage.getItem('business');
   try {
     const resp = await fetch(`${URL_API}/api/pendingedition/${businessName}`);
     const data = await resp.json();
