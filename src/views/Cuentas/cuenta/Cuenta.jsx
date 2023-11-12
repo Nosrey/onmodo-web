@@ -2,15 +2,20 @@ import styles from './Cuenta.module.css';
 import React, { useEffect, useState } from 'react';
 import perfil from '../../../assets/image/perfil.png';
 import placeholder from '../../../assets/image/download.png';
-import { createNewUSer, getLocalidades, getProvincias, getUserInfo } from '../../../services/Request';
+import {
+  createNewUSer,
+  getLocalidades,
+  getProvincias,
+  getUserInfo,
+} from '../../../services/Request';
 import { useLocation } from 'react-router-dom';
 import { PUESTOS_N1, PUESTOS_N2 } from '../../../components/shared/constants/Puestos';
 import ImageUploader from '../../../components/ImgUploader/ImgUploader';
 import Alert from '../../../components/shared/components/Alert/Alert';
 
 function Cuenta() {
-  const idUser = localStorage.getItem("idUser");
-  const myRol = localStorage.getItem("rol")
+  const idUser = localStorage.getItem('idUser');
+  const myRol = localStorage.getItem('rol');
   const location = useLocation();
 
   const [errors, setErrors] = useState({});
@@ -26,11 +31,10 @@ function Cuenta() {
   const [nivelOptions, setNivelOptions] = useState();
   const [cleanImageInput, setCleanImageInput] = useState(false);
 
-    //** ALERTA */
-    const [textAlert, setTextAlert] = useState("");
-    const [typeAlert, setTypeAlert] = useState("");
-    const [showAlert, setShowlert] = useState(false);
-
+  //** ALERTA */
+  const [textAlert, setTextAlert] = useState('');
+  const [typeAlert, setTypeAlert] = useState('');
+  const [showAlert, setShowlert] = useState(false);
 
   const validate = (values) => {
     let errors = {};
@@ -55,9 +59,11 @@ function Cuenta() {
 
   const handleChange = (e) => {
     setInputValue({ ...inputValue, [e.target.name]: e.target.value });
-    if (e.target.name === "provincia") {
-      const idProvSeleccionada = provinciasOptions.find((item) => item.nombre ===  e.target.value).id;
-      getLocalidades(idProvSeleccionada).then((resp) => setLocalidadesOptions(resp) )
+    if (e.target.name === 'provincia') {
+      const idProvSeleccionada = provinciasOptions.find(
+        (item) => item.nombre === e.target.value
+      ).id;
+      getLocalidades(idProvSeleccionada).then((resp) => setLocalidadesOptions(resp));
     }
   };
 
@@ -69,59 +75,59 @@ function Cuenta() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const validationErrors = validate(inputValue);
-    console.log(inputValue.imgProfile)
+    console.log(inputValue.imgProfile);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
       setErrors({});
-      const data = { 
+      const data = {
         email: inputValue.email,
         fullName: inputValue.nombre,
         legajo: inputValue.legajo,
-        number : inputValue.celular,
-        puesto : inputValue.puesto,
-        contratoComedor:  inputValue.contrato,
-        rol:  inputValue.nivel,
-        business: localStorage.getItem("business"),
-        provincia:  inputValue.provincia,
-        localidad :  inputValue.localidad,
+        number: inputValue.celular,
+        puesto: inputValue.puesto,
+        contratoComedor: inputValue.contrato,
+        rol: inputValue.nivel,
+        business: localStorage.getItem('business'),
+        provincia: inputValue.provincia,
+        localidad: inputValue.localidad,
         // idChief,
         // imgProfile: inputValue.imgProfile
-      }
+      };
       if (inputValue.imgProfile !== undefined) {
         data['imgProfile'] = inputValue.imgProfile;
       }
 
-      createNewUSer(data).then((resp) => {
-        if(!resp.success) {
-          setTextAlert("Ocurrió un problema")
-          setTypeAlert("error");
-        } else {
-          setTextAlert("Cuenta creada con éxito")
-          setTypeAlert("success");
-          setBtnEdit(!btnEdit);
-          setEditInput(true)
-        }
-      
-      })
-      .catch((error) => {
-        setTextAlert("Ocurrió un problema")
-      setTypeAlert("error");
-      })
-      .finally(()=>{
-        showAlertAnimation();
-      });
+      createNewUSer(data)
+        .then((resp) => {
+          if (!resp.success) {
+            setTextAlert('Ocurrió un problema');
+            setTypeAlert('error');
+          } else {
+            setTextAlert('Cuenta creada con éxito');
+            setTypeAlert('success');
+            setBtnEdit(!btnEdit);
+            setEditInput(true);
+          }
+        })
+        .catch((error) => {
+          setTextAlert('Ocurrió un problema');
+          setTypeAlert('error');
+        })
+        .finally(() => {
+          showAlertAnimation();
+        });
       setCleanImageInput(true);
       setInputValue({
         nombre: '',
         legajo: '',
         email: '',
         celular: '',
-        nivel: myRol === "2" ? "1" : "",
+        nivel: myRol === '2' ? '1' : '',
         puesto: '',
         localidad: '',
         provincia: '',
-        contrato:'',
+        contrato: '',
       });
       setLocalidadesOptions([]);
     }
@@ -129,83 +135,82 @@ function Cuenta() {
 
   const showAlertAnimation = () => {
     window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
+      top: 0,
+      behavior: 'smooth',
+    });
     setShowlert(true);
     setTimeout(() => {
-        setShowlert(false);
-
+      setShowlert(false);
     }, 7000);
-  }
+  };
 
   useEffect(() => {
-    if(location.pathname === "/crear-cuenta") getProvincias().then((resp) => setProvinciasOptions(resp));
-    if (location.pathname === "/cuenta") {
+    if (location.pathname === '/crear-cuenta')
+      getProvincias().then((resp) => setProvinciasOptions(resp));
+    if (location.pathname === '/cuenta') {
       getUserInfo(idUser).then((resp) => {
         setInputValue({
           nombre: resp[0].fullName,
           legajo: resp[0].legajo,
           email: resp[0].email,
-          celular:resp[0].number,
+          celular: resp[0].number,
           nivel: resp[0].rol,
           puesto: resp[0].puesto,
           localidad: resp[0].localidad,
           provincia: resp[0].provincia,
-          contrato:resp[0].contratoComedor,
-          imgProfile: resp[0].imgProfile
-        })
+          contrato: resp[0].contratoComedor,
+          imgProfile: resp[0].imgProfile,
+        });
         getProvincias().then((provs) => {
           setProvinciasOptions(provs);
-          const idProvSeleccionada = provs.find((item) => item.nombre ===  resp[0].provincia).id;
+          const idProvSeleccionada = provs.find((item) => item.nombre === resp[0].provincia).id;
           getLocalidades(idProvSeleccionada).then((resp) => setLocalidadesOptions(resp));
         });
         setSrcImage(perfil);
         setIsANewProfile(false);
-      })
+      });
     } else {
       setInputValue({
         nombre: '',
         legajo: '',
         email: '',
         celular: '',
-        nivel: myRol === "2" ? "1" : "",
+        nivel: myRol === '2' ? '1' : '',
         puesto: '',
         localidad: '',
         provincia: '',
-        contrato:'',
-      })
-      setSrcImage(placeholder)
+        contrato: '',
+      });
+      setSrcImage(placeholder);
       setIsANewProfile(true);
-      setNivelOptions(myRol === "3" ? ["1", "2"] : ["1", "2", "3"] )
-      setPuestoOptions(myRol === "2" ? PUESTOS_N1 : PUESTOS_N2)
+      setNivelOptions(myRol === '3' ? ['1', '2'] : ['1', '2', '3']);
+      setPuestoOptions(myRol === '2' ? PUESTOS_N1 : PUESTOS_N2);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if (inputValue && inputValue.nivel === "1" ) {
-      setPuestoOptions(PUESTOS_N1);   
-      setHidePuestos(false)   
-    } else if (inputValue && inputValue.nivel === "2" ) {
+    if (inputValue && inputValue.nivel === '1') {
+      setPuestoOptions(PUESTOS_N1);
+      setHidePuestos(false);
+    } else if (inputValue && inputValue.nivel === '2') {
       setPuestoOptions(PUESTOS_N2);
-      setHidePuestos(false)
-    } else if (inputValue && inputValue.nivel === "3" ) {
-      setHidePuestos(true)
+      setHidePuestos(false);
+    } else if (inputValue && inputValue.nivel === '3') {
+      setHidePuestos(true);
     }
-
-  }, [inputValue])
-  
-  
+  }, [inputValue]);
 
   return (
-    
     <div className={styles.container}>
-        { showAlert && <Alert type={typeAlert} text={textAlert}></Alert> }
-        {inputValue && 
+      {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}
+      {inputValue && (
         <div className={styles.wrapper}>
-
-          <ImageUploader uploadPhoto={handleChange} photo={inputValue.imgProfile} 
-            cleanImageInput={cleanImageInput} setCleanImageInput={setCleanImageInput}/>
+          <ImageUploader
+            uploadPhoto={handleChange}
+            photo={inputValue.imgProfile}
+            cleanImageInput={cleanImageInput}
+            setCleanImageInput={setCleanImageInput}
+          />
           <div className={styles.formContainer}>
             <form onSubmit={handleSubmit} action='' className={styles.formulario}>
               <div className={styles.inputContainer}>
@@ -256,8 +261,7 @@ function Cuenta() {
                 />
                 {errors.email && <p className='danger'>{errors.email}</p>}
               </div>
-              {
-                (isANewProfile && myRol === "2" )  || (!isANewProfile)   ?
+              {(isANewProfile && myRol === '2') || !isANewProfile ? (
                 <div className={styles.inputContainer}>
                   <label htmlFor=''>Nivel</label>
                   <input
@@ -268,31 +272,32 @@ function Cuenta() {
                     name='nivel'
                     disabled
                   />
-                {errors.nivel && <p className='danger'>{errors.nivel}</p>}
-              </div>
-              :
-              <div className={styles.inputContainer}>
-                <label htmlFor=''>Nivel</label>
-                <select
-                  className={`${errors.nivel && 'danger'} ${styles.input} ${styles.select}`}
-                  value={inputValue.nivel}
-                  onChange={handleChange}
-                  name='nivel'
-                  disabled={!isANewProfile}
-                >
-                  <option value='' selected hidden>- Seleccione -</option>
-                  {nivelOptions.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
+                  {errors.nivel && <p className='danger'>{errors.nivel}</p>}
+                </div>
+              ) : (
+                <div className={styles.inputContainer}>
+                  <label htmlFor=''>Nivel</label>
+                  <select
+                    className={`${errors.nivel && 'danger'} ${styles.input} ${styles.select}`}
+                    value={inputValue.nivel}
+                    onChange={handleChange}
+                    name='nivel'
+                    disabled={!isANewProfile}
+                  >
+                    <option value='' selected hidden>
+                      - Seleccione -
                     </option>
-                  ))}
-                </select>
-                {errors.nivel && <p className='danger'>{errors.nivel}</p>}
-              </div>
-              }
-              
-              {
-                !hidePuestos && 
+                    {nivelOptions.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.nivel && <p className='danger'>{errors.nivel}</p>}
+                </div>
+              )}
+
+              {!hidePuestos && (
                 <div className={styles.inputContainer}>
                   <label htmlFor=''>Puesto</label>
                   <select
@@ -302,7 +307,9 @@ function Cuenta() {
                     name='puesto'
                     disabled={!isANewProfile}
                   >
-                    <option value='' selected hidden>- Seleccione -</option>
+                    <option value='' selected hidden>
+                      - Seleccione -
+                    </option>
                     {puestoOptions.map((option, index) => (
                       <option key={index} value={option}>
                         {option}
@@ -310,9 +317,9 @@ function Cuenta() {
                     ))}
                   </select>
                   {errors.puesto && <p className='danger'>{errors.puesto}</p>}
-              </div>
-              }
-              
+                </div>
+              )}
+
               <div className={styles.inputContainer}>
                 <label htmlFor=''>Provincia</label>
                 <select
@@ -322,12 +329,14 @@ function Cuenta() {
                   name='provincia'
                   disabled={!isANewProfile}
                 >
-                  <option value='' selected hidden>- Seleccione -</option>
-                    {provinciasOptions.map((option, index) => (
-                      <option key={index} value={option.nombre}>
-                        {option.nombre}
-                      </option>
-                    ))}
+                  <option value='' selected hidden>
+                    - Seleccione -
+                  </option>
+                  {provinciasOptions.map((option, index) => (
+                    <option key={index} value={option.nombre}>
+                      {option.nombre}
+                    </option>
+                  ))}
                 </select>
                 {errors.provincia && <p className='danger'>{errors.provincia}</p>}
               </div>
@@ -340,12 +349,14 @@ function Cuenta() {
                   name='localidad'
                   disabled={!isANewProfile}
                 >
-                  <option value='' selected hidden>- Seleccione -</option>
-                    {localidadesOptions.map((option, index) => (
-                      <option key={index} value={option.nombre}>
-                        {option.nombre}
-                      </option>
-                    ))}
+                  <option value='' selected hidden>
+                    - Seleccione -
+                  </option>
+                  {localidadesOptions.map((option, index) => (
+                    <option key={index} value={option.nombre}>
+                      {option.nombre}
+                    </option>
+                  ))}
                 </select>
                 {errors.localidad && <p className='danger'>{errors.localidad}</p>}
               </div>
@@ -361,45 +372,43 @@ function Cuenta() {
                 />
                 {errors.contrato && <p className='danger'>{errors.contrato}</p>}
               </div>
-            {
-              isANewProfile ? 
-              <div className={styles.btnContainer}>
-                <button
-                  type='submit'
-                  className={styles.btn}
-                  style={{ backgroundColor: `${!btnEdit ? '#a0b875' : '#7bc100'}` }}
-                  id={styles.btnDos}
-                >
-                  Crear Cuenta
-                </button>
-              </div>
-              : 
-              <div className={styles.btnContainer}>
-                <button
-                  disabled={btnEdit}
-                  type='button'
-                  onClick={disabledInputs}
-                  id={styles.btnUno}
-                  className={styles.btn}
-                >
-                  Editar
-                </button>
-                <button
-                  disabled={!btnEdit}
-                  type='submit'
-                  className={styles.btn}
-                  style={{ backgroundColor: `${!btnEdit ? '#a0b875' : '#7bc100'}` }}
-                  id={styles.btnDos}
-                >
-                  Guardar cambios
-                </button>
-              </div>
-            }
-              
+              {isANewProfile ? (
+                <div className={styles.btnContainer}>
+                  <button
+                    type='submit'
+                    className={styles.btn}
+                    style={{ backgroundColor: `${!btnEdit ? '#a0b875' : '#7bc100'}` }}
+                    id={styles.btnDos}
+                  >
+                    Crear Cuenta
+                  </button>
+                </div>
+              ) : (
+                <div className={styles.btnContainer}>
+                  <button
+                    disabled={btnEdit}
+                    type='button'
+                    onClick={disabledInputs}
+                    id={styles.btnUno}
+                    className={styles.btn}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    disabled={!btnEdit}
+                    type='submit'
+                    className={styles.btn}
+                    style={{ backgroundColor: `${!btnEdit ? '#a0b875' : '#7bc100'}` }}
+                    id={styles.btnDos}
+                  >
+                    Guardar cambios
+                  </button>
+                </div>
+              )}
             </form>
           </div>
         </div>
-        }
+      )}
       <footer className={styles.footer}>
         <div className={styles.footerWrapper}>
           <i class='ri-home-5-fill' style={{ color: 'white', fontSize: '24px' }}></i>
@@ -414,7 +423,6 @@ function Cuenta() {
         </div>
       </footer>
     </div>
-   
   );
 }
 

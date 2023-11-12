@@ -47,39 +47,37 @@ import Cuentas from './views/Cuentas/Cuentas';
 import RecordatoriosContainer from './views/Recordatorios/RecordatoriosContainer';
 import SolicitudesDeEdicion from './views/SolicitudesDeEdicion/SolicitudesDeEdicion';
 
-
 function App() {
   const location = useLocation();
   const currentLocation = location?.pathname;
-  const isLoggedIn = !!localStorage.getItem('rol')
+  const isLoggedIn = !!localStorage.getItem('rol');
   const [keySearchForms, setKeySearchForms] = useState();
   const [keySearchHistorial, setKeySearchHistorial] = useState();
 
   const handleSearchData = (value) => {
     switch (currentLocation) {
       case '/formularios':
-        setKeySearchForms(value)
+        setKeySearchForms(value);
         break;
       case '/formularios-cargados':
-        setKeySearchHistorial(value)
+        setKeySearchHistorial(value);
         break;
       // case '/formularios':
-        // setKeySearchForms(value)
-        // break;
+      // setKeySearchForms(value)
+      // break;
       // case '/formularios':
-        // setKeySearchForms(value)
-        // break;
-        
+      // setKeySearchForms(value)
+      // break;
+
       default:
         break;
     }
-
-  }
+  };
 
   useEffect(() => {
     setKeySearchForms('');
-    setKeySearchHistorial('') 
-  }, [currentLocation])
+    setKeySearchHistorial('');
+  }, [currentLocation]);
 
   return (
     <div className='App'>
@@ -92,11 +90,13 @@ function App() {
           currentLocation !== '/crear-contraseña' &&
           currentLocation !== '/registro' &&
           currentLocation !== '/restablecer-contrasena' ? (
-            <Header  
-            search={(value)=> handleSearchData(value)} />
+            <Header search={(value) => handleSearchData(value)} />
           ) : null}
           <Routes>
-          <Route path="/" element={<Navigate to={isLoggedIn ? '/inicio' : '/inicio-de-sesion'} />} />
+            <Route
+              path='/'
+              element={<Navigate to={isLoggedIn ? '/inicio' : '/inicio-de-sesion'} />}
+            />
 
             <Route path='/registro' element={<Register />} />
             <Route path='/forgotpassword' element={<RecoverPassword />} />
@@ -111,11 +111,20 @@ function App() {
 
             <Route path='/recordatorios' element={<RecordatoriosContainer />} />
 
-            <Route path='/formularios' element={<FormulariosContainer filterByKey={keySearchForms}/>} />
-            <Route path='/formularios-cargados' element={<FormulariosCargados filterByKey={keySearchHistorial} />} />
+            <Route
+              path='/formularios'
+              element={<FormulariosContainer filterByKey={keySearchForms} />}
+            />
+            <Route
+              path='/formularios-cargados'
+              element={<FormulariosCargados filterByKey={keySearchHistorial} />}
+            />
             <Route path='/formularios-cargados/:form' element={<FormCargado />} />
 
-            <Route path='/solicitudes-edicion' element={<SolicitudesDeEdicion filterByKey={keySearchHistorial} />} />
+            <Route
+              path='/solicitudes-edicion'
+              element={<SolicitudesDeEdicion filterByKey={keySearchHistorial} />}
+            />
 
             <Route path='/crear-cuenta' element={<CrearCuenta />} />
 
@@ -147,10 +156,9 @@ function App() {
             <Route path='/control-procesos' element={<ControlProcesos />} />
             <Route path='/descongelamiento' element={<Descongelamiento />} />
             <Route path='/despacho-produccion' element={<DespachoProduccion />} />
-          <Route path='/distribucion-expedicion' element={<DistribucionExpedicion />} />
+            <Route path='/distribucion-expedicion' element={<DistribucionExpedicion />} />
             <Route path='/recepcion' element={<Recepcion />} />
             <Route path='/sanitizacion' element={<Sanitizacion />} />
-
           </Routes>
           {currentLocation !== '/inicio-de-sesion' &&
           currentLocation !== '/crear-contraseña' &&
@@ -158,7 +166,6 @@ function App() {
           currentLocation !== '/restablecer-contrasena' ? (
             <Footer />
           ) : null}
-          
         </div>
         {/* </div> */}
       </>
