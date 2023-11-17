@@ -5,10 +5,13 @@ export const generarFechas = (fechaInicial, temporalidad) => {
   
     // Agregar la fecha inicial al array
     // la tenemos en formato MM/DD/YYYY y la queremos en formato DD/MM/YYYY
-    const [mes, dia, año] = fecha.toLocaleDateString().split('/');
-    const fechaFormateada = `${dia.padStart(2, '0')}/${mes.padStart(2, '0')}/${año}`;
-    fechas.push({ fecha: fechaFormateada , ejecutado: false});
-  
+    const dia = fecha.getDate().toString().padStart(2, '0');
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Se suma 1 ya que los meses van de 0 a 11
+    const año = fecha.getFullYear().toString();
+    
+    const fechaFormateada = `${dia}/${mes}/${año}`;
+    fechas.push({ fecha: fechaFormateada, ejecutado: false })
+
     // Determinar el incremento de tiempo en base a la temporalidad
     let incremento = 1;
     switch (temporalidad) {
@@ -38,10 +41,12 @@ export const generarFechas = (fechaInicial, temporalidad) => {
     for (let i = 0; i < 10 * 12; i += incremento) {
       fecha.setMonth(fecha.getMonth() + incremento);
       // la tenemos en formato MM/DD/YYYY y la queremos en formato DD/MM/YYYY
-      const [mes, dia, año] = fecha.toLocaleDateString().split('/');
-      const fechaFormateada = `${dia.padStart(2, '0')}/${mes.padStart(2, '0')}/${año}`;
+      const dia = fecha.getDate().toString().padStart(2, '0');
+      const mes = (fecha.getMonth() + 1).toString().padStart(2, '0'); // Se suma 1 ya que los meses van de 0 a 11
+      const año = fecha.getFullYear().toString();
 
-      fechas.push({ fecha: fechaFormateada , ejecutado: false});
+      const fechaFormateada = `${dia}/${mes}/${año}`;
+      fechas.push({ fecha: fechaFormateada, ejecutado: false })
     }
   
     return fechas;
@@ -59,12 +64,13 @@ export const generarFechas = (fechaInicial, temporalidad) => {
     }
     return null;
   };
+  
 
  export  const FrecuenciaToDias = {
-    Mensual: 7, // 7 días
-    Bimestral: 7, // 2 meses
-    Trimestral: 30, // 3 meses
-    Semestral: 30, // 6 meses
-    Anual: 60, // 1 año
-    'Cada 2 años': 60, // 2 años
+    Mensual: 7, 
+    Bimestral: 7, 
+    Trimestral: 30, 
+    Semestral: 30, 
+    Anual: 60, 
+    'Cada 2 años': 60,
   };
