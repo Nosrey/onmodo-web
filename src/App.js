@@ -46,7 +46,7 @@ import CrearContraseña from './components/CrearContraseña/CrearContraseña';
 import Cuentas from './views/Cuentas/Cuentas';
 import RecordatoriosContainer from './views/Recordatorios/RecordatoriosContainer';
 import SolicitudesDeEdicion from './views/SolicitudesDeEdicion/SolicitudesDeEdicion';
-
+import Legajos from './views/Legajos/Legajos';
 
 function App() {
   const location = useLocation();
@@ -116,7 +116,7 @@ function App() {
             <Route path='/formularios-cargados/:form' element={<FormCargado />} />
 
             <Route path='/solicitudes-edicion' element={<SolicitudesDeEdicion filterByKey={keySearchHistorial} />} />
-
+            <Route path='/legajos' element={<Legajos />} />
             <Route path='/crear-cuenta' element={<CrearCuenta />} />
 
             {/* Forms */}

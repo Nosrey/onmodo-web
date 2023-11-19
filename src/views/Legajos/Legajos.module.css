@@ -1,0 +1,115 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 200px;
+}
+
+.wrapper {
+  width: 93%;
+}
+
+.orderContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 0 34px;
+  gap: 10px;
+  align-items: center;
+}
+
+.spanOrder {
+  font-weight: 325;
+  font-size: 15px;
+  line-height: 18px;
+}
+
+#select {
+  box-sizing: border-box;
+  border: 1px solid #c3c3c3;
+  border-radius: 10px;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 18px;
+  padding: 5px 15px;
+  outline: none;
+  width: 15%;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.head,
+.contEdicion {
+  font-family: GothamBold;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.accion {
+  text-align: center !important;
+}
+
+.contEdicion {
+  display: flex !important;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.contEdicion span {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.actionIcon {
+  margin-right: 8px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+th{
+  font-weight: normal;
+}
+
+@media screen and (max-width: 430px) {
+  table {
+    font-size: 0.9rem;
+  }
+  .actionIcon {
+    font-size: 16px !important;
+  }
+  .contEdicion span {
+    font-size: 0.8rem;  
+  }
+}
+
+@media screen and (max-width: 390px) {
+  table {
+    font-size: 0.8rem;
+  }
+  .actionIcon {
+    font-size: 14px !important;
+  }
+  .contEdicion span {
+    font-size: 0.7rem;  
+  }
+}
+
+@media screen and (max-width: 360px) {
+  table {
+    font-size: 0.6rem;
+  }
+  .actionIcon {
+    font-size: 12px !important;
+  }
+  .contEdicion span {
+    font-size: 0.6rem;  
+  }
+}
