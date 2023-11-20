@@ -54,7 +54,7 @@ const Legajos = () => {
             </select>
           </div>
           <table className={styles.table}>
-              <thead className={styles.head}>
+              <thead className={styles.head} style={{ cursor: 'default'}}>
                 <tr>
                   <th>Legajos</th>
                   <th>Nombre</th>
@@ -64,7 +64,7 @@ const Legajos = () => {
               </thead>
               <tbody>
               {legajos.map((legajo, index) => (
-                  <tr key={index} className={styles.fila}>
+                  <tr key={index} className={styles.fila}  style={{ cursor: 'default'}}>
                     <td>{legajo.legajo}</td>
                     <td>{legajo.nombre}</td>
                     <td>{legajo.nivel}</td>
