@@ -276,7 +276,7 @@ function FormCargado() {
           <ModalEdicionInfo openModal={openModalInfo} setOpenModal={setOpenModalInfo} form={formSelected}/>
 
           <ModalEdicion openModal={openModal} setOpenModal={setOpenModal} idForm={formSelected} urlForm={form} showAlert={(type, msg) => showAlertNotif(type, msg)}/>
-          <ModalBorrar modalDelete={modalDelete} setModalDelete={setModalDelete} idForm={formSelected} url={form} showAlert={(type, msg) => showAlertNotif(type, msg)} />
+          <ModalBorrar fileToDelete={'formulario'} modalDelete={modalDelete} setModalDelete={setModalDelete} idForm={formSelected} url={form} showAlert={(type, msg) => showAlertNotif(type, msg)} />
         </div>
       </div>)}
       {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}

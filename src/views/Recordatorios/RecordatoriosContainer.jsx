@@ -53,7 +53,7 @@ function RecordatoriosContainer() {
 
       {showModal && (
         <Modal
-          content={<CreacionRecordatorio updateRecordatorios={handleUpdateInfo} />}
+          content={<CreacionRecordatorio updateRecordatorios={(e) => handleUpdateInfo(e)} />}
           closeModal={() => setShowModal(false)}
         />
       )}

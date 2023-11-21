@@ -124,7 +124,6 @@ function VerificacionTermometros() {
   useEffect(() => {
     if (infoPrecargada) {
       // muestro un form del historial
-      console.log('infoPrecargada', infoPrecargada);
       setValues({
         fecha: infoPrecargada.fecha,
         responsable: infoPrecargada.responsable,

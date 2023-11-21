@@ -77,7 +77,6 @@ function ItemRecordatorio({ data, updateInfo }) {
   const evaluarFechaYFrecuencia = (fechaString, frecuencia) => {
     const fechaActual = new Date();
     const fechaLimite = parseFecha(fechaString);
-
     // Comprueba si la fecha ya pasó
     if (fechaActual > fechaLimite) {
       return 'vencido';
