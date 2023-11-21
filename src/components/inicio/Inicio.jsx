@@ -45,6 +45,7 @@ function Inicio() {
     getReminders(localStorage.getItem('business'))
       .then((resp) => {
         if (resp.length !== 0) {
+          const fechasCercanasPorVencer = []
           for (let i = 0; i < resp.length; i++) {
             if (resp[i].status === "En curso") { // solo evaluo las que estan en curso para saber si estoy cerca de una fecha de vencimiento
               const valueDate =
@@ -52,13 +53,17 @@ function Inicio() {
         
         
               const evaluacionAviso = evaluarFechaYFrecuencia(valueDate, resp.frecuencia);
-              if (evaluacionAviso !== '') {
-                setRemindersCloseToExpire(true)
-              } else 
-              setRemindersCloseToExpire(false)
+              fechasCercanasPorVencer.push(evaluacionAviso)
+              
             }
             
           }
+          
+          if (fechasCercanasPorVencer.some(valor => valor === 'vencido' || valor === 'pendiente')) {
+            setRemindersCloseToExpire(true) // al menos un valor esta proximo a vencer
+          } else {
+            setRemindersCloseToExpire(false)
+          } 
         }
       })
   };

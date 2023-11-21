@@ -201,7 +201,7 @@ function RegistroDeDecomiso() {
                     <p className='index'>{index + 1} </p>
 
                     {inputs.map((input, index2) => (
-                      <div key={replicaValues[index].id + index2}>
+                      <div key={replicaValues[index]?.id + index2}>
                         {input.label === 'Fecha' ? (
                           <TextField
                             type='date'

@@ -165,8 +165,6 @@ function VerificacionBalanza() {
   useEffect(() => {
     if (infoPrecargada) {
       // muestro un form del historial
-      console.log('infoPrecargada', infoPrecargada);
-      console.log('sepudo');
       setValues({
         fecha: infoPrecargada.fecha,
         responsable: infoPrecargada.responsable,
@@ -175,10 +173,8 @@ function VerificacionBalanza() {
         idUser: idUser,
       });
       setReplicas(infoPrecargada.inputs.length);
-      console.log('values', values);
     } else {
       // creo un form desde cero
-      console.log('error');
       setValues({
         fecha: '',
         responsable: '',
