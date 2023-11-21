@@ -1128,8 +1128,9 @@ export const generatePDF = (formulario, form) => {
     pdfMake.createPdf(documentDefinition).download(`verificacionbalanza_formulario.pdf`);
   }
   else if (form === "verificaciontermometros") {
-    pdfContent.push("Verificación de Termómetros");
-
+    const content = [];
+    content.push("Verificación de Termómetros");
+  
     const {
       fecha,
       responsable,
@@ -1138,35 +1139,20 @@ export const generatePDF = (formulario, form) => {
       verified,
       fechaHora,
     } = formulario;
-
-    pdfContent.push(`Fecha: ${fecha}`);
-    pdfContent.push(`Responsable: ${responsable}`);
-    pdfContent.push(`Verificado: ${verified}`);
-    pdfContent.push(`Fecha y Hora: ${fechaHora}`);
-
-
-    if (inputsTrimestral.length > 0) {
-      pdfContent.push("Inputs Trimestrales:");
-      inputsTrimestral.forEach((input, index) => {
-        pdfContent.push(`Input Trimestral #${index + 1}`);
-        Object.keys(input).forEach(key => {
-          pdfContent.push(`${key}: ${input[key]}`);
-        });
-        pdfContent.push("-----");
-      });
-    }
-
-    if (inputsSemestral.length > 0) {
-      pdfContent.push("Inputs Semestrales:");
-      inputsSemestral.forEach((input, index) => {
-        pdfContent.push(`Input Semestral #${index + 1}`);
-        Object.keys(input).forEach(key => {
-          pdfContent.push(`${key}: ${input[key]}`);
-        });
-        pdfContent.push("-----");
-      });
-    }
-
+  
+    content.push(`Fecha: ${fecha}`);
+    content.push(`Responsable: ${responsable}`);
+    content.push(`Verificado: ${verified}`);
+    content.push(`Fecha y Hora: ${fechaHora}`);
+  
+    // ... el resto de tu código ...
+  
+    const documentDefinition = {
+      content,
+      // Aquí puedes agregar estilos si los necesitas
+    };
+  
+    pdfMake.createPdf(documentDefinition).download(`verificaciontermometros_formulario.pdf`);
   }
   else {
     return null

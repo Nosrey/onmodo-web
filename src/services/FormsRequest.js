@@ -1,6 +1,6 @@
 // const URL_API = 'http://localhost:8080';
 
-const URL_API = 'https://api.onmodoapp.com';
+export const URL_API = 'https://api.onmodoapp.com';
 
 export const ejemplo = async ({ dato1, dato2 }) => {
   try {
@@ -39,6 +39,7 @@ export const registroCapacitacion = async (values) => {
     formData.append('rol', localStorage.getItem('rol'));
     formData.append('nombre', localStorage.getItem('userName'));
 
+    console.log('formData', JSON.stringify(formData));
     const response = await fetch(`${URL_API}/api/registrocapacitacion`, {
       method: 'POST',
       body: formData,
@@ -53,7 +54,9 @@ export const registroCapacitacion = async (values) => {
 
 export const entregaRopa = async (values) => {
   try {
-    const response = await fetch(`${URL_API}/api/entregaropa`, {
+    console.log('values', values);
+    console.log('yendo a la direccion: ' + `${URL_API}/api/chequeoepp`);
+    const response = await fetch(`${URL_API}/api/chequeoepp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -247,7 +250,7 @@ export const registroSimulacro = async (values) => {
 };
 
 export const reporteRechazo = async (values) => {
-  try {
+  try {    
     const response = await fetch(`${URL_API}/api/reporterechazo`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

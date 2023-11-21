@@ -19,6 +19,7 @@ function ConstanciaEntrega() {
     const [showAlert, setShowlert] = useState(false);
 
     const prueba = useSelector(state => state.constanciaEntregaR.inputsValues)
+    var idUser = localStorage.getItem("idUser");
 
     const [inputs] = useState([
         { id: 1, label: 'Producto' },
@@ -45,7 +46,7 @@ function ConstanciaEntrega() {
         inputs: [{ "Producto": '', "Tipo / modelo": '', "Marca": '', "Posee certificacion": '', "Cantidad": '', "Fecha de entrega": '', id: 0 }],
         checkboxes: [],
         date: "",
-        idUser: "643ea98d5b44dd9765966ae7"
+        idUser: idUser
     })
     const [objValues, setObjValues] = useState({ producto: "", tipo: "", marca: "", certificacion: "", cantidad: "", fecha: "", })
     const [inputValues, setInputValues] = useState([])
