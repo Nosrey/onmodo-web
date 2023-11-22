@@ -183,11 +183,11 @@ export const generatePDF = (formulario, form) => {
         },
         layout: {
           hLineWidth: () => 1,
-          vLineWidth: () => 1, 
-          hLineColor: () => 'black', 
-          vLineColor: () => 'black', 
+          vLineWidth: () => 1,
+          hLineColor: () => 'black',
+          vLineColor: () => 'black',
           paddingTop: (i) => (i === 0 ? 10 : 10),
-          paddingBottom: (i) => (i === 1 ? 0 : 5), 
+          paddingBottom: (i) => (i === 1 ? 0 : 5),
         },
       },
 
@@ -202,22 +202,22 @@ export const generatePDF = (formulario, form) => {
               { text: 'Nombre:', style: 'label' },
               { text: 'Diagnóstico:', style: 'label' },
               { text: 'Listado:', style: 'label' },
-              { text: 'Responsable:', style: 'label' }, 
+              { text: 'Responsable:', style: 'label' },
             ],
             ...inputs.map((input) => [
               { text: input.fecha || '', style: 'value' },
               { text: input.nombre || '', style: 'value' },
               { text: input.diagnostico || '', style: 'value' },
               { text: input.listado || '', style: 'value' },
-              { text: input.responsable || '', style: 'value' }, 
+              { text: input.responsable || '', style: 'value' },
             ]),
           ],
         },
         layout: {
-          hLineWidth: () => 1, 
-          vLineWidth: () => 1, 
+          hLineWidth: () => 1,
+          vLineWidth: () => 1,
           hLineColor: () => 'black',
-          vLineColor: () => 'black', 
+          vLineColor: () => 'black',
           paddingTop: (i) => (i === 0 ? 10 : 10),
         },
       },
@@ -242,12 +242,12 @@ export const generatePDF = (formulario, form) => {
       subheader: {
         fontSize: 14,
         bold: true,
-        margin: [0, 10, 0, 20], 
+        margin: [0, 10, 0, 20],
       },
       subheader1: {
         fontSize: 14,
         bold: true,
-        margin: [0, 40, 0, 20], 
+        margin: [0, 40, 0, 20],
       },
       label: {
         fontSize: 12,
@@ -258,7 +258,7 @@ export const generatePDF = (formulario, form) => {
       value: {
         fontSize: 12,
         margin: [0, 0, 0, 10],
-        border: [0.5, 0.5, 0.5, 0.5], 
+        border: [0.5, 0.5, 0.5, 0.5],
         fillColor: '#EAFFDC',
         paddingLeft: 5,
         paddingRight: 5,
@@ -289,12 +289,12 @@ export const generatePDF = (formulario, form) => {
           ],
         },
         layout: {
-          hLineWidth: () => 1, 
-          vLineWidth: () => 1, 
-          hLineColor: () => 'black', 
-          vLineColor: () => 'black', 
+          hLineWidth: () => 1,
+          vLineWidth: () => 1,
+          hLineColor: () => 'black',
+          vLineColor: () => 'black',
           paddingTop: (i) => (i === 0 ? 10 : 10),
-          paddingBottom: (i) => (i === 1 ? 0 : 5), 
+          paddingBottom: (i) => (i === 1 ? 0 : 5),
         },
       });
     });
@@ -415,26 +415,26 @@ export const generatePDF = (formulario, form) => {
         layout: {
           hLineWidth: () => 1,
           vLineWidth: () => 1,
-          hLineColor: () => 'black', 
+          hLineColor: () => 'black',
           vLineColor: () => 'black',
           paddingTop: (i) => (i === 0 ? 10 : 10),
-          paddingBottom: (i) => (i === 1 ? 0 : 5), 
+          paddingBottom: (i) => (i === 1 ? 0 : 5),
         },
       },
     ];
 
     const checkboxesTable = {
       table: {
-        widths: ['50%', '50%'], 
+        widths: ['50%', '50%'],
         body: [],
       },
       layout: {
-        hLineWidth: () => 1, 
-        vLineWidth: () => 1, 
-        hLineColor: () => 'black', 
-        vLineColor: () => 'black', 
+        hLineWidth: () => 1,
+        vLineWidth: () => 1,
+        hLineColor: () => 'black',
+        vLineColor: () => 'black',
         paddingTop: (i) => (i === 0 ? 2 : 2),
-        paddingBottom: (i) => (i === 1 ? 2 : 2), 
+        paddingBottom: (i) => (i === 1 ? 2 : 2),
       },
     };
     pdfContent.push({ text: '', style: 'label' });
@@ -453,12 +453,12 @@ export const generatePDF = (formulario, form) => {
         body: [],
       },
       layout: {
-        hLineWidth: () => 1, 
+        hLineWidth: () => 1,
         vLineWidth: () => 1,
         hLineColor: () => 'black',
-        vLineColor: () => 'black', 
+        vLineColor: () => 'black',
         paddingTop: (i) => (i === 0 ? 2 : 2),
-        paddingBottom: (i) => (i === 1 ? 2 : 2), 
+        paddingBottom: (i) => (i === 1 ? 2 : 2),
       },
     };
 
@@ -539,11 +539,11 @@ export const generatePDF = (formulario, form) => {
         },
         layout: {
           hLineWidth: () => 1,
-          vLineWidth: () => 1, 
-          hLineColor: () => 'black', 
-          vLineColor: () => 'black', 
+          vLineWidth: () => 1,
+          hLineColor: () => 'black',
+          vLineColor: () => 'black',
           paddingTop: (i) => (i === 0 ? 10 : 10),
-          paddingBottom: (i) => (i === 1 ? 0 : 5), 
+          paddingBottom: (i) => (i === 1 ? 0 : 5),
         },
         margin: [0, 10, 0, 10],
       },
@@ -695,11 +695,11 @@ export const generatePDF = (formulario, form) => {
       },
       layout: {
         hLineWidth: () => 1,
-        vLineWidth: () => 1, 
+        vLineWidth: () => 1,
         hLineColor: () => 'black',
-        vLineColor: () => 'black', 
+        vLineColor: () => 'black',
         paddingTop: (i) => (i === 0 ? 10 : 10),
-        paddingBottom: (i) => (i === 1 ? 0 : 5), 
+        paddingBottom: (i) => (i === 1 ? 0 : 5),
       },
       margin: [0, 10, 0, 10],
     };
@@ -715,7 +715,7 @@ export const generatePDF = (formulario, form) => {
         ],
         [
           { text: `Cantidad: ${input.cantidad}`, style: 'value', colSpan: 1 },
-          { text: `Producto Decomisado: ${input.productoDecomisado}`, style: 'value', colSpan: 3  },
+          { text: `Producto Decomisado: ${input.productoDecomisado}`, style: 'value', colSpan: 3 },
           { text: '' },
           { text: '' },
         ],
@@ -753,8 +753,8 @@ export const generatePDF = (formulario, form) => {
       },
       value: {
         fontSize: 12,
-        margin: [0, 0, 0, 10], 
-        border: [0.5, 0.5, 0.5, 0.5], 
+        margin: [0, 0, 0, 10],
+        border: [0.5, 0.5, 0.5, 0.5],
         fillColor: '#EAFFDC',
         paddingLeft: 5,
         paddingRight: 5,
@@ -776,11 +776,11 @@ export const generatePDF = (formulario, form) => {
       },
       layout: {
         hLineWidth: () => 1,
-        vLineWidth: () => 1, 
-        hLineColor: () => 'black', 
-        vLineColor: () => 'black', 
+        vLineWidth: () => 1,
+        hLineColor: () => 'black',
+        vLineColor: () => 'black',
         paddingTop: (i) => (i === 0 ? 10 : 10),
-        paddingBottom: (i) => (i === 1 ? 0 : 5), 
+        paddingBottom: (i) => (i === 1 ? 0 : 5),
       },
       margin: [0, 10, 0, 10],
     };
@@ -815,10 +815,10 @@ export const generatePDF = (formulario, form) => {
         body: [],
       },
       layout: {
-        hLineWidth: () => 1, 
-        vLineWidth: () => 1, 
-        hLineColor: () => 'black', 
-        vLineColor: () => 'black', 
+        hLineWidth: () => 1,
+        vLineWidth: () => 1,
+        hLineColor: () => 'black',
+        vLineColor: () => 'black',
         paddingTop: () => 5,
         paddingBottom: () => 5,
       },
@@ -1030,7 +1030,7 @@ export const generatePDF = (formulario, form) => {
       value: {
         fontSize: 12,
         margin: [0, 0, 0, 10],
-        border: [0.5, 0.5, 0.5, 0.5], 
+        border: [0.5, 0.5, 0.5, 0.5],
         fillColor: '#EAFFDC',
         paddingLeft: 5,
         paddingRight: 5,
@@ -1080,12 +1080,12 @@ export const generatePDF = (formulario, form) => {
         ],
       },
       layout: {
-        hLineWidth: () => 1, 
-        vLineWidth: () => 1, 
-        hLineColor: () => 'black', 
+        hLineWidth: () => 1,
+        vLineWidth: () => 1,
+        hLineColor: () => 'black',
         vLineColor: () => 'black',
         paddingTop: (i) => (i === 0 ? 2 : 2),
-        paddingBottom: (i) => (i === 1 ? 2 : 2), 
+        paddingBottom: (i) => (i === 1 ? 2 : 2),
       },
     };
 
@@ -1102,12 +1102,12 @@ export const generatePDF = (formulario, form) => {
         ],
       },
       layout: {
-        hLineWidth: () => 1, 
-        vLineWidth: () => 1, 
-        hLineColor: () => 'black', 
+        hLineWidth: () => 1,
+        vLineWidth: () => 1,
+        hLineColor: () => 'black',
         vLineColor: () => 'black',
         paddingTop: (i) => (i === 0 ? 2 : 2),
-        paddingBottom: (i) => (i === 1 ? 0 : 2), 
+        paddingBottom: (i) => (i === 1 ? 0 : 2),
       },
     };
 
@@ -1128,31 +1128,311 @@ export const generatePDF = (formulario, form) => {
     pdfMake.createPdf(documentDefinition).download(`verificacionbalanza_formulario.pdf`);
   }
   else if (form === "verificaciontermometros") {
-    const content = [];
-    content.push("Verificación de Termómetros");
-  
+    const pdfContent = [];
+
+    const styles = {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 20],
+      },
+      subheader: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 10, 0, 20],
+      },
+      subheader1: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 40, 0, 20],
+      },
+      label: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 5, 0, 0],
+        color: 'rgb(37, 35, 35)',
+      },
+      value: {
+        fontSize: 12,
+        margin: [0, 0, 0, 10],
+        border: [0.5, 0.5, 0.5, 0.5],
+        fillColor: '#EAFFDC',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: [5, 5, 5, 5],
+      },
+    };
+
+    pdfContent.push({ text: 'Formulario ONMODO', style: 'header', alignment: 'center' });
+    pdfContent.push({ text: 'Verificación de Instrumentos de Medición: Termometros', style: 'subheader', alignment: 'center' });
+
+  //   {
+  //     "fecha": "2023-11-21",
+  //     "responsable": "a",
+  //     "inputsTrimestral": [
+  //         {
+  //             "id": 0,
+  //             "código": "b",
+  //             "Tipo (PIN/IR)": "IR",
+  //             "responsabledeluso": "c",
+  //             "área": "d",
+  //             "punto0": "e",
+  //             "desvío0": "f",
+  //             "punto100": "g",
+  //             "desvío100": "h",
+  //             "accionesdecorrección": "i"
+  //         }
+  //     ],
+  //     "inputsSemestral": [
+  //         {
+  //             "id": 0,
+  //             "código": "j",
+  //             "área": "k",
+  //             "temp.termómreferencia": "l",
+  //             "temp.termómevaluado": "m",
+  //             "desvío": "n",
+  //             "accionesdecorrección": "o"
+  //         }
+  //     ],
+  //     "idUser": "65511179c66bd0041901aa5b"
+  // }
+
     const {
       fecha,
       responsable,
       inputsTrimestral,
       inputsSemestral,
-      verified,
-      fechaHora,
     } = formulario;
-  
-    content.push(`Fecha: ${fecha}`);
-    content.push(`Responsable: ${responsable}`);
-    content.push(`Verificado: ${verified}`);
-    content.push(`Fecha y Hora: ${fechaHora}`);
-  
-    // ... el resto de tu código ...
-  
+
+    pdfContent.push({
+      table: {
+        widths: ['50%', '50%'],
+        body: [   
+          [{ text: 'fecha:', style: 'subheader' }, { text: fecha, style: 'subheader' }],
+          [{ text: 'responsable:', style: 'subheader' }, { text: responsable, style: 'subheader' }],
+        ],
+      }
+    })
+
+    const columnWidths = ['50%', '50%'];
+
+    inputsTrimestral.forEach((input, index) => {
+      pdfContent.push({ text: `Trimestre ${index + 1}:`, style: 'subheader' });
+      pdfContent.push({
+        table: {
+          widths: columnWidths,
+          body: [
+
+            [{ text: 'código:', style: 'label' }, { text: input?.["código"], style: 'value' }],
+
+            [{ text: 'Tipo (PIN/IR):', style: 'label' }, { text: input?.["Tipo (PIN/IR)"], style: 'value' }],
+
+            [{ text: 'responsabledeluso:', style: 'label' }, { text: input?.["responsabledeluso"], style: 'value' }],
+
+            [{ text: 'área:', style: 'label' }, { text: input?.["área"], style: 'value' }],
+
+            [{ text: 'punto0:', style: 'label' }, { text: input?.["punto0"], style: 'value' }],
+
+            [{ text: 'desvío0:', style: 'label' }, { text: input?.["desvío0"], style: 'value' }],
+
+            [{ text: 'punto100:', style: 'label' }, { text: input?.["punto100"], style: 'value' }],
+
+            [{ text: 'desvío100:', style: 'label' }, { text: input?.["desvío100"], style: 'value' }],
+
+            [{ text: 'accionesdecorrección:', style: 'label' }, { text: input?.["accionesdecorrección"], style: 'value' }],
+
+          ],
+        },
+        layout: {
+          hLineWidth: () => 1,
+          vLineWidth: () => 1,
+          hLineColor: () => 'black',
+          vLineColor: () => 'black',
+          paddingTop: (i) => (i === 0 ? 10 : 10),
+          paddingBottom: (i) => (i === 1 ? 0 : 5),
+        },
+      });
+    });
+
+    // lo  mismo de arriba  pero con inputsSemestral
+    inputsSemestral.forEach((input, index) => {
+      pdfContent.push({ text: `Semestre ${index + 1}:`, style: 'subheader' });
+      pdfContent.push({
+        table: {
+          widths: columnWidths,
+          body: [
+
+            [{ text: 'código:', style: 'label' }, { text: input?.["código"], style: 'value' }],
+
+            [{ text: 'área:', style: 'label' }, { text: input?.["área"], style: 'value' }],
+
+            [{ text: 'temp.termómreferencia:', style: 'label' }, { text: input?.["temp.termómreferencia"], style: 'value' }],
+
+            [{ text: 'temp.termómevaluado:', style: 'label' }, { text: input?.["temp.termómevaluado"], style: 'value' }],
+
+            [{ text: 'desvío:', style: 'label' }, { text: input?.["desvío"], style: 'value' }],
+
+            [{ text: 'accionesdecorrección:', style: 'label' }, { text: input?.["accionesdecorrección"], style: 'value' }],
+
+          ],
+        },
+        layout: {
+          hLineWidth: () => 1,
+          vLineWidth: () => 1,
+          hLineColor: () => 'black',
+          vLineColor: () => 'black',
+          paddingTop: (i) => (i === 0 ? 10 : 10),
+          paddingBottom: (i) => (i === 1 ? 0 : 5),
+        },
+      });
+    });
+
+
+
     const documentDefinition = {
-      content,
-      // Aquí puedes agregar estilos si los necesitas
+      content: pdfContent,
+      styles,
     };
-  
-    pdfMake.createPdf(documentDefinition).download(`verificaciontermometros_formulario.pdf`);
+
+    pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
+
+  }
+  else if (form === "entregaropa") {
+    const pdfContent = [];
+
+    const styles = {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 20],
+      },
+      subheader: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 10, 0, 20],
+      },
+      subheader1: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 40, 0, 20],
+      },
+      label: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 5, 0, 0],
+        color: 'rgb(37, 35, 35)',
+      },
+      value: {
+        fontSize: 12,
+        margin: [0, 0, 0, 10],
+        border: [0.5, 0.5, 0.5, 0.5],
+        fillColor: '#EAFFDC',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: [5, 5, 5, 5],
+      },
+    };
+
+    pdfContent.push({ text: 'Formulario ONMODO', style: 'header', alignment: 'center' });
+    pdfContent.push({ text: 'Entrega de ropa de trabajo y EPP', style: 'subheader', alignment: 'center' });
+
+    const {
+      contrato,
+      dni,
+      direccion,
+      localidad,
+      cp,
+      provincia,
+      descripcion,
+      checkboxes,
+      inputs,
+      infoAdicional,
+      createdAt,
+    } = formulario;
+
+    pdfContent.push({
+      table: {
+        widths: ['50%', '50%'],
+        body: [   
+          [{ text: 'Contrato:', style: 'subheader' }, { text: contrato, style: 'subheader' }],
+          [{ text: 'DNI:', style: 'subheader' }, { text: dni, style: 'subheader' }],
+          [{ text: 'Dirección:', style: 'subheader' }, { text: direccion, style: 'subheader' }],
+          [{ text: 'Localidad:', style: 'subheader' }, { text: localidad, style: 'subheader' }],
+          [{ text: 'Código Postal:', style: 'subheader' }, { text: cp, style: 'subheader' }],
+          [{ text: 'Provincia:', style: 'subheader' }, { text: provincia, style: 'subheader' }],
+          [{ text: 'Descripción:', style: 'subheader' }, { text: descripcion, style: 'subheader' }],
+          [{ text: 'Fecha de entrega:', style: 'subheader' }, { text: createdAt, style: 'subheader' }],
+          [{ text: 'Información adicional:', style: 'subheader' }, { text: infoAdicional, style: 'subheader' }],
+        ],
+      }
+    })
+
+    const columnWidths = ['50%', '50%'];
+
+    inputs.forEach((input, index) => {
+      pdfContent.push({ text: `Producto ${index + 1}:`, style: 'subheader' });
+      pdfContent.push({
+        table: {
+          widths: columnWidths,
+          body: [
+            [{ text: 'Fecha:', style: 'label' }, { text: input?.fecha, style: 'value' }],
+
+            [{ text: 'Producto:', style: 'label' }, { text: input?.Producto, style: 'value' }],
+
+            [{ text: 'Tipo / modelo:', style: 'label' }, { text: input?.["Tipo / modelo"], style: 'value' }],
+
+            [{ text: 'Posee certificacion:', style: 'label' }, { text: input?.["Posee certificacion"], style: 'value' }],
+
+            [{ text: 'Marca:', style: 'label' }, { text: input?.Marca, style: 'value' }],
+ 
+          ],
+        },
+        layout: {
+          hLineWidth: () => 1,
+          vLineWidth: () => 1,
+          hLineColor: () => 'black',
+          vLineColor: () => 'black',
+          paddingTop: (i) => (i === 0 ? 10 : 10),
+          paddingBottom: (i) => (i === 1 ? 0 : 5),
+        },
+      });
+    });
+
+     for (let i = 0; i < checkboxes.length; i++) {
+      pdfContent.push({ text: "Ropa de trabajo", style: 'subheader' });
+      pdfContent.push({ text: checkboxes[i]?.check0 ? 'Sí' : 'No', style: 'value' });
+
+      pdfContent.push({ text: "Guantes", style: 'subheader' });
+      pdfContent.push({ text: checkboxes[i]?.check1 ? 'Sí' : 'No', style: 'value' });
+
+      pdfContent.push({ text: "Calzado de seguridad", style: 'subheader' });
+      pdfContent.push({ text: checkboxes[i]?.check2 ? 'Sí' : 'No', style: 'value' });
+
+      pdfContent.push({ text: "Antiparras", style: 'subheader' });
+      pdfContent.push({ text: checkboxes[i]?.check3 ? 'Sí' : 'No', style: 'value' });
+
+      pdfContent.push({ text: "Barbijo", style: 'subheader' });
+      pdfContent.push({ text: checkboxes[i]?.check4 ? 'Sí' : 'No', style: 'value' });
+
+      pdfContent.push({ text: "Cofia", style: 'subheader' });
+      pdfContent.push({ text: checkboxes[i]?.check5 ? 'Sí' : 'No', style: 'value' });
+
+      pdfContent.push({ text: "Otros", style: 'subheader' });
+      pdfContent.push({ text: checkboxes[i]?.check6 ? 'Sí' : 'No', style: 'value' });
+      pdfContent.push({ text: "¿Que otros?:", style: 'value' });
+      pdfContent.push({ text: checkboxes[i]?.textInputCheck6, style: 'value' });
+
+     }
+
+
+
+    const documentDefinition = {
+      content: pdfContent,
+      styles,
+    };
+
+    pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
+
   }
   else {
     return null
