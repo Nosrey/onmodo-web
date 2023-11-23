@@ -150,7 +150,9 @@ function RegistroSimulacro() {
                         </div>
 
                         <div className={styles.personal}>
-                            <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, ubicacion: e.target.value }) }} value={values.ubicacion} id="outlined-basic" label="Ubicación" variant="outlined" />
+                            <TextField disabled={currentStatus === 'view'} onChange={(e) => {
+                                setValues({ ...values, ubicacion: e.target.value })
+                            }} value={values.ubicacion} id="outlined-basic" label="Ubicación" variant="outlined" />
                             <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, localidad: e.target.value }) }} value={values.localidad} id="outlined-basic" label="Localidad" variant="outlined" />
 
                             <TextField
