@@ -3,6 +3,13 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
+function cambiarFecha(value) {
+  // en la fecha reemplazo los - por unos /
+  if (!value) return ''
+  let fecha = value.replace(/-/g, '/');
+  return fecha;
+}
+
 export const generatePDF = (formulario, form) => {
   console.log(formulario)
   let pdfContent = [];
@@ -515,12 +522,22 @@ export const generatePDF = (formulario, form) => {
       },
     };
 
+    formulario = {
+      ...formulario,
+      asistentes: JSON.parse(formulario?.asistentes),
+      checkboxes: JSON.parse(formulario?.checkboxes),
+      materialEntregado: JSON.parse(formulario?.materialEntregado),
+      materialExpuesto: JSON.parse(formulario?.materialExpuesto),      
+    }
+
+    console.log('formulario', formulario)
     const {
       fecha,
       tiempoDuracion,
       checkboxes,
       temas,
       materialEntregado,
+      materialExpuesto,
       asistentes,
       observaciones,
       instructor,
@@ -552,22 +569,24 @@ export const generatePDF = (formulario, form) => {
     content[2].table.body.push(
       [
         { text: 'Fecha:', style: 'label' },
-        { text: fecha, style: 'value' },
+        { text: cambiarFecha(fecha), style: 'value' },
         { text: 'Duración:', style: 'label' },
         { text: tiempoDuracion, style: 'value' },
       ]
     );
-
-    checkboxes.forEach((checkbox) => {
-      content[2].table.body.push(
+    
+    if (checkboxes.length > 1) {
+      checkboxes.forEach((checkbox) => {
+        content[2].table.body.push(
         [
           { text: `${checkbox.label}:`, style: 'label' },
           { text: checkbox.check ? 'Sí' : 'No', style: 'value', colSpan: 3 },
           { text: '', style: 'label' },
           { text: '', style: 'value' },
         ]
-      );
-    });
+        );
+      });
+    }
 
     content[2].table.body.push(
       [
@@ -576,23 +595,46 @@ export const generatePDF = (formulario, form) => {
       ]
     );
 
-    materialEntregado.forEach((item) => {
-      content[2].table.body.push(
+    if (materialEntregado.length  > 1) {
+      materialEntregado.forEach((item) => {
+        content[2].table.body.push(
         [
-          { text: `${item.label}:`, style: 'label' },
-          { text: item.check ? 'Sí' : 'No', style: 'value', colSpan: 3 },
-          { text: '', style: 'label' },
-          { text: '', style: 'value' },
+          { text: (item.label === "Otros1" ? (item.label.slice(0, item.label.length - 1) + ":") : item.label + ":"), style: 'label' },
+          { text: item.check ? 'Sí' : 'No', style: 'value' },
+          { text: (item?.desc ? `¿Que otro?:` : ''), style: 'label' },
+          { text: (item?.desc ? item?.desc : ''), style: 'value' }
         ]
-      );
-    });
+        );
+      });
+    }
 
+    if (materialExpuesto.length  > 1) {
+      materialExpuesto.forEach((item) => {
+        content[2].table.body.push(
+          [
+            { text: (item.label === "Otros2" ? (item.label.slice(0, item.label.length - 1) + ":") : item.label + ":"), style: 'label' },
+          { text: item.check ? 'Sí' : 'No', style: 'value' },
+          { text: (item?.desc ? `¿Que otro?:` : ''), style: 'label' },
+          { text: (item?.desc ? item?.desc : ''), style: 'value' }
+        ]
+        );
+      });
+    }
+      
     asistentes.forEach((asistente, index) => {
       content[2].table.body.push(
         [
-          { text: `Asistente ${index + 1}`, style: 'label1', colSpan: 4 },
-          { text: `Nombre:`, style: 'label', colSpan: 3 },
-          { text: asistente.nombre, style: 'value' },
+          { text: `Asistente ${index + 1}`, style: 'label' },
+          { text: '', style: 'value' },
+          { text: ``, style: 'value' },
+          { text: "", style: 'label' }
+        ]
+      );
+      content[2].table.body.push(
+        [
+          { text: `Nombre:`, style: 'value' },
+          { text: asistente.nombre, style: 'label' },
+          { text: ``, style: 'label' },
           { text: '', style: 'value' },
         ]
       );
@@ -767,7 +809,16 @@ export const generatePDF = (formulario, form) => {
     pdfContent.push({ text: 'Formulario ONMODO', style: 'header', alignment: 'center' });
     pdfContent.push({ text: 'Registro de Simulacro', style: 'subheader', alignment: 'center' });
 
+
     const { razonSocial, ubicacion, localidad, fecha, personas } = formulario;
+
+    let newPersonas = []
+
+    for (let i = 0; i < personas.length; i++) {
+      newPersonas.push(JSON.parse(personas[i]))
+    }
+
+    newPersonas = newPersonas[0]
 
     const tableContent = {
       table: {
@@ -796,7 +847,7 @@ export const generatePDF = (formulario, form) => {
         { text: 'Localidad:', style: 'label' },
         { text: localidad, style: 'value' },
         { text: 'Fecha:', style: 'label' },
-        { text: fecha, style: 'value' },
+        { text: cambiarFecha(fecha), style: 'value' },
       ]
     );
 
@@ -829,17 +880,17 @@ export const generatePDF = (formulario, form) => {
       [
         { text: 'Nombre Completo', style: 'label' },
         { text: 'DNI', style: 'label' },
-        { text: 'Firma', style: 'label' },
+        
 
       ]
     );
 
-    personas.forEach((persona) => {
+    newPersonas.forEach((persona) => {
       personasTable.table.body.push(
         [
-          { text: persona["Apellido y Nombre"], style: 'value' },
-          { text: persona["Nro DNI"], style: 'value' },
-          { text: persona["Firma"], style: 'value' },
+          { text: persona["nombreCompleto"], style: 'value' },
+          { text: persona["dni"], style: 'value' },
+          
         ]
       );
     });
@@ -854,6 +905,8 @@ export const generatePDF = (formulario, form) => {
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
   else if (form === "reporterechazo") {
+    const pdfContent = [];
+
     const styles = {
       header: {
         fontSize: 18,
@@ -863,7 +916,12 @@ export const generatePDF = (formulario, form) => {
       subheader: {
         fontSize: 14,
         bold: true,
-        margin: [0, 10, 0, 10],
+        margin: [0, 10, 0, 20],
+      },
+      subheader1: {
+        fontSize: 14,
+        bold: true,
+        margin: [0, 40, 0, 20],
       },
       label: {
         fontSize: 12,
@@ -873,16 +931,21 @@ export const generatePDF = (formulario, form) => {
       },
       value: {
         fontSize: 12,
-        margin: [0, 0, 0, 5],
-        border: [0, 0, 0, 0],
-        fillColor: '#FFFFFF',
+        margin: [0, 0, 0, 10],
+        border: [0.5, 0.5, 0.5, 0.5],
+        fillColor: '#EAFFDC',
         paddingLeft: 5,
         paddingRight: 5,
         borderRadius: [5, 5, 5, 5],
       },
     };
 
-    const {
+    pdfContent.push({ text: 'Formulario ONMODO', style: 'header', alignment: 'center' });
+    pdfContent.push({ text: 'Reporte de Rechazo/Devolución de Materias Primas', style: 'subheader', alignment: 'center' });
+
+
+
+    let {
       dia,
       proveedor,
       producto,
@@ -892,115 +955,197 @@ export const generatePDF = (formulario, form) => {
       diferencias,
       transporte,
       medidasTomadas,
-      nombreAdministrador,
-      nombreProveedor,
     } = formulario;
 
-    const pdfContent = [
-      {
-        table: {
-          widths: ['50%', '50%'],
-          body: [
-            [
-              {
-                text: 'Formulario Reporte de Rechazo',
-                style: 'header',
-                alignment: 'center',
-                colSpan: 2,
-              },
-              {},
-            ],
-            [
-              { text: 'Día:', style: 'label' },
-              { text: 'Proveedor:', style: 'label' },
-            ],
-            [dia, proveedor],
-            [
-              { text: 'Producto:', style: 'label' },
-              { text: 'Número de Lote:', style: 'label' },
-            ],
-            [producto, nroLote],
-            [{ text: 'Condiciones de Entrega:', style: 'subheader', colSpan: 2 }, {}],
-          ],
-        },
-        layout: {
-          hLineWidth: () => 1,
-          vLineWidth: () => 1,
-          hLineColor: () => 'black',
-          vLineColor: () => 'black',
-          paddingTop: (i) => (i === 0 ? 1 : 1),
-          paddingBottom: (i) => (i === 1 ? 1 : 1),
-        },
-      },
-    ];
+    console.log('dia: ', dia)
 
-    condicionesEntrega.forEach((condicion, index) => {
-      pdfContent[0].table.body.push(
-        [
-          { text: `Condición #${index + 1}`, style: 'subheader', colSpan: 2 },
-          {},
+
+    dia = (dia ? dia : '')
+    proveedor = (proveedor ? proveedor : '')
+    producto = (producto ? producto : '')
+    nroLote = (nroLote ? nroLote : '')
+    condicionesEntrega = (condicionesEntrega ? condicionesEntrega : [])
+    calidad = (calidad ? calidad : [])
+    diferencias = (diferencias ? diferencias : [])
+    transporte = (transporte ? transporte : [])
+    medidasTomadas = (medidasTomadas ? medidasTomadas : [])
+
+
+    pdfContent.push({
+      table: {
+        widths: ['50%', '50%'],
+        body: [   
+          [{ text: 'Dia:', style: 'subheader' }, { text: dia, style: 'subheader' }],
+          [{ text: 'Proveedor:', style: 'subheader' }, { text: proveedor, style: 'subheader' }],
+          [{ text: 'Producto:', style: 'subheader' }, { text: producto, style: 'subheader' }],
+          [{ text: 'Nro Lote:', style: 'subheader' }, { text: nroLote, style: 'subheader' }],
         ],
-        ['Adelantado:', { text: condicion.adelantado ? 'Sí' : 'No', style: 'value' }],
-        ['Descripción Adelantado:', { text: condicion.adelantadoDescription, style: 'value' }],
-        ['Atrasado:', { text: condicion.atrasado ? 'Sí' : 'No', style: 'value' }],
-        ['Descripción Atrasado:', { text: condicion.atrasadoDescription, style: 'value' }]
-      );
+      }
+    })
+
+    pdfContent.push({ text: 'Condiciones de entrega', style: 'subheader', alignment: 'center' });
+
+    const columnWidths = ['50%', '50%'];
+
+    pdfContent.push({
+      table: {
+        widths: columnWidths,
+        body: [
+
+          [{ text: 'Atrasado:', style: 'label' }, { text: ( (condicionesEntrega?.[0]?.checked ? 'Si - ' : 'No: ') + ((condicionesEntrega?.[0]?.description) ? condicionesEntrega?.[0]?.description : '')), style: 'value' }],
+          [{ text: 'Adelantado:', style: 'label' }, { text: ( (condicionesEntrega?.[1]?.checked ? 'Si - ' : 'No: ') + ((condicionesEntrega?.[1]?.description) ? condicionesEntrega?.[1]?.description : '')), style: 'value' }],
+
+        ],
+      },
+      layout: {
+        hLineWidth: () => 1,
+        vLineWidth: () => 1,
+        hLineColor: () => 'black',
+        vLineColor: () => 'black',
+        paddingTop: (i) => (i === 0 ? 10 : 10),
+        paddingBottom: (i) => (i === 1 ? 0 : 5),
+      },
     });
 
-    function createSectionTable(sectionData, sectionName) {
-      pdfContent[0].table.body.push([
-        { text: sectionName, style: 'subheader', colSpan: 2 },
-        {},
-      ]);
+    pdfContent.push({ text: 'Calidad', style: 'subheader', alignment: 'center' });
 
-      sectionData.forEach((item) => {
-        Object.keys(item).forEach((key) => {
-          // Formatea el nombre de la clave para mostrarlo como título
-          let formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+    pdfContent.push({
+      table: {
+        widths: columnWidths,
+        body: [
 
-          // Reemplaza "Description" con "Descripcion" en el nombre de la clave
-          formattedKey = formattedKey.replace('Description', 'Descripcion');
-          formattedKey = formattedKey.replace('Check', 'Control');
+          [
+            { text: 'Temperatura:', style: 'label' }, 
+            { text: ((calidad?.[0]?.checked ? 'Si - ' : 'No: ') + ((calidad?.[0]?.description) ? calidad?.[0]?.description : '')), style: 'value' }
+          ],
+          [
+            { text: 'Vida útil:', style: 'label' }, 
+            { text: ((calidad?.[1]?.checked ? 'Si - ' : 'No: ') + ((calidad?.[1]?.description) ? calidad?.[1]?.description : '')), style: 'value' }
+          ],
+          [
+            { text: 'Embalaje:', style: 'label' }, 
+            { text: ((calidad?.[2]?.checked ? 'Si - ' : 'No: ') + ((calidad?.[2]?.description) ? calidad?.[2]?.description : '')), style: 'value' }
+          ],
+          [
+            { text: 'Rótulo:', style: 'label' }, 
+            { text: ((calidad?.[3]?.checked ? 'Si - ' : 'No: ') + ((calidad?.[3]?.description) ? calidad?.[3]?.description : '')), style: 'value' }
+          ],
+          [
+            { text: 'Calibre:', style: 'label' }, 
+            { text: ((calidad?.[4]?.checked ? 'Si - ' : 'No: ') + ((calidad?.[4]?.description) ? calidad?.[4]?.description : '')), style: 'value' }
+          ],
+          [
+            { text: 'Color:', style: 'label' }, 
+            { text: ((calidad?.[5]?.checked ? 'Si - ' : 'No: ') + ((calidad?.[5]?.description) ? calidad?.[5]?.description : '')), style: 'value' }
+          ],
+          [
+            { text: 'Signos de maduración:', style: 'label' }, 
+            { text: ((calidad?.[6]?.checked ? 'Si - ' : 'No: ') + ((calidad?.[6]?.description) ? calidad?.[6]?.description : '')), style: 'value' }
+          ]
+        ],
+      },
+      layout: {
+        hLineWidth: () => 1,
+        vLineWidth: () => 1,
+        hLineColor: () => 'black',
+        vLineColor: () => 'black',
+        paddingTop: (i) => (i === 0 ? 10 : 10),
+        paddingBottom: (i) => (i === 1 ? 0 : 5),
+      },
+    });
+    pdfContent.push({ text: ` `, style: 'subheader' });
+    pdfContent.push({
+      table: {
+        widths: columnWidths,
+        body: [
 
-          let formattedValue = item[key];
+          [{ text: 'Consistencia/Textura:', style: 'label' }, { text: ((calidad?.[7]?.checked ? 'Si - ' : 'No: ') + ((calidad?.[7]?.description) ? calidad?.[7]?.description : '')), style: 'value' }],
+          [{ text: 'Olor:', style: 'label' }, { text: ((calidad?.[8]?.checked ? 'Si - ' : 'No: ') + (calidad?.[8]?.description ? calidad?.[8]?.description : '')), style: 'value' }],
 
-          // Reemplaza "true" o "false" con "Si" o "No"
-          if (typeof item[key] === 'boolean') {
-            formattedValue = item[key] ? 'Si' : 'No';
+        ],
+      },
+      layout: {
+        hLineWidth: () => 1,
+        vLineWidth: () => 1,
+        hLineColor: () => 'black',
+        vLineColor: () => 'black',
+        paddingTop: (i) => (i === 0 ? 10 : 10),
+        paddingBottom: (i) => (i === 1 ? 0 : 5),
+      },
+    });
 
-            // Reemplaza "Check" con "Control" en el valor
+    pdfContent.push({ text: 'Diferencias', style: 'subheader', alignment: 'center' });
+    
+    pdfContent.push({
+      table: {
+        widths: columnWidths,
+        body: [
 
-          }
+          [{ text: 'Precio:', style: 'label' }, { text: ((diferencias?.[0]?.checked ? 'Si - ' : 'No: ') + (diferencias?.[0]?.description ? diferencias?.[0]?.description : '')), style: 'value' }],
+          [{ text: 'Cantidad:', style: 'label' }, { text: ((diferencias?.[1]?.checked ? 'Si - ' : 'No: ') + (diferencias?.[1]?.description ? diferencias?.[1]?.description : '')), style: 'value' }],
 
-          pdfContent[0].table.body.push([
-            { text: formattedKey + ':', style: 'label' },
-            { text: formattedValue, style: 'value' },
-          ]);
-        });
-      });
-    }
-    // Sección Calidad
-    createSectionTable(calidad, 'Calidad');
+        ],
+      },
+      layout: {
+        hLineWidth: () => 1,
+        vLineWidth: () => 1,
+        hLineColor: () => 'black',
+        vLineColor: () => 'black',
+        paddingTop: (i) => (i === 0 ? 10 : 10),
+        paddingBottom: (i) => (i === 1 ? 0 : 5),
+      },
+    });
 
-    // Sección Diferencias
-    createSectionTable(diferencias, 'Diferencias');
+    pdfContent.push({ text: 'Transporte', style: 'subheader', alignment: 'center' });
 
-    // Sección Transporte
-    createSectionTable(transporte, 'Transporte');
+    pdfContent.push({
+      table: {
+        widths: columnWidths,
+        body: [
 
-    // Sección Medidas Tomadas
-    createSectionTable(medidasTomadas, 'Medidas Tomadas');
+          [{ text: 'Temperatura de la caja:', style: 'label' }, { text: ((transporte?.[0]?.checked ? 'Si - ' : 'No: ') + (transporte?.[0]?.description ? transporte?.[0]?.description : '')), style: 'value' }],
+          [{ text: 'Uniforme del proveedor:', style: 'label' }, { text: ((transporte?.[1]?.checked ? 'Si - ' : 'No: ') + (transporte?.[1]?.description ? transporte?.[1]?.description : '')), style: 'value' }],
+          [{ text: 'Predisposición /Conducta:', style: 'label' }, { text: ((transporte?.[2]?.checked ? 'Si - ' : 'No: ') + (transporte?.[2]?.description ? transporte?.[2]?.description : '')), style: 'value' }],
+          [{ text: 'Vehículo:', style: 'label' }, { text: ((transporte?.[3]?.checked ? 'Si - ' : 'No: ') + (transporte?.[3]?.description ? transporte?.[3]?.description : '')), style: 'value' }],
+          [{ text: 'Otras Faltas:', style: 'label' }, { text: ((transporte?.[4]?.checked ? 'Si - ' : 'No: ') + (transporte?.[4]?.description ? transporte?.[4]?.description : '')), style: 'value' }],         
 
-    // Nombre del Administrador y Proveedor
-    pdfContent[0].table.body.push([
-      { text: 'Nombre Administrador:', style: 'label' },
-      { text: nombreAdministrador, style: 'value' },
-    ]);
-    pdfContent[0].table.body.push([
-      { text: 'Nombre Proveedor:', style: 'label' },
-      { text: nombreProveedor, style: 'value' },
-    ]);
+        ],
+      },
+      layout: {
+        hLineWidth: () => 1,
+        vLineWidth: () => 1,
+        hLineColor: () => 'black',
+        vLineColor: () => 'black',
+        paddingTop: (i) => (i === 0 ? 10 : 10),
+        paddingBottom: (i) => (i === 1 ? 0 : 5),
+      },
+    });
 
+    pdfContent.push({ text: 'MEDIDAS TOMADAS', style: 'subheader', alignment: 'center' });
+
+    pdfContent.push({
+      table: {
+        widths: columnWidths,
+        body: [
+
+          [{ text: 'Rechazo (en el momento de la recepción):', style: 'label' }, { text: ((medidasTomadas?.[0]?.checked ? 'Si - ' : 'No: ') + (medidasTomadas?.[0]?.description ? medidasTomadas?.[0]?.description : '')), style: 'value' }],      
+          [{ text: 'Devolución (lotes ya ingresados):', style: 'label' }, { text: ((medidasTomadas?.[1]?.checked ? 'Si - ' : 'No: ') + (medidasTomadas?.[1]?.description ? medidasTomadas?.[1]?.description : '')), style: 'value' }],      
+          [{ text: 'Aceptado condicional (ante cambios de calidad de mercadería, sin peligros de inocuidad):', style: 'label' }, { text: ((medidasTomadas?.[2]?.checked ? 'Si - ' : 'No: ') + ( medidasTomadas?.[2]?.description ? medidasTomadas?.[2]?.description : '')), style: 'value' }],      
+
+        ],
+      },
+      layout: {
+        hLineWidth: () => 1,
+        vLineWidth: () => 1,
+        hLineColor: () => 'black',
+        vLineColor: () => 'black',
+        paddingTop: (i) => (i === 0 ? 10 : 10),
+        paddingBottom: (i) => (i === 1 ? 0 : 5),
+      },
+    });
+
+    pdfContent.push({ text: ` `, style: 'subheader' });
+    pdfContent.push({ text: ` `, style: 'subheader' });
 
     const documentDefinition = {
       content: pdfContent,
@@ -1008,6 +1153,7 @@ export const generatePDF = (formulario, form) => {
     };
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
+
   }
   else if (form === "verificacionbalanza") {
     const styles = {
@@ -1034,10 +1180,11 @@ export const generatePDF = (formulario, form) => {
         fillColor: '#EAFFDC',
         paddingLeft: 5,
         paddingRight: 5,
-        borderRadius: [5, 5, 5, 5],
+        borderRadius: [5, 5, 5, 5],      
+        color: 'red'
       },
       table: {
-        margin: [0, 10, 0, 10],
+        margin: [0, 5, 0, 5],
       },
     };
 
@@ -1166,37 +1313,6 @@ export const generatePDF = (formulario, form) => {
     pdfContent.push({ text: 'Formulario ONMODO', style: 'header', alignment: 'center' });
     pdfContent.push({ text: 'Verificación de Instrumentos de Medición: Termometros', style: 'subheader', alignment: 'center' });
 
-  //   {
-  //     "fecha": "2023-11-21",
-  //     "responsable": "a",
-  //     "inputsTrimestral": [
-  //         {
-  //             "id": 0,
-  //             "código": "b",
-  //             "Tipo (PIN/IR)": "IR",
-  //             "responsabledeluso": "c",
-  //             "área": "d",
-  //             "punto0": "e",
-  //             "desvío0": "f",
-  //             "punto100": "g",
-  //             "desvío100": "h",
-  //             "accionesdecorrección": "i"
-  //         }
-  //     ],
-  //     "inputsSemestral": [
-  //         {
-  //             "id": 0,
-  //             "código": "j",
-  //             "área": "k",
-  //             "temp.termómreferencia": "l",
-  //             "temp.termómevaluado": "m",
-  //             "desvío": "n",
-  //             "accionesdecorrección": "o"
-  //         }
-  //     ],
-  //     "idUser": "65511179c66bd0041901aa5b"
-  // }
-
     const {
       fecha,
       responsable,
@@ -1208,7 +1324,7 @@ export const generatePDF = (formulario, form) => {
       table: {
         widths: ['50%', '50%'],
         body: [   
-          [{ text: 'fecha:', style: 'subheader' }, { text: fecha, style: 'subheader' }],
+          [{ text: 'fecha:', style: 'subheader' }, { text: cambiarFecha(fecha), style: 'subheader' }],
           [{ text: 'responsable:', style: 'subheader' }, { text: responsable, style: 'subheader' }],
         ],
       }
@@ -1227,19 +1343,19 @@ export const generatePDF = (formulario, form) => {
 
             [{ text: 'Tipo (PIN/IR):', style: 'label' }, { text: input?.["Tipo (PIN/IR)"], style: 'value' }],
 
-            [{ text: 'responsabledeluso:', style: 'label' }, { text: input?.["responsabledeluso"], style: 'value' }],
+            [{ text: 'Responsable del uso:', style: 'label' }, { text: input?.["responsabledeluso"], style: 'value' }],
 
             [{ text: 'área:', style: 'label' }, { text: input?.["área"], style: 'value' }],
 
-            [{ text: 'punto0:', style: 'label' }, { text: input?.["punto0"], style: 'value' }],
+            [{ text: 'punto 0:', style: 'label' }, { text: input?.["punto0"], style: 'value' }],
 
-            [{ text: 'desvío0:', style: 'label' }, { text: input?.["desvío0"], style: 'value' }],
+            [{ text: 'desvío 0:', style: 'label' }, { text: input?.["desvío0"], style: 'value' }],
 
-            [{ text: 'punto100:', style: 'label' }, { text: input?.["punto100"], style: 'value' }],
+            [{ text: 'punto 100:', style: 'label' }, { text: input?.["punto100"], style: 'value' }],
 
-            [{ text: 'desvío100:', style: 'label' }, { text: input?.["desvío100"], style: 'value' }],
+            [{ text: 'desvío 100:', style: 'label' }, { text: input?.["desvío100"], style: 'value' }],
 
-            [{ text: 'accionesdecorrección:', style: 'label' }, { text: input?.["accionesdecorrección"], style: 'value' }],
+            [{ text: 'Acciones de corrección:', style: 'label' }, { text: input?.["accionesdecorrección"], style: 'value' }],
 
           ],
         },
@@ -1261,18 +1377,38 @@ export const generatePDF = (formulario, form) => {
         table: {
           widths: columnWidths,
           body: [
-
+            
             [{ text: 'código:', style: 'label' }, { text: input?.["código"], style: 'value' }],
 
             [{ text: 'área:', style: 'label' }, { text: input?.["área"], style: 'value' }],
+            
+            [{ text: 'Temp. termóm referencia:', style: 'label' }, { text: input?.["temp.termómreferencia"], style: 'value' }],        
 
-            [{ text: 'temp.termómreferencia:', style: 'label' }, { text: input?.["temp.termómreferencia"], style: 'value' }],
+          ],
+        },
+        layout: {
+          hLineWidth: () => 1,
+          vLineWidth: () => 1,
+          hLineColor: () => 'black',
+          vLineColor: () => 'black',
+          paddingTop: (i) => (i === 0 ? 10 : 10),
+          paddingBottom: (i) => (i === 1 ? 0 : 5),
+        },
+      });
 
-            [{ text: 'temp.termómevaluado:', style: 'label' }, { text: input?.["temp.termómevaluado"], style: 'value' }],
+      pdfContent.push({ text: ` `, style: 'subheader' });
+      pdfContent.push({ text: ` `, style: 'subheader' });
+
+      pdfContent.push({
+        table: {
+          widths: columnWidths,
+          body: [
+            
+            [{ text: 'Temp. termóm evaluado:', style: 'label' }, { text: input?.["temp.termómevaluado"], style: 'value' }],
 
             [{ text: 'desvío:', style: 'label' }, { text: input?.["desvío"], style: 'value' }],
 
-            [{ text: 'accionesdecorrección:', style: 'label' }, { text: input?.["accionesdecorrección"], style: 'value' }],
+            [{ text: 'Acciones de corrección:', style: 'label' }, { text: input?.["accionesdecorrección"], style: 'value' }],
 
           ],
         },
@@ -1348,20 +1484,21 @@ export const generatePDF = (formulario, form) => {
       inputs,
       infoAdicional,
       createdAt,
+      nombreUsuario
     } = formulario;
 
     pdfContent.push({
       table: {
         widths: ['50%', '50%'],
         body: [   
+          [{ text: 'Apellido y nombre:', style: 'subheader' }, { text: nombreUsuario, style: 'subheader' }],
           [{ text: 'Contrato:', style: 'subheader' }, { text: contrato, style: 'subheader' }],
           [{ text: 'DNI:', style: 'subheader' }, { text: dni, style: 'subheader' }],
           [{ text: 'Dirección:', style: 'subheader' }, { text: direccion, style: 'subheader' }],
           [{ text: 'Localidad:', style: 'subheader' }, { text: localidad, style: 'subheader' }],
           [{ text: 'Código Postal:', style: 'subheader' }, { text: cp, style: 'subheader' }],
           [{ text: 'Provincia:', style: 'subheader' }, { text: provincia, style: 'subheader' }],
-          [{ text: 'Descripción:', style: 'subheader' }, { text: descripcion, style: 'subheader' }],
-          [{ text: 'Fecha de entrega:', style: 'subheader' }, { text: createdAt, style: 'subheader' }],
+          [{ text: 'Descripción:', style: 'subheader' }, { text: descripcion, style: 'subheader' }],          
           [{ text: 'Información adicional:', style: 'subheader' }, { text: infoAdicional, style: 'subheader' }],
         ],
       }
@@ -1369,20 +1506,38 @@ export const generatePDF = (formulario, form) => {
 
     const columnWidths = ['50%', '50%'];
 
+
+
     inputs.forEach((input, index) => {
       pdfContent.push({ text: `Producto ${index + 1}:`, style: 'subheader' });
       pdfContent.push({
         table: {
           widths: columnWidths,
           body: [
-            [{ text: 'Fecha:', style: 'label' }, { text: input?.fecha, style: 'value' }],
+            [{ text: 'Fecha:', style: 'label' }, { text: cambiarFecha(input?.fecha), style: 'value' }],
 
             [{ text: 'Producto:', style: 'label' }, { text: input?.Producto, style: 'value' }],
 
             [{ text: 'Tipo / modelo:', style: 'label' }, { text: input?.["Tipo / modelo"], style: 'value' }],
 
             [{ text: 'Posee certificacion:', style: 'label' }, { text: input?.["Posee certificacion"], style: 'value' }],
-
+          ],
+        },
+        layout: {
+          hLineWidth: () => 1,
+          vLineWidth: () => 1,
+          hLineColor: () => 'black',
+          vLineColor: () => 'black',
+          paddingTop: (i) => (i === 0 ? 10 : 10),
+          paddingBottom: (i) => (i === 1 ? 0 : 5),
+        },
+      });
+      pdfContent.push({ text: ` `, style: 'subheader' });
+      pdfContent.push({ text: ` `, style: 'subheader' });
+      pdfContent.push({
+        table: {
+          widths: columnWidths,
+          body: [
             [{ text: 'Marca:', style: 'label' }, { text: input?.Marca, style: 'value' }],
  
           ],
@@ -1397,6 +1552,7 @@ export const generatePDF = (formulario, form) => {
         },
       });
     });
+
 
      for (let i = 0; i < checkboxes.length; i++) {
       pdfContent.push({ text: "Ropa de trabajo", style: 'subheader' });
@@ -1416,10 +1572,11 @@ export const generatePDF = (formulario, form) => {
 
       pdfContent.push({ text: "Cofia", style: 'subheader' });
       pdfContent.push({ text: checkboxes[i]?.check5 ? 'Sí' : 'No', style: 'value' });
-
+      
       pdfContent.push({ text: "Otros", style: 'subheader' });
       pdfContent.push({ text: checkboxes[i]?.check6 ? 'Sí' : 'No', style: 'value' });
-      pdfContent.push({ text: "¿Que otros?:", style: 'value' });
+
+      checkboxes[i]?.check6 ? pdfContent.push({ text: "¿Que otros?:", style: 'value' }) : null;
       pdfContent.push({ text: checkboxes[i]?.textInputCheck6, style: 'value' });
 
      }

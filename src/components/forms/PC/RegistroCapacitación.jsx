@@ -9,9 +9,17 @@ import { useLocation } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 
 function RegistroCapacitacion() {
+    const propToLabelMap = {
+        dni: 'DNI',
+        nombre: 'Nombre y Apellido',
+        area: 'Area/Lugar de trabajo',
+        resultado: 'Resultado Evaluación',
+        metodo: 'Metodo de Evaluacion',
+    };
+
     const location = useLocation();
     const infoPrecargada = location.state?.objeto;
-    const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
+    const currentStatus = location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
@@ -28,7 +36,7 @@ function RegistroCapacitacion() {
     const [showTextField2, setShowTextField2] = useState(false);
     const [otro1, setOtro1] = useState(false);
     const [otro2, setOtro2] = useState(false);
-    const valorInicialAsistentes = {dni: "", nombre: "", area: "", resultado: "", metodo: ""};
+    const valorInicialAsistentes = { dni: "", nombre: "", area: "", resultado: "", metodo: "" };
     const [asistentes, setAsistentes] = useState([valorInicialAsistentes]);
     const [values, setValues] = useState({
         fecha: "",
@@ -71,12 +79,13 @@ function RegistroCapacitacion() {
         const { name, value } = event.target;
         const newValues = asistentes.map((oldValue, i) => {
             if (i === index) {
-              // Si el índice coincide, actualiza el objeto
-              return { ...oldValue, [name]: value };
+                // Si el índice coincide, actualiza el objeto
+                return { ...oldValue, [name]: value };
             } else {
-              // Si no coincide, no hagas cambios
-              return oldValue;
-            }})
+                // Si no coincide, no hagas cambios
+                return oldValue;
+            }
+        })
         setAsistentes(newValues)
     };
 
@@ -135,7 +144,7 @@ function RegistroCapacitacion() {
             materialEntregadoValues[3].desc = desc
             setValues({ ...values, materialEntregado: materialEntregadoValues })
         }
-        
+
         else {
             materialExpuestoValues[2].check = value
             setValues({ ...values, materialExpuesto: materialExpuestoValues })
@@ -150,7 +159,7 @@ function RegistroCapacitacion() {
         const idToDelete = parseInt(e.currentTarget.id);
         const attendeesFiltered = asistentes.filter((_, index) => index !== idToDelete);
         setAsistentes(attendeesFiltered);
-      };
+    };
 
 
     const handleCheckboxChange = (event, id) => {
@@ -163,12 +172,13 @@ function RegistroCapacitacion() {
     };
 
     const deleteEmptyRows = (inputs) => {
-        return inputs.filter((row) => 
+        return inputs.filter((row) =>
             Object.values(row).some((value) => value !== ''));
     }
 
     const handleSubmit = () => {
-        const valuesToSend = {...values, asistentes: deleteEmptyRows(asistentes)}
+        const valuesToSend = { ...values, asistentes: deleteEmptyRows(asistentes) }
+        console.log('valuesToSend', valuesToSend)
         registroCapacitacion(valuesToSend).then((resp) => {
             setTextAlert("¡Formulario cargado exitosamente!");
             setTypeAlert("success");
@@ -183,14 +193,14 @@ function RegistroCapacitacion() {
             setShowlert(true);
             setTimeout(() => {
                 setShowlert(false);
-        // limpiar fomr
-            // window.location.href = window.location.href;
+                // limpiar fomr
+                // window.location.href = window.location.href;
             }, 4000);
         }
         )
     };
-  
-    
+
+
     useEffect(() => {
         if (infoPrecargada) { // muestro un form del historial
             setValues({
@@ -207,28 +217,28 @@ function RegistroCapacitacion() {
                 idUser: idUser,
             });
             setObjValues(infoPrecargada.asistentes);
-           
+
         } else { // creo un form desde cero
 
         }
     }, [location.state?.objeto]);
 
-    
-   
+
+
 
     const onDrop = (acceptedFiles) => {
         // Solo toma el primer archivo si hay varios
-        setValues({...values, firma: acceptedFiles[0]});
+        setValues({ ...values, firma: acceptedFiles[0] });
     };
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
     useEffect(() => {
-        if(infoPrecargada){
+        if (infoPrecargada) {
             values.materialEntregado[3]?.check === true ? setShowTextField1(true) : setShowTextField1(true)
             values.materialExpuesto[3]?.check === true ? setShowTextField2(true) : setShowTextField2(true)
         }
     }, [])
- 
+
     return (
         <><div>
             <div className="form">
@@ -300,10 +310,10 @@ function RegistroCapacitacion() {
                             <FormControlLabel checked={values.materialEntregado[2]?.check || false} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Procedimiento", e.target.checked); }} />} className={styles.listItem} label="Procedimiento" />
                             <div>
 
-                                <FormControlLabel checked={values.materialEntregado[3]?.check || otro1} onClick={ e=> setOtro1(e.target.checked)} control={<Checkbox
+                                <FormControlLabel checked={values.materialEntregado[3]?.check || otro1} onClick={e => setOtro1(e.target.checked)} control={<Checkbox
                                     id="showTextField"
                                     name="showTextField"
-                                    
+
                                     disabled={currentStatus === 'view'}
                                     onChange={($event) => handleCheckboxChange($event, 1)} />} label="Otros" />
                                 <label htmlFor="showTextField"></label>
@@ -312,7 +322,7 @@ function RegistroCapacitacion() {
                         </div>
                         <div className={styles.personal}>
                             {showTextField1 && (
-                                <TextField value={values.materialEntregado[3]?.desc} disabled={currentStatus === 'view'}  onChange={e => checkboxValuesConstructor("Otros2", true, e.target.value)}  id="outlined-basic" name="textField" variant="outlined" label="Otros" />
+                                <TextField value={values.materialEntregado[3]?.desc} disabled={currentStatus === 'view'} onChange={e => checkboxValuesConstructor("Otros2", true, e.target.value)} id="outlined-basic" name="textField" variant="outlined" label="Otros" />
                             )}
                         </div>
                     </div>
@@ -329,7 +339,7 @@ function RegistroCapacitacion() {
                             <FormControlLabel checked={values.materialExpuesto[2]?.check || false} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor("Disertación", e.target.checked); }} />} className={styles.listItem} label="Disertación" />
 
                             <div>
-                                <FormControlLabel checked={values.materialExpuesto[3]?.check || otro2} onClick={e=> setOtro2(e.target.checked)} control={<Checkbox
+                                <FormControlLabel checked={values.materialExpuesto[3]?.check || otro2} onClick={e => setOtro2(e.target.checked)} control={<Checkbox
                                     id="showTextField"
                                     name="showTextField"
                                     disabled={currentStatus === 'view'}
@@ -339,7 +349,7 @@ function RegistroCapacitacion() {
                         </div>
 
                         <div className={styles.personal}>
-                            
+
                             {showTextField2 && (
                                 <TextField id="outlined-basic" disabled={currentStatus === 'view'} value={values.materialExpuesto[3]?.desc} onChange={e => checkboxValuesConstructor("Otros1", true, e.target.value)} name="textField" variant="outlined" label="Otros" />
                             )}
@@ -355,59 +365,59 @@ function RegistroCapacitacion() {
                 <div className="table">
                     <div className="tableSection">
                         {asistentes.map((_, index) => (
-                                <div className="tableRow" key={index}>
-                                    <p className="index">{index + 1} </p>
-                                    {inputs.map((input) => (
-                                        <div key={input.id}>
-                                            {input.label !==  "Metodo de Evaluacion" ? (
-                                                 <TextField
-                                                 onChange={(e) => handleInputChange(index, e)}
-                                                 id={`input-${input.id}-${index}`}
-                                                 name={input.prop}
-                                                 label={`${input.label}`}
-                                                 variant="outlined"
-                                                 disabled={currentStatus === 'view'}
-                                                 value={_[input.prop]}
-                                             />                                    
-                                            ) : (
-                                                <>
-                                                    <FormControl variant="outlined" className={`${styles.selectField} `}>
-                                                        <InputLabel id={`metodo-evaluacion-label-${index}`}>Método de Evaluación</InputLabel>
-                                                        <Select
-                                                            disabled={currentStatus === 'view'}
-                                                            labelId={`metodo-evaluacion-label-${index}`}
-                                                            id={`metodo-evaluacion-${index}`}
-                                                            onChange={(e) => handleInputChange(index, e)}
-                                                            value={_[input.prop]}
-                                                            name={input.prop}
-                                                            label="Método de Evaluación"
-                                                            className={styles.largeSelectInput}
-                                                        >
-                                                            <MenuItem value="Oral">Oral</MenuItem>
-                                                            <MenuItem value="Escrito">Escrito</MenuItem>
-                                                        </Select>
-                                                    </FormControl>                                                 
-                                                </>
-                                            )}
-                                        </div>
-                                    ))}
-                                    {infoPrecargada ? (
-                                        <div></div>
-                                    ) : (
-                                        <div className='icon'>
+                            <div className="tableRow" key={index}>
+                                <p className="index">{index + 1} </p>
+                                {inputs.map((input) => (
+                                    <div key={input.id}>
+                                        {input.label !== "Metodo de Evaluacion" ? (
+                                            <TextField
+                                                onChange={(e) => handleInputChange(index, e)}
+                                                id={`input-${input.id}-${index}`}
+                                                name={input.prop}
+                                                label={`${input.label}`}
+                                                variant="outlined"
+                                                disabled={currentStatus === 'view'}
+                                                value={currentStatus === 'view' ? infoPrecargada?.asistentes?.[index]?.[input.prop] : _[input.prop]}
+                                            />
+                                        ) : (
+                                            <>
+                                                <FormControl variant="outlined" className={`${styles.selectField} `}>
+                                                    <InputLabel id={`metodo-evaluacion-label-${index}`}>Método de Evaluación</InputLabel>
+                                                    <Select
+                                                        disabled={currentStatus === 'view'}
+                                                        labelId={`metodo-evaluacion-label-${index}`}
+                                                        id={`metodo-evaluacion-${index}`}
+                                                        onChange={(e) => handleInputChange(index, e)}
+                                                        value={(currentStatus === 'view' ? infoPrecargada?.asistentes?.[index]?.[input.prop] : _[input.prop])}
+                                                        name={input.prop}
+                                                        label="Método de Evaluación"
+                                                        className={styles.largeSelectInput}
+                                                    >
+                                                        <MenuItem value="Oral">Oral</MenuItem>
+                                                        <MenuItem value="Escrito">Escrito</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                            </>
+                                        )}
+                                    </div>
+                                ))}
+                                {infoPrecargada ? (
+                                    <div></div>
+                                ) : (
+                                    <div className='icon'>
                                         {index === 0 ? (
                                             <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                                         ) : (
                                             <IndeterminateCheckboxIcon
-                                            style={{ color: 'grey' }}
-                                            id={index}
-                                            onClick={handleClickRemove}
+                                                style={{ color: 'grey' }}
+                                                id={index}
+                                                onClick={handleClickRemove}
                                             />
                                         )}
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
                     </div>
                 </div>
 
@@ -415,34 +425,42 @@ function RegistroCapacitacion() {
                 <div className={styles.personal}>
                     <TextField value={values.observaciones || ''} disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, observaciones: e.target.value }); }} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
                 </div>
-                <div className={styles.personal}>                
+                <div className={styles.personal}>
                     <TextField value={values.instructor || ''} disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, instructor: e.target.value }); }} id="outlined-basic" label="Instructor" variant="outlined" />
                 </div>
                 <div className={styles.responsableCont}>
                     <div className={styles.subtitleCont}>
                         <p className={styles.subtitle}>Firma de los participantes</p>
                     </div>
-                    <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
+                    {(currentStatus !== 'view') &&
+                        <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>}
                     <div className={styles.firma}>
-                        <div   {...getRootProps()} className={styles.file} >
-                            <input disabled={currentStatus === 'view'} {...getInputProps()} />
-                            <h6 >Arrastra y suelta la firma aqui, o haz clic para seleccionarla</h6>
-                            {values.firma && <h6>Archivo seleccionado: {values.firma.name}</h6>}
-                        </div>
+                        {(currentStatus !== 'view') ?
+                            <div   {...getRootProps()} className={styles.file} >
+                                <input disabled={currentStatus === 'view'} {...getInputProps()} />
+                                {currentStatus !== 'view' && <h6 >Arrastra y suelta la firma aqui, o haz clic para seleccionarla</h6>}
+                                {values.firma && <h6>Archivo seleccionado: {(currentStatus === 'view' ? infoPrecargada?.firma : values.firma.name)}</h6>}
+                            </div> :
+                            <div className={styles.file} >
+          
+                                {values.firma && <h6>Archivo: {(currentStatus === 'view' ? infoPrecargada?.firma : values.firma.name)}</h6>}
+                            </div>
+                        }
+                        
                     </div>
-                  
-                    </div>
-                    {
-                        (currentStatus === 'edit' || infoPrecargada === undefined) &&
-                        <div className='btn'>
-                            <Button
+
+                </div>
+                {
+                    (currentStatus === 'edit' || infoPrecargada === undefined) &&
+                    <div className='btn'>
+                        <Button
                             onClick={handleSubmit}
                             variant='contained'
-                            >
+                        >
                             Guardar
-                            </Button>
-                        </div>
-                        }
+                        </Button>
+                    </div>
+                }
 
             </div>
         </div>

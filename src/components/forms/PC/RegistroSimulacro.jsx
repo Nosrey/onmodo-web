@@ -7,11 +7,12 @@ import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox
 import { registroSimulacro } from '../../../services/FormsRequest';
 import { useLocation } from 'react-router';
 import { useDropzone } from 'react-dropzone';
+import { current } from '@reduxjs/toolkit';
 
 function RegistroSimulacro() {
     const location = useLocation();
     const infoPrecargada = location.state?.objeto;
-    const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
+    const currentStatus = location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
@@ -19,7 +20,7 @@ function RegistroSimulacro() {
 
     const [inputs] = useState([
         { id: 1, label: 'Apellido y Nombre', prop: "nombreCompleto" },
-        { id: 2, label: 'Nro DNI',  prop: "dni" },
+        { id: 2, label: 'Nro DNI', prop: "dni" },
     ]);
     var idUser = localStorage.getItem("idUser");
     const [replicas, setReplicas] = useState(1);
@@ -57,6 +58,7 @@ function RegistroSimulacro() {
         });
     };
     const handleSubmit = () => {
+        console.log('values: ', values)
         registroSimulacro(values).then((resp) => {
             setTextAlert("¡Formulario cargado exitosamente!");
             setTypeAlert("success");
@@ -92,7 +94,7 @@ function RegistroSimulacro() {
         }
         )
     };
-    
+
     useEffect(() => {
         if (infoPrecargada) { // muestro un form del historial
             setValues({
@@ -124,7 +126,7 @@ function RegistroSimulacro() {
             })
         }
     }, [])
-    
+
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
         onDrop: (acceptedFiles) => {
 
@@ -182,12 +184,12 @@ function RegistroSimulacro() {
                                                 <div key={input.id}>
                                                     <TextField
                                                         disabled={currentStatus === 'view'}
+                                                        value={(currentStatus === 'view' ? infoPrecargada?.personas[index][input.prop] : values.personas[index][input.prop])}
                                                         onChange={(e) => handleChangePerson(index, input.prop, e.target.value)}
                                                         id={`input-${input.id}-${index}`}
                                                         name={`input-${input.id}-${index}`}
                                                         label={`${input.label}`}
                                                         variant="outlined"
-                                                        value={values.personas[index]?.[input.prop]}
                                                         InputLabelProps={{
                                                             shrink: true,
                                                         }}
@@ -195,7 +197,7 @@ function RegistroSimulacro() {
                                                 </div>
                                             ))}
                                             {infoPrecargada ? <div></div> : <div className="icon">
-                                            {
+                                                {
                                                     (index === 0 || index >= replicas) ?
                                                         <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                                                         : <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={() => { handleClickRemove(index) }} />
@@ -222,32 +224,42 @@ function RegistroSimulacro() {
                             </ul>
                         </div>
 
-
-                        <div className={styles.responsableCont}>
-                            <div className={styles.subtitleCont}>
-                                <p className={styles.subtitle}>Firma de los participantes</p>
+                        {(currentStatus !== 'view') ?
+                            <div className={styles.responsableCont}>
+                                <div className={styles.subtitleCont}>
+                                    <p className={styles.subtitle}>Firma de los participantes</p>
+                                </div>
+                                <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
+                                <div className={styles.border} {...getRootProps()}>
+                                    <input  {...getInputProps()} />
+                                    {acceptedFiles.length > 0 ? (
+                                        <h6>Archivo cargado: {acceptedFiles[0].name}</h6>
+                                    ) : (
+                                        <h6>Arrastra y suelta o haz clic para adjuntar documento</h6>
+                                    )}
+                                </div>
                             </div>
-                            <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
-                            <div className={styles.border} {...getRootProps()}>
-                                <input  {...getInputProps()} />
-                                {acceptedFiles.length > 0 ? (
-                                    <h6>Archivo cargado: {acceptedFiles[0].name}</h6>
-                                ) : (
-                                    <h6>Arrastra y suelta o haz clic para adjuntar documento</h6>
-                                )}
+                            :
+                            <div className={styles.responsableCont}>
+                                <div className={styles.subtitleCont}>
+                                    <p className={styles.subtitle}>Firma de los participantes</p>
+                                </div>
+                                <div className={styles.border}>
+                                    <h6>Archivo: {(currentStatus === 'view' ? infoPrecargada?.firmaDoc : values.firma.name)}</h6>
+                                </div>
                             </div>
-                        </div>
+                        }
 
                         {
-                        (currentStatus === 'edit' || infoPrecargada === undefined) &&
-                        <div className='btn'>
-                            <Button
-                            onClick={handleSubmit}
-                            variant='contained'
-                            >
-                            Guardar
-                            </Button>
-                        </div>
+                            (currentStatus === 'edit' || infoPrecargada === undefined) &&
+                            <div className='btn'>
+                                <Button
+                                    onClick={handleSubmit}
+                                    variant='contained'
+                                >
+                                    Guardar
+                                </Button>
+                            </div>
                         }
                     </div>
                 </div>

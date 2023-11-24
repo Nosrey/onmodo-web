@@ -176,13 +176,15 @@ function VerificacionTermometros() {
                 }}
                 id='fecha'
                 name='fecha'
-                value={values.fecha}
+                value={(currentStatus === 'view') ? infoPrecargada.fecha : values.fecha}
                 InputLabelProps={{
                   shrink: true,
                 }}
+                disabled={currentStatus === 'view'}
               />
               <TextField
-                value={values.responsable}
+                value={(currentStatus === 'view') ? infoPrecargada.responsable : values.responsable}
+                disabled={currentStatus === 'view'}
                 onChange={(e) => {
                   setValues({ ...values, responsable: e.target.value });
                 }}
@@ -227,7 +229,8 @@ function VerificacionTermometros() {
                             <FormControl variant='outlined' className={`${styles.selectField} `}>
                               <InputLabel id='select'>{input.label}</InputLabel>
                               <Select
-                                value={replicaValues[index]?.["Tipo (PIN/IR)"]}
+                                disabled={currentStatus === 'view'}
+                                value={(currentStatus === 'view') ? infoPrecargada.inputsTrimestral[index]['Tipo (PIN/IR)'] : replicaValues[index]['Tipo (PIN/IR)']}
                                 onChange={(e) => {
                                   let replicaCopy = [...replicaValues];
                                   replicaCopy[index]["Tipo (PIN/IR)"] = e.target.value;
@@ -245,9 +248,11 @@ function VerificacionTermometros() {
                             </FormControl>
                           ) : (
                             <TextField
-                              value={
-                                replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
-                              }
+                              // value={
+                              //   replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
+                              // }
+                              value={(currentStatus === 'view') ? infoPrecargada.inputsTrimestral[index][input.label.toLowerCase().replace(/\s/g, '')] : replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]}
+                              disabled={currentStatus === 'view'}
                               onChange={(e) => {
                                 let replicaCopy = [...replicaValues];
                                 replicaCopy[index][
@@ -268,7 +273,7 @@ function VerificacionTermometros() {
                           )}
                         </div>
                       ))}
-                      <div className='icon'>
+                      {(currentStatus !== 'view') && <div className='icon'>
                         {index === 0 || index >= replicas ? (
                           <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                         ) : (
@@ -279,7 +284,7 @@ function VerificacionTermometros() {
                             }}
                           />
                         )}
-                      </div>
+                      </div>}
                     </div>
                   ))}
               </div>
@@ -316,9 +321,11 @@ function VerificacionTermometros() {
                     {inputs2.map((input, index2) => (
                       <div key={replicaValues2[index].id + index2}>
                         <TextField
-                          value={
-                            replicaValues2[index][input.label.toLowerCase().replace(/\s/g, '')]
-                          }
+                          // value={
+                          //   replicaValues2[index][input.label.toLowerCase().replace(/\s/g, '')]
+                          // }
+                          value={(currentStatus === 'view') ? infoPrecargada.inputsSemestral[index][input.label.toLowerCase().replace(/\s/g, '')] : replicaValues2[index][input.label.toLowerCase().replace(/\s/g, '')]}
+                          disabled={currentStatus === 'view'}
                           onChange={(e) => {
                             let replicaCopy = [...replicaValues2];
                             replicaCopy[index][
@@ -338,18 +345,18 @@ function VerificacionTermometros() {
                         />
                       </div>
                     ))}
-                    <div className='icon'>
-                        {index === 0 || index >= replicas ? (
-                          <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick2} />
-                        ) : (
-                          <IndeterminateCheckboxIcon
-                            style={{ color: 'grey' }}
-                            onClick={() => {
-                              handleClickRemove2(replicaValues2[index].id);
-                            }}
-                          />
-                        )}
-                      </div>
+                   {(currentStatus !== 'view') && <div className='icon'>
+                      {index === 0 || index >= replicas ? (
+                        <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick2} />
+                      ) : (
+                        <IndeterminateCheckboxIcon
+                          style={{ color: 'grey' }}
+                          onClick={() => {
+                            handleClickRemove2(replicaValues2[index].id);
+                          }}
+                        />
+                      )}
+                    </div>}
                   </div>
                 ))}
               </div>
