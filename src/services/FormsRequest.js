@@ -1,6 +1,6 @@
-const URL_API = 'http://localhost:8080';
+// const URL_API = 'http://localhost:8080';
 
-// const URL_API = 'https://api.onmodoapp.com';
+const URL_API = 'https://api.onmodoapp.com';
 
 export const ejemplo = async ({ dato1, dato2 }) => {
   try {
