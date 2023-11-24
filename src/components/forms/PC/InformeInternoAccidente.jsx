@@ -160,7 +160,7 @@ function InformeInternoAccidente() {
                     
                 }
             ],
-            denuncia: values?.checkboxes[4]?.denuncia,
+            denuncia: values?.denuncia,
             nombreApellido: values?.nombreApellido,
             cuil: values?.cuil,
             fechaIngreso: values?.fechaIngreso,
@@ -281,9 +281,7 @@ function InformeInternoAccidente() {
     const { getRootProps: getRootProps1, getInputProps: getInputProps1 } = useDropzone({
         onDrop: acceptedFiles => {
             setUploadedFile1(acceptedFiles[0]);
-            let valuesCopy = { ...values };
-            valuesCopy.checkboxes[4] = { ...values?.checkboxes[4], denuncia: acceptedFiles[0] }
-            setValues(valuesCopy);
+            setValues({ ...values, denuncia: acceptedFiles[0] });
         }
     });
 
