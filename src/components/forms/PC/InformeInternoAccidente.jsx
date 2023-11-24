@@ -157,9 +157,10 @@ function InformeInternoAccidente() {
                 {
                     label: checkboxesValues[4]?.label,
                     check: values?.checkboxes[4]?.check,
-                    denuncia: values?.checkboxes[4]?.denuncia
+                    
                 }
             ],
+            denuncia: values?.checkboxes[4]?.denuncia,
             nombreApellido: values?.nombreApellido,
             cuil: values?.cuil,
             fechaIngreso: values?.fechaIngreso,
@@ -200,24 +201,24 @@ function InformeInternoAccidente() {
         }
 
         console.log(objetoFinal)
-        // informeIntAccidente(values).then((resp) => {
-        //     setTextAlert("¡Formulario cargado exitosamente!");
-        //     setTypeAlert("success");
-        // }).catch((resp) => {
-        //     setTextAlert("Ocurrió un error")
-        //     setTypeAlert("error");
-        // }).finally(() => {
-        //     window.scrollTo({
-        //         top: 0,
-        //         behavior: 'smooth',
-        //     });
-        //     setShowlert(true);
-        //     setTimeout(() => {
-        //         setShowlert(false);
+        informeIntAccidente(objetoFinal).then((resp) => {
+            setTextAlert("¡Formulario cargado exitosamente!");
+            setTypeAlert("success");
+        }).catch((resp) => {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
 
-        //     }, 7000);
-        // }
-        // )
+            }, 7000);
+        }
+        )
     };
    
     useEffect(() => {

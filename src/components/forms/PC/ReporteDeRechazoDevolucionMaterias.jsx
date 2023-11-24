@@ -394,6 +394,7 @@ function ReporteDeRechazoDevolucionMaterias() {
                                   newValues.checksNoConformidades[indexInputs][indexSection].checked = e.target.checked;
                                   newValues.checksNoConformidades[indexInputs][indexSection].name = value.label;
                                 }
+                                setValues(newValues);
                               }}
                               label={`${value.label}`}
                               key={value.label}

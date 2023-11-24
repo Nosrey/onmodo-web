@@ -19,6 +19,7 @@ function ConstanciaEntrega() {
     const [showAlert, setShowlert] = useState(false);
 
     const prueba = useSelector(state => state.constanciaEntregaR.inputsValues)
+    var idUser = localStorage.getItem("idUser");
 
     const [inputs] = useState([
         { id: 1, label: 'Producto' },
@@ -45,7 +46,7 @@ function ConstanciaEntrega() {
         inputs: [{ "Producto": '', "Tipo / modelo": '', "Marca": '', "Posee certificacion": '', "Cantidad": '', "Fecha de entrega": '', id: 0 }],
         checkboxes: [],
         date: "",
-        idUser: "643ea98d5b44dd9765966ae7"
+        idUser: idUser
     })
     const [objValues, setObjValues] = useState({ producto: "", tipo: "", marca: "", certificacion: "", cantidad: "", fecha: "", })
     const [inputValues, setInputValues] = useState([])
@@ -137,7 +138,17 @@ function ConstanciaEntrega() {
     };
 
     const handleSubmit = () => {
-        let objetoFinal = { ...values, inputs: replicaValues }
+        let checkboxes = values?.checkboxes
+
+        if (checkboxes.length) {
+            checkboxes[0] = { ...checkboxes[0], textInputCheck6: values.otrosCheck6 }
+        } else {
+            checkboxes = []
+        }
+            
+        
+        let objetoFinal = { ...values, inputs: replicaValues, checkboxes: checkboxes }
+        console.log('objetoFinal: ', objetoFinal);
 
         entregaRopa(objetoFinal).then((resp) => {
             setTextAlert("¡Formulario cargado exitosamente!");
@@ -189,18 +200,22 @@ function ConstanciaEntrega() {
                         <FormControlLabel control={<Checkbox checked={check[0].check5} onChange={(e) => { handleCheck("check5", e.target.checked) }} />} label="Cofia" />
                         <div>
 
-                            <FormControlLabel control={<Checkbox
-                                id="showTextField"
-                                name="showTextField"
-                                onChange={handleCheckboxChange} />} label="Otros" />
+                            <FormControlLabel 
+                            id='checkOthers'
+                            control={<Checkbox checked={values?.checkboxes[0]?.check6} onChange={(e) => { handleCheck("check6", e.target.checked) }} />}
+                            label="Otros"
+                            />
+
                             <label htmlFor="showTextField"></label>
 
                         </div>
                     </div>
 
                     <div className={styles.personal}>
-                        {showTextField && (
-                            <TextField id="outlined-basic" name="textField" variant="outlined" label="Otros" />
+                        {(checkValues?.check6) && (
+                            <TextField id="outlined-basic" name="textField" variant="outlined" label="Otros" value={values?.otrosCheck6} onChange={(e) => {
+                                setValues({ ...values, otrosCheck6: e.target.value })
+                            }} />
                         )}
                     </div>
 

@@ -53,6 +53,7 @@ export const registroCapacitacion = async (values) => {
 
 export const entregaRopa = async (values) => {
   try {
+    console.log('values:', values)
     const response = await fetch(`${URL_API}/api/entregaropa`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
