@@ -8,10 +8,12 @@ import Alert from '../../shared/components/Alert/Alert';
 import { entregaRopa } from '../../../services/FormsRequest';
 import { v4 as uuidv4 } from 'uuid';
 import { useLocation } from 'react-router-dom';
+import { current } from '@reduxjs/toolkit';
 
 function ConstanciaEntrega() {
     const location = useLocation();
   const infoPrecargada = location.state?.objeto;
+  console.log('infoPrecargada: ', infoPrecargada)
   const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
@@ -56,7 +58,8 @@ function ConstanciaEntrega() {
         check2: false,
         check3: false,
         check4: false,
-        check5: false
+        check5: false,
+        check6: false
     }])
     const [checkValues, setCheckValues] = useState({
         check0: false,
@@ -64,7 +67,8 @@ function ConstanciaEntrega() {
         check2: false,
         check3: false,
         check4: false,
-        check5: false
+        check5: false,
+        check6: false
     })
 
     const [trigger, setTrigger] = useState(false)
@@ -178,32 +182,154 @@ function ConstanciaEntrega() {
                         <h3 className="title">Constancia de Entrega de Ropa de Trabajo y de E.P.P</h3>
                     </div>
                     <div className={styles.personal}>
-                        <TextField onChange={(e) => { setValues({ ...values, nombre: e.target.value }) }} id="outlined-basic" label="Apellido y nombre" variant="outlined" />
-                        <TextField onChange={(e) => { setValues({ ...values, contrato: e.target.value }) }} id="outlined-basic" label="Contrato" variant="outlined" />
-                        <TextField onChange={(e) => { setValues({ ...values, dni: e.target.value }) }} id="outlined-basic" label="DNI/Legajo" variant="outlined" />
+                        <TextField
+                            onChange={(e) => { setValues({ ...values, nombreUsuario: e.target.value }) }}
+                            id="outlined-basic"
+                            label="Apellido y nombre"
+                            variant="outlined"
+                            value={(currentStatus === 'view' && infoPrecargada?.nombreUsuario) ? infoPrecargada?.nombreUsuario : values?.nombreUsuario}
+                            disabled={currentStatus === 'view'}
+                        />
+
+                        <TextField 
+                        onChange={(e) => { setValues({ ...values, contrato: e.target.value }) }} 
+                        id="outlined-basic" 
+                        label="Contrato" 
+                        variant="outlined" 
+                        value={(currentStatus === 'view' && infoPrecargada?.contrato) ? infoPrecargada?.contrato : values?.contrato}
+                        disabled={currentStatus === 'view'}
+                        />
+
+                        <TextField 
+                        onChange={(e) => { setValues({ ...values, dni: e.target.value }) }} 
+                        id="outlined-basic" 
+                        label="DNI/Legajo" 
+                        variant="outlined" 
+                        value={(currentStatus === 'view' && infoPrecargada?.dni) ? infoPrecargada?.dni : values?.dni}
+                        disabled={currentStatus === 'view'}
+                        />
                     </div>
                     <div className={styles.personal}>
-                        <TextField onChange={(e) => { setValues({ ...values, direccion: e.target.value }) }} id="outlined-basic" label="Direccion" variant="outlined" />
-                        <TextField onChange={(e) => { setValues({ ...values, localidad: e.target.value }) }} id="outlined-basic" label="Localidad" variant="outlined" />
-                        <TextField onChange={(e) => { setValues({ ...values, cp: e.target.value }) }} id="outlined-basic" label="CP" variant="outlined" />
-                        <TextField onChange={(e) => { setValues({ ...values, provincia: e.target.value }) }} id="outlined-basic" label="Provincia" variant="outlined" />
+                        <TextField 
+                        onChange={(e) => { setValues({ ...values, direccion: e.target.value }) }} 
+                        id="outlined-basic" 
+                        label="Direccion" 
+                        variant="outlined" 
+                        value={(currentStatus === 'view' && infoPrecargada?.direccion) ? infoPrecargada?.direccion : values?.direccion}
+                        disabled={currentStatus === 'view'}
+                        />
+
+                        <TextField 
+                        onChange={(e) => { setValues({ ...values, localidad: e.target.value }) }} 
+                        id="outlined-basic" 
+                        label="Localidad" 
+                        variant="outlined" 
+                        value={(currentStatus === 'view' && infoPrecargada?.localidad) ? infoPrecargada?.localidad : values?.localidad}
+                        disabled={currentStatus === 'view'}
+                        />
+
+                        <TextField 
+                        onChange={(e) => { setValues({ ...values, cp: e.target.value }) }} 
+                        id="outlined-basic" 
+                        label="CP" 
+                        variant="outlined" 
+                        value={(currentStatus === 'view' && infoPrecargada?.cp) ? infoPrecargada?.cp : values?.cp}
+                        disabled={currentStatus === 'view'}
+                        />
+
+                        <TextField 
+                        onChange={(e) => { setValues({ ...values, provincia: e.target.value }) }} 
+                        id="outlined-basic" 
+                        label="Provincia" 
+                        variant="outlined"
+                        value={(currentStatus === 'view' && infoPrecargada?.provincia) ? infoPrecargada?.provincia : values?.provincia}
+                        disabled={currentStatus === 'view'}
+                        />
                     </div>
+
                     <div className={styles.personalText}>
-                        <TextField onChange={(e) => { setValues({ ...values, descripcion: e.target.value }) }} fullWidth id="outlined-basic" label="Descripcion breve de las tareas a realizar" variant="outlined" />
+                        <TextField 
+                        onChange={(e) => { setValues({ ...values, descripcion: e.target.value }) }} 
+                        fullWidth id="outlined-basic" 
+                        label="Descripcion breve de las tareas a realizar" 
+                        variant="outlined" 
+                        value={(currentStatus === 'view' && infoPrecargada?.descripcion) ? infoPrecargada?.descripcion : values?.descripcion}
+                        disabled={currentStatus === 'view'}
+                        />
                     </div>
+
                     <div className={styles.personal}>
-                        <FormControlLabel control={<Checkbox checked={check[0].check0} onChange={(e) => { handleCheck("check0", e.target.checked) }} />} label="Ropa de trabajo" />
-                        <FormControlLabel control={<Checkbox checked={check[0].check1} onChange={(e) => { handleCheck("check1", e.target.checked) }} />} label="Guantes" />
-                        <FormControlLabel control={<Checkbox checked={check[0].check2} onChange={(e) => { handleCheck("check2", e.target.checked) }} />} label="Calzado de seguridad" />
-                        <FormControlLabel control={<Checkbox checked={check[0].check3} onChange={(e) => { handleCheck("check3", e.target.checked) }} />} label="Antiparras" />
-                        <FormControlLabel control={<Checkbox checked={check[0].check4} onChange={(e) => { handleCheck("check4", e.target.checked) }} />} label="Barbijo" />
-                        <FormControlLabel control={<Checkbox checked={check[0].check5} onChange={(e) => { handleCheck("check5", e.target.checked) }} />} label="Cofia" />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check0 : check[0].check0}
+                                    onChange={(e) => { handleCheck("check0", e.target.checked) }}
+                                    disabled={currentStatus === "view"}
+                                />
+                            }
+                            label="Ropa de trabajo"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check1 : check[0].check1}
+                                    onChange={(e) => { handleCheck("check1", e.target.checked) }}
+                                    disabled={currentStatus === "view"}
+                                />
+                            }
+                            label="Guantes"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check2 : check[0].check2}
+                                    onChange={(e) => { handleCheck("check2", e.target.checked) }}
+                                    disabled={currentStatus === "view"}
+                                />
+                            }
+                            label="Calzado de seguridad"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check3 : check[0].check3}
+                                    onChange={(e) => { handleCheck("check3", e.target.checked) }}
+                                    disabled={currentStatus === "view"}
+                                />
+                            }
+                            label="Antiparras"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check4 : check[0].check4}
+                                    onChange={(e) => { handleCheck("check4", e.target.checked) }}
+                                    disabled={currentStatus === "view"}
+                                />
+                            }
+                            label="Barbijo"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check5 : check[0].check5}
+                                    onChange={(e) => { handleCheck("check5", e.target.checked) }}
+                                    disabled={currentStatus === "view"}
+                                />
+                            }
+                            label="Cofia"
+                        />
                         <div>
 
-                            <FormControlLabel 
-                            id='checkOthers'
-                            control={<Checkbox checked={values?.checkboxes[0]?.check6} onChange={(e) => { handleCheck("check6", e.target.checked) }} />}
-                            label="Otros"
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check6 : check[0].check6}
+                                        onChange={(e) => { handleCheck("check6", e.target.checked) }}
+                                        disabled={currentStatus === "view"}
+                                    />
+                                }
+                                label="Otros"
                             />
 
                             <label htmlFor="showTextField"></label>
@@ -212,10 +338,19 @@ function ConstanciaEntrega() {
                     </div>
 
                     <div className={styles.personal}>
-                        {(checkValues?.check6) && (
-                            <TextField id="outlined-basic" name="textField" variant="outlined" label="Otros" value={values?.otrosCheck6} onChange={(e) => {
+                        {(currentStatus === "view" ? infoPrecargada?.checkboxes[0].check6 : checkValues?.check6) && (
+                            <TextField 
+                            id="outlined-basic" 
+                            name="textField" 
+                            variant="outlined" 
+                            label="Otros" 
+                            value={currentStatus === "view" ? infoPrecargada?.checkboxes[0].textInputCheck6 : values?.otrosCheck6} 
+                            onChange={(e) => {
                                 setValues({ ...values, otrosCheck6: e.target.value })
-                            }} />
+                            }} 
+                            disabled={currentStatus === "view"}
+                            />
+                            
                         )}
                     </div>
 
@@ -295,7 +430,7 @@ function ConstanciaEntrega() {
                                                 name={`Producto`}
                                                 label={`Producto`}
                                                 value={
-                                                    replicaValues[index]?.Producto
+                                                    (currentStatus === 'view' && infoPrecargada?.inputs[index]?.Producto) ? infoPrecargada?.inputs[index]?.Producto : replicaValues[index]?.["Producto"]
                                                 }
                                                 onChange={(e) => {
                                                     let replicaCopy = [...replicaValues];
@@ -314,7 +449,7 @@ function ConstanciaEntrega() {
                                                 name={`Tipo / modelo`}
                                                 label={`Tipo / modelo`}
                                                 value={
-                                                    replicaValues[index]?.["Tipo / modelo"]
+                                                    (currentStatus === 'view' && infoPrecargada?.inputs[index]?.["Tipo / modelo"]) ? infoPrecargada?.inputs[index]?.["Tipo / modelo"] : replicaValues[index]?.["Tipo / modelo"]
                                                 }
                                                 onChange={(e) => {
                                                     let replicaCopy = [...replicaValues];
@@ -333,7 +468,7 @@ function ConstanciaEntrega() {
                                                 name={`Posee certificacion`}
                                                 label={`Posee certificacion`}
                                                 value={
-                                                    replicaValues[index]?.["Posee certificacion"]
+                                                    (currentStatus === 'view' && infoPrecargada?.inputs[index]?.["Posee certificacion"]) ? infoPrecargada?.inputs[index]?.["Posee certificacion"] : replicaValues[index]?.["Posee certificacion"]
                                                 }
                                                 onChange={(e) => {
                                                     let replicaCopy = [...replicaValues];
@@ -352,7 +487,7 @@ function ConstanciaEntrega() {
                                                 name={`Marca`}
                                                 label={`Marca`}
                                                 value={
-                                                    replicaValues[index]?.["Marca"]
+                                                    (currentStatus === 'view' && infoPrecargada?.inputs[index]?.Marca) ? infoPrecargada?.inputs[index]?.Marca : replicaValues[index]?.["Marca"]
                                                 }
                                                 onChange={(e) => {
                                                     let replicaCopy = [...replicaValues];
@@ -371,7 +506,7 @@ function ConstanciaEntrega() {
                                                 name={`Cantidad`}
                                                 label={`Cantidad`}
                                                 value={
-                                                    replicaValues[index]?.["Cantidad"]
+                                                    (currentStatus === 'view' && infoPrecargada?.inputs[index]?.Cantidad) ? infoPrecargada?.inputs[index]?.Cantidad : replicaValues[index]?.["Cantidad"]
                                                 }
                                                 onChange={(e) => {
                                                     let replicaCopy = [...replicaValues];
@@ -395,7 +530,9 @@ function ConstanciaEntrega() {
                                                     replicaCopy[index] = { ...replicaCopy[index], fecha: e.target.value };
                                                     setReplicaValues(replicaCopy);
                                                 }}
-                                                value={replicaValues[index]?.fecha}
+                                                value={
+                                                    (currentStatus === 'view' && infoPrecargada?.inputs[index]?.fecha) ? infoPrecargada?.inputs[index]?.fecha : replicaValues[index]?.["fecha"]
+                                                }
                                                 id={`input-${input.id}-${index}`}
                                                 name={`input-${input.id}-${index}`}
                                                 disabled={currentStatus === 'view'}
@@ -403,13 +540,15 @@ function ConstanciaEntrega() {
                                         </div>
 
 
-                                        <div className="icon">
-                                            {
-                                                (index == 0 || index > Array(replicas).fill(0).length) ?
+                                        {currentStatus !== 'view' && (
+                                            <div className="icon">
+                                                {index == 0 || index > Array(replicas).fill(0).length ? (
                                                     <AddBoxIcon style={{ color: 'grey' }} onClick={() => handleClick(index)} />
-                                                    : <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={() => handleClickRemove(input.id)} />
-                                            }
-                                        </div>
+                                                ) : (
+                                                    <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={() => handleClickRemove(input.id)} />
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 )
                             }
@@ -418,7 +557,10 @@ function ConstanciaEntrega() {
                     </div>
 
                     <div className={styles.personal}>
-                        <TextField onChange={(e) => { setValues({ ...values, infoAdicional: e.target.value }) }} fullWidth id="outlined-basic" label="Informacion adicional" variant="outlined" />
+                        <TextField onChange={(e) => { setValues({ ...values, infoAdicional: e.target.value }) }} fullWidth id="outlined-basic" label="Informacion adicional" variant="outlined"
+                        value={(currentStatus === "view" && infoPrecargada?.infoAdicional ? infoPrecargada?.infoAdicional : values?.infoAdicional)}
+                        disabled={currentStatus === 'view'}
+                        />
                     </div>
 
                     {

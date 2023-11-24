@@ -36,7 +36,28 @@ function FormCargado() {
 
 
   const goToForm = (form, status) => {
-    navigate(url, { state: { objeto: form , status} });
+    if (url === "/registro-de-capacitacion") {
+      let form2 = {
+        ...form,
+        asistentes: JSON.parse(form?.asistentes),
+        checkboxes: JSON.parse(form?.checkboxes),
+        materialEntregado: JSON.parse(form?.materialEntregado),
+        materialExpuesto: JSON.parse(form?.materialExpuesto),
+      }
+      console.log("form: ", form2)
+      navigate(url, { state: { objeto: form2, status } });
+    } else if (url === "/registro-simulacro") {
+      let form2 = {
+        ...form,
+        personas: JSON.parse(form?.personas),
+      }
+      console.log("form: ", form2)
+      navigate(url, { state: { objeto: form2, status } });
+    }
+    else {
+      console.log("form: ", form)
+      navigate(url, { state: { objeto: form, status } });
+    }
   };
 
   useEffect(() => {
@@ -47,6 +68,7 @@ function FormCargado() {
 
 
   async function getTitle() {
+    console.log('entre a getTitle')
 
     if (form == "controlalergenos") {
       setTitulo("Control de comensales con dietas Especiales")
@@ -90,6 +112,7 @@ function FormCargado() {
     }
     else if (form == "entregaropa") {
       setTitulo("Entrega de ropa de trabajo y EPP")
+      setUrl('/ropa-de-trabajo')
     }
     else {
       setTitulo("0")
