@@ -199,11 +199,25 @@ function InformeInternoAccidente() {
             date: values?.date,
             idUser: values?.idUser,
         }
+        
+        // si no se han cargado files , no se envia la propiedad directamente 
+        if (objetoFinal.firma === '' || objetoFinal.firma === undefined) {
+            delete objetoFinal.firma;
+        }
+        if (objetoFinal.denuncia === '' || objetoFinal.denuncia === undefined) {
+            delete objetoFinal.denuncia;
+        }
 
-        console.log(objetoFinal)
         informeIntAccidente(objetoFinal).then((resp) => {
-            setTextAlert("¡Formulario cargado exitosamente!");
-            setTypeAlert("success");
+            if (resp.error) {
+                setTextAlert('Ocurrió un error');
+                setTypeAlert('error');
+              } else {
+                setTextAlert('¡Formulario cargado exitosamente!');
+                setTypeAlert('success');
+                 // limpiar fomr
+              window.location.href = window.location.href;
+              }
         }).catch((resp) => {
             setTextAlert("Ocurrió un error")
             setTypeAlert("error");
@@ -223,7 +237,6 @@ function InformeInternoAccidente() {
    
     useEffect(() => {
         if (infoPrecargada) { // muestro un form del historial
-            console.log("infoPrecargada", infoPrecargada)
             setValues({
                 comedor: infoPrecargada.comedor,
                 fecha: infoPrecargada.fecha,
@@ -246,7 +259,6 @@ function InformeInternoAccidente() {
                 date: infoPrecargada.date,
                 idUser: idUser
             })
-            console.log("value", values)
         } else { // creo un form desde cero
 
             setValues({

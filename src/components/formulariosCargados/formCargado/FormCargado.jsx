@@ -47,6 +47,7 @@ function FormCargado() {
       console.log("form: ", form2)
       navigate(url, { state: { objeto: form2, status } });
     } else if (url === "/registro-simulacro") {
+      console.log("FORM", form)
       let form2 = {
         ...form,
         personas: JSON.parse(form?.personas),
@@ -188,7 +189,7 @@ function FormCargado() {
   const handleEdit = (formulario) => {
     const formsDeVariasEtapas = FORMS_DE_VARIAS_ETAPAS;
     if (formsDeVariasEtapas.includes(form)) {
-      goToForm(form, 'edit')
+      goToForm(formulario, 'edit')
     } else {
       openModalEdit(formulario);
     }

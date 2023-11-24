@@ -259,6 +259,36 @@ export const registroSimulacro = async (values) => {
   }
 };
 
+export const editRegistroSimulacro = async (values, formId) => {
+  const formData = new FormData();
+  // Agregar las propiedades de "values" al FormData
+  for (const key in values) {
+    if (Array.isArray(values[key])) {
+      formData.append(key, JSON.stringify(values[key]));
+    } else if (key === 'firmaDoc') {
+      formData.append('firmaDoc', values[key]); // Puedes ajustar el índice según sea necesario
+    } else {
+      formData.append(key, values[key]);
+    }
+  }
+
+  // Agregar otras propiedades como businessName, rol, nombre, etc., al FormData
+  formData.append('businessName', localStorage.getItem('business'));
+  formData.append('rol', localStorage.getItem('rol'));
+  formData.append('nombre', localStorage.getItem('userName'));
+
+  try {
+    const response = await fetch(`${URL_API}/api/registrosimulacroedit/${formId}`, {
+      method: 'PUT',
+      body: formData,
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
 export const reporteRechazo = async (values) => {
   try {
     const response = await fetch(`${URL_API}/api/reporterechazo`, {

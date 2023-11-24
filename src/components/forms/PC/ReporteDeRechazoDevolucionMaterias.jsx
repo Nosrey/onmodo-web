@@ -24,7 +24,6 @@ function ReporteDeRechazoDevolucionMaterias() {
     checksMedidas: location.state?.objeto.medidasTomadas,
     idUser: idUser
   }; // objeto que viene del historial (si vengo del historial)
-  console.log('infoPrecargada', infoPrecargada)
   const currentStatus = location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
   //** ALERTA */
   const [textAlert, setTextAlert] = useState("");
@@ -253,11 +252,16 @@ function ReporteDeRechazoDevolucionMaterias() {
 
   const handleSubmit = () => {
     let objetoFinal = inputsValuesConstructor();
-    console.log('objetoFinal', objetoFinal)
-    console.log('values: ', values)
     reporteRechazo(objetoFinal).then((resp) => {
-      setTextAlert("¡Formulario cargado exitosamente!");
-      setTypeAlert("success");
+      if (resp.error) {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      } else {
+        setTextAlert('¡Formulario cargado exitosamente!');
+        setTypeAlert('success');
+         // limpiar fomr
+       window.location.href = window.location.href;
+      }
     }).catch((resp) => {
       setTextAlert("Ocurrió un error")
       setTypeAlert("error");
@@ -276,7 +280,6 @@ function ReporteDeRechazoDevolucionMaterias() {
   };
 
   useEffect(() => {
-    console.log(infoPrecargada)
     if (infoPrecargada) { // muestro un form del historial
 
       setValues({

@@ -178,10 +178,17 @@ function RegistroCapacitacion() {
 
     const handleSubmit = () => {
         const valuesToSend = { ...values, asistentes: deleteEmptyRows(asistentes) }
-        console.log('valuesToSend', valuesToSend)
+        
         registroCapacitacion(valuesToSend).then((resp) => {
-            setTextAlert("¡Formulario cargado exitosamente!");
-            setTypeAlert("success");
+            if (resp.error) {
+                setTextAlert('Ocurrió un error');
+                setTypeAlert('error');
+              } else {
+                setTextAlert('¡Formulario cargado exitosamente!');
+                setTypeAlert('success');
+                 // limpiar fomr
+                window.location.href = window.location.href;
+            }
         }).catch((resp) => {
             setTextAlert("Ocurrió un error")
             setTypeAlert("error");

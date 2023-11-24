@@ -13,7 +13,6 @@ import { current } from '@reduxjs/toolkit';
 function ConstanciaEntrega() {
     const location = useLocation();
   const infoPrecargada = location.state?.objeto;
-  console.log('infoPrecargada: ', infoPrecargada)
   const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
@@ -152,11 +151,17 @@ function ConstanciaEntrega() {
             
         
         let objetoFinal = { ...values, inputs: replicaValues, checkboxes: checkboxes }
-        console.log('objetoFinal: ', objetoFinal);
 
         entregaRopa(objetoFinal).then((resp) => {
-            setTextAlert("¡Formulario cargado exitosamente!");
-            setTypeAlert("success");
+            if (resp.error) {
+                setTextAlert('Ocurrió un error');
+                setTypeAlert('error');
+              } else {
+                setTextAlert('¡Formulario cargado exitosamente!');
+                setTypeAlert('success');
+                 // limpiar fomr
+              window.location.href = window.location.href;
+              }
         }).catch((resp) => {
             setTextAlert("Ocurrió un error")
             setTypeAlert("error");

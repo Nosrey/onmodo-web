@@ -97,7 +97,7 @@ function RegistroDeDecomiso() {
         break
       }
     }
-    console.log('confirmado ', confirmado)
+
     if (confirmado) {
       setTrigger(true)
     } else {
@@ -141,14 +141,18 @@ function RegistroDeDecomiso() {
   }
 
   const handleSubmit = () => {
-    console.log('form ', replicaValues);
     const data= {...values , inputs:replicaValues}
     registroDecomiso(data)
       .then((resp) => {
-        setTextAlert('¡Formulario cargado exitosamente!');
-        setTypeAlert('success');
-        // limpiar fomr
-        window.location.href = window.location.href;
+        if (resp.error) {
+          setTextAlert('Ocurrió un error');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('¡Formulario cargado exitosamente!');
+          setTypeAlert('success');
+           // limpiar fomr
+          window.location.href = window.location.href;
+        }
       })
       .catch((resp) => {
         setTextAlert('Ocurrió un error');
@@ -169,7 +173,6 @@ function RegistroDeDecomiso() {
   useEffect(() => {
     if (infoPrecargada) {
       // muestro un form del historial
-      console.log('TENGO INFO ', infoPrecargada);
       setReplicas(infoPrecargada.inputs.length);
 
       setValues({

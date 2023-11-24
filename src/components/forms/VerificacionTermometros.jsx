@@ -97,13 +97,18 @@ function VerificacionTermometros() {
 
   const handleSubmit = () => {
     const valuesToSend = { ...values, inputsTrimestral: replicaValues, inputsSemestral: replicaValues2};
-    console.log("valuesToSend", valuesToSend)
+
     verificacionTermometros(valuesToSend)
       .then((resp) => {
-        setTextAlert('¡Formulario cargado exitosamente!');
-        setTypeAlert('success');
-        // limpiar fomr
-        // window.location.href = window.location.href;
+        if (resp.error) {
+          setTextAlert('Ocurrió un error');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('¡Formulario cargado exitosamente!');
+          setTypeAlert('success');
+            // limpiar fomr
+        window.location.href = window.location.href;
+        }
       })
       .catch((resp) => {
         setTextAlert('Ocurrió un error');

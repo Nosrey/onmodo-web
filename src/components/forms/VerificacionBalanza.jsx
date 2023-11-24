@@ -141,10 +141,15 @@ function VerificacionBalanza() {
     let objFinal = {...values, inputs: replicaValues}
     verificacionBalanza(objFinal)
       .then((resp) => {
-        setTextAlert('¡Formulario cargado exitosamente!');
-        setTypeAlert('success');
-        // limpiar fomr
+        if (resp.error) {
+          setTextAlert('Ocurrió un error');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('¡Formulario cargado exitosamente!');
+          setTypeAlert('success');
+           // limpiar fomr
         window.location.href = window.location.href;
+        }
       })
       .catch((resp) => {
         setTextAlert('Ocurrió un error');

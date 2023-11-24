@@ -4,13 +4,14 @@ import styles from './RegistroSimulacro.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Alert from '../../shared/components/Alert/Alert';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import { registroSimulacro } from '../../../services/FormsRequest';
-import { useLocation } from 'react-router';
+import { editRegistroSimulacro, registroSimulacro, sendEditApplication } from '../../../services/FormsRequest';
+import { useLocation, useNavigate } from 'react-router';
 import { useDropzone } from 'react-dropzone';
 import { current } from '@reduxjs/toolkit';
 
 function RegistroSimulacro() {
     const location = useLocation();
+    const navigate = useNavigate();
     const infoPrecargada = location.state?.objeto;
     const currentStatus = location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
     //** ALERTA */
@@ -57,11 +58,13 @@ function RegistroSimulacro() {
             personas: updatedPersonas
         });
     };
-    const handleSubmit = () => {
-        console.log('values: ', values)
-        registroSimulacro(values).then((resp) => {
-            setTextAlert("¡Formulario cargado exitosamente!");
-            setTypeAlert("success");
+
+    const configToFreeEdition = ( idForm , ) => {
+        const data = {
+            status:"free",
+          }
+        sendEditApplication({values: data, formId: idForm, form: 'registrosimulacro'}).then((resp) => {
+
             // reinicio los valores del form
             setValues({
                 razonSocial: "",
@@ -78,6 +81,60 @@ function RegistroSimulacro() {
                 idUser: idUser
             })
             setReplicas(1);
+        })
+    }
+
+    const handleSubmit = () => {
+        if (values.firmaDoc === ''  || values.firmaDoc === undefined) {
+            delete values.firmaDoc;
+        }
+
+        registroSimulacro(values).then((resp) => {
+            
+            if (resp.error) {
+                setTextAlert('Ocurrió un error');
+                setTypeAlert('error');
+              } else {
+                setTextAlert('¡Formulario cargado exitosamente!');
+                setTypeAlert('success');
+
+                // lo seteo para que se pueda editar libremente
+                // configToFreeEdition(idForm)
+                console.log(resp)
+                 
+              }
+        }).catch((resp) => {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
+    };
+
+    const handleEdit = () => {
+        if (values.firmaDoc === ''  || values.firmaDoc === undefined) {
+            delete values.firmaDoc;
+        }
+        
+        editRegistroSimulacro(values, infoPrecargada._id).then((resp) => {
+            
+            if (resp.error) {
+                setTextAlert('Ocurrió un error');
+                setTypeAlert('error');
+              } else {
+                setTextAlert('¡Formulario editado exitosamente!');
+                setTypeAlert('success');
+                navigate('/formularios-cargados/registrosimulacro');
+              }
         }).catch((resp) => {
             setTextAlert("Ocurrió un error")
             setTypeAlert("error");
@@ -96,6 +153,7 @@ function RegistroSimulacro() {
     };
 
     useEffect(() => {
+        console.log(currentStatus)
         if (infoPrecargada) { // muestro un form del historial
             setValues({
                 razonSocial: infoPrecargada.razonSocial,
@@ -107,9 +165,7 @@ function RegistroSimulacro() {
                 idUser: idUser
             })
             setReplicas(infoPrecargada.personas.length)
-            console.log("values", values)
         } else { // creo un form desde cero
-            console.log("error")
             setValues({
                 razonSocial: "",
                 ubicacion: "",
@@ -224,40 +280,56 @@ function RegistroSimulacro() {
                             </ul>
                         </div>
 
-                        {(currentStatus !== 'view') ?
-                            <div className={styles.responsableCont}>
-                                <div className={styles.subtitleCont}>
-                                    <p className={styles.subtitle}>Firma de los participantes</p>
+                        
+                        { (currentStatus === 'view' || currentStatus === 'edit') ?
+                            <>
+                                <div className={styles.border}>
+                                    {infoPrecargada?.firmaDoc ?
+                                        <h6>
+                                            <a href={infoPrecargada?.firmaDoc} target="_blank" rel="noopener noreferrer"> Descargar Archivo</a>
+                                        </h6>
+                                        :
+                                        <h6>No se han cargado documentos.</h6>
+                                    }
                                 </div>
-                                <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
+                                <a href={infoPrecargada?.firmaDoc} target="_blank" rel="noopener noreferrer">
+                                    <img src={infoPrecargada?.firmaDoc} alt="planilla" srcSet="" style={{ marginTop: '30px' }} />
+                                </a>
+                            </>
+                            :
+                            <>
+                                <p>Una vez guardada esta planilla, es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado.</p>
                                 <div className={styles.border} {...getRootProps()}>
-                                    <input  {...getInputProps()} />
+                                    <input {...getInputProps()} />
                                     {acceptedFiles.length > 0 ? (
                                         <h6>Archivo cargado: {acceptedFiles[0].name}</h6>
                                     ) : (
                                         <h6>Arrastra y suelta o haz clic para adjuntar documento</h6>
                                     )}
                                 </div>
-                            </div>
-                            :
-                            <div className={styles.responsableCont}>
-                                <div className={styles.subtitleCont}>
-                                    <p className={styles.subtitle}>Firma de los participantes</p>
-                                </div>
-                                <div className={styles.border}>
-                                    <h6>Archivo: {(currentStatus === 'view' ? infoPrecargada?.firmaDoc : values.firma.name)}</h6>
-                                </div>
-                            </div>
+                            </>
                         }
 
+
                         {
-                            (currentStatus === 'edit' || infoPrecargada === undefined) &&
+                            (infoPrecargada === undefined) &&
                             <div className='btn'>
                                 <Button
                                     onClick={handleSubmit}
                                     variant='contained'
                                 >
                                     Guardar
+                                </Button>
+                            </div>
+                        }
+                        {
+                            (currentStatus === 'edit' ) &&
+                            <div className='btn'>
+                                <Button
+                                    onClick={handleEdit}
+                                    variant='contained'
+                                >
+                                    Editar
                                 </Button>
                             </div>
                         }

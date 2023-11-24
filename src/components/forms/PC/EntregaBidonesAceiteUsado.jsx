@@ -103,10 +103,15 @@ function EntregaBidonesAceiteUsado() {
     console.log(replicaValues);
     // entregaBidones(replicaValues)
     //   .then((resp) => {
-    //     setTextAlert('¡Formulario cargado exitosamente!');
-    //     setTypeAlert('success');
-    //     // reiniciar form
-    //     window.location.href = window.location.href;
+    //    if (resp.error) {
+          //   setTextAlert('Ocurrió un error');
+          //   setTypeAlert('error');
+          // } else {
+          //   setTextAlert('¡Formulario cargado exitosamente!');
+          //   setTypeAlert('success');
+          //  // limpiar fomr
+          // window.location.href = window.location.href;
+          // }
     //   })
     //   .catch((resp) => {
     //     setTextAlert('Ocurrió un error');
