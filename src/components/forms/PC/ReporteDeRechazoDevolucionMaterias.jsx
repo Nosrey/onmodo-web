@@ -237,14 +237,14 @@ function ReporteDeRechazoDevolucionMaterias() {
 
   const inputsValuesConstructor = () => {
     let objetoFinal = {
-      dia: values.dia,
-      proveedor: values.proveedor,
-      producto: values.producto,
-      nroLote: values.nroLote,
-      condicionesEntrega: values.checksNoConformidades[0],
-      calidad: values.checksNoConformidades[1],
-      diferencias: values.checksNoConformidades[2],
-      transporte: values.checksNoConformidades[3],
+      dia: values?.dia,
+      proveedor: values?.proveedor,
+      producto: values?.producto,
+      nroLote: values?.nroLote,
+      condicionesEntrega: values.checksNoConformidades && values.checksNoConformidades[0] || [],
+      calidad: values.checksNoConformidades && values.checksNoConformidades[1] || [],
+      diferencias: values.checksNoConformidades && values.checksNoConformidades[2] || [],
+      transporte: values.checksNoConformidades && values.checksNoConformidades[3] || [],
       medidasTomadas: values.checksMedidas,
       idUser: idUser
     }

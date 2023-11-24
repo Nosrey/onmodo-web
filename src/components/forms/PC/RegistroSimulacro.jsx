@@ -184,7 +184,7 @@ function RegistroSimulacro() {
                                                 <div key={input.id}>
                                                     <TextField
                                                         disabled={currentStatus === 'view'}
-                                                        value={(currentStatus === 'view' || infoPrecargada) ? values.personas[index][input.prop] : ''}
+                                                        value={(currentStatus === 'view' ? infoPrecargada?.personas[index][input.prop] : values.personas[index][input.prop])}
                                                         onChange={(e) => handleChangePerson(index, input.prop, e.target.value)}
                                                         id={`input-${input.id}-${index}`}
                                                         name={`input-${input.id}-${index}`}
