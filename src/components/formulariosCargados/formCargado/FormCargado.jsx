@@ -11,7 +11,6 @@ import 'moment-timezone';
 
 import { generatePDF } from '../../../services/PDF';
 import { Oval } from 'react-loader-spinner';
-import { FORMS_DE_VARIAS_ETAPAS } from '../../../utils/constants/data';
 import ModalEdicionInfo from '../../modalEdicionInfo/ModalEdicionInfo';
 
 

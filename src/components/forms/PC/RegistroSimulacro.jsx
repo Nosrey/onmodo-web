@@ -12,7 +12,7 @@ import { current } from '@reduxjs/toolkit';
 function RegistroSimulacro() {
     const location = useLocation();
     const navigate = useNavigate();
-    const infoPrecargada = location.state?.objeto;
+    let infoPrecargada = location.state?.objeto;
     const currentStatus = location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
@@ -111,7 +111,6 @@ function RegistroSimulacro() {
         if (values.firmaDoc === ''  || values.firmaDoc === undefined) {
             delete values.firmaDoc;
         }
-        
         editRegistroSimulacro(values, infoPrecargada._id).then((resp) => {
             
             if (resp.error) {
@@ -170,17 +169,13 @@ function RegistroSimulacro() {
         }
     }, [])
 
-    const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
-        onDrop: (acceptedFiles) => {
-
-            setValues({
-                ...values,
-                firmaDoc: acceptedFiles[0],
-            });
-        },
-        disabled: !!location.state?.objeto,
-    });
-
+    const onDrop = (acceptedFiles) => {
+        // Solo toma el primer archivo si hay varios
+        setValues({ ...values, firmaDoc: acceptedFiles[0] });
+        
+    };
+    
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
     return (
         <>
             {values &&
@@ -188,6 +183,11 @@ function RegistroSimulacro() {
                     <div className="form">
                         <div className="titleContainer">
                             <h3 className="title">Registro de Simulacro</h3>
+                            { (currentStatus === 'view' || currentStatus === 'edit') &&
+                                <span style={{marginLeft:'20px', fontSize:'20px'}}>
+                                    <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
+                                </span>
+                            }
                         </div>
 
                         <div className={styles.personalText}>
@@ -271,29 +271,44 @@ function RegistroSimulacro() {
                             <div className={styles.subtitleCont}>
                                 <p className={styles.subtitle}>Firma de los participantes</p>
                             </div>
-                            <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
+                            
                         { (currentStatus === 'view' || currentStatus === 'edit') ?
                             <>
-                                <div className={styles.border}>
-                                    {infoPrecargada?.firmaDoc ?
+                                {
+                                    currentStatus === 'edit' &&
+                                    <div className={styles.border} {...getRootProps()}>
+                                        <input {...getInputProps()} />
+                                        {values.firmaDoc  ? (
+                                        <h6>{ typeof values?.firmaDoc === 'string'  ? 'Editar Archivo' : `Archivo cargado:  ${values.firmaDoc.name}`}</h6>
+                                         
+                                        ) : (
+                                            <h6>Arrastra y suelta o haz clic para adjuntar documento</h6>
+                                        )}
+                                    </div>
+                                }
+                               <div style={{marginTop:'10px'}} >
+                                    {values?.firmaDoc ?
                                         <h6>
-                                            <a href={infoPrecargada?.firmaDoc} target="_blank" rel="noopener noreferrer"> Descargar Archivo</a>
+                                            {typeof values?.firmaDoc === 'string'  && <a href={values?.firmaDoc} target="_blank" rel="noopener noreferrer"> Descargar Archivo</a>}
                                         </h6>
                                         :
                                         <h6>No se han cargado documentos.</h6>
                                     }
                                 </div>
-                                <a href={infoPrecargada?.firmaDoc} target="_blank" rel="noopener noreferrer">
-                                    <img src={infoPrecargada?.firmaDoc} alt="planilla" srcSet="" style={{ marginTop: '30px', width:'fit-content', maxWidth:'60%', minWidth:'250px' }} />
-                                </a>
+                                {
+                                    typeof values?.firmaDoc === 'string' && // ste seria el caso en que tengo la url de amazon
+                                    <a href={values?.firmaDoc} target="_blank" rel="noopener noreferrer">
+                                        <img src={values?.firmaDoc} alt="planilla" srcSet="" style={{ marginTop: '30px', width:'fit-content', maxWidth:'60%', minWidth:'250px' }} />
+                                    </a>
+                                }
                             </>
                             :
                             <>
                                 <p>Una vez guardada esta planilla, es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado.</p>
                                 <div className={styles.border} {...getRootProps()}>
                                     <input {...getInputProps()} />
-                                    {acceptedFiles.length > 0 ? (
-                                        <h6>Archivo cargado: {acceptedFiles[0].name}</h6>
+                                    {values.firmaDoc  ? (
+                                        <h6>Archivo cargado: {values.firmaDoc.name}</h6>
                                     ) : (
                                         <h6>Arrastra y suelta o haz clic para adjuntar documento</h6>
                                     )}

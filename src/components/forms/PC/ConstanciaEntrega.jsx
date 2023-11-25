@@ -3,15 +3,15 @@ import React, { useState, useEffect } from 'react'
 import styles from './ConstanciaEntrega.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import { useSelector } from 'react-redux';
 import Alert from '../../shared/components/Alert/Alert';
-import { entregaRopa } from '../../../services/FormsRequest';
+import { editEntregaRopa, entregaRopa } from '../../../services/FormsRequest';
 import { v4 as uuidv4 } from 'uuid';
-import { useLocation } from 'react-router-dom';
-import { current } from '@reduxjs/toolkit';
+import { useLocation , useNavigate} from 'react-router-dom';
 
 function ConstanciaEntrega() {
     const location = useLocation();
+    const navigate = useNavigate();
+
   const infoPrecargada = location.state?.objeto;
   const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
     //** ALERTA */
@@ -19,17 +19,8 @@ function ConstanciaEntrega() {
     const [typeAlert, setTypeAlert] = useState("");
     const [showAlert, setShowlert] = useState(false);
 
-    const prueba = useSelector(state => state.constanciaEntregaR.inputsValues)
     var idUser = localStorage.getItem("idUser");
 
-    const [inputs] = useState([
-        { id: 1, label: 'Producto' },
-        { id: 2, label: 'Tipo/modelo' },
-        { id: 3, label: 'Marca' },
-        { id: 4, label: 'Posee certificacion' },
-        { id: 5, label: 'Cantidad' },
-        { id: 6, label: 'Fecha de entrega' },
-    ]);
     const [replicas, setReplicas] = useState(1);
     const [replicaValues, setReplicaValues] = useState([{ id: 0 }]);
 
@@ -38,7 +29,7 @@ function ConstanciaEntrega() {
         nombre: "",
         contrato: "",
         dni: "",
-        direccion: "",
+        direcciosetObjValuesn: "",
         localidad: "",
         cp: "",
         provincia: "",
@@ -82,16 +73,8 @@ function ConstanciaEntrega() {
     useEffect(() => {
         setValues({ ...values, inputs: inputValues, checkboxes: check })
     }, [inputValues, check])
+
     useEffect(() => {
-        // replicaValues = [
-        //     //         {
-        //     //             "Tipo / modelo": "a",
-        //     //             "Producto": "a",
-        //     //             "Posee certificacion": "a",
-        //     //             "Marca": "a",
-        //     //             "Cantidad": "a"
-        //     //         }
-        //     //     ]
         if ((values?.nombre !== "" && values?.contrato !== "" && values?.dni !== "" && values?.direccion !== "" && values?.localidad !== "" && values?.cp !== "" && values?.provincia !== "" && values?.descripcion !== "")) {
             let confirmado = false
             for (let i = 0; i < replicaValues.length; i++) {
@@ -116,9 +99,31 @@ function ConstanciaEntrega() {
         setCheck([checkValues])
     }, [checkValues])
 
+    useEffect(() => {
+        if (infoPrecargada) { // muestro un form del historial
+            setValues({
+                nombreUsuario: infoPrecargada.nombreUsuario,
+                contrato: infoPrecargada.contrato,
+                dni: infoPrecargada.dni,
+                direccion: infoPrecargada.direccion,
+                localidad: infoPrecargada.localidad,
+                cp: infoPrecargada.cp,
+                provincia: infoPrecargada.provincia,
+                descripcion: infoPrecargada.descripcion,
+                infoAdicional: infoPrecargada.infoAdicional,
+                inputs: infoPrecargada.inputs,
+                checkboxes: infoPrecargada.checkboxes,
+                date: infoPrecargada.date,
+                otrosCheck6:infoPrecargada.checkboxes[0].textInputCheck6 ,
+                idUser: idUser
+            });
+            setCheckValues(infoPrecargada.checkboxes[0])
+            setReplicaValues(infoPrecargada.inputs);
+        }
+    }, [location.state?.objeto]);
+
     const handleCheck = (n, v) => {
         setCheckValues({ ...checkValues, [n]: v })
-        /* setCheck(check.pop()) */
     }
 
     const handleClick = (index) => {
@@ -135,10 +140,6 @@ function ConstanciaEntrega() {
         setReplicaValues(copyReplicas);
         setReplicas(replicas - 1);
     }
-
-    const handleCheckboxChange = (event) => {
-        setShowTextField(event.target.checked);
-    };
 
     const handleSubmit = () => {
         let checkboxes = values?.checkboxes
@@ -179,12 +180,55 @@ function ConstanciaEntrega() {
         )
     };
 
+    const handleEdit = () => {
+        let checkboxes = values?.checkboxes
+
+        if (checkboxes.length) {
+            checkboxes[0] = { ...checkboxes[0], textInputCheck6: values.otrosCheck6 }
+        } else {
+            checkboxes = []
+        }
+            
+        
+        let objetoFinal = { ...values, inputs: replicaValues, checkboxes: checkboxes }
+
+        editEntregaRopa(objetoFinal, infoPrecargada._id ).then((resp) => {
+            if (resp.error) {
+                setTextAlert('Ocurrió un error');
+                setTypeAlert('error');
+              } else {
+                setTextAlert('¡Formulario editado exitosamente!');
+                setTypeAlert('success');
+                navigate('/formularios-cargados/entregaropa');
+
+              }
+        }).catch((resp) => {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
+    };
     return (
         <>
             <div>
                 <div className="form">
                     <div className="titleContainer">
                         <h3 className="title">Constancia de Entrega de Ropa de Trabajo y de E.P.P</h3>
+                        { (currentStatus === 'view' || currentStatus === 'edit') &&
+                        <span style={{marginLeft:'20px', fontSize:'20px'}}>
+                            <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
+                        </span>
+                    }
                     </div>
                     <div className={styles.personal}>
                         <TextField
@@ -194,6 +238,9 @@ function ConstanciaEntrega() {
                             variant="outlined"
                             value={(currentStatus === 'view' && infoPrecargada?.nombreUsuario) ? infoPrecargada?.nombreUsuario : values?.nombreUsuario}
                             disabled={currentStatus === 'view'}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
 
                         <TextField 
@@ -203,6 +250,9 @@ function ConstanciaEntrega() {
                         variant="outlined" 
                         value={(currentStatus === 'view' && infoPrecargada?.contrato) ? infoPrecargada?.contrato : values?.contrato}
                         disabled={currentStatus === 'view'}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         />
 
                         <TextField 
@@ -212,6 +262,9 @@ function ConstanciaEntrega() {
                         variant="outlined" 
                         value={(currentStatus === 'view' && infoPrecargada?.dni) ? infoPrecargada?.dni : values?.dni}
                         disabled={currentStatus === 'view'}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         />
                     </div>
                     <div className={styles.personal}>
@@ -222,6 +275,9 @@ function ConstanciaEntrega() {
                         variant="outlined" 
                         value={(currentStatus === 'view' && infoPrecargada?.direccion) ? infoPrecargada?.direccion : values?.direccion}
                         disabled={currentStatus === 'view'}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         />
 
                         <TextField 
@@ -231,6 +287,9 @@ function ConstanciaEntrega() {
                         variant="outlined" 
                         value={(currentStatus === 'view' && infoPrecargada?.localidad) ? infoPrecargada?.localidad : values?.localidad}
                         disabled={currentStatus === 'view'}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         />
 
                         <TextField 
@@ -240,6 +299,9 @@ function ConstanciaEntrega() {
                         variant="outlined" 
                         value={(currentStatus === 'view' && infoPrecargada?.cp) ? infoPrecargada?.cp : values?.cp}
                         disabled={currentStatus === 'view'}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         />
 
                         <TextField 
@@ -249,6 +311,9 @@ function ConstanciaEntrega() {
                         variant="outlined"
                         value={(currentStatus === 'view' && infoPrecargada?.provincia) ? infoPrecargada?.provincia : values?.provincia}
                         disabled={currentStatus === 'view'}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         />
                     </div>
 
@@ -260,6 +325,9 @@ function ConstanciaEntrega() {
                         variant="outlined" 
                         value={(currentStatus === 'view' && infoPrecargada?.descripcion) ? infoPrecargada?.descripcion : values?.descripcion}
                         disabled={currentStatus === 'view'}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         />
                     </div>
 
@@ -267,7 +335,7 @@ function ConstanciaEntrega() {
                         <FormControlLabel
                             control={
                                 <Checkbox
-                                    checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check0 : check[0].check0}
+                                    checked={check[0].check0}
                                     onChange={(e) => { handleCheck("check0", e.target.checked) }}
                                     disabled={currentStatus === "view"}
                                 />
@@ -277,7 +345,7 @@ function ConstanciaEntrega() {
                         <FormControlLabel
                             control={
                                 <Checkbox
-                                    checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check1 : check[0].check1}
+                                    checked={check[0].check1}
                                     onChange={(e) => { handleCheck("check1", e.target.checked) }}
                                     disabled={currentStatus === "view"}
                                 />
@@ -287,7 +355,7 @@ function ConstanciaEntrega() {
                         <FormControlLabel
                             control={
                                 <Checkbox
-                                    checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check2 : check[0].check2}
+                                    checked={check[0].check2}
                                     onChange={(e) => { handleCheck("check2", e.target.checked) }}
                                     disabled={currentStatus === "view"}
                                 />
@@ -297,7 +365,7 @@ function ConstanciaEntrega() {
                         <FormControlLabel
                             control={
                                 <Checkbox
-                                    checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check3 : check[0].check3}
+                                    checked={check[0].check3}
                                     onChange={(e) => { handleCheck("check3", e.target.checked) }}
                                     disabled={currentStatus === "view"}
                                 />
@@ -307,7 +375,7 @@ function ConstanciaEntrega() {
                         <FormControlLabel
                             control={
                                 <Checkbox
-                                    checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check4 : check[0].check4}
+                                    checked={check[0].check4}
                                     onChange={(e) => { handleCheck("check4", e.target.checked) }}
                                     disabled={currentStatus === "view"}
                                 />
@@ -317,7 +385,7 @@ function ConstanciaEntrega() {
                         <FormControlLabel
                             control={
                                 <Checkbox
-                                    checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check5 : check[0].check5}
+                                    checked={check[0].check5}
                                     onChange={(e) => { handleCheck("check5", e.target.checked) }}
                                     disabled={currentStatus === "view"}
                                 />
@@ -329,7 +397,7 @@ function ConstanciaEntrega() {
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        checked={currentStatus === "view" ? infoPrecargada?.checkboxes[0].check6 : check[0].check6}
+                                        checked={check[0].check6}
                                         onChange={(e) => { handleCheck("check6", e.target.checked) }}
                                         disabled={currentStatus === "view"}
                                     />
@@ -343,82 +411,24 @@ function ConstanciaEntrega() {
                     </div>
 
                     <div className={styles.personal}>
-                        {(currentStatus === "view" ? infoPrecargada?.checkboxes[0].check6 : checkValues?.check6) && (
+                        {(checkValues?.check6) && (
                             <TextField 
                             id="outlined-basic" 
                             name="textField" 
                             variant="outlined" 
                             label="Otros" 
-                            value={currentStatus === "view" ? infoPrecargada?.checkboxes[0].textInputCheck6 : values?.otrosCheck6} 
+                            value={values?.otrosCheck6} 
                             onChange={(e) => {
                                 setValues({ ...values, otrosCheck6: e.target.value })
                             }} 
                             disabled={currentStatus === "view"}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                             />
                             
                         )}
                     </div>
-
-                    {/* <div className="table">
-                        <div className='tableSection'>
-                            {Array(replicas)
-                                .fill(0)
-                                .map((_, index) => (
-                                    <div className='tableRow' key={index}>
-                                        <p className='index'>{index + 1} </p>
-
-                                        {inputs.map((input) => (
-                                            <div key={input.id}>
-                                                {input.label === 'Fecha de entrega' ? (
-                                                    <TextField
-                                                        type='date'
-                                                        InputLabelProps={{
-                                                            shrink: true,
-                                                        }}
-                                                        onChange={(e) => {
-                                                            let replicaCopy = [...replicaValues];
-                                                            replicaCopy[index].fecha = e.target.value;
-                                                            setReplicaValues(replicaCopy);
-                                                        }}
-                                                        value={replicaValues[index].fecha}
-                                                        id={`input-${input.id}-${index}`}
-                                                        name={`input-${input.id}-${index}`}
-                                                        disabled={currentStatus === 'view'}
-                                                    />
-                                                ) : (
-                                                    <TextField
-                                                        id={`input-${input.id}-${index}`}
-                                                        name={`input-${input.id}-${index}`}
-                                                        label={`${input.label}`}
-                                                        value={
-                                                            replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
-                                                        }
-                                                        onChange={(e) => {
-                                                            let replicaCopy = [...replicaValues];
-                                                            replicaCopy[index][
-                                                                input.label.toLowerCase().replace(/\s/g, '')
-                                                            ] = e.target.value;
-                                                            setReplicaValues(replicaCopy);
-                                                        }}
-                                                        variant='outlined'
-                                                        disabled={currentStatus === 'view'}
-                                                        className='input'
-                                                    />
-                                                )}
-                                            </div>
-                                        ))}
-
-                                        <div className="icon">
-                                            {
-                                                (index == 0 || index > Array(replicas).fill(0).length) ?
-                                                    <AddBoxIcon style={{ color: 'grey' }} onClick={() => handleClick(index)} />
-                                                    : <IndeterminateCheckboxIcon style={{ color: 'grey' }} onClick={() => handleClickRemove(index)} />
-                                            }
-                                        </div>
-                                    </div>
-                                ))}
-                        </div>
-                    </div> */}
 
                     <div className="table">
                         <div className='tableSection'>
@@ -435,7 +445,7 @@ function ConstanciaEntrega() {
                                                 name={`Producto`}
                                                 label={`Producto`}
                                                 value={
-                                                    (currentStatus === 'view' && infoPrecargada?.inputs[index]?.Producto) ? infoPrecargada?.inputs[index]?.Producto : replicaValues[index]?.["Producto"]
+                                                    replicaValues[index]?.["Producto"]
                                                 }
                                                 onChange={(e) => {
                                                     let replicaCopy = [...replicaValues];
@@ -445,6 +455,9 @@ function ConstanciaEntrega() {
                                                 variant='outlined'
                                                 disabled={currentStatus === 'view'}
                                                 className='input'
+                                                 InputLabelProps={{
+                                                    shrink: true,
+                                                }}
                                             />
                                         </div>
 
@@ -454,7 +467,7 @@ function ConstanciaEntrega() {
                                                 name={`Tipo / modelo`}
                                                 label={`Tipo / modelo`}
                                                 value={
-                                                    (currentStatus === 'view' && infoPrecargada?.inputs[index]?.["Tipo / modelo"]) ? infoPrecargada?.inputs[index]?.["Tipo / modelo"] : replicaValues[index]?.["Tipo / modelo"]
+                                                     replicaValues[index]?.["Tipo / modelo"]
                                                 }
                                                 onChange={(e) => {
                                                     let replicaCopy = [...replicaValues];
@@ -464,6 +477,9 @@ function ConstanciaEntrega() {
                                                 variant='outlined'
                                                 disabled={currentStatus === 'view'}
                                                 className='input'
+                                                 InputLabelProps={{
+                                                    shrink: true,
+                                                }}
                                             />
                                         </div>
 
@@ -473,7 +489,7 @@ function ConstanciaEntrega() {
                                                 name={`Posee certificacion`}
                                                 label={`Posee certificacion`}
                                                 value={
-                                                    (currentStatus === 'view' && infoPrecargada?.inputs[index]?.["Posee certificacion"]) ? infoPrecargada?.inputs[index]?.["Posee certificacion"] : replicaValues[index]?.["Posee certificacion"]
+                                                     replicaValues[index]?.["Posee certificacion"]
                                                 }
                                                 onChange={(e) => {
                                                     let replicaCopy = [...replicaValues];
@@ -483,6 +499,9 @@ function ConstanciaEntrega() {
                                                 variant='outlined'
                                                 disabled={currentStatus === 'view'}
                                                 className='input'
+                                                 InputLabelProps={{
+                                                    shrink: true,
+                                                }}
                                             />
                                         </div>
 
@@ -492,7 +511,7 @@ function ConstanciaEntrega() {
                                                 name={`Marca`}
                                                 label={`Marca`}
                                                 value={
-                                                    (currentStatus === 'view' && infoPrecargada?.inputs[index]?.Marca) ? infoPrecargada?.inputs[index]?.Marca : replicaValues[index]?.["Marca"]
+                                                    replicaValues[index]?.["Marca"]
                                                 }
                                                 onChange={(e) => {
                                                     let replicaCopy = [...replicaValues];
@@ -502,6 +521,9 @@ function ConstanciaEntrega() {
                                                 variant='outlined'
                                                 disabled={currentStatus === 'view'}
                                                 className='input'
+                                                 InputLabelProps={{
+                                                    shrink: true,
+                                                }}
                                             />
                                         </div>
 
@@ -511,7 +533,7 @@ function ConstanciaEntrega() {
                                                 name={`Cantidad`}
                                                 label={`Cantidad`}
                                                 value={
-                                                    (currentStatus === 'view' && infoPrecargada?.inputs[index]?.Cantidad) ? infoPrecargada?.inputs[index]?.Cantidad : replicaValues[index]?.["Cantidad"]
+                                                     replicaValues[index]?.["Cantidad"]
                                                 }
                                                 onChange={(e) => {
                                                     let replicaCopy = [...replicaValues];
@@ -521,6 +543,9 @@ function ConstanciaEntrega() {
                                                 variant='outlined'
                                                 disabled={currentStatus === 'view'}
                                                 className='input'
+                                                 InputLabelProps={{
+                                                    shrink: true,
+                                                }}
                                             />
                                         </div>
 
@@ -536,7 +561,7 @@ function ConstanciaEntrega() {
                                                     setReplicaValues(replicaCopy);
                                                 }}
                                                 value={
-                                                    (currentStatus === 'view' && infoPrecargada?.inputs[index]?.fecha) ? infoPrecargada?.inputs[index]?.fecha : replicaValues[index]?.["fecha"]
+                                                  replicaValues[index]?.["fecha"]
                                                 }
                                                 id={`input-${input.id}-${index}`}
                                                 name={`input-${input.id}-${index}`}
@@ -545,7 +570,9 @@ function ConstanciaEntrega() {
                                         </div>
 
 
-                                        {currentStatus !== 'view' && (
+                                        {infoPrecargada && currentStatus === 'view' ? (
+                                                <div></div>
+                                            ) : (
                                             <div className="icon">
                                                 {index == 0 || index > Array(replicas).fill(0).length ? (
                                                     <AddBoxIcon style={{ color: 'grey' }} onClick={() => handleClick(index)} />
@@ -562,22 +589,35 @@ function ConstanciaEntrega() {
                     </div>
 
                     <div className={styles.personal}>
-                        <TextField onChange={(e) => { setValues({ ...values, infoAdicional: e.target.value }) }} fullWidth id="outlined-basic" label="Informacion adicional" variant="outlined"
+                        <TextField onChange={(e) => { setValues({ ...values, infoAdicional: e.target.value }) }} fullWidth id="outlined-basic" label="Informacion adicional" variant="outlined" InputLabelProps={{
+                            shrink: true,
+                        }}
                         value={(currentStatus === "view" && infoPrecargada?.infoAdicional ? infoPrecargada?.infoAdicional : values?.infoAdicional)}
                         disabled={currentStatus === 'view'}
                         />
                     </div>
 
                     {
-                        (currentStatus === 'edit' || infoPrecargada === undefined) &&
-                        <div className='btn'>
-                            <Button
-                            onClick={handleSubmit}
-                            variant='contained'
-                            >
-                            Guardar
-                            </Button>
-                        </div>
+                            (infoPrecargada === undefined) &&
+                            <div className='btn'>
+                                <Button
+                                    onClick={handleSubmit}
+                                    variant='contained'
+                                >
+                                    Guardar
+                                </Button>
+                            </div>
+                        }
+                        {
+                            (currentStatus === 'edit' ) &&
+                            <div className='btn'>
+                                <Button
+                                    onClick={handleEdit}
+                                    variant='contained'
+                                >
+                                    Editar
+                                </Button>
+                            </div>
                         }
 
                 </div>
