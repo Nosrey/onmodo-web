@@ -186,15 +186,6 @@ function FormCargado() {
     }
   }
 
-  const handleEdit = (formulario) => {
-    const formsDeVariasEtapas = FORMS_DE_VARIAS_ETAPAS;
-    if (formsDeVariasEtapas.includes(form)) {
-      goToForm(formulario, 'edit')
-    } else {
-      openModalEdit(formulario);
-    }
-  }
-
   return (
     <>
     {isLoading ? (
@@ -260,7 +251,7 @@ function FormCargado() {
                         )
                       )
                     )}>
-                    {formulario.status === "" ? "-" : (
+                    {formulario.status === "" || formulario.status === 'free' ? "-" : (
                       formulario.status === "pending" ? "Pendiente" : (
                         formulario.status === "approved" ? "Aprobado" : (
                           formulario.status === "denied" ? "Denegado" : ""
@@ -278,7 +269,13 @@ function FormCargado() {
                           <i class="ri-information-line"></i>
                         </span>
                       :
-                      <span onClick={() => handleEdit(formulario)} className={styles.actionIcon}>
+                      <span 
+                        onClick={() =>{
+                          formulario.status === 'free' ?
+                          goToForm(formulario, 'edit') :
+                          openModalEdit(formulario)}
+                        }
+                        className={styles.actionIcon}>
                         <i className='ri-pencil-line'></i>
                       </span>
                     }

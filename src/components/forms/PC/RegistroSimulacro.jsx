@@ -59,31 +59,6 @@ function RegistroSimulacro() {
         });
     };
 
-    const configToFreeEdition = ( idForm , ) => {
-        const data = {
-            status:"free",
-          }
-        sendEditApplication({values: data, formId: idForm, form: 'registrosimulacro'}).then((resp) => {
-
-            // reinicio los valores del form
-            setValues({
-                razonSocial: "",
-                ubicacion: "",
-                localidad: "",
-                fecha: "",
-                personas: [
-                    {
-                        nombreCompleto: "",
-                        dni: "",
-                    }
-                ],
-                firmaDoc: "",
-                idUser: idUser
-            })
-            setReplicas(1);
-        })
-    }
-
     const handleSubmit = () => {
         if (values.firmaDoc === ''  || values.firmaDoc === undefined) {
             delete values.firmaDoc;
@@ -98,10 +73,22 @@ function RegistroSimulacro() {
                 setTextAlert('¡Formulario cargado exitosamente!');
                 setTypeAlert('success');
 
-                // lo seteo para que se pueda editar libremente
-                // configToFreeEdition(idForm)
-                console.log(resp)
-                 
+                // reinicio los valores del form
+                setValues({
+                    razonSocial: "",
+                    ubicacion: "",
+                    localidad: "",
+                    fecha: "",
+                    personas: [
+                        {
+                            nombreCompleto: "",
+                            dni: "",
+                        }
+                    ],
+                    firmaDoc: "",
+                    idUser: idUser
+                })
+                setReplicas(1);
               }
         }).catch((resp) => {
             setTextAlert("Ocurrió un error")
@@ -252,7 +239,7 @@ function RegistroSimulacro() {
                                                     />
                                                 </div>
                                             ))}
-                                            {infoPrecargada ? <div></div> : <div className="icon">
+                                            {infoPrecargada && currentStatus === 'view' ? <div></div> : <div className="icon">
                                                 {
                                                     (index === 0 || index >= replicas) ?
                                                         <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
@@ -280,7 +267,11 @@ function RegistroSimulacro() {
                             </ul>
                         </div>
 
-                        
+                        <div className={styles.responsableCont}>
+                            <div className={styles.subtitleCont}>
+                                <p className={styles.subtitle}>Firma de los participantes</p>
+                            </div>
+                            <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
                         { (currentStatus === 'view' || currentStatus === 'edit') ?
                             <>
                                 <div className={styles.border}>
@@ -293,7 +284,7 @@ function RegistroSimulacro() {
                                     }
                                 </div>
                                 <a href={infoPrecargada?.firmaDoc} target="_blank" rel="noopener noreferrer">
-                                    <img src={infoPrecargada?.firmaDoc} alt="planilla" srcSet="" style={{ marginTop: '30px' }} />
+                                    <img src={infoPrecargada?.firmaDoc} alt="planilla" srcSet="" style={{ marginTop: '30px', width:'fit-content', maxWidth:'60%', minWidth:'250px' }} />
                                 </a>
                             </>
                             :
@@ -309,7 +300,7 @@ function RegistroSimulacro() {
                                 </div>
                             </>
                         }
-
+                        </div>
 
                         {
                             (infoPrecargada === undefined) &&
