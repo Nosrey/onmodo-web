@@ -9,14 +9,6 @@ import { useLocation,useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 
 function RegistroCapacitacion() {
-    const propToLabelMap = {
-        dni: 'DNI',
-        nombre: 'Nombre y Apellido',
-        area: 'Area/Lugar de trabajo',
-        resultado: 'Resultado Evaluación',
-        metodo: 'Metodo de Evaluacion',
-    };
-
     const location = useLocation();
     const navigate = useNavigate();
     let infoPrecargada = location.state?.objeto;
