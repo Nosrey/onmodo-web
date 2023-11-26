@@ -51,7 +51,6 @@ function FormCargado() {
         ...form,
         personas: JSON.parse(form?.personas),
       }
-      console.log("form: ", form2)
       navigate(url, { state: { objeto: form2, status } });
     }
     else {

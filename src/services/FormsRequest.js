@@ -237,6 +237,23 @@ export const registroDecomiso = async (values) => {
   }
 };
 
+export const editRegistroDecomiso = async (values, formId) => {
+  try {
+    const response = await fetch(`${URL_API}/api/registrodecomisoedit/${formId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...values,
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
+
 export const registroSimulacro = async (values) => {
   const formData = new FormData();
   // Agregar las propiedades de "values" al FormData
