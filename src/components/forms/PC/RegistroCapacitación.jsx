@@ -296,6 +296,9 @@ function RegistroCapacitacion() {
                     <TextField
                         onChange={(e) => { setValues({ ...values, tiempoDuracion: e.target.value }); }}
                         type="time"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         value={values.tiempoDuracion || ''}
                         id="tiempo-duracion"
                         name="tiempo-duracion"
@@ -324,6 +327,9 @@ function RegistroCapacitacion() {
                         id="outlined-multiline-static"
                         label="Temas dados"
                         multiline
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
                         value={values.temas || ''}
                         rows={4}
                         disabled={currentStatus === 'view'}
@@ -385,7 +391,9 @@ function RegistroCapacitacion() {
                         <div className={styles.personal}>
 
                             {showTextField2 && (
-                                <TextField id="outlined-basic" disabled={currentStatus === 'view'} value={values.materialExpuesto[3]?.desc} onChange={e => checkboxValuesConstructor("Otros1", true, e.target.value)} name="textField" variant="outlined" label="Otros" />
+                                <TextField id="outlined-basic" disabled={currentStatus === 'view'} value={values.materialExpuesto[3]?.desc} onChange={e => checkboxValuesConstructor("Otros1", true, e.target.value)} name="textField" variant="outlined" label="Otros" InputLabelProps={{
+                                    shrink: true,
+                                }} />
                             )}
                         </div>
                     </div>
@@ -410,6 +418,9 @@ function RegistroCapacitacion() {
                                                 name={input.prop}
                                                 label={`${input.label}`}
                                                 variant="outlined"
+                                                InputLabelProps={{
+                                                    shrink: true,
+                                                }}
                                                 disabled={currentStatus === 'view'}
                                                 value={currentStatus === 'view' ? infoPrecargada?.asistentes?.[index]?.[input.prop] : values.asistentes[index][input.prop]}
                                             />
@@ -425,6 +436,9 @@ function RegistroCapacitacion() {
                                                         value={(currentStatus === 'view' ? infoPrecargada?.asistentes?.[index]?.[input.prop] : values.asistentes[index][input.prop])}
                                                         name={input.prop}
                                                         label="Método de Evaluación"
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
                                                         className={styles.largeSelectInput}
                                                     >
                                                         <MenuItem value="Oral">Oral</MenuItem>
@@ -457,10 +471,14 @@ function RegistroCapacitacion() {
 
 
                 <div className={styles.personal}>
-                    <TextField value={values.observaciones || ''} disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, observaciones: e.target.value }); }} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
+                    <TextField InputLabelProps={{
+                            shrink: true,
+                        }} value={values.observaciones || ''} disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, observaciones: e.target.value }); }} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
                 </div>
                 <div className={styles.personal}>
-                    <TextField value={values.instructor || ''} disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, instructor: e.target.value }); }} id="outlined-basic" label="Instructor" variant="outlined" />
+                    <TextField InputLabelProps={{
+                            shrink: true,
+                        }} value={values.instructor || ''} disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, instructor: e.target.value }); }} id="outlined-basic" label="Instructor" variant="outlined" />
                 </div>
                 <div className={styles.responsableCont}>
                     <div className={styles.subtitleCont}>

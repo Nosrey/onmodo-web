@@ -3,16 +3,18 @@ import React, { useState, useEffect } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionTermometros.module.css';
 import Termometros from '../modales/Termometros';
-import { verificacionTermometros } from '../../services/FormsRequest';
+import { editVerificacionTermometros, verificacionTermometros } from '../../services/FormsRequest';
 
 import Modal from '../shared/Modal';
 import Alert from '../shared/components/Alert/Alert';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 function VerificacionTermometros() {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const infoPrecargada = location.state?.objeto;
   const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
   //** ALERTA */
@@ -126,6 +128,37 @@ function VerificacionTermometros() {
       });
   };
 
+  const handleEdit = () => {
+    const valuesToSend = { ...values, inputsTrimestral: replicaValues, inputsSemestral: replicaValues2};
+
+    editVerificacionTermometros(valuesToSend , infoPrecargada._id)
+      .then((resp) => {
+        if (resp.error) {
+          setTextAlert('Ocurrió un error');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('¡Formulario editado exitosamente!');
+          setTypeAlert('success');
+          navigate('/formularios-cargados/verificaciontermometros');
+
+        }
+      })
+      .catch((resp) => {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      })
+      .finally(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+        setShowlert(true);
+        setTimeout(() => {
+          setShowlert(false);
+        }, 7000);
+      });
+  };
+
   useEffect(() => {
     if (infoPrecargada) {
       // muestro un form del historial
@@ -138,6 +171,8 @@ function VerificacionTermometros() {
       });
       setReplicas(infoPrecargada.inputsTrimestral.length);
       setReplicas2(infoPrecargada.inputsSemestral.length);
+      setReplicaValues2(infoPrecargada.inputsSemestral)
+      setReplicaValues(infoPrecargada.inputsTrimestral)
     } else {
       // creo un form desde cero
       setValues({
@@ -157,6 +192,11 @@ function VerificacionTermometros() {
           <div className='form'>
             <div className='titleContainer'>
               <h3 className='title'>Verificación de Instrumentos de Medición: Termometros</h3>
+              { (currentStatus === 'view' || currentStatus === 'edit') &&
+                  <span style={{marginLeft:'20px', fontSize:'20px'}}>
+                      <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
+                  </span>
+              }
             </div>
 
             {showModal ? (
@@ -278,7 +318,9 @@ function VerificacionTermometros() {
                           )}
                         </div>
                       ))}
-                      {(currentStatus !== 'view') && <div className='icon'>
+                      {infoPrecargada && currentStatus === 'view' ? (
+                            <div></div>
+                        ) : (<div className='icon'>
                         {index === 0 || index >= replicas ? (
                           <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                         ) : (
@@ -289,7 +331,8 @@ function VerificacionTermometros() {
                             }}
                           />
                         )}
-                      </div>}
+                      </div>
+                       )}
                     </div>
                   ))}
               </div>
@@ -350,18 +393,23 @@ function VerificacionTermometros() {
                         />
                       </div>
                     ))}
-                   {(currentStatus !== 'view') && <div className='icon'>
-                      {index === 0 || index >= replicas ? (
-                        <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick2} />
-                      ) : (
-                        <IndeterminateCheckboxIcon
-                          style={{ color: 'grey' }}
-                          onClick={() => {
-                            handleClickRemove2(replicaValues2[index].id);
-                          }}
-                        />
+                   {infoPrecargada && currentStatus === 'view' ? (
+                        <div></div>
+                    ) : (
+                    <div className='icon'>
+                        {index === 0 || index >= replicas ? (
+                          <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick2} />
+                        ) : (
+                          <IndeterminateCheckboxIcon
+                            style={{ color: 'grey' }}
+                            onClick={() => {
+                              handleClickRemove2(replicaValues2[index].id);
+                            }}
+                          />
+                        )}
+                      </div>
                       )}
-                    </div>}
+
                   </div>
                 ))}
               </div>
@@ -375,16 +423,27 @@ function VerificacionTermometros() {
             </span>
 
             {
-            (currentStatus === 'edit' || infoPrecargada === undefined) &&
-            <div className='btn'>
-                <Button
-                onClick={handleSubmit}
-                variant='contained'
-                >
-                Guardar
-                </Button>
-            </div>
-            }
+              (infoPrecargada === undefined) &&
+              <div className='btn'>
+                  <Button
+                      onClick={handleSubmit}
+                      variant='contained'
+                  >
+                      Guardar
+                  </Button>
+              </div>
+          }
+          {
+              (currentStatus === 'edit' ) &&
+              <div className='btn'>
+                  <Button
+                      onClick={handleEdit}
+                      variant='contained'
+                  >
+                      Editar
+                  </Button>
+              </div>
+          }
           </div>
         </div>
       )}

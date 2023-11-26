@@ -370,8 +370,6 @@ export const editVerificacionBalanza = async (values, formId) => {
 };
 export const verificacionTermometros = async (values) => {
   try {
-    console.log('url: ', `${URL_API}/api/verificaciontermometros`)
-    console.log('objeto a enviar: ', { ...values, businessName: localStorage.getItem('business'), rol: localStorage.getItem('rol'), nombre: localStorage.getItem('userName') })
     const response = await fetch(`${URL_API}/api/verificaciontermometros`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -389,7 +387,22 @@ export const verificacionTermometros = async (values) => {
     throw error;
   }
 };
-
+export const editVerificacionTermometros = async (values, formId) => {
+  try {
+    const response = await fetch(`${URL_API}/api/verificaciontermometrosedit/${formId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...values
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
 export const cargaForm = async (values) => {
   try {
     const response = await fetch(`${URL_API}/api/carga`, {
