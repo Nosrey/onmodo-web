@@ -114,7 +114,7 @@ const Legajos = () => {
                       <td>{legajo.rol}</td>
                       <td>
                         <div className={styles.contEdicion}>
-                        <span onClick={() => handleOpenDeleteModal(legajo._id)} className={styles.actionIcon} style={{fontSize: '18px'}}>
+                        <span onClick={() => handleOpenDeleteModal(legajo.legajo)} className={styles.actionIcon} style={{fontSize: '18px'}}>
                           <i className='ri-delete-bin-line'></i>
                         </span>
                         <span>
