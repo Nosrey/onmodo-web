@@ -143,7 +143,7 @@ export const getLegajosPorRol = async (nivel) => {
 export const deleteLegajo = async (legajo) => {
   const businessName = localStorage.getItem('business');
   try {
-    const res = await fetch(`${URL_API}/api/${legajo}/${businessName}`, {
+    const res = await fetch(`${URL_API}/api/users/${legajo}/${businessName}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     });
