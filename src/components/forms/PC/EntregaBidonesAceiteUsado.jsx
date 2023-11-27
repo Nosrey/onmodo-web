@@ -100,33 +100,41 @@ function EntregaBidonesAceiteUsado() {
   }
 
   const handleSubmit = () => {
-    console.log(replicaValues);
-    // entregaBidones(replicaValues)
-    //   .then((resp) => {
-    //    if (resp.error) {
-          //   setTextAlert('Ocurrió un error');
-          //   setTypeAlert('error');
-          // } else {
-          //   setTextAlert('¡Formulario cargado exitosamente!');
-          //   setTypeAlert('success');
-          //  // limpiar fomr
+    const arrayFilesTransporte = replicaValues.map(value => value.transporte || null);
+    const arrayFilesDisposicion = replicaValues.map(value => value.disposiciónfinal || null);
+
+    const data = {
+      certificadoTransporte : arrayFilesTransporte,
+      certificadoDisposicion: arrayFilesDisposicion,
+      inputs : replicaValues
+    }
+    
+    entregaBidones(data)
+      .then((resp) => {
+       if (resp.error) {
+            setTextAlert('Ocurrió un error');
+            setTypeAlert('error');
+          } else {
+            setTextAlert('¡Formulario cargado exitosamente!');
+            setTypeAlert('success');
+           // limpiar fomr
           // window.location.href = window.location.href;
-          // }
-    //   })
-    //   .catch((resp) => {
-    //     setTextAlert('Ocurrió un error');
-    //     setTypeAlert('error');
-    //   })
-    //   .finally(() => {
-    //     window.scrollTo({
-    //       top: 0,
-    //       behavior: 'smooth',
-    //     });
-    //     setShowAlert(true);
-    //     setTimeout(() => {
-    //       setShowAlert(false);
-    //     }, 7000);
-    //   });
+          }
+      })
+      .catch((resp) => {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      })
+      .finally(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 7000);
+      });
   };
 
   useEffect(() => {
