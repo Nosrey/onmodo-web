@@ -4,26 +4,29 @@ import styles from "./ReporteDeRechazoDevolucionMaterias.module.css";
 import Modal from '../../shared/Modal';
 import RechazoInfo from "../../modales/RechazoInfo";
 import Alert from "../../shared/components/Alert/Alert";
-import { reporteRechazo } from "../../../services/FormsRequest";
-import { useLocation } from "react-router-dom";
+import { editReporteRechazo, reporteRechazo } from "../../../services/FormsRequest";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function ReporteDeRechazoDevolucionMaterias() {
   const location = useLocation();
-  const infoPrecargada = {
-    ...location.state?.objeto,
-    dia: location.state?.objeto.dia,
-    proveedor: location.state?.objeto.proveedor,
-    producto: location.state?.objeto.producto,
-    nroLote: location.state?.objeto.nroLote,
-    checksNoConformidades: [
-      location.state?.objeto.condicionesEntrega,
-      location.state?.objeto.calidad,
-      location.state?.objeto.diferencias,
-      location.state?.objeto.transporte
-    ],
-    checksMedidas: location.state?.objeto.medidasTomadas,
-    idUser: idUser
-  }; // objeto que viene del historial (si vengo del historial)
+  const navigate = useNavigate();
+  let infoPrecargada = location.state?.objeto;
+
+  // const infoPrecargada = {
+  //   ...location.state?.objeto,
+  //   dia: location.state?.objeto.dia,
+  //   proveedor: location.state?.objeto.proveedor,
+  //   producto: location.state?.objeto.producto,
+  //   nroLote: location.state?.objeto.nroLote,
+  //   checksNoConformidades: [
+  //     location.state?.objeto.condicionesEntrega,
+  //     location.state?.objeto.calidad,
+  //     location.state?.objeto.diferencias,
+  //     location.state?.objeto.transporte
+  //   ],
+  //   checksMedidas: location.state?.objeto.medidasTomadas,
+  //   idUser: idUser
+  // }; // objeto que viene del historial (si vengo del historial)
   const currentStatus = location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
   //** ALERTA */
   const [textAlert, setTextAlert] = useState("");
@@ -84,7 +87,7 @@ function ReporteDeRechazoDevolucionMaterias() {
     proveedor: "",
     producto: "",
     nroLote: "",
-    "checksNoConformidades": [
+    checksNoConformidades: [
       [
         {
           "checked": false,
@@ -184,7 +187,7 @@ function ReporteDeRechazoDevolucionMaterias() {
         }
       ]
     ],
-    "checksMedidas": [
+    checksMedidas: [
       {
         "description": "",
         "name": "Rechazo  (en el momento de la recepción)",
@@ -203,36 +206,6 @@ function ReporteDeRechazoDevolucionMaterias() {
     ],
     idUser: idUser
   })
-  const [condicionesValues, setCondicionesValues] = useState([
-    { adelantadoCheck: false, adelantadoDescription: "" },
-    { atrasadoCheck: false, atrasadoDescription: "" }])
-
-  const [calidadValues, setCalidadValues] = useState([
-    { temperaturaCheck: false, temperaturaDescription: "" },
-    { vidaUtilCheck: false, vidaUtilDescription: "" },
-    { embalajeCheck: false, embalajeDescription: "" },
-    { rotuloCheck: false, rotuloDescription: "" },
-    { calibreCheck: false, calibreDescription: "" },
-    { colorCheck: false, colorDescription: "" },
-    { signosCheck: false, signosDescription: "" },
-    { consistenciaCheck: false, consistenciaDescription: "" },
-    { olorCheck: false, olorDescription: "" }])
-
-  const [diferenciasValues, setDiferenciasValues] = useState([
-    { precioCheck: false, precioDescription: "" },
-    { cantidadCheck: false, cantidadDescription: "" }])
-
-  const [transporteValues, setTransporteValues] = useState([
-    { temperaturaCheck: false, temperaturaDescription: "" },
-    { uniformeCheck: false, uniformeDescription: "" },
-    { predisposicionCheck: false, predisposicionDescription: "" },
-    { vehiculoCheck: false, vehiculoDescription: "" },
-    { otrasFaltasCheck: false, otrasFaltasDescription: "" }])
-
-  const [medidasValues, setMedidasValues] = useState([
-    { rechazoCheck: false, rechazoDescription: "" },
-    { devolucionCheck: false, devolucionDescription: "" },
-    { aceptadoCheck: false, aceptadoDescription: "" }])
 
   const inputsValuesConstructor = () => {
     let objetoFinal = {
@@ -279,21 +252,53 @@ function ReporteDeRechazoDevolucionMaterias() {
     )
   };
 
+  const handleEdit = () => {
+    let objetoFinal = inputsValuesConstructor();
+    editReporteRechazo(objetoFinal, infoPrecargada._id).then((resp) => {
+      if (resp.error) {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      } else {
+        setTextAlert('¡Formulario editado exitosamente!');
+        setTypeAlert('success');
+        navigate('/formularios-cargados/reporterechazo');
+      }
+    }).catch((resp) => {
+      setTextAlert("Ocurrió un error")
+      setTypeAlert("error");
+    }).finally(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      setShowlert(true);
+      setTimeout(() => {
+        setShowlert(false);
+
+      }, 7000);
+    }
+    )
+  };
+
   useEffect(() => {
     if (infoPrecargada) { // muestro un form del historial
-
+      console.log(infoPrecargada)
       setValues({
         dia: infoPrecargada.dia,
         proveedor: infoPrecargada.proveedor,
         producto: infoPrecargada.producto,
         nroLote: infoPrecargada.nroLote,
-        condicionesEntrega: infoPrecargada.condicionesEntrega,
-        calidad: infoPrecargada.calidad,
-        diferencias: infoPrecargada.diferencias,
-        transporte: infoPrecargada.transporte,
-        medidasTomadas: infoPrecargada.medidasTomadas,
+        // condicionesEntrega: infoPrecargada.condicionesEntrega,
+        // calidad: infoPrecargada.calidad,
+        // diferencias: infoPrecargada.diferencias,
+        // transporte: infoPrecargada.transporte,
+        // medidasTomadas: infoPrecargada.medidasTomadas,
         date: infoPrecargada.date,
-        idUser: idUser
+        idUser: idUser,
+        checksNoConformidades:[
+          infoPrecargada.condicionesEntrega,infoPrecargada.calidad,infoPrecargada.diferencias,infoPrecargada.transporte,
+        ],
+        checksMedidas:infoPrecargada.medidasTomadas
       })
 
     } else { // creo un form desde cero
@@ -310,6 +315,11 @@ function ReporteDeRechazoDevolucionMaterias() {
             <h3 className="title">
               Reporte de Rechazo/Devolución de Materias Primas
             </h3>
+            { (currentStatus === 'view' || currentStatus === 'edit') &&
+                <span style={{marginLeft:'20px', fontSize:'20px'}}>
+                    <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
+                </span>
+            }
           </div>
           {showModal ? (
             <Modal
@@ -397,10 +407,13 @@ function ReporteDeRechazoDevolucionMaterias() {
                         </div>
                         {section[Object.keys(section)].map((value, indexSection) => (
                           <div className={styles.inputRow} key={value.id}>
-                            <Checkbox
+                            {console.log("values", values)}
+                            {console.log("info", values?.checksNoConformidades[indexInputs]?.checked)}
 
+                            <Checkbox
                               onChange={(e) => {
                                 let newValues = { ...values };
+                                // newValues.checksNoConformidades[indexInputs][indexSection].checked = e.target.checked
                                 if (newValues.checksNoConformidades && newValues.checksNoConformidades[indexInputs] && newValues.checksNoConformidades[indexInputs][indexSection]) {
                                   newValues.checksNoConformidades[indexInputs][indexSection].checked = e.target.checked;
                                   newValues.checksNoConformidades[indexInputs][indexSection].name = value.label;
@@ -419,16 +432,16 @@ function ReporteDeRechazoDevolucionMaterias() {
                               label={`${value.label}`}
                               key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[indexInputs]?.[indexSection]?.label : values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.label)}
                               disabled={currentStatus === 'view'}
-                              checked={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[indexInputs]?.[indexSection]?.checked : values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.checked)}
+                              checked={values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.checked}
                             />
                             <p className={styles.itemText}>{value.label}</p>
                             <TextField
                               id={`sectionInput-${value.id}-${index}`}
                               name={`sectionInput-${value.id}-${index}`}
-                              label={"Descripción de no conformidad"}
+                              label={currentStatus !== 'view' && "Descripción de no conformidad"}
                               variant="outlined"
                               disabled={currentStatus === 'view'}
-                              value={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[indexInputs]?.[indexSection]?.description : values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.description)}
+                              value={values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.description }
                               onChange={(e) => {
                                 let newValues = { ...values };
                                 if (newValues.checksNoConformidades && newValues.checksNoConformidades[indexInputs] && newValues.checksNoConformidades[indexInputs][indexSection]) {
@@ -442,6 +455,8 @@ function ReporteDeRechazoDevolucionMaterias() {
                                   newValues.checksNoConformidades[indexInputs][indexSection].description = e.target.value;
                                   newValues.checksNoConformidades[indexInputs][indexSection].name = value.label;
                                 }
+                                // newValues.checksNoConformidades[indexInputs][indexSection].description = e.target.value
+
                                 setValues(newValues);
                               }}
                               fullWidth
@@ -469,7 +484,7 @@ function ReporteDeRechazoDevolucionMaterias() {
                           <Checkbox
                             label={`${input.label}`}
                             key={(currentStatus === 'view' ? infoPrecargada?.checksMedidas?.[indexInputs]?.name : values?.checksMedidas?.[indexInputs]?.name)}
-                            checked={(currentStatus === 'view' ? infoPrecargada?.checksMedidas?.[indexInputs]?.checked : values?.checksMedidas?.[indexInputs]?.checked)}
+                            checked={values?.checksMedidas?.[indexInputs]?.checked}
                             disabled={currentStatus === 'view'}
                             onChange={(e) => {
                               let newValues = { ...values };
@@ -487,8 +502,8 @@ function ReporteDeRechazoDevolucionMaterias() {
                           />
                           <p className={styles.itemText}>{input.label}</p>
                           <TextField
-                            value={(currentStatus === 'view' ? infoPrecargada?.checksMedidas?.[indexInputs]?.description : values?.checksMedidas?.[indexInputs]?.description)}
                             disabled={currentStatus === 'view'}
+                            value={values?.checksMedidas?.[indexInputs]?.description}
 
                             onChange={(e) => {
                               let newValues = { ...values };
@@ -507,7 +522,7 @@ function ReporteDeRechazoDevolucionMaterias() {
 
                             id={`sectionInput-${input.id}-${index}`}
                             name={`sectionInput-${input.id}-${index}`}
-                            label={"Cantidad"}
+                            label={currentStatus !== 'view' && "Cantidad"}
                             variant="outlined"
                             multiline
                             fullWidth
@@ -524,16 +539,27 @@ function ReporteDeRechazoDevolucionMaterias() {
           <br />
           <br />
           {
-            (currentStatus !== 'view') &&
-            <div className='btn'>
-              <Button
-                onClick={handleSubmit}
-                variant='contained'
-              >
-                Guardar
-              </Button>
-            </div>
-          }
+            (infoPrecargada === undefined) &&
+                <div className='btn'>
+                    <Button
+                        onClick={handleSubmit}
+                        variant='contained'
+                    >
+                        Guardar
+                    </Button>
+                </div>
+            }
+            {
+                (currentStatus === 'edit' ) &&
+                <div className='btn'>
+                    <Button
+                        onClick={handleEdit}
+                        variant='contained'
+                    >
+                        Editar
+                    </Button>
+                </div>
+            }
         </div>
         <div></div>
       </div>

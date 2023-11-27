@@ -332,7 +332,22 @@ export const reporteRechazo = async (values) => {
     throw error;
   }
 };
-
+export const editReporteRechazo = async (values , formId) => {
+  try {
+    const response = await fetch(`${URL_API}/api/reporterechazoedit/${formId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...values
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
 export const verificacionBalanza = async (values) => {
   try {
     const response = await fetch(`${URL_API}/api/verificacionbalanza`, {
