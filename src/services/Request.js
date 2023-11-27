@@ -128,6 +128,33 @@ export const getSolicitudesDeEdicion = async () => {
   }
 };
 
+export const getLegajosPorRol = async (nivel) => {
+  const businessName = localStorage.getItem('business');
+  try {
+    const res = await fetch(`${URL_API}/api/rol${nivel}/${businessName}`);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error('Error: ', error);
+    throw new Error('No se pudo obtener los legajos.');
+  }
+};
+
+export const deleteLegajo = async (legajo) => {
+  const businessName = localStorage.getItem('business');
+  try {
+    const res = await fetch(`${URL_API}/api/${legajo}/${businessName}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+}
+
 //** REMINDERS */
 export const createReminder = async ({
   tarea,

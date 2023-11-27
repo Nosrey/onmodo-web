@@ -11,7 +11,6 @@ import 'moment-timezone';
 
 import { generatePDF } from '../../../services/PDF';
 import { Oval } from 'react-loader-spinner';
-import { FORMS_DE_VARIAS_ETAPAS } from '../../../utils/constants/data';
 import ModalEdicionInfo from '../../modalEdicionInfo/ModalEdicionInfo';
 
 
@@ -36,7 +35,28 @@ function FormCargado() {
 
 
   const goToForm = (form, status) => {
-    navigate(url, { state: { objeto: form , status} });
+    if (url === "/registro-de-capacitacion") {
+      let form2 = {
+        ...form,
+        asistentes: JSON.parse(form?.asistentes),
+        checkboxes: JSON.parse(form?.checkboxes),
+        materialEntregado: JSON.parse(form?.materialEntregado),
+        materialExpuesto: JSON.parse(form?.materialExpuesto),
+      }
+      console.log("form: ", form2)
+      navigate(url, { state: { objeto: form2, status } });
+    } else if (url === "/registro-simulacro") {
+      console.log("FORM", form)
+      let form2 = {
+        ...form,
+        personas: JSON.parse(form?.personas),
+      }
+      navigate(url, { state: { objeto: form2, status } });
+    }
+    else {
+      console.log("form: ", form)
+      navigate(url, { state: { objeto: form, status } });
+    }
   };
 
   useEffect(() => {
@@ -47,6 +67,7 @@ function FormCargado() {
 
 
   async function getTitle() {
+    console.log('entre a getTitle')
 
     if (form == "controlalergenos") {
       setTitulo("Control de comensales con dietas Especiales")
@@ -90,6 +111,7 @@ function FormCargado() {
     }
     else if (form == "entregaropa") {
       setTitulo("Entrega de ropa de trabajo y EPP")
+      setUrl('/ropa-de-trabajo')
     }
     else {
       setTitulo("0")
@@ -162,15 +184,6 @@ function FormCargado() {
     }
   }
 
-  const handleEdit = (formulario) => {
-    const formsDeVariasEtapas = FORMS_DE_VARIAS_ETAPAS;
-    if (formsDeVariasEtapas.includes(form)) {
-      goToForm(form, 'edit')
-    } else {
-      openModalEdit(formulario);
-    }
-  }
-
   return (
     <>
     {isLoading ? (
@@ -236,7 +249,7 @@ function FormCargado() {
                         )
                       )
                     )}>
-                    {formulario.status === "" ? "-" : (
+                    {formulario.status === "" || formulario.status === 'free' ? "-" : (
                       formulario.status === "pending" ? "Pendiente" : (
                         formulario.status === "approved" ? "Aprobado" : (
                           formulario.status === "denied" ? "Denegado" : ""
@@ -254,7 +267,13 @@ function FormCargado() {
                           <i class="ri-information-line"></i>
                         </span>
                       :
-                      <span onClick={() => handleEdit(formulario)} className={styles.actionIcon}>
+                      <span 
+                        onClick={() =>{
+                          formulario.status === 'free' ?
+                          goToForm(formulario, 'edit') :
+                          openModalEdit(formulario)}
+                        }
+                        className={styles.actionIcon}>
                         <i className='ri-pencil-line'></i>
                       </span>
                     }

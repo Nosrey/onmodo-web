@@ -23,13 +23,11 @@ export const ejemplo = async ({ dato1, dato2 }) => {
 export const registroCapacitacion = async (values) => {
   try {
     const formData = new FormData();
-    // Agregar las propiedades de "values" al FormData
+
     for (const key in values) {
       if (Array.isArray(values[key])) {
         formData.append(key, JSON.stringify(values[key]));
-      } else if (key === 'firma') {
-        formData.append('firma', values[key]); // Puedes ajustar el índice según sea necesario
-      } else {
+      }  else {
         formData.append(key, values[key]);
       }
     }
@@ -50,10 +48,31 @@ export const registroCapacitacion = async (values) => {
     throw error;
   }
 };
+export const editRegistroCapacitacion = async (values, formId) => {
+  try {
+    const formData = new FormData();
+    
+    for (const key in values) {
+      if (Array.isArray(values[key])) {
+        formData.append(key, JSON.stringify(values[key]));
+      }  else {
+        formData.append(key, values[key]);
+      }
+    }
 
+    const response = await fetch(`${URL_API}/api/registrocapacitacionedit/${formId}`, {
+      method: 'PUT',
+      body: formData,
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
 export const entregaRopa = async (values) => {
   try {
-    console.log('values:', values)
     const response = await fetch(`${URL_API}/api/entregaropa`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -71,27 +90,22 @@ export const entregaRopa = async (values) => {
     throw error;
   }
 };
-
-// export const controlAlergenos = async (values) => {
-//   try {
-//     const response = await fetch(`${URL_API}/api/controlalergenos`, {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify({
-//         ...values,
-//         businessName: localStorage.getItem("business"),
-//         rol: localStorage.getItem("rol"),
-//         nombre: localStorage.getItem("userName"),
-//       }),
-//     });
-//     const data = await response.json();
-//     return data;
-
-//   } catch (error) {
-//     console.error('Error', error);
-//     throw error;
-//   }
-// };
+export const editEntregaRopa = async (values, formId) => {
+  try {
+    const response = await fetch(`${URL_API}/api/entregaropaedit/${formId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...values,
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
 export const controlAlergenos = async (values) => {
   try {
     const formData = new FormData();
@@ -223,6 +237,23 @@ export const registroDecomiso = async (values) => {
   }
 };
 
+export const editRegistroDecomiso = async (values, formId) => {
+  try {
+    const response = await fetch(`${URL_API}/api/registrodecomisoedit/${formId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...values,
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
+
 export const registroSimulacro = async (values) => {
   const formData = new FormData();
   // Agregar las propiedades de "values" al FormData
@@ -241,6 +272,11 @@ export const registroSimulacro = async (values) => {
   formData.append('rol', localStorage.getItem('rol'));
   formData.append('nombre', localStorage.getItem('userName'));
 
+  // reviso las propiedades de formData
+  for (var pair of formData.entries()) {
+    console.log(pair[0] + ', ' + pair[1]);
+  }
+
   try {
     const response = await fetch(`${URL_API}/api/registrosimulacro`, {
       method: 'POST',
@@ -254,6 +290,29 @@ export const registroSimulacro = async (values) => {
   }
 };
 
+export const editRegistroSimulacro = async (values, formId) => {
+  const formData = new FormData();
+  // Agregar las propiedades de "values" al FormData
+  for (const key in values) {
+    if (Array.isArray(values[key])) {
+      formData.append(key, JSON.stringify(values[key]));
+    } else {
+      formData.append(key, values[key]);
+    }
+  }
+  
+  try {
+    const response = await fetch(`${URL_API}/api/registrosimulacroedit/${formId}`, {
+      method: 'PUT',
+      body: formData,
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
 export const reporteRechazo = async (values) => {
   try {
     const response = await fetch(`${URL_API}/api/reporterechazo`, {
@@ -293,7 +352,22 @@ export const verificacionBalanza = async (values) => {
     throw error;
   }
 };
-
+export const editVerificacionBalanza = async (values, formId) => {
+  try {
+    const response = await fetch(`${URL_API}/api/verificacionbalanzaedit/${formId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...values,
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
 export const verificacionTermometros = async (values) => {
   try {
     const response = await fetch(`${URL_API}/api/verificaciontermometros`, {
@@ -313,7 +387,22 @@ export const verificacionTermometros = async (values) => {
     throw error;
   }
 };
-
+export const editVerificacionTermometros = async (values, formId) => {
+  try {
+    const response = await fetch(`${URL_API}/api/verificaciontermometrosedit/${formId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...values
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
 export const cargaForm = async (values) => {
   try {
     const response = await fetch(`${URL_API}/api/carga`, {

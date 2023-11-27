@@ -1,18 +1,19 @@
-import { Box, Button, InputLabel, MenuItem, Select, TextField, FormControl } from '@mui/material';
+import { Button, InputLabel, MenuItem, Select, TextField, FormControl } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionBalanza.module.css';
 import Modal from '../shared/Modal';
 import Balanzas from '../modales/Balanzas';
-import axios from 'axios';
-import { verificacionBalanza } from '../../services/FormsRequest';
+import { editVerificacionBalanza, verificacionBalanza } from '../../services/FormsRequest';
 import Alert from '../shared/components/Alert/Alert';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 
 function VerificacionBalanza() {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const infoPrecargada = location.state?.objeto;
   const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
 
@@ -102,27 +103,6 @@ function VerificacionBalanza() {
     }
   }, [objValues]);
 
-  const inputsValuesConstructor = (id, label, index, selectedValue) => {
-    const inputTarget = document.getElementById(id);
-
-    if (label === 'Código') {
-      setObjValues({ ...objValues, codigo: inputTarget.value, id: index });
-    } else if (label === 'Tipo (BP/BR)') {
-      setObjValues({ ...objValues, tipo: selectedValue });
-    } else if (label === 'Responsable del uso') {
-      setObjValues({ ...objValues, responsableUso: inputTarget.value });
-    } else if (label === 'Área') {
-      setObjValues({ ...objValues, area: inputTarget.value });
-    } else if (label === 'Peso Masa ref/Pto balanza') {
-      setObjValues({ ...objValues, pesoMasa: inputTarget.value });
-    } else if (label === 'Peso real') {
-      setObjValues({ ...objValues, pesoReal: inputTarget.value });
-    } else if (label === 'Desvío') {
-      setObjValues({ ...objValues, desvio: inputTarget.value });
-    } else if (label === 'Acciones de corrección') {
-      setObjValues({ ...objValues, accionesCorrecion: inputTarget.value });
-    }
-  };
 
   const handleClick = (index) => {
     setReplicas(replicas + 1);
@@ -141,10 +121,15 @@ function VerificacionBalanza() {
     let objFinal = {...values, inputs: replicaValues}
     verificacionBalanza(objFinal)
       .then((resp) => {
-        setTextAlert('¡Formulario cargado exitosamente!');
-        setTypeAlert('success');
-        // limpiar fomr
+        if (resp.error) {
+          setTextAlert('Ocurrió un error');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('¡Formulario cargado exitosamente!');
+          setTypeAlert('success');
+           // limpiar fomr
         window.location.href = window.location.href;
+        }
       })
       .catch((resp) => {
         setTextAlert('Ocurrió un error');
@@ -161,7 +146,36 @@ function VerificacionBalanza() {
         }, 7000);
       });
   };
-  
+
+  const handleEdit = () => {
+    let objFinal = {...values, inputs: replicaValues}
+    editVerificacionBalanza(objFinal, infoPrecargada._id)
+      .then((resp) => {
+        if (resp.error) {
+          setTextAlert('Ocurrió un error');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('¡Formulario editado exitosamente!');
+          setTypeAlert('success');
+          navigate('/formularios-cargados/verificacionbalanza');
+        }
+      })
+      .catch((resp) => {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      })
+      .finally(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+        setShowlert(true);
+        setTimeout(() => {
+          setShowlert(false);
+        }, 7000);
+      });
+  };
+
   useEffect(() => {
     if (infoPrecargada) {
       // muestro un form del historial
@@ -173,6 +187,7 @@ function VerificacionBalanza() {
         idUser: idUser,
       });
       setReplicas(infoPrecargada.inputs.length);
+      setReplicaValues(infoPrecargada.inputs)
     } else {
       // creo un form desde cero
       setValues({
@@ -190,7 +205,12 @@ function VerificacionBalanza() {
         <div className='form'>
           <div className='titleContainer'>
             <h3 className='title'>Verificación de Instrumentos de Medición: Balanzas</h3>
-          </div>
+            { (currentStatus === 'view' || currentStatus === 'edit') &&
+                        <span style={{marginLeft:'20px', fontSize:'20px'}}>
+                            <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
+                        </span>
+                    }
+         </div>
           {showModal ? (
             <Modal content={<Balanzas />} closeModal={() => setShowModal(false)} />
           ) : (
@@ -231,6 +251,9 @@ function VerificacionBalanza() {
                 className='input'
                 label={`Instrumento`}
                 variant='outlined'
+                InputLabelProps={{
+                  shrink: true,
+                }}
               >
                 <MenuItem value='Balanza'>Balanza</MenuItem>
                 <MenuItem value='Báscula'>Báscula</MenuItem>
@@ -304,7 +327,7 @@ function VerificacionBalanza() {
                         )}
                       </div>
                     ))}
-                    {infoPrecargada ? (
+                    {infoPrecargada && currentStatus === 'view' ?  (
                       <div></div>
                     ) : (
                       <div className='icon'>
@@ -331,16 +354,27 @@ function VerificacionBalanza() {
           <br />
 
           {
-            (currentStatus === 'edit' || infoPrecargada === undefined) &&
+            (infoPrecargada === undefined) &&
             <div className='btn'>
                 <Button
-                onClick={handleSubmit}
-                variant='contained'
+                    onClick={handleSubmit}
+                    variant='contained'
                 >
-                Guardar
+                    Guardar
                 </Button>
             </div>
-            }
+          }
+          {
+              (currentStatus === 'edit' ) &&
+              <div className='btn'>
+                  <Button
+                      onClick={handleEdit}
+                      variant='contained'
+                  >
+                      Editar
+                  </Button>
+              </div>
+          }
         </div>
       </div>
       {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}

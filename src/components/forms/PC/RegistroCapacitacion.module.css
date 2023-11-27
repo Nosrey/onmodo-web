@@ -47,7 +47,18 @@
     width: 40%;
     min-width: 300px;
 }
-
+.border {
+    border: rgb(184, 172, 172) 1px solid;
+    border-radius: 5px;
+    justify-content: center;
+    margin-top: 4rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 .matDidacticoSection {
     display: flex;
     gap: 10%;

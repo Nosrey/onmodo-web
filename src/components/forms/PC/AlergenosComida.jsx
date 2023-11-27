@@ -16,7 +16,6 @@ function AlergenosComida() {
 
   var idUser = localStorage.getItem('idUser');
   useEffect(() => {
-    console.log(infoPrecargada);
     if (infoPrecargada) {
       // muestro un form del historial
       setObjValues(infoPrecargada.inputs);
@@ -40,7 +39,6 @@ function AlergenosComida() {
   const [showAlert, setShowlert] = useState(false);
   const formValue = useSelector((state) => state.comensalesR.inputsValues);
 
-  console.log(formValue);
   const [inputs] = useState([
     { id: 1, label: 'Fecha', prop: 'fecha' },
     { id: 2, label: 'Nombre Comensal', prop: 'nombre' },
@@ -76,7 +74,6 @@ function AlergenosComida() {
 
   const handleSubmit = () => {
     const valuesToSend = {...values, inputs: objValues}
-    console.log('values:', valuesToSend);
 
     controlAlergenos(valuesToSend)
       .then((resp) => {
@@ -86,14 +83,8 @@ function AlergenosComida() {
         } else {
           setTextAlert('¡Formulario cargado exitosamente!');
           setTypeAlert('success');
-          // limpiar formulario
-          // setInputValues([]);
-          // setReplicas(1);
-          // setValues({
-          //   comedor: '',
-          //   inputs: [{}],
-          //   idUser: idUser,
-          // });
+           // limpiar fomr
+        window.location.href = window.location.href;
         }
       })
       .catch((resp) => {

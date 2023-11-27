@@ -1,16 +1,16 @@
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import styles from './RegistroDeDecomiso.module.css';
-import { useSelector } from 'react-redux';
 import Alert from '../../shared/components/Alert/Alert';
-import { registroDecomiso } from '../../../services/FormsRequest';
-import { useLocation } from 'react-router-dom';
+import { editRegistroDecomiso, registroDecomiso } from '../../../services/FormsRequest';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 function RegistroDeDecomiso() {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const infoPrecargada = location.state?.objeto;
   const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
   
@@ -18,11 +18,6 @@ function RegistroDeDecomiso() {
   const [textAlert, setTextAlert] = useState('');
   const [typeAlert, setTypeAlert] = useState('');
   const [showAlert, setShowlert] = useState(false);
-
-  const prueba = useSelector((state) => state.registroDecomisosR.inputsValues);
-  const [fecha, setFecha] = useState('');
-  const [causa, setCausa] = useState('');
-  const [turno, setTurno] = useState('');
 
   var idUser = localStorage.getItem('idUser');
   const [inputs] = useState([
@@ -97,35 +92,13 @@ function RegistroDeDecomiso() {
         break
       }
     }
-    console.log('confirmado ', confirmado)
+
     if (confirmado) {
       setTrigger(true)
     } else {
       setTrigger(false)
     }
   }, [values, replicaValues])
-
-  const inputsValuesConstructor = (id, label, index, value) => {
-    const inputTarget = document.getElementById(id);
-    label === 'Fecha'
-      ? setObjValues({ ...objValues, fecha: inputTarget.value, id: index })
-      : label === 'Turno'
-        ? setObjValues({ ...objValues, turno: value })
-        : label === 'Producto decomisado'
-          ? setObjValues({ ...objValues, productoDecomisado: inputTarget.value })
-          : label === 'Cantidad'
-            ? setObjValues({ ...objValues, cantidad: inputTarget.value })
-            : label === 'Causa' && setObjValues({ ...objValues, causa: value });
-  };
-
-  const todasLasPropiedadesLlenas = (obj) => {
-    for (let prop in obj) {
-      if (obj[prop] === '') {
-        return false;
-      }
-    }
-    return true;
-  };
 
   const handleClick = (index) => {
     setReplicas(replicas + 1);
@@ -141,14 +114,53 @@ function RegistroDeDecomiso() {
   }
 
   const handleSubmit = () => {
-    console.log('form ', replicaValues);
     const data= {...values , inputs:replicaValues}
     registroDecomiso(data)
       .then((resp) => {
-        setTextAlert('¡Formulario cargado exitosamente!');
-        setTypeAlert('success');
-        // limpiar fomr
-        window.location.href = window.location.href;
+        if (resp.error) {
+          setTextAlert('Ocurrió un error');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('¡Formulario cargado exitosamente!');
+          setTypeAlert('success');
+           // limpiar fomr
+          window.location.href = window.location.href;
+        }
+      })
+      .catch((resp) => {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      })
+      .finally(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+        setShowlert(true);
+        setTimeout(() => {
+          setShowlert(false);
+        }, 7000);
+      });
+  };
+
+  const deleteEmptyRows = (inputs) => {
+    return inputs.filter((row) =>
+        Object.values(row).some((value) => value !== ''));
+  }
+
+  const handleEdit = () => {
+    const data= {...values , inputs:deleteEmptyRows(replicaValues)}
+    editRegistroDecomiso(data , infoPrecargada._id)
+      .then((resp) => {
+        if (resp.error) {
+          setTextAlert('Ocurrió un error');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('¡Formulario editado exitosamente!');
+          setTypeAlert('success');
+          navigate('/formularios-cargados/registrodecomiso');
+
+        }
       })
       .catch((resp) => {
         setTextAlert('Ocurrió un error');
@@ -169,7 +181,6 @@ function RegistroDeDecomiso() {
   useEffect(() => {
     if (infoPrecargada) {
       // muestro un form del historial
-      console.log('TENGO INFO ', infoPrecargada);
       setReplicas(infoPrecargada.inputs.length);
 
       setValues({
@@ -177,6 +188,7 @@ function RegistroDeDecomiso() {
         idUser: idUser,
       });
       setObjValues(() => [...infoPrecargada.inputs]);
+      setReplicaValues(() => [...infoPrecargada.inputs])
     } else {
       // creo un form desde cero
       setValues({
@@ -191,6 +203,11 @@ function RegistroDeDecomiso() {
         <div className='form'>
           <div className='titleContainer'>
             <h3 className='title'>Registros de decomisos de materias primas</h3>
+            { (currentStatus === 'view' || currentStatus === 'edit') &&
+                <span style={{marginLeft:'20px', fontSize:'20px'}}>
+                    <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
+                </span>
+            }
           </div>
           <div className='table'>
             <div className='tableSection'>
@@ -237,11 +254,16 @@ function RegistroDeDecomiso() {
                             variant='outlined'
                             disabled={currentStatus === 'view'}
                             className='input'
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
                           />
                         }
                       </div>
                     ))}
-                    {!!infoPrecargada ? null : (
+                   {infoPrecargada && currentStatus === 'view' ? (
+                        <div></div>
+                    ) : (
                       <div className='icon'>
                         {index === 0 || index >= replicas ? (
                           <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
@@ -260,16 +282,27 @@ function RegistroDeDecomiso() {
             </div>
           </div>
           {
-            (currentStatus === 'edit' || infoPrecargada === undefined) &&
-            <div className='btn'>
-                <Button
-                onClick={handleSubmit}
-                variant='contained'
-                >
-                Guardar
-                </Button>
-            </div>
-            }
+              (infoPrecargada === undefined) &&
+              <div className='btn'>
+                  <Button
+                      onClick={handleSubmit}
+                      variant='contained'
+                  >
+                      Guardar
+                  </Button>
+              </div>
+          }
+          {
+              (currentStatus === 'edit' ) &&
+              <div className='btn'>
+                  <Button
+                      onClick={handleEdit}
+                      variant='contained'
+                  >
+                      Editar
+                  </Button>
+              </div>
+          }
         </div>
       </div>
       {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}

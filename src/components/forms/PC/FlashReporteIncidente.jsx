@@ -83,7 +83,6 @@ function FlashReporteIncidente() {
   };
 
   const handleSubmit = () => {
-    console.log('values on button ', values);
     flashIncidente(values)
       .then((resp) => {
         setTextAlert('¡Formulario cargado exitosamente!');

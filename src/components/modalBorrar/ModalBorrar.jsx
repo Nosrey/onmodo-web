@@ -2,22 +2,26 @@ import React from 'react';
 import Modal from 'react-modal';
 import styles from './ModalBorrar.module.css';
 import { deleteForm } from '../../services/FormsRequest';
+import { deleteLegajo } from '../../services/Request';
 
 function ModalBorrar({ modalDelete, setModalDelete , idForm, url, showAlert, fileToDelete}) {
   const handleCloseModal = () => {
     setModalDelete(false);
   };
 
-  const handleDelete = () => {
-    if(fileToDelete === 'formulario') {
-      deleteForm(idForm, url).then((resp)=> {
-        showAlert("success", "Formulario eliminado")
-      })
-      .catch((err) =>{
-        showAlert("error", "Ocurrió un error")
-      })
+  const handleDelete = async () => {
+    try {
+      if (fileToDelete === 'formulario') {
+        await deleteForm(idForm, url);
+        showAlert("success", "Formulario eliminado");
+      } else if (fileToDelete === 'legajo') {
+        await deleteLegajo(idForm);
+        showAlert("success", "Legajo eliminado");
+      }
+      handleCloseModal();
+    } catch (err) {
+      showAlert("error", "Ocurrió un error");
     }
-    handleCloseModal();
   }
 
   return (

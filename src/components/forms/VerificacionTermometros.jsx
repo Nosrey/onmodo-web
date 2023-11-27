@@ -3,16 +3,18 @@ import React, { useState, useEffect } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionTermometros.module.css';
 import Termometros from '../modales/Termometros';
-import { verificacionTermometros } from '../../services/FormsRequest';
+import { editVerificacionTermometros, verificacionTermometros } from '../../services/FormsRequest';
 
 import Modal from '../shared/Modal';
 import Alert from '../shared/components/Alert/Alert';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 function VerificacionTermometros() {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const infoPrecargada = location.state?.objeto;
   const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
   //** ALERTA */
@@ -97,13 +99,49 @@ function VerificacionTermometros() {
 
   const handleSubmit = () => {
     const valuesToSend = { ...values, inputsTrimestral: replicaValues, inputsSemestral: replicaValues2};
-    console.log("valuesToSend", valuesToSend)
+
     verificacionTermometros(valuesToSend)
       .then((resp) => {
-        setTextAlert('¡Formulario cargado exitosamente!');
-        setTypeAlert('success');
-        // limpiar fomr
-        // window.location.href = window.location.href;
+        if (resp.error) {
+          setTextAlert('Ocurrió un error');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('¡Formulario cargado exitosamente!');
+          setTypeAlert('success');
+            // limpiar fomr
+        window.location.href = window.location.href;
+        }
+      })
+      .catch((resp) => {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      })
+      .finally(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+        setShowlert(true);
+        setTimeout(() => {
+          setShowlert(false);
+        }, 7000);
+      });
+  };
+
+  const handleEdit = () => {
+    const valuesToSend = { ...values, inputsTrimestral: replicaValues, inputsSemestral: replicaValues2};
+
+    editVerificacionTermometros(valuesToSend , infoPrecargada._id)
+      .then((resp) => {
+        if (resp.error) {
+          setTextAlert('Ocurrió un error');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('¡Formulario editado exitosamente!');
+          setTypeAlert('success');
+          navigate('/formularios-cargados/verificaciontermometros');
+
+        }
       })
       .catch((resp) => {
         setTextAlert('Ocurrió un error');
@@ -133,6 +171,8 @@ function VerificacionTermometros() {
       });
       setReplicas(infoPrecargada.inputsTrimestral.length);
       setReplicas2(infoPrecargada.inputsSemestral.length);
+      setReplicaValues2(infoPrecargada.inputsSemestral)
+      setReplicaValues(infoPrecargada.inputsTrimestral)
     } else {
       // creo un form desde cero
       setValues({
@@ -152,6 +192,11 @@ function VerificacionTermometros() {
           <div className='form'>
             <div className='titleContainer'>
               <h3 className='title'>Verificación de Instrumentos de Medición: Termometros</h3>
+              { (currentStatus === 'view' || currentStatus === 'edit') &&
+                  <span style={{marginLeft:'20px', fontSize:'20px'}}>
+                      <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
+                  </span>
+              }
             </div>
 
             {showModal ? (
@@ -176,13 +221,15 @@ function VerificacionTermometros() {
                 }}
                 id='fecha'
                 name='fecha'
-                value={values.fecha}
+                value={(currentStatus === 'view') ? infoPrecargada.fecha : values.fecha}
                 InputLabelProps={{
                   shrink: true,
                 }}
+                disabled={currentStatus === 'view'}
               />
               <TextField
-                value={values.responsable}
+                value={(currentStatus === 'view') ? infoPrecargada.responsable : values.responsable}
+                disabled={currentStatus === 'view'}
                 onChange={(e) => {
                   setValues({ ...values, responsable: e.target.value });
                 }}
@@ -227,7 +274,8 @@ function VerificacionTermometros() {
                             <FormControl variant='outlined' className={`${styles.selectField} `}>
                               <InputLabel id='select'>{input.label}</InputLabel>
                               <Select
-                                value={replicaValues[index]?.["Tipo (PIN/IR)"]}
+                                disabled={currentStatus === 'view'}
+                                value={(currentStatus === 'view') ? infoPrecargada.inputsTrimestral[index]['Tipo (PIN/IR)'] : replicaValues[index]['Tipo (PIN/IR)']}
                                 onChange={(e) => {
                                   let replicaCopy = [...replicaValues];
                                   replicaCopy[index]["Tipo (PIN/IR)"] = e.target.value;
@@ -245,9 +293,11 @@ function VerificacionTermometros() {
                             </FormControl>
                           ) : (
                             <TextField
-                              value={
-                                replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
-                              }
+                              // value={
+                              //   replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
+                              // }
+                              value={(currentStatus === 'view') ? infoPrecargada.inputsTrimestral[index][input.label.toLowerCase().replace(/\s/g, '')] : replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]}
+                              disabled={currentStatus === 'view'}
                               onChange={(e) => {
                                 let replicaCopy = [...replicaValues];
                                 replicaCopy[index][
@@ -268,7 +318,9 @@ function VerificacionTermometros() {
                           )}
                         </div>
                       ))}
-                      <div className='icon'>
+                      {infoPrecargada && currentStatus === 'view' ? (
+                            <div></div>
+                        ) : (<div className='icon'>
                         {index === 0 || index >= replicas ? (
                           <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick} />
                         ) : (
@@ -280,6 +332,7 @@ function VerificacionTermometros() {
                           />
                         )}
                       </div>
+                       )}
                     </div>
                   ))}
               </div>
@@ -316,9 +369,11 @@ function VerificacionTermometros() {
                     {inputs2.map((input, index2) => (
                       <div key={replicaValues2[index].id + index2}>
                         <TextField
-                          value={
-                            replicaValues2[index][input.label.toLowerCase().replace(/\s/g, '')]
-                          }
+                          // value={
+                          //   replicaValues2[index][input.label.toLowerCase().replace(/\s/g, '')]
+                          // }
+                          value={(currentStatus === 'view') ? infoPrecargada.inputsSemestral[index][input.label.toLowerCase().replace(/\s/g, '')] : replicaValues2[index][input.label.toLowerCase().replace(/\s/g, '')]}
+                          disabled={currentStatus === 'view'}
                           onChange={(e) => {
                             let replicaCopy = [...replicaValues2];
                             replicaCopy[index][
@@ -338,6 +393,9 @@ function VerificacionTermometros() {
                         />
                       </div>
                     ))}
+                   {infoPrecargada && currentStatus === 'view' ? (
+                        <div></div>
+                    ) : (
                     <div className='icon'>
                         {index === 0 || index >= replicas ? (
                           <AddBoxIcon style={{ color: 'grey' }} onClick={handleClick2} />
@@ -350,6 +408,8 @@ function VerificacionTermometros() {
                           />
                         )}
                       </div>
+                      )}
+
                   </div>
                 ))}
               </div>
@@ -363,16 +423,27 @@ function VerificacionTermometros() {
             </span>
 
             {
-            (currentStatus === 'edit' || infoPrecargada === undefined) &&
-            <div className='btn'>
-                <Button
-                onClick={handleSubmit}
-                variant='contained'
-                >
-                Guardar
-                </Button>
-            </div>
-            }
+              (infoPrecargada === undefined) &&
+              <div className='btn'>
+                  <Button
+                      onClick={handleSubmit}
+                      variant='contained'
+                  >
+                      Guardar
+                  </Button>
+              </div>
+          }
+          {
+              (currentStatus === 'edit' ) &&
+              <div className='btn'>
+                  <Button
+                      onClick={handleEdit}
+                      variant='contained'
+                  >
+                      Editar
+                  </Button>
+              </div>
+          }
           </div>
         </div>
       )}
