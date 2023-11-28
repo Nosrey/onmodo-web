@@ -12,11 +12,13 @@ import { useLocation } from 'react-router-dom';
 import { PUESTOS_N1, PUESTOS_N2 } from '../../../components/shared/constants/Puestos';
 import ImageUploader from '../../../components/ImgUploader/ImgUploader';
 import Alert from '../../../components/shared/components/Alert/Alert';
+import { useParams } from 'react-router-dom';
 
 function Cuenta() {
   const idUser = localStorage.getItem('idUser');
   const myRol = localStorage.getItem('rol');
   const location = useLocation();
+  const { legajo } = useParams();
 
   const [errors, setErrors] = useState({});
   const [editInput, setEditInput] = useState(true);
@@ -30,6 +32,7 @@ function Cuenta() {
   const [hidePuestos, setHidePuestos] = useState(false);
   const [nivelOptions, setNivelOptions] = useState();
   const [cleanImageInput, setCleanImageInput] = useState(false);
+  const [hideOptions, setHideOptions] = useState(false);
 
   //** ALERTA */
   const [textAlert, setTextAlert] = useState('');
@@ -143,32 +146,39 @@ function Cuenta() {
       setShowlert(false);
     }, 7000);
   };
+  const getInfo = (idUser) => {
+    getUserInfo(idUser).then((resp) => {
+      setInputValue({
+        nombre: resp[0].fullName,
+        legajo: resp[0].legajo,
+        email: resp[0].email,
+        celular: resp[0].number,
+        nivel: resp[0].rol,
+        puesto: resp[0].puesto,
+        localidad: resp[0].localidad,
+        provincia: resp[0].provincia,
+        contrato: resp[0].contratoComedor,
+        imgProfile: resp[0].imgProfile,
+      });
+      getProvincias().then((provs) => {
+        setProvinciasOptions(provs);
+        const idProvSeleccionada = provs.find((item) => item.nombre === resp[0].provincia).id;
+        getLocalidades(idProvSeleccionada).then((resp) => setLocalidadesOptions(resp));
+      });
+      setSrcImage(perfil);
+      setIsANewProfile(false);
+    });
+  }
 
   useEffect(() => {
     if (location.pathname === '/crear-cuenta')
       getProvincias().then((resp) => setProvinciasOptions(resp));
+    if(location.pathname.includes('perfil-legajo') && legajo) {
+      getInfo(legajo);
+      setHideOptions(true);
+    }
     if (location.pathname === '/cuenta') {
-      getUserInfo(idUser).then((resp) => {
-        setInputValue({
-          nombre: resp[0].fullName,
-          legajo: resp[0].legajo,
-          email: resp[0].email,
-          celular: resp[0].number,
-          nivel: resp[0].rol,
-          puesto: resp[0].puesto,
-          localidad: resp[0].localidad,
-          provincia: resp[0].provincia,
-          contrato: resp[0].contratoComedor,
-          imgProfile: resp[0].imgProfile,
-        });
-        getProvincias().then((provs) => {
-          setProvinciasOptions(provs);
-          const idProvSeleccionada = provs.find((item) => item.nombre === resp[0].provincia).id;
-          getLocalidades(idProvSeleccionada).then((resp) => setLocalidadesOptions(resp));
-        });
-        setSrcImage(perfil);
-        setIsANewProfile(false);
-      });
+      getInfo(idUser)
     } else {
       setInputValue({
         nombre: '',
@@ -384,7 +394,7 @@ function Cuenta() {
                   </button>
                 </div>
               ) : (
-                <div className={styles.btnContainer}>
+                !hideOptions && <div className={styles.btnContainer}>
                   <button
                     disabled={btnEdit}
                     type='button'
