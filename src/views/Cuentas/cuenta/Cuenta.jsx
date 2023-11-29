@@ -4,6 +4,7 @@ import perfil from '../../../assets/image/perfil.png';
 import placeholder from '../../../assets/image/download.png';
 import {
   createNewUSer,
+  editUser,
   getLocalidades,
   getProvincias,
   getUserInfo,
@@ -77,41 +78,37 @@ function Cuenta() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const validationErrors = validate(inputValue);
-    console.log(inputValue.imgProfile);
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      setErrors({});
-      const data = {
-        email: inputValue.email,
-        fullName: inputValue.nombre,
-        legajo: inputValue.legajo,
+    if (location.pathname === '/cuenta') {
+      const dataEdited = {
         number: inputValue.celular,
-        puesto: inputValue.puesto,
-        contratoComedor: inputValue.contrato,
-        rol: inputValue.nivel,
-        business: localStorage.getItem('business'),
-        provincia: inputValue.provincia,
-        localidad: inputValue.localidad,
-        // idChief,
-        // imgProfile: inputValue.imgProfile
+        email: inputValue.email
       };
-      if (inputValue.imgProfile !== undefined) {
-        data['imgProfile'] = inputValue.imgProfile;
+      if (inputValue.imgProfile) {
+        dataEdited['imgProfile'] = inputValue.imgProfile;
       }
-
-      createNewUSer(data)
-        .then((resp) => {
-          if (!resp.success) {
-            setTextAlert('Ocurrió un problema');
-            setTypeAlert('error');
-          } else {
-            setTextAlert('Cuenta creada con éxito');
-            setTypeAlert('success');
-            setBtnEdit(!btnEdit);
-            setEditInput(true);
-          }
+      editUser(dataEdited)
+      .then((resp) => {
+        if (!resp.message.includes('successfully')) {
+          setTextAlert('Ocurrió un problema');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('Cuenta actualizada con éxito');
+          setTypeAlert('success');
+          setBtnEdit(!btnEdit);
+          setInputValue({
+            nombre: resp.updatedForm.fullName,
+            legajo: resp.updatedForm.legajo,
+            email: resp.updatedForm.email,
+            celular: resp.updatedForm.number,
+            nivel: resp.updatedForm.rol,
+            puesto: resp.updatedForm.puesto,
+            localidad: resp.updatedForm.localidad,
+            provincia: resp.updatedForm.provincia,
+            contrato: resp.updatedForm.contratoComedor,
+            imgProfile: resp.updatedForm.imgProfile,
+          });
+          setEditInput(true);
+        }
         })
         .catch((error) => {
           setTextAlert('Ocurrió un problema');
@@ -120,19 +117,64 @@ function Cuenta() {
         .finally(() => {
           showAlertAnimation();
         });
-      setCleanImageInput(true);
-      setInputValue({
-        nombre: '',
-        legajo: '',
-        email: '',
-        celular: '',
-        nivel: myRol === '2' ? '1' : '',
-        puesto: '',
-        localidad: '',
-        provincia: '',
-        contrato: '',
-      });
-      setLocalidadesOptions([]);
+    } else {
+      const validationErrors = validate(inputValue);
+      console.log(inputValue.imgProfile);
+      if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+      } else {
+        setErrors({});
+        const data = {
+          email: inputValue.email,
+          fullName: inputValue.nombre,
+          legajo: inputValue.legajo,
+          number: inputValue.celular,
+          puesto: inputValue.puesto,
+          contratoComedor: inputValue.contrato,
+          rol: inputValue.nivel,
+          business: localStorage.getItem('business'),
+          provincia: inputValue.provincia,
+          localidad: inputValue.localidad,
+          // idChief,
+          // imgProfile: inputValue.imgProfile
+        };
+        if (inputValue.imgProfile !== undefined) {
+          data['imgProfile'] = inputValue.imgProfile;
+        }
+
+        createNewUSer(data)
+          .then((resp) => {
+            if (!resp.success) {
+              setTextAlert('Ocurrió un problema');
+              setTypeAlert('error');
+            } else {
+              setTextAlert('Cuenta creada con éxito');
+              setTypeAlert('success');
+              setBtnEdit(!btnEdit);
+              setEditInput(true);
+            }
+          })
+          .catch((error) => {
+            setTextAlert('Ocurrió un problema');
+            setTypeAlert('error');
+          })
+          .finally(() => {
+            showAlertAnimation();
+          });
+        setCleanImageInput(true);
+        setInputValue({
+          nombre: '',
+          legajo: '',
+          email: '',
+          celular: '',
+          nivel: myRol === '2' ? '1' : '',
+          puesto: '',
+          localidad: '',
+          provincia: '',
+          contrato: '',
+        });
+        setLocalidadesOptions([]);
+      }
     }
   };
 
@@ -146,6 +188,7 @@ function Cuenta() {
       setShowlert(false);
     }, 7000);
   };
+
   const getInfo = (idUser) => {
     getUserInfo(idUser).then((resp) => {
       setInputValue({
@@ -220,6 +263,7 @@ function Cuenta() {
             photo={inputValue.imgProfile}
             cleanImageInput={cleanImageInput}
             setCleanImageInput={setCleanImageInput}
+            disabled={editInput}
           />
           <div className={styles.formContainer}>
             <form onSubmit={handleSubmit} action='' className={styles.formulario}>

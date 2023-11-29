@@ -3,7 +3,7 @@ import styles from './ImgUploader.module.css';
 import placeholder from '../../assets/image/download.png';
 import { useLocation } from 'react-router-dom';
 
-const ImageUploader = ({uploadPhoto, photo, cleanImageInput, setCleanImageInput}) => {
+const ImageUploader = ({uploadPhoto, photo, cleanImageInput, setCleanImageInput, disabled}) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [ableToChangePhoto, setAbleToChangePhoto] = useState(true);
   const [file, setFile] = useState(null);
@@ -26,12 +26,15 @@ const ImageUploader = ({uploadPhoto, photo, cleanImageInput, setCleanImageInput}
   }, [file])
   
   useEffect(() => {
-    if (photo && location.pathname === "/cuenta") {
+    if (photo && typeof photo === 'string' && location.pathname === "/cuenta") {
       setSelectedImage(photo);
-      setAbleToChangePhoto(false);
     }
   }, [photo])
-
+  
+  useEffect(() => {
+    setAbleToChangePhoto(!disabled)
+  },[disabled])
+  
   useEffect(() => {
     if(cleanImageInput){
       const fileInput = document.getElementById('image-input');
@@ -64,6 +67,7 @@ const ImageUploader = ({uploadPhoto, photo, cleanImageInput, setCleanImageInput}
             id="image-input"
             accept="image/*"
             onChange={handleImageChange}
+            style={{cursor: 'pointer'}}
           />
         }
         

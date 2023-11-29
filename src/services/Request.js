@@ -62,6 +62,25 @@ export const createNewUSer = async (values) => {
   }
 };
 
+export const editUser = async (values) => {
+  const id = localStorage.getItem('idUser');
+  try {
+    const formData = new FormData();
+    for (const key in values) {
+      formData.append(key, values[key]);
+    }
+    const response = await fetch(`${URL_API}/api/user/${id}`,{
+      method: 'PUT',
+      body: formData,
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
 export const setPassword = async (password) => {
   try {
     const response = await fetch(`${URL_API}/api/login`, {
