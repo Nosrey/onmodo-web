@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './FormCargado.module.css';
 import ModalEdicion from '../../modalEdicion/ModalEdicion';
 import ModalBorrar from '../../modalBorrar/ModalBorrar';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { setFormulario } from '../../../redux/actions/formulariosActions';
@@ -16,6 +16,8 @@ import { FORMS_WEB, FROMS_TITLES } from '../../../utils/constants/data';
 
 
 function FormCargado() {
+  const location = useLocation();
+
   const [openModal, setOpenModal] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [openModalInfo, setOpenModalInfo] = useState(false);
