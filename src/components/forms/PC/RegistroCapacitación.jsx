@@ -171,7 +171,7 @@ function RegistroCapacitacion() {
 
     const handleSubmit = () => {
         const valuesToSend = { ...values, asistentes: deleteEmptyRows(asistentes) }
-        if (valuesToSend.firma === ''  || valuesToSend.firma === undefined) {
+        if (valuesToSend.firma === ''  || valuesToSend.firma === undefined || valuesToSend.firma === null) {
             delete valuesToSend.firma;
         }
         registroCapacitacion(valuesToSend).then((resp) => {
