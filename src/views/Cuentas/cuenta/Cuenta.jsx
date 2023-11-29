@@ -76,7 +76,7 @@ function Cuenta() {
     setBtnEdit(true);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (location.pathname === '/cuenta') {
       const dataEdited = {
@@ -86,9 +86,37 @@ function Cuenta() {
       if (inputValue.imgProfile) {
         dataEdited['imgProfile'] = inputValue.imgProfile;
       }
-      await editUser(dataEdited);
-      getInfo(idUser);
-      setEditInput(true);
+      editUser(dataEdited)
+      .then((resp) => {
+        if (!resp.message.includes('successfully')) {
+          setTextAlert('Ocurrió un problema');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('Cuenta actualizada con éxito');
+          setTypeAlert('success');
+          setBtnEdit(!btnEdit);
+          setInputValue({
+            nombre: resp.updatedForm.fullName,
+            legajo: resp.updatedForm.legajo,
+            email: resp.updatedForm.email,
+            celular: resp.updatedForm.number,
+            nivel: resp.updatedForm.rol,
+            puesto: resp.updatedForm.puesto,
+            localidad: resp.updatedForm.localidad,
+            provincia: resp.updatedForm.provincia,
+            contrato: resp.updatedForm.contratoComedor,
+            imgProfile: resp.updatedForm.imgProfile,
+          });
+          setEditInput(true);
+        }
+        })
+        .catch((error) => {
+          setTextAlert('Ocurrió un problema');
+          setTypeAlert('error');
+        })
+        .finally(() => {
+          showAlertAnimation();
+        });
     } else {
       const validationErrors = validate(inputValue);
       console.log(inputValue.imgProfile);
@@ -160,29 +188,6 @@ function Cuenta() {
       setShowlert(false);
     }, 7000);
   };
-  const getInfo = (idUser) => {
-    getUserInfo(idUser).then((resp) => {
-      setInputValue({
-        nombre: resp[0].fullName,
-        legajo: resp[0].legajo,
-        email: resp[0].email,
-        celular: resp[0].number,
-        nivel: resp[0].rol,
-        puesto: resp[0].puesto,
-        localidad: resp[0].localidad,
-        provincia: resp[0].provincia,
-        contrato: resp[0].contratoComedor,
-        imgProfile: resp[0].imgProfile,
-      });
-      getProvincias().then((provs) => {
-        setProvinciasOptions(provs);
-        const idProvSeleccionada = provs.find((item) => item.nombre === resp[0].provincia).id;
-        getLocalidades(idProvSeleccionada).then((resp) => setLocalidadesOptions(resp));
-      });
-      setSrcImage(perfil);
-      setIsANewProfile(false);
-    });
-  }
 
   const getInfo = (idUser) => {
     getUserInfo(idUser).then((resp) => {
