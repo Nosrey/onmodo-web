@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './FormCargado.module.css';
 import ModalEdicion from '../../modalEdicion/ModalEdicion';
 import ModalBorrar from '../../modalBorrar/ModalBorrar';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { setFormulario } from '../../../redux/actions/formulariosActions';
@@ -12,16 +12,19 @@ import 'moment-timezone';
 import { generatePDF } from '../../../services/PDF';
 import { Oval } from 'react-loader-spinner';
 import ModalEdicionInfo from '../../modalEdicionInfo/ModalEdicionInfo';
+import { FORMS_WEB, FROMS_TITLES } from '../../../utils/constants/data';
 
 
 function FormCargado() {
+  const location = useLocation();
+
   const [openModal, setOpenModal] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [openModalInfo, setOpenModalInfo] = useState(false);
   const [formSelected, setFormSelected] = useState();
   const [formularios, setFormularios] = useState([]);
   const [name, setName] = useState("");
-  const { form } = useParams()
+  const { form, legajo } = useParams()
   const [titulo, setTitulo] = useState("");
   const [url, setUrl] = useState("");
   const idUser = localStorage.getItem("idUser");
@@ -118,9 +121,9 @@ function FormCargado() {
     }
   }
 
-  async function fetchDataAndAccessData() {
+  async function fetchDataAndAccessData(id) {
     try {
-      const response = await axios.get(`https://api.onmodoapp.com/api/business/${idUser}`);
+      const response = await axios.get(`https://api.onmodoapp.com/api/business/${id}`);
       const datae = response.data.response[0];
       return datae;
     } catch (error) {
@@ -129,20 +132,41 @@ function FormCargado() {
     }
   }
 
+  const getAllWebForms = (data) =>{
+    return FORMS_WEB.reduce((acumulador, form) => {
+      if (data.hasOwnProperty(form)) {
+        const dataWithTitle = data[form].map(obj => ({...obj, title: FROMS_TITLES[form]}))
+        return acumulador.concat(dataWithTitle);
+      }
+      return acumulador;
+    }, []);
+  }
+
+  const handleSetForms = (forms) => {
+    setFormularios(forms.reverse());
+    setIsLoading(false)
+  }
+
   async function getData() {
-    const data = await fetchDataAndAccessData();
+    let data;
+    if(location.pathname.includes('formularios-legajos') && legajo) {
+      const allForms = await fetchDataAndAccessData(legajo);
+      data = getAllWebForms(allForms);
+      handleSetForms(data);
+    }else {
+      data = await fetchDataAndAccessData(idUser);
+    }
 
     if (data.hasOwnProperty(form)) {
       const info = data[form];
-      setFormularios(info.reverse());
-      setIsLoading(false)
+      handleSetForms(info);
     } else {
       console.log("error");
     }
   }
 
   async function getName() {
-    const data = await fetchDataAndAccessData();
+    const data = await fetchDataAndAccessData(legajo ? legajo : idUser);
     setName(data.fullName)
   }
 
@@ -236,7 +260,7 @@ function FormCargado() {
 
               return (
                 <tr key={index} className={styles.fila}>
-                  <td className={styles.titulo}>{titulo}</td>
+                  <td className={styles.titulo}>{formulario.title ? formulario.title : titulo}</td>
                   <td>{argentinaTime.getFullYear()}</td>
                   <td>{argentinaTime.getMonth() + 1}</td>
                   <td>{argentinaTime.getDate()}</td>
