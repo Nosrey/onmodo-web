@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Legajos.module.css';
 import ModalBorrar from '../../components/modalBorrar/ModalBorrar';
-import { useDispatch } from 'react-redux';
 import { getLegajosPorRol } from '../../services/Request';
 import { Oval } from 'react-loader-spinner';
+import { useNavigate } from 'react-router-dom';
+import Alert from '../../components/shared/components/Alert/Alert';
 
 const Legajos = () => {
+  const navigate = useNavigate();
   const [legajos, setLegajos] = useState([]);
-  const dispatch = useDispatch();
-  const mock = [
-    {_id: 1, legajo: 14523, nombre: 'Carla Perez', nivel: 1},
-    {_id: 2, legajo: 14550, nombre: 'María Guevara', nivel: 1},
-    {_id: 3, legajo: 14586, nombre: 'Miguel Lattanzi', nivel: 1}
-  ];
+  const [legajosFiltrados, setLegajosFiltrados] = useState(legajos);
   const [fileSelected, setFileSelected] = useState(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
@@ -21,13 +18,14 @@ const Legajos = () => {
   const [typeAlert, setTypeAlert] = useState("");
   const [showAlert, setShowlert] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const level = localStorage.getItem("rol");
 
   useEffect(() => {
     if (openDeleteModal === false) {
-      const level = localStorage.getItem("rol");
       setIsLoading(true);
       cargarLegajos(level).then((res) => {
         setIsLoading(false);
+        setLegajosFiltrados(res.sort((a, b) => a.fullName.localeCompare(b.fullName)))
         return setLegajos(res);
       })
       .catch((error) => console.error('Error:', error));
@@ -52,6 +50,28 @@ const Legajos = () => {
     setOpenDeleteModal(true);
   };
 
+  const handleSortChange = (event) => {
+    const value = event.target.value;
+    setIsLoading(true)
+    if (value === 'A-Z') {
+      const sorted = [...legajosFiltrados].sort((a, b) => a.fullName.localeCompare(b.fullName));
+      setLegajosFiltrados(sorted);
+    } else if (value === 'Z-A') {
+      const sorted = [...legajosFiltrados].sort((a, b) => b.fullName.localeCompare(a.fullName));
+      setLegajosFiltrados(sorted);
+    } else if (value === 'Nivel 1') {
+      const sorted = legajos.filter((legajo) => legajo.rol === 1);
+      setLegajosFiltrados(sorted)
+    } else if (value === 'Nivel 2'){
+      const sorted = legajos.filter((legajo) => legajo.rol === 2);
+      setLegajosFiltrados(sorted)
+    } else if (value === 'Nivel 3'){
+      const sorted = legajos.filter((legajo) => legajo.rol === 3);
+      setLegajosFiltrados(sorted)
+    }
+    setIsLoading(false)
+  };
+
   const showAlertNotif = (type, msg) => {
     setTextAlert(msg);
     setTypeAlert(type);
@@ -68,6 +88,7 @@ const Legajos = () => {
       // getData();
     }
   }
+
   return (
     <>
       {isLoading ? (
@@ -94,7 +115,12 @@ const Legajos = () => {
           <div className={styles.wrapper}>
             <div className={styles.orderContainer}>
               <span className={styles.spanOrder}>Ordenar por:</span>
-              <select name='' id={styles.select} >
+              <select name='' id={styles.select} onChange={handleSortChange}>
+                <option value='A-Z'>A - Z</option>
+                <option value='Z-A'>Z - A</option>
+                  {level >= 2 && <option value='Nivel 1'>Nivel 1</option>}
+                  {level >= 3 && <option value='Nivel 2'>Nivel 2</option>}
+                  {level >= 4 && <option value='Nivel 3'>Nivel 3</option>}
               </select>
             </div>
             <table className={styles.table}>
@@ -107,7 +133,7 @@ const Legajos = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {legajos.length > 0 && legajos.map((legajo, index) => (
+                {legajosFiltrados.length > 0 && legajosFiltrados.map((legajo, index) => (
                     <tr key={index} className={styles.fila}  style={{ cursor: 'default'}}>
                       <td>{legajo.legajo}</td>
                       <td>{legajo.fullName}</td>
@@ -117,10 +143,10 @@ const Legajos = () => {
                         <span onClick={() => handleOpenDeleteModal(legajo.legajo)} className={styles.actionIcon} style={{fontSize: '18px'}}>
                           <i className='ri-delete-bin-line'></i>
                         </span>
-                        <span>
+                        <span style={{cursor: 'pointer'}} onClick={() => navigate(`/perfil-legajo/${legajo._id}`)}>
                           Ver perfil
                         </span>
-                        <span>
+                        <span style={{cursor: 'pointer'}} onClick={() => navigate(`/formularios-legajos/${legajo._id}`)}>
                           Ver formularios cargados
                         </span>
                         </div>
@@ -135,6 +161,7 @@ const Legajos = () => {
             </div>
         </div>
       )}
+      {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}
     </>
   )
 }

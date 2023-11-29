@@ -109,6 +109,7 @@ function App() {
             <Route path='/cuentas' element={<Cuentas />} />
             <Route path='/cuenta' element={<Cuenta />} />
             <Route path='/crear-cuenta' element={<Cuenta />} />
+            <Route path='/perfil-legajo/:legajo' element={<Cuenta />} />
 
             <Route path='/recordatorios' element={<RecordatoriosContainer />} />
 
@@ -121,7 +122,8 @@ function App() {
               element={<FormulariosCargados filterByKey={keySearchHistorial} />}
             />
             <Route path='/formularios-cargados/:form' element={<FormCargado />} />
-
+            <Route path='/formularios-legajos/:legajo' element={<FormCargado />} />
+            
             <Route path='/solicitudes-edicion' element={<SolicitudesDeEdicion filterByKey={keySearchHistorial} />} />
             <Route path='/legajos' element={<Legajos />} />
               
