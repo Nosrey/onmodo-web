@@ -171,7 +171,9 @@ function RegistroCapacitacion() {
 
     const handleSubmit = () => {
         const valuesToSend = { ...values, asistentes: deleteEmptyRows(asistentes) }
-        
+        if (valuesToSend.firma === ''  || valuesToSend.firma === undefined) {
+            delete valuesToSend.firma;
+        }
         registroCapacitacion(valuesToSend).then((resp) => {
             if (resp.error) {
                 setTextAlert('Ocurrió un error');
@@ -200,6 +202,9 @@ function RegistroCapacitacion() {
 
     const handleEdit = () => {
         const valuesToSend = { ...values, asistentes: deleteEmptyRows(asistentes) }
+        if (valuesToSend.firma === ''  || valuesToSend.firma === undefined) {
+            delete valuesToSend.firma;
+        }
         if (valuesToSend.firma === ''  || valuesToSend.firma === undefined) {
             delete valuesToSend.firma;
         }
@@ -240,7 +245,7 @@ function RegistroCapacitacion() {
                 temas: infoPrecargada.temas,
                 materialEntregado: infoPrecargada.materialEntregado,
                 materialExpuesto: infoPrecargada.materialExpuesto,
-                asistentes: infoPrecargada.asistentes,
+                asistentes: infoPrecargada.asistentes.length !== 0 ? infoPrecargada.asistentes : [valorInicialAsistentes],
                 observaciones: infoPrecargada.observaciones,
                 instructor: infoPrecargada.instructor,
                 firma: infoPrecargada.firma,
@@ -422,7 +427,7 @@ function RegistroCapacitacion() {
                                                     shrink: true,
                                                 }}
                                                 disabled={currentStatus === 'view'}
-                                                value={currentStatus === 'view' ? infoPrecargada?.asistentes?.[index]?.[input.prop] : values.asistentes[index][input.prop]}
+                                                value={currentStatus === 'view' ? infoPrecargada?.asistentes?.[index]?.[input.prop] : values.asistentes[index] &&  values.asistentes[index][input.prop]}
                                             />
                                         ) : (
                                             <>
