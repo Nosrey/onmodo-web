@@ -98,6 +98,23 @@ export const setPassword = async (password) => {
   }
 };
 
+export const restablecerPassword = async (email) => {
+  try {
+    const response = await fetch(`${URL_API}/api/restablecer-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
+
 export const getUserInfo = async (id) => {
   try {
     const resp = await fetch(`${URL_API}/api/business/${id}`);

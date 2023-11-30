@@ -100,7 +100,7 @@ function App() {
             />
 
             <Route path='/registro' element={<Register />} />
-            <Route path='/forgotpassword' element={<RecoverPassword />} />
+            <Route path='/restablecer-contrasena' element={<RecoverPassword />} />
             <Route path='/inicio-de-sesion' element={<Login />} />
             <Route path='/restablecer-contrasena/:token' element={<CrearContraseña />} />
 
