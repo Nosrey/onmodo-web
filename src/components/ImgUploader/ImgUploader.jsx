@@ -26,13 +26,13 @@ const ImageUploader = ({uploadPhoto, photo, cleanImageInput, setCleanImageInput,
   }, [file])
   
   useEffect(() => {
-    if (photo && typeof photo === 'string' && location.pathname === "/cuenta") {
+    if (photo && typeof photo === 'string') {
       setSelectedImage(photo);
     }
   }, [photo])
   
   useEffect(() => {
-    setAbleToChangePhoto(!disabled)
+    if(location.pathname !== '/crear-cuenta') setAbleToChangePhoto(!disabled)
   },[disabled])
   
   useEffect(() => {
@@ -47,7 +47,7 @@ const ImageUploader = ({uploadPhoto, photo, cleanImageInput, setCleanImageInput,
 
   return (
     <div className={styles.imageUploader}>
-      <label htmlFor="image-input" className={styles.imageInputLabel} >
+      <label htmlFor="image-input" className={styles.imageInputLabel} style={{cursor: ableToChangePhoto ? 'pointer' : 'default'}} >
         {/* Mostrar la previsualización de la imagen */}
         {selectedImage ? (
           <div className={styles.imagePreview}>
@@ -67,7 +67,6 @@ const ImageUploader = ({uploadPhoto, photo, cleanImageInput, setCleanImageInput,
             id="image-input"
             accept="image/*"
             onChange={handleImageChange}
-            style={{cursor: 'pointer'}}
           />
         }
         

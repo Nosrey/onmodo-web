@@ -5,11 +5,13 @@ import { getLegajosPorRol } from '../../services/Request';
 import { Oval } from 'react-loader-spinner';
 import { useNavigate } from 'react-router-dom';
 import Alert from '../../components/shared/components/Alert/Alert';
+import { useMedia } from '../../utils/hooks/UseMedia';
 
 const Legajos = () => {
   const navigate = useNavigate();
+  const media = useMedia();
   const [legajos, setLegajos] = useState([]);
-  const [legajosFiltrados, setLegajosFiltrados] = useState(legajos);
+  const [legajosFiltrados, setLegajosFiltrados] = useState(legajos.map(legajo => ({ ...legajo, openMobileMenu: false })));
   const [fileSelected, setFileSelected] = useState(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
@@ -25,8 +27,10 @@ const Legajos = () => {
       setIsLoading(true);
       cargarLegajos(level).then((res) => {
         setIsLoading(false);
-        setLegajosFiltrados(res.sort((a, b) => a.fullName.localeCompare(b.fullName)))
-        return setLegajos(res);
+        setLegajosFiltrados(res
+          .map(legajo => ({ ...legajo, openMobileMenu: false }))
+          .sort((a, b) => a.fullName.localeCompare(b.fullName)));
+        return setLegajos(res.map(legajo => ({ ...legajo, openMobileMenu: false })));
       })
       .catch((error) => console.error('Error:', error));
     }
@@ -89,6 +93,30 @@ const Legajos = () => {
     }
   }
 
+  const renderMobileMenuAction = (legajo) => {
+    return (
+      <tr key={legajo._id} >
+        <td className={styles.actionIcon} onClick={() => navigate(`/perfil-legajo/${legajo._id}`)}>
+          <i className="ri-eye-line"></i>
+        </td>
+        <td className={styles.actionIcon} onClick={() => navigate(`/formularios-legajos/${legajo._id}`)}>
+          <i className="ri-file-reduce-line"></i>
+        </td>
+        <td onClick={() => handleOpenDeleteModal(legajo.legajo)} className={styles.actionIcon} style={{paddingLeft: '0px'}}>
+          <i className='ri-delete-bin-line'></i>
+        </td>
+      </tr>
+    )
+  }
+
+  const handleOpenMobileMenu = (index) => {
+    setLegajosFiltrados(prevLegajos => {
+      const newLegajos = [...prevLegajos];
+      newLegajos[index].openMobileMenu = !newLegajos[index].openMobileMenu;
+      return newLegajos;
+    });
+  };
+
   return (
     <>
       {isLoading ? (
@@ -129,29 +157,39 @@ const Legajos = () => {
                     <th>Legajos</th>
                     <th>Nombre</th>
                     <th>Nivel</th>
-                    <th className={styles.accion}>Acción</th>
+                    {media !== 'mobile' && <th className={styles.accion}>Acción</th>}
                   </tr>
                 </thead>
                 <tbody>
                 {legajosFiltrados.length > 0 && legajosFiltrados.map((legajo, index) => (
-                    <tr key={index} className={styles.fila}  style={{ cursor: 'default'}}>
+                  <>
+                    <tr key={index} className={`${styles.fila} ${(legajo.openMobileMenu && media === 'mobile') && styles.tableMobile}`} style={{ cursor: 'default'}}>
                       <td>{legajo.legajo}</td>
                       <td>{legajo.fullName}</td>
                       <td>{legajo.rol}</td>
-                      <td>
+                      <td style={{textAlign: 'center', borderTop: '1px solid #ccc'}}>
+                        {media === 'mobile' 
+                        ? <i className={legajo.openMobileMenu ? `ri-arrow-up-s-line ${styles.actionIcon}` : `ri-arrow-down-s-line ${styles.actionIcon}`} onClick={()=> handleOpenMobileMenu(index)} ></i> : 
                         <div className={styles.contEdicion}>
-                        <span onClick={() => handleOpenDeleteModal(legajo.legajo)} className={styles.actionIcon} style={{fontSize: '18px'}}>
-                          <i className='ri-delete-bin-line'></i>
-                        </span>
-                        <span style={{cursor: 'pointer'}} onClick={() => navigate(`/perfil-legajo/${legajo._id}`)}>
-                          Ver perfil
-                        </span>
-                        <span style={{cursor: 'pointer'}} onClick={() => navigate(`/formularios-legajos/${legajo._id}`)}>
-                          Ver formularios cargados
-                        </span>
+                          <span onClick={() => handleOpenDeleteModal(legajo.legajo)} className={styles.actionIcon} style={{fontSize: '18px'}}>
+                            <i className='ri-delete-bin-line'></i>
+                          </span>
+                          <span style={{cursor: 'pointer'}} onClick={() => navigate(`/perfil-legajo/${legajo._id}`)}>
+                            Ver perfil
+                          </span>
+                          <span style={{cursor: 'pointer'}} onClick={() => navigate(`/formularios-legajos/${legajo._id}`)}>
+                            Ver formularios cargados
+                          </span>
                         </div>
+                        }
                       </td>
                     </tr>
+                    {legajo.openMobileMenu 
+                    && media === 'mobile' 
+                    && renderMobileMenuAction(legajo)
+                    }
+                    </>
+
                   )
                 )}
                 </tbody>
