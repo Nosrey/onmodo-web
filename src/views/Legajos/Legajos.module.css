@@ -24,6 +24,10 @@
   line-height: 18px;
 }
 
+.fila:hover {
+  background-color: #d9d9d9 !important;
+}
+
 #select {
   box-sizing: border-box;
   border: 1px solid #c3c3c3;
@@ -50,6 +54,14 @@
 .table td {
   padding: 8px;
   text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.tableMobile td{
+  border-bottom: none !important;
+}
+
+.contEdicionMobile{
   border-bottom: 1px solid #ccc;
 }
 
@@ -85,9 +97,6 @@ th{
   .actionIcon {
     font-size: 16px !important;
   }
-  .contEdicion span {
-    font-size: 0.8rem;  
-  }
 }
 
 @media screen and (max-width: 390px) {
@@ -97,9 +106,6 @@ th{
   .actionIcon {
     font-size: 14px !important;
   }
-  .contEdicion span {
-    font-size: 0.7rem;  
-  }
 }
 
 @media screen and (max-width: 360px) {
@@ -108,8 +114,5 @@ th{
   }
   .actionIcon {
     font-size: 12px !important;
-  }
-  .contEdicion span {
-    font-size: 0.6rem;  
   }
 }

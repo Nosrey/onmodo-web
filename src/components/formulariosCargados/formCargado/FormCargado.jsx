@@ -152,7 +152,7 @@ function FormCargado() {
     if(location.pathname.includes('formularios-legajos') && legajo) {
       const allForms = await fetchDataAndAccessData(legajo);
       data = getAllWebForms(allForms);
-      handleSetForms(data);
+      handleSetForms(data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
     }else {
       data = await fetchDataAndAccessData(idUser);
     }
