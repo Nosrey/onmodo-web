@@ -4,7 +4,7 @@ import styles from './ConstanciaEntrega.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import Alert from '../../shared/components/Alert/Alert';
-import { editEntregaRopa, entregaRopa } from '../../../services/FormsRequest';
+import { editEntregaRopa, entregaRopa, sendEditApplication } from '../../../services/FormsRequest';
 import { v4 as uuidv4 } from 'uuid';
 import { useLocation , useNavigate} from 'react-router-dom';
 
@@ -199,7 +199,13 @@ function ConstanciaEntrega() {
               } else {
                 setTextAlert('¡Formulario editado exitosamente!');
                 setTypeAlert('success');
-                navigate('/formularios-cargados/entregaropa');
+                const data = {
+                    editEnabled: false,
+                    status:"",
+                  }
+                  sendEditApplication({values: data, formId:  infoPrecargada._id, form: '/entregaropa'}).finally((resp)=>{
+                    navigate('/formularios-cargados/entregaropa');
+                  })
 
               }
         }).catch((resp) => {

@@ -4,7 +4,7 @@ import styles from './RegistroCapacitacion.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import Alert from '../../shared/components/Alert/Alert';
-import { editRegistroCapacitacion, registroCapacitacion } from '../../../services/FormsRequest';
+import { editRegistroCapacitacion, registroCapacitacion, sendEditApplication } from '../../../services/FormsRequest';
 import { useLocation,useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 
@@ -217,7 +217,13 @@ function RegistroCapacitacion() {
               } else {
                 setTextAlert('¡Formulario editado exitosamente!');
                 setTypeAlert('success');
-                navigate('/formularios-cargados/registrocapacitacion');
+                const data = {
+                    editEnabled: false,
+                    status:"",
+                  }
+                  sendEditApplication({values: data, formId:  infoPrecargada._id, form: '/registrocapacitacion'}).finally((resp)=>{
+                    navigate('/formularios-cargados/registrocapacitacion');
+                  })
               }
         }).catch((resp) => {
             setTextAlert("Ocurrió un error")

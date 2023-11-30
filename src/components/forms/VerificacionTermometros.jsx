@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionTermometros.module.css';
 import Termometros from '../modales/Termometros';
-import { editVerificacionTermometros, verificacionTermometros } from '../../services/FormsRequest';
+import { editVerificacionTermometros, sendEditApplication, verificacionTermometros } from '../../services/FormsRequest';
 
 import Modal from '../shared/Modal';
 import Alert from '../shared/components/Alert/Alert';
@@ -139,7 +139,13 @@ function VerificacionTermometros() {
         } else {
           setTextAlert('¡Formulario editado exitosamente!');
           setTypeAlert('success');
-          navigate('/formularios-cargados/verificaciontermometros');
+          const data = {
+            editEnabled: false,
+            status:"",
+          }
+          sendEditApplication({values: data, formId:  infoPrecargada._id, form: '/verificaciontermometros'}).finally((resp)=>{
+            navigate('/formularios-cargados/verificaciontermometros');
+          })
 
         }
       })

@@ -180,10 +180,10 @@ function FormCargado() {
     if (form.status !== "pending" && form.status !== "denied") {
       setOpenModal(true);
     }
-    if(form.status === "approved"){
-      goToForm(form, 'edit')
-      // abrir modal con mensaje y enviar a editar
-    }
+    // if(form.status === "approved"){
+    //   goToForm(form, 'edit')
+    //   // abrir modal con mensaje y enviar a editar
+    // }
   }
 
   const handleViewInfo = (formulario) => {
@@ -293,9 +293,14 @@ function FormCargado() {
                       :
                       <span 
                         onClick={() =>{
-                          formulario.status === 'free' ?
-                          goToForm(formulario, 'edit') :
-                          openModalEdit(formulario)}
+                          if (formulario.status === 'free' && formulario.editEnabled === true) {
+                            console.log("AAAAAAAAVAAAA")
+                            goToForm(formulario, 'edit')
+                          } else {
+                            console.log("VIEJAA")
+                            openModalEdit(formulario)}
+
+                          }
                         }
                         className={styles.actionIcon}>
                         <i className='ri-pencil-line'></i>

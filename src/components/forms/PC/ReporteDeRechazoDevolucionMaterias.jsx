@@ -4,7 +4,7 @@ import styles from "./ReporteDeRechazoDevolucionMaterias.module.css";
 import Modal from '../../shared/Modal';
 import RechazoInfo from "../../modales/RechazoInfo";
 import Alert from "../../shared/components/Alert/Alert";
-import { editReporteRechazo, reporteRechazo } from "../../../services/FormsRequest";
+import { editReporteRechazo, reporteRechazo, sendEditApplication } from "../../../services/FormsRequest";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function ReporteDeRechazoDevolucionMaterias() {
@@ -12,20 +12,6 @@ function ReporteDeRechazoDevolucionMaterias() {
   const navigate = useNavigate();
   let infoPrecargada = location.state?.objeto;
 
-  // const infoPrecargada = {
-  //   ...location.state?.objeto,
-  //   dia: location.state?.objeto.dia,
-  //   proveedor: location.state?.objeto.proveedor,
-  //   producto: location.state?.objeto.producto,
-  //   nroLote: location.state?.objeto.nroLote,
-  //   checksNoConformidades: [
-  //     location.state?.objeto.condicionesEntrega,
-  //     location.state?.objeto.calidad,
-  //     location.state?.objeto.diferencias,
-  //     location.state?.objeto.transporte
-  //   ],
-  //   checksMedidas: location.state?.objeto.medidasTomadas,
-  //   idUser: idUser
   // }; // objeto que viene del historial (si vengo del historial)
   const currentStatus = location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
   //** ALERTA */
@@ -261,7 +247,13 @@ function ReporteDeRechazoDevolucionMaterias() {
       } else {
         setTextAlert('¡Formulario editado exitosamente!');
         setTypeAlert('success');
-        navigate('/formularios-cargados/reporterechazo');
+        const data = {
+          editEnabled: false,
+          status:"",
+        }
+        sendEditApplication({values: data, formId:  infoPrecargada._id, form: '/reporterechazo'}).finally((resp)=>{
+          navigate('/formularios-cargados/reporterechazo');
+        })
       }
     }).catch((resp) => {
       setTextAlert("Ocurrió un error")

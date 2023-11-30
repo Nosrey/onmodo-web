@@ -4,7 +4,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionBalanza.module.css';
 import Modal from '../shared/Modal';
 import Balanzas from '../modales/Balanzas';
-import { editVerificacionBalanza, verificacionBalanza } from '../../services/FormsRequest';
+import { editVerificacionBalanza, sendEditApplication, verificacionBalanza } from '../../services/FormsRequest';
 import Alert from '../shared/components/Alert/Alert';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -157,7 +157,13 @@ function VerificacionBalanza() {
         } else {
           setTextAlert('¡Formulario editado exitosamente!');
           setTypeAlert('success');
-          navigate('/formularios-cargados/verificacionbalanza');
+          const data = {
+            editEnabled: false,
+            status:"",
+          }
+          sendEditApplication({values: data, formId:  infoPrecargada._id, form: '/verificacionbalanza'}).finally((resp)=>{
+            navigate('/formularios-cargados/verificacionbalanza');
+          })
         }
       })
       .catch((resp) => {

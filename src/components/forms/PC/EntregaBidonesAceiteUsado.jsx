@@ -99,42 +99,70 @@ function EntregaBidonesAceiteUsado() {
     setReplicas(replicas - 1);
   }
 
-  const handleSubmit = () => {
-    const arrayFilesTransporte = replicaValues.map(value => value.transporte || null);
-    const arrayFilesDisposicion = replicaValues.map(value => value.disposiciónfinal || null);
+const getBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => {
+          console.log('Error: ', error);
+          reject(error);
+      };
+  });
+};
+
+const obtenerBase64ParaArchivo = async (value, propiedad) => {
+  try {
+      return value[propiedad] ? await getBase64(value[propiedad]) : null;
+  } catch (error) {
+      console.error('Error al obtener Base64:', error);
+      throw error;
+  }
+};
+  const handleSubmit = async () => {
+    const propiedades = ['transporte', 'disposiciónfinal'];
+    
+    const arraysBase64 = await Promise.all(
+        propiedades.map((propiedad) =>
+            Promise.all(replicaValues.map((value) => obtenerBase64ParaArchivo(value, propiedad)))
+        )
+    );
+
+    const [arrayFilesTransporte, arrayFilesDisposicion] = arraysBase64;
 
     const data = {
       certificadoTransporte : arrayFilesTransporte,
       certificadoDisposicion: arrayFilesDisposicion,
       inputs : replicaValues
     }
+    console.log(data)
     
-    entregaBidones(data)
-      .then((resp) => {
-       if (resp.error) {
-            setTextAlert('Ocurrió un error');
-            setTypeAlert('error');
-          } else {
-            setTextAlert('¡Formulario cargado exitosamente!');
-            setTypeAlert('success');
-           // limpiar fomr
-          // window.location.href = window.location.href;
-          }
-      })
-      .catch((resp) => {
-        setTextAlert('Ocurrió un error');
-        setTypeAlert('error');
-      })
-      .finally(() => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-        setShowAlert(true);
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 7000);
-      });
+    // entregaBidones(data)
+    //   .then((resp) => {
+    //    if (resp.error) {
+    //         setTextAlert('Ocurrió un error');
+    //         setTypeAlert('error');
+    //       } else {
+    //         setTextAlert('¡Formulario cargado exitosamente!');
+    //         setTypeAlert('success');
+    //        // limpiar fomr
+    //       // window.location.href = window.location.href;
+    //       }
+    //   })
+    //   .catch((resp) => {
+    //     setTextAlert('Ocurrió un error');
+    //     setTypeAlert('error');
+    //   })
+    //   .finally(() => {
+    //     window.scrollTo({
+    //       top: 0,
+    //       behavior: 'smooth',
+    //     });
+    //     setShowAlert(true);
+    //     setTimeout(() => {
+    //       setShowAlert(false);
+    //     }, 7000);
+    //   });
   };
 
   useEffect(() => {

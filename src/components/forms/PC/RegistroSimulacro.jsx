@@ -119,7 +119,13 @@ function RegistroSimulacro() {
               } else {
                 setTextAlert('¡Formulario editado exitosamente!');
                 setTypeAlert('success');
-                navigate('/formularios-cargados/registrosimulacro');
+                const data = {
+                    editEnabled: false,
+                    status:"",
+                  }
+                  sendEditApplication({values: data, formId:  infoPrecargada._id, form: '/registrosimulacro'}).finally((resp)=>{
+                    navigate('/formularios-cargados/registrosimulacro');
+                  })
               }
         }).catch((resp) => {
             setTextAlert("Ocurrió un error")

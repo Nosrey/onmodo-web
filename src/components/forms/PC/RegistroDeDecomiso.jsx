@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import Alert from '../../shared/components/Alert/Alert';
-import { editRegistroDecomiso, registroDecomiso } from '../../../services/FormsRequest';
+import { editRegistroDecomiso, registroDecomiso, sendEditApplication } from '../../../services/FormsRequest';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -158,7 +158,13 @@ function RegistroDeDecomiso() {
         } else {
           setTextAlert('¡Formulario editado exitosamente!');
           setTypeAlert('success');
-          navigate('/formularios-cargados/registrodecomiso');
+          const data = {
+            editEnabled: false,
+            status:"",
+          }
+          sendEditApplication({values: data, formId:  infoPrecargada._id, form: '/registrodecomiso'}).finally((resp)=>{
+            navigate('/formularios-cargados/registrodecomiso');
+          })
 
         }
       })
