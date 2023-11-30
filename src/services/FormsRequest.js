@@ -150,24 +150,42 @@ export const controlAlergenos = async (values) => {
   }
 };
 
-export const entregaBidones = async (values) => {
-  const formData = new FormData();
-  for (const key in values) {
-    if (Array.isArray(values[key]) && key === 'inputs') { // solo quiero que stringifee el array de renglones no los arrays de files
-      formData.append(key, JSON.stringify(values[key]));
-    }  else {
-      formData.append(key, values[key]);
-    }
-  }
+// export const entregaBidones = async (values) => {
+//   const formData = new FormData();
+//   for (const key in values) {
+//     if (Array.isArray(values[key]) && key === 'inputs') { // solo quiero que stringifee el array de renglones no los arrays de files
+//       formData.append(key, JSON.stringify(values[key]));
+//     }  else {
+//       formData.append(key, values[key]);
+//     }
+//   }
 
-  // Agregar otras propiedades como businessName, rol, nombre, etc., al FormData
-  formData.append('businessName', localStorage.getItem('business'));
-  formData.append('rol', localStorage.getItem('rol'));
-  formData.append('nombre', localStorage.getItem('userName'));
+//   // Agregar otras propiedades como businessName, rol, nombre, etc., al FormData
+//   formData.append('businessName', localStorage.getItem('business'));
+//   formData.append('rol', localStorage.getItem('rol'));
+//   formData.append('nombre', localStorage.getItem('userName'));
+//   try {
+//     const response = await fetch(`${URL_API}/api/entregabidones`, {
+//       method: 'POST',
+//       body: formData,
+//     });
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error('Error', error);
+//     throw error;
+//   }
+// };
+export const entregaBidones = async (values) => {
   try {
     const response = await fetch(`${URL_API}/api/entregabidones`, {
-      method: 'POST',
-      body: formData,
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...values,
+        businessName: localStorage.getItem('business'),
+        rol: localStorage.getItem('rol'),
+        nombre: localStorage.getItem('userName'),
+      }),
     });
     const data = await response.json();
     return data;

@@ -135,34 +135,32 @@ const obtenerBase64ParaArchivo = async (value, propiedad) => {
       certificadoDisposicion: arrayFilesDisposicion,
       inputs : replicaValues
     }
-    console.log(data)
-    
-    // entregaBidones(data)
-    //   .then((resp) => {
-    //    if (resp.error) {
-    //         setTextAlert('Ocurrió un error');
-    //         setTypeAlert('error');
-    //       } else {
-    //         setTextAlert('¡Formulario cargado exitosamente!');
-    //         setTypeAlert('success');
-    //        // limpiar fomr
-    //       // window.location.href = window.location.href;
-    //       }
-    //   })
-    //   .catch((resp) => {
-    //     setTextAlert('Ocurrió un error');
-    //     setTypeAlert('error');
-    //   })
-    //   .finally(() => {
-    //     window.scrollTo({
-    //       top: 0,
-    //       behavior: 'smooth',
-    //     });
-    //     setShowAlert(true);
-    //     setTimeout(() => {
-    //       setShowAlert(false);
-    //     }, 7000);
-    //   });
+    entregaBidones(data)
+      .then((resp) => {
+       if (resp.error) {
+            setTextAlert('Ocurrió un error');
+            setTypeAlert('error');
+          } else {
+            setTextAlert('¡Formulario cargado exitosamente!');
+            setTypeAlert('success');
+           // limpiar fomr
+          // window.location.href = window.location.href;
+          }
+      })
+      .catch((resp) => {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      })
+      .finally(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+        setShowAlert(true);
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 7000);
+      });
   };
 
   useEffect(() => {
