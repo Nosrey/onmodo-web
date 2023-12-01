@@ -16,7 +16,7 @@ export const MENU_OPTIONS= [
     },
     {
       title: 'Documentación',
-      link: '/documentacion',
+      link: localStorage.getItem('linkDocumentacion'),
       showToRol:[1, 2, 3]
     },
     {

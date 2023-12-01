@@ -9,12 +9,21 @@ function Header({search}) {
   const location = useLocation();
   const currentLocation = location.pathname;
   const [showSearch, setShowSearch] = useState(true);
+  const [logoBusiness, setLogoBusiness] = useState();
+
   const navigate = useNavigate();
 
   useEffect(() => {
     if (currentLocation === '/formularios' || currentLocation === '/formularios-cargados') setShowSearch(true);
     else setShowSearch(false);
   }, [currentLocation]);
+
+  useEffect(() => {
+    const myLogo = localStorage.getItem('imgBusiness')
+    if (myLogo !==  null  || myLogo !== undefined) {
+      setLogoBusiness(myLogo)
+    }
+  }, []);
 
   const handleSearch = (e) => {
     if (e.keyCode === 13 || (e.keyCode === 8 && e.target.value=== '' )) {
@@ -34,7 +43,7 @@ function Header({search}) {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <div className={styles.leftContainer}>
-          <img src={logo} alt='logo On Modo' />
+          <img src={logoBusiness ? logoBusiness : logo} alt='logo On Modo' />
           {showSearch && (
             <div className={styles.inputContainer}>
               <input className={styles.search} type='search' placeholder='¿Qué estás buscando?' onKeyUp={(e)=> handleSearch(e)} onChange={(e)=>handleSChangeSearch(e)}/>

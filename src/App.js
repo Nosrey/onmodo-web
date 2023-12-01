@@ -47,6 +47,7 @@ import Cuentas from './views/Cuentas/Cuentas';
 import RecordatoriosContainer from './views/Recordatorios/RecordatoriosContainer';
 import SolicitudesDeEdicion from './views/SolicitudesDeEdicion/SolicitudesDeEdicion';
 import Legajos from './views/Legajos/Legajos';
+import InfoBusiness from './components/InfoBusiness/InfoBusiness';
 
 function App() {
   const location = useLocation();
@@ -79,6 +80,9 @@ function App() {
     setKeySearchForms('');
     setKeySearchHistorial('');
   }, [currentLocation]);
+
+
+
 
   return (
     <div className='App'>
@@ -160,7 +164,10 @@ function App() {
             <Route path='/distribucion-expedicion' element={<DistribucionExpedicion />} />
             <Route path='/recepcion' element={<Recepcion />} />
             <Route path='/sanitizacion' element={<Sanitizacion />} />
+          <Route path='/info-business' element={<InfoBusiness />} />
           </Routes>
+
+
           {currentLocation !== '/inicio-de-sesion' &&
           currentLocation !== '/crear-contraseña' &&
           currentLocation !== '/registro' &&

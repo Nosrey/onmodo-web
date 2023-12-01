@@ -52,7 +52,7 @@ function Card({ text , isCloseToExpire }) {
 
 
   return (
-    <Link to={link}>
+    <Link to={link} target={title === 'Documentación' && '_blank'}>
       <div className={styles.cardContainer} style={ title === "Recordatorios" && isCloseToExpire ? {backgroundColor:"#7bc100"} : {}}>
         {
           title === "Recordatorios" && isCloseToExpire &&  <span className={styles.asterisco} >!</span>

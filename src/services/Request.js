@@ -269,3 +269,35 @@ export const editReminder = async ({ values, recordatorioId }) => {
 };
 
 //** FIN REMINDERS */
+
+//** BUSINESS INFO */
+
+export const getBusinessInfo = async (name) => {
+  try {
+    const resp = await fetch(`${URL_API}/api/newbusiness/${name}`);
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('No se pudo obtener los datos del usuario.');
+  }
+};
+
+  export const editBusinessInfo  = async (values, idBusiness ) => {
+    try {
+      const formData = new FormData();
+    for (const key in values) {
+      formData.append(key, values[key]);
+    }
+      const response = await fetch(`${URL_API}/api/newbusiness/${idBusiness}`, {
+        method: 'PUT',
+        body: formData,
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error', error);
+      throw error;
+    }
+  };
+//** FIN BUSINESS INFO */

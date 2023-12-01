@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from './Login.module.css';
 import logo from '../../assets/image/on-modo-grande.png';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../services/Request';
+import { getBusinessInfo, login } from '../../services/Request';
 
 function Login() {
   const [iconPassword, setIconPassword] = useState(false);
@@ -73,7 +73,19 @@ function Login() {
           localStorage.setItem("userName", resp.response.fullName);
           localStorage.setItem("idChief", resp.response.idChief);
           localStorage.setItem("idUser", resp.response.id);
-          navigate('/inicio');
+
+          getBusinessInfo(resp.response.business).then((resp)=>{
+            if (resp.success) {
+              localStorage.setItem("linkDocumentacion", resp.response.linkDocumentacion);
+              localStorage.setItem("imgBusiness", resp.response.logo);
+            } else {
+              alert('Error al traer la info del negocio')
+            }
+          })
+          .finally((resp)=> {
+            navigate('/inicio');
+
+          })
         } else {
           setInvalidCredentials(true)   
         }
