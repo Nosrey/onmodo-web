@@ -47,9 +47,9 @@
   font-weight: 300;
   font-size: 15px;
   line-height: 18px;
-  padding: 5px 15px;
+  padding: 5px;
   outline: none;
-  width: 15%;
+  width: 17%;
 }
 
 .simpleInfoCard, .complexInfoCard {
@@ -84,10 +84,11 @@
 }
 
 .cardGrid {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25em, 1fr));
+  gap: 2em;
+  place-items: center;
+  grid-gap: 2em;
 }
 
 .cardMainContainer {
@@ -163,7 +164,17 @@
   margin-top: 20px;
 }
 
+@media screen and (max-width: 925px) {
+  .cardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
+  }
+}
 
+@media screen and (max-width: 747px) {
+  .cardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
+  }
+}
 
 @media screen and (max-width: 835px){
   .simpleInfoCard {
@@ -264,6 +275,9 @@
   .editionRequestsContainer {
     height: 420px;
   }
+  .cardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+  }
 }
 @media screen and (max-width: 525px){
   .complexInfoCard {
@@ -278,5 +292,11 @@
   }
   .complexDescriptionContainer p, .complexDescriptionContainer span {
     font-size: 0.8rem;
+  }
+
+  @media screen and (max-width: 392px) {
+    .cardGrid {
+      grid-template-columns: repeat(auto-fit, minmax(6em, 1fr));
+    }
   }
 }
