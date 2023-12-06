@@ -59,7 +59,7 @@ function InfoBusiness() {
                 <label htmlFor=''>Nombre</label>
                 <input
                   type='text'
-                  disabled
+                  // disabled
                   className={` ${styles.input}`}
                   value={inputValue?.name}
                   onChange={handleChange}
