@@ -11,19 +11,20 @@ const Estadisticas = () => {
   const [distributionPerLevel, setDistributionPerLevel] = useState([]);
   const [provinceInfo, setProvinceInfo] = useState([]);
   const [formsData, setFormsData] = useState({});
+  const [editRequests, setEditRequests] = useState({});
 
   useEffect(() => {
     setIsLoading(true);
     getStats().then(res => {
     setTotalUsers(res.response.totalUsers);
-    setProvinceInfo(res.response.provinciaCounts);
+    setProvinceInfo(res.response.provinciaCounts.sort((a, b) => b.usersCount - a.usersCount));
     setFormsData({total: res.response.totalFormularios, top3: res.response.top3Forms});
     });
     getLegajosPorRol('1-2-3').then(res => {
       numberPerRol(res);
     });
     getSolicitudesDeEdicion().then(res => {
-      console.log('res? ', reduceRequests(res).length)
+      formatRequestsData(reduceRequests(res));
       setIsLoading(false);
     });
   },[]);
@@ -32,22 +33,51 @@ const Estadisticas = () => {
     const totalRol1 = arr.filter(objeto => objeto.rol === 1).length;
     const totalRol2 = arr.filter(objeto => objeto.rol === 2).length;
     const totalRol3 = arr.filter(objeto => objeto.rol === 3).length;
-    setDistributionPerLevel([
+    const filteredDistributionLevels = [
       totalRol1 > 0 && { id: 0, value: totalRol1, label: 'Nivel 1' },
       totalRol2 > 0 && { id: 1, value: totalRol2, label: 'Nivel 2' },
       totalRol3 > 0 && { id: 2, value: totalRol3, label: 'Nivel 3' },  
-    ]);
+    ].filter(Boolean);
+    setDistributionPerLevel(filteredDistributionLevels);
   };
 
   const reduceRequests = (arr) => {
     return Object.values(arr).reduce((result, prop) => result.concat(prop), []);
-  }
+  };
 
-  const editionRequestsMock = [
-    {title: 'Cantidad Total', info: '81'},
-    {title: 'Cantidad Aprobados', info: '19'},
-    {title: 'Cantidad Editados', info: '14'}
-  ];
+  const formatRequestsData = (arr) => {
+    const approvedForms = arr.filter((form) => form.status === 'approved');
+    const editedForms = arr.filter((form) => form.status === 'approved' && !form.editEnabled);
+    const pendingForms = arr.filter((form) => form.status === 'pending');
+    const rejectedForms = arr.filter((form) => form.status === 'denied');
+
+    const requestsData = {
+      cardsData: [
+        {title: 'Cantidad Total', qty: arr.length},
+        {title: 'Cantidad Aprobados', qty: approvedForms.length},
+        {title: 'Cantidad Editados', qty: editedForms.length},
+      ],
+      pieData: [
+        approvedForms.length > 0 && {id: 0, value: approvedForms.length, label: 'Aprobados'},
+        pendingForms.length > 0 && {id: 1, value: pendingForms.length, label: 'Pendientes'},
+        rejectedForms.length > 0 && {id: 2, value: rejectedForms.length, label: 'Rechazados'}
+      ].filter(Boolean)
+    };
+    setEditRequests(requestsData);
+  };
+
+  const handleSortChange = (event) => {
+    setIsLoading(true);
+    const value = event.target.value;
+    if(value === 'Cantidad de Personas'){
+      const sorted = [...provinceInfo].sort((a, b) => b.usersCount - a.usersCount);
+      setProvinceInfo(sorted);
+    }else if(value === 'Cantidad de Formularios'){
+      const sorted = [...provinceInfo].sort((a, b) => b.formulariosCount - a.formulariosCount);
+      setProvinceInfo(sorted);
+    }
+    setIsLoading(false);
+  }
 
   const SimpleInfoCard = ({title, info}) => {
     return (
@@ -74,7 +104,7 @@ const Estadisticas = () => {
         </div>
       </div>
     )
-  }
+  };
 
   return (
     <>
@@ -129,7 +159,9 @@ const Estadisticas = () => {
             </div>
             <div className={styles.orderContainer}>
                 <span className={styles.spanOrder}>Ordenar por:</span>
-                <select name='' id={styles.select}>
+                <select name='' id={styles.select} onChange={handleSortChange}>
+                  <option value='Cantidad de Personas'>Cantidad de Personas</option>
+                  <option value='Cantidad de Formularios'>Cantidad de Formularios</option>
                 </select>
             </div>
             <div className={styles.cardGrid}>
@@ -169,24 +201,20 @@ const Estadisticas = () => {
             </div>
             <div className={styles.editionContainer}>
               <div className={styles.editionRequestsContainer}>
-                {editionRequestsMock.map((obj, i) => (
-                  <SimpleInfoCard key={i} title={obj.title} info={obj.info} />
+                {editRequests.cardsData.map((obj, i) => (
+                  <SimpleInfoCard key={i} title={obj.title} info={obj.qty} />
                 ))}
               </div>
               <div className={styles.editionRequestsPie}>
                 <h3>Estado de solicitud</h3>
-                <PieChart
+                {editRequests.pieData.length > 0 && <PieChart
                   series={[
                     {
-                      data: [
-                        { id: 0, value: 10, label: 'series A' },
-                        { id: 1, value: 15, label: 'series B' },
-                        { id: 2, value: 20, label: 'series C' },
-                      ],
+                      data: editRequests.pieData,
                     },
                   ]}
                   height={230}
-                />
+                />}
               </div>
             </div>
           </div>
