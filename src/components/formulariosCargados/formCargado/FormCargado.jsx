@@ -12,7 +12,7 @@ import 'moment-timezone';
 import { generatePDF } from '../../../services/PDF';
 import { Oval } from 'react-loader-spinner';
 import ModalEdicionInfo from '../../modalEdicionInfo/ModalEdicionInfo';
-import { FORMS_WEB, FROMS_TITLES } from '../../../utils/constants/data';
+import { FORMS_WEB, FORMS_TITLES } from '../../../utils/constants/data';
 
 
 function FormCargado() {
@@ -135,7 +135,7 @@ function FormCargado() {
   const getAllWebForms = (data) =>{
     return FORMS_WEB.reduce((acumulador, form) => {
       if (data.hasOwnProperty(form)) {
-        const dataWithTitle = data[form].map(obj => ({...obj, title: FROMS_TITLES[form]}))
+        const dataWithTitle = data[form].map(obj => ({...obj, title: FORMS_TITLES[form]}))
         return acumulador.concat(dataWithTitle);
       }
       return acumulador;

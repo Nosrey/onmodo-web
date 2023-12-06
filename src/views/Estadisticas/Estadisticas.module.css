@@ -1,0 +1,302 @@
+.screenTitle {
+  margin-bottom: 40px;
+}
+.infoSection {
+  margin-bottom: 50px;
+} 
+
+.panelContainer, .editionContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.panelInfo, .editionRequestsContainer {
+  width: 30%;
+}
+
+.panelInfo .simpleInfoCard, .editionRequestsContainer .simpleInfoCard {
+  width: 100%;
+}
+
+.panelPie, .editionRequestsPie {
+  width: 60%;
+}
+
+.panelPie h3, .editionRequestsPie h3 {
+  font-size: 1.5rem;
+}
+
+.orderContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 0 34px;
+  gap: 10px;
+  align-items: center;
+}
+
+.spanOrder {
+  font-weight: 325;
+  font-size: 1.5rem;
+  line-height: 18px;
+}
+
+#select {
+  box-sizing: border-box;
+  border: 1px solid #c3c3c3;
+  border-radius: 10px;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 18px;
+  padding: 5px;
+  outline: none;
+  width: 17%;
+}
+
+.simpleInfoCard, .complexInfoCard {
+  width: 360px;
+  height: 200px;
+  border: 1px solid #646161;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.simpleInfoCard{
+  width: 30%;
+}
+
+.titleCard {
+  margin: 0;
+  padding: 15px;
+  font-size: 1.3rem;
+}
+
+.infoCard {
+  align-self: center;
+  margin: 0;
+  font-weight: 500;
+  font-size: 3rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25em, 1fr));
+  gap: 2em;
+  place-items: center;
+  grid-gap: 2em;
+}
+
+.cardMainContainer {
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-self: center;
+  width: 90%;
+}
+
+.complexDescriptionContainer {
+  display: flex;
+  align-items: center;
+}
+
+.complexDescriptionContainer p {
+  width: 30%;
+  text-align: center;
+}
+
+.complexDescriptionContainer p, .complexDescriptionContainer span {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.formsContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mostUsed {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mostUsedInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mostUsedContainer {
+  display: flex;
+  align-items: center;
+}
+
+.mostUsedNumber {
+  font-size: 1.5rem;
+  width: 45px;
+  background-color: var(--verde-oscuro);
+  text-align: center;
+  border-radius: 50%;
+  padding: 5px;
+  color: #fff;
+}
+
+.mostUsedContainer p {
+  margin: 0;
+  margin-left: 20px;
+}
+
+.editionRequestsContainer {
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.editionRequestsPie {
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 925px) {
+  .cardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
+  }
+}
+
+@media screen and (max-width: 747px) {
+  .cardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
+  }
+}
+
+@media screen and (max-width: 835px){
+  .simpleInfoCard {
+    height: 140px;
+  }
+  .complexInfoCard {
+    width: 260px;
+    height: 140px;
+  }
+  .titleCard {
+    padding: 8px;
+    font-size: 1rem;
+  }
+  .infoCard {
+    font-size: 2rem;
+  }
+  .complexDescriptionContainer p, .complexDescriptionContainer span {
+    font-size: 1.3rem;
+  }
+  .mostUsedContainer > * {
+    font-size: 1rem;
+  }
+  .mostUsedNumber {
+    width: 35px;
+  }
+}
+@media screen and (max-width: 620px){
+  .simpleInfoCard {
+    height: 130px;
+  }
+  .complexInfoCard {
+    width: 220px;
+    height: 100px;
+  }
+  .titleCard {
+    padding: 5px;
+    font-size: 1rem;
+  }
+  .infoCard {
+    font-size: 1.5rem;
+  }
+  .complexDescriptionContainer p, .complexDescriptionContainer span {
+    font-size: 1rem;
+  }
+}
+@media screen and (max-width: 576px) {
+  .panelContainer, .editionContainer {
+    flex-direction: column;
+  }
+  .panelInfo, .panelPie, .editionRequestsContainer, .editionRequestsPie {
+    width: 100%;
+    margin: 10px 0;
+  }
+  .simpleInfoCard {
+    width: 100%;
+  }
+  .titleCard {
+    padding-left: 10px;
+    font-size: 0.6rem;
+  }
+  .simpleInfoCard p {
+    font-size: 1rem;
+  }
+  .infoCard {
+    font-size: 2.6rem !important;
+  }
+  .spanOrder {
+    font-size: 0.7rem;
+  }
+  #select {
+    width: 30%;
+    padding: 0;
+  }
+  .fromsContainerMobile {
+    flex-direction: column;
+  }
+  .mostUsed {
+    width: 100%;
+    margin-top: 30px;
+  }
+  .mostUsed h3, .panelPie h3, .editionRequestsPie h3{
+    font-size: 1rem;
+  }
+  .pie{
+    height: 250px;
+  }
+  .mostUsedContainer {
+    margin-bottom: 10px;
+  }
+  .mostUsedContainer {
+    font-size: 0.8rem;
+  }
+  .mostUsedNumber {
+    font-size: 0.7rem;
+    width: 25px;
+    padding: 3px;
+  }
+  .editionRequestsContainer {
+    height: 420px;
+  }
+  .cardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+  }
+}
+@media screen and (max-width: 525px){
+  .complexInfoCard {
+    width: 180px;
+    height: 100px;
+  }
+}
+@media screen and (max-width: 435px){
+  .complexInfoCard {
+    width: 120px;
+    height: 100px;
+  }
+  .complexDescriptionContainer p, .complexDescriptionContainer span {
+    font-size: 0.8rem;
+  }
+
+  @media screen and (max-width: 392px) {
+    .cardGrid {
+      grid-template-columns: repeat(auto-fit, minmax(6em, 1fr));
+    }
+  }
+}

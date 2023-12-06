@@ -2,7 +2,7 @@
 export const FORMS_WEB = ['controlalergenos','entregabidones','flashincidente', 'informeintaccidente',
 'registrocapacitacion', 'registrosimulacro',"registrodecomiso","reporterechazo","verificacionbalanza","verificaciontermometros", "entregaropa"]
 
-export const FROMS_TITLES = {
+export const FORMS_TITLES = {
   controlalergenos: "Control de comensales con dietas Especiales",
   entregabidones: "Entrega de bidones de aceite usado",
   flashincidente: "Flash reporte de incidentes",

@@ -133,7 +133,8 @@ const obtenerBase64ParaArchivo = async (value, propiedad) => {
     const data = {
       certificadoTransporte : arrayFilesTransporte,
       certificadoDisposicion: arrayFilesDisposicion,
-      inputs : replicaValues
+      inputs : replicaValues,
+      idUser : localStorage.getItem('idUser'),
     }
     entregaBidones(data)
       .then((resp) => {

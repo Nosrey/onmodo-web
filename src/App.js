@@ -47,6 +47,7 @@ import Cuentas from './views/Cuentas/Cuentas';
 import RecordatoriosContainer from './views/Recordatorios/RecordatoriosContainer';
 import SolicitudesDeEdicion from './views/SolicitudesDeEdicion/SolicitudesDeEdicion';
 import Legajos from './views/Legajos/Legajos';
+import Estadisticas from './views/Estadisticas/Estadisticas';
 import InfoBusiness from './components/InfoBusiness/InfoBusiness';
 
 function App() {
@@ -130,6 +131,7 @@ function App() {
             
             <Route path='/solicitudes-edicion' element={<SolicitudesDeEdicion filterByKey={keySearchHistorial} />} />
             <Route path='/legajos' element={<Legajos />} />
+            <Route path='/estadisticas' element={<Estadisticas />} />
               
             <Route path='/crear-cuenta' element={<CrearCuenta />} />
 
