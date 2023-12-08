@@ -108,38 +108,15 @@ export const editEntregaRopa = async (values, formId) => {
 };
 export const controlAlergenos = async (values) => {
   try {
-    const formData = new FormData();
-    let info = {
-      ...values,
-      businessName: localStorage.getItem('business'),
-      rol: localStorage.getItem('rol'),
-      nombre: localStorage.getItem('userName'),
-    };
-    // Recorre el array de inputs y agrega los archivos a formData
-    values.inputs.forEach((input, index) => {
-      const inputFormData = new FormData();
-      inputFormData.append('fecha', input.fecha);
-      inputFormData.append('nombre', input.nombre);
-      inputFormData.append('diagnostico', input.diagnostico);
-      inputFormData.append('requiereRenovacion', input.requiereRenovacion);
-      inputFormData.append('fechaRenovacion', input.fechaRenovacion);
-      inputFormData.append('listado', input.listado);
-      inputFormData.append('presentaCertificado', input.presentaCertificado);
-      inputFormData.append('certificado', input.certificado);
-
-      info.inputs[index] = inputFormData;
-    });
-
-    // Agrega los campos de texto al formData
-    formData.append('comedor', info.comedor);
-    formData.append('idUser', info.idUser);
-    formData.append('inputs', info.inputs);
-    formData.append('businessName', info.businessName);
-    formData.append('nombre', info.nombre);
-    formData.append('rol', info.rol);
     const response = await fetch(`${URL_API}/api/dietasespeciales`, {
       method: 'POST',
-      body: formData,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...values,
+        businessName: localStorage.getItem('business'),
+        rol: localStorage.getItem('rol'),
+        nombre: localStorage.getItem('userName'),
+      }),
     });
 
     const data = await response.json();

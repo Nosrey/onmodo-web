@@ -125,10 +125,10 @@ function FlashReporteIncidente() {
     // si no se han cargado files , no se envia la propiedad directamente 
     if (values.planilla === '' || values.planilla === undefined) {
       delete values.planilla;
-  }
-  if (values.fotografias === '' || values.fotografias === undefined|| values.fotografias.length === 0 ) {
-      delete values.fotografias;
-  }
+    }
+    if (values.fotografias === '' || values.fotografias === undefined|| values.fotografias.length === 0 ) {
+        delete values.fotografias;
+    }
 
     flashIncidente(values)
       .then((resp) => {
