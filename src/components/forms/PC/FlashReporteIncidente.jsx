@@ -82,7 +82,47 @@ function FlashReporteIncidente() {
     );
   };
 
-  const handleSubmit = () => {
+  const getBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => {
+        console.log('Error: ', error);
+        reject(error);
+      };
+    });
+  };
+  
+  const convertirFilesABase64 = async (files) => {
+    try {
+      const base64Array = await Promise.all(files.map(async (fileObject) => {
+        const path = fileObject.path;
+        const file = fileObject /* Obtener el archivo, por ejemplo, mediante una llamada a la API o desde algún otro lugar */;
+  
+        if (file) {
+          const base64String = await getBase64(file);
+          return  base64String ;
+        } else {
+          // Manejar el caso en que el archivo no se pueda encontrar o cargar
+          console.warn(`No se pudo cargar el archivo para ${path}`);
+          return   null ;
+        }
+      }));
+  
+      return base64Array;
+    } catch (error) {
+      console.error('Error al convertir files a Base64:', error);
+      throw error;
+    }
+  };
+  
+
+  const handleSubmit = async  () => {
+    const copy = [...values.fotografias]
+    const base64Array = await convertirFilesABase64(copy);
+    values.fotografias = base64Array
+
     flashIncidente(values)
       .then((resp) => {
         setTextAlert('¡Formulario cargado exitosamente!');
