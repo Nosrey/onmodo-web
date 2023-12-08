@@ -103,6 +103,7 @@ body {
   font-size: 18px;
   font-weight: bold;
   color: #474947;
+  cursor: default;
 }
 
 .formNumber {

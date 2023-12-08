@@ -91,7 +91,7 @@ const Estadisticas = () => {
   const ComplexInfoCard = ({provincia, personas, formularios}) => {
     return (
       <div className={styles.complexInfoCard}>
-        <p className={styles.titleCard}>{provincia}</p>
+        <p className={styles.titleCard}>{provincia === 'Ciudad Autónoma de Buenos Aires' ? 'CABA' : provincia}</p>
         <div className={styles.cardMainContainer}>
           <div className={styles.complexDescriptionContainer}>
             <p className={styles.numberCard}>{personas}</p>
@@ -139,7 +139,7 @@ const Estadisticas = () => {
                 <SimpleInfoCard title={'Cantidad Total'} info={totalUsers} />
               </div>
               <div className={styles.panelPie}>
-                <h3>Distribución por niveles</h3>
+                <h3 className={styles.graphTitle}>Distribución por niveles</h3>
                   {distributionPerLevel.length > 0 && <PieChart
                     series={[
                       {
@@ -160,8 +160,8 @@ const Estadisticas = () => {
             <div className={styles.orderContainer}>
                 <span className={styles.spanOrder}>Ordenar por:</span>
                 <select name='' id={styles.select} onChange={handleSortChange}>
-                  <option value='Cantidad de Personas'>Cantidad de Personas</option>
-                  <option value='Cantidad de Formularios'>Cantidad de Formularios</option>
+                  <option className={styles.spanOption} value='Cantidad de Personas'>Cantidad de Personas</option>
+                  <option className={styles.spanOption} value='Cantidad de Formularios'>Cantidad de Formularios</option>
                 </select>
             </div>
             <div className={styles.cardGrid}>
@@ -177,7 +177,7 @@ const Estadisticas = () => {
             <div className={`${styles.formsContainer} ${styles.fromsContainerMobile}`}>
               <SimpleInfoCard title={'Cantidad Total'} info={formsData.total} />
               <div className={styles.mostUsed}>
-                <h3>Más utilizados</h3>
+                <h3 className={styles.graphTitle}>Más utilizados</h3>
                 <div className={styles.mostUsedInfo}>
                   <div className={styles.mostUsedContainer}>
                     <span className={styles.mostUsedNumber}>1</span>
@@ -206,7 +206,7 @@ const Estadisticas = () => {
                 ))}
               </div>
               <div className={styles.editionRequestsPie}>
-                <h3>Estado de solicitud</h3>
+                <h3 className={styles.graphTitle}>Estado de solicitud</h3>
                 {editRequests.pieData.length > 0 && <PieChart
                   series={[
                     {

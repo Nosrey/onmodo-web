@@ -1,25 +1,41 @@
 .screenTitle {
-  margin-bottom: 40px;
+  font-size: 21px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  margin-top: 0px;
 }
+.graphTitle {
+  font-size: 18px !important;
+  cursor: default;
+
+}
+
 .infoSection {
-  margin-bottom: 50px;
+  margin-bottom: 120px;
+  cursor: default;
+
 } 
 
 .panelContainer, .editionContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .panelInfo, .editionRequestsContainer {
   width: 30%;
+  display: flex;
+  row-gap: 20px;
 }
 
 .panelInfo .simpleInfoCard, .editionRequestsContainer .simpleInfoCard {
-  width: 100%;
+  width: 80%;
+  height: 150px;
+ 
 }
 
 .panelPie, .editionRequestsPie {
   width: 60%;
+  max-width: 580px;
 }
 
 .panelPie h3, .editionRequestsPie h3 {
@@ -36,10 +52,13 @@
 
 .spanOrder {
   font-weight: 325;
-  font-size: 1.5rem;
+  font-size: 16px;
   line-height: 18px;
 }
-
+.spanOption {
+  font-size: 14px;
+  line-height: 18px;
+}
 #select {
   box-sizing: border-box;
   border: 1px solid #c3c3c3;
@@ -53,30 +72,29 @@
 }
 
 .simpleInfoCard, .complexInfoCard {
-  width: 360px;
-  height: 200px;
+  width: 240px;
+  height: 170px;
   border: 1px solid #646161;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   position: relative;
 }
-
-.simpleInfoCard{
-  width: 30%;
+.complexInfoCard {
+  height: 130px;
 }
 
 .titleCard {
   margin: 0;
   padding: 15px;
-  font-size: 1.3rem;
+  font-size: 14px;
 }
 
 .infoCard {
   align-self: center;
   margin: 0;
-  font-weight: 500;
-  font-size: 3rem;
+  font-weight: bold;
+  font-size: 30px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -84,15 +102,20 @@
 }
 
 .cardGrid {
-  display: grid;
+  /* display: grid;
   grid-template-columns: repeat(auto-fit, minmax(25em, 1fr));
   gap: 2em;
   place-items: center;
-  grid-gap: 2em;
+  grid-gap: 2em; */
+  display: flex;
+  row-gap: 30px;
+  column-gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .cardMainContainer {
-  flex: 1 1;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -112,9 +135,11 @@
 
 .complexDescriptionContainer p, .complexDescriptionContainer span {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 18px;
 }
-
+.descriptionCard {
+  margin-left: 0;
+}
 .formsContainer {
   display: flex;
   justify-content: space-between;
@@ -127,10 +152,11 @@
 }
 
 .mostUsedInfo {
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  row-gap: 16px;
+  padding-top: 30px;
 }
 
 .mostUsedContainer {
@@ -139,23 +165,27 @@
 }
 
 .mostUsedNumber {
-  font-size: 1.5rem;
-  width: 45px;
+  font-size: 14px;
+  width: 30px;
+  height: 30px;
   background-color: var(--verde-oscuro);
   text-align: center;
   border-radius: 50%;
   padding: 5px;
   color: #fff;
+  cursor: default;
 }
 
 .mostUsedContainer p {
   margin: 0;
-  margin-left: 20px;
+  margin-left: 10px;
+  cursor: default;
+
 }
 
 .editionRequestsContainer {
-  height: 700px;
   display: flex;
+  row-gap: 20px;
   flex-direction: column;
   justify-content: space-between;
 }
@@ -187,6 +217,7 @@
   .titleCard {
     padding: 8px;
     font-size: 1rem;
+    
   }
   .infoCard {
     font-size: 2rem;
