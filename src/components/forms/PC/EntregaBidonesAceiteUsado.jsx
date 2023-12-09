@@ -45,15 +45,6 @@ function EntregaBidonesAceiteUsado() {
     }
   }, [replicaValues, replicas]);
 
-  const handleInputChange = (event, index, label) => {
-    const { value } = event.target;
-    const newReplicaValues = replicaValues.map((replicaValue, i) => {
-      return i === index
-        ? { ...replicaValue, [label.toLowerCase().replace(/\s/g, '')]: value, idUser: idUser }
-        : replicaValue;
-    });
-    setReplicaValues(newReplicaValues);
-  };
 
   const handleFileChange = (files, index, label) => {
     const file = files[0];
@@ -68,21 +59,56 @@ function EntregaBidonesAceiteUsado() {
   const Dropzone = ({ onDrop, index, label }) => {
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
     return (
-      <div {...getRootProps()} className={styles.border}>
-        <input {...getInputProps()} />
-        {replicaValues[index][label.toLowerCase().replace(/\s/g, '')] === undefined && (
-          <h6 style={{ fontSize: '12px' }}>Selecciona una foto de {label}</h6>
-        )}
-
-        {replicaValues[index][label.toLowerCase().replace(/\s/g, '')] && (
-          <h6 style={{ fontSize: '12px', width: '100%' }} className={styles.select}>
-            Archivo seleccionado para {label}:{' '}
-            <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
-              {replicaValues[index][label.toLowerCase().replace(/\s/g, '')].name.substring(0, 25)}
-            </span>
-          </h6>
-        )}
+      <>
+      {/* Vista de VER */}
+      <div className='campoFileRow'>
+        {currentStatus === "view" && label === "Transporte" && typeof infoPrecargada?.certificadoTransporte[index] === 'string'
+        && 
+          <a className='linkFileRow' href={infoPrecargada?.certificadoTransporte[index]} target="_blank" rel="noopener noreferrer">
+              Ver Certificado Transporte
+          </a>
+        }
+        {currentStatus === "view" && label === "Disposición final" && typeof infoPrecargada?.certificadoDisposicion[index] === 'string'
+        && 
+          <a className='linkFileRow' href={infoPrecargada?.certificadoDisposicion[index]} target="_blank" rel="noopener noreferrer">
+              Ver Certificado Disposición Final
+          </a>
+        }
+          {currentStatus === "view" && label === "Transporte" && typeof infoPrecargada?.certificadoTransporte[index] === null
+        && 
+          <a className='linkFileRow' href={infoPrecargada?.certificadoTransporte[index]} target="_blank" rel="noopener noreferrer">
+              No se ha cargado Certificado Transporte
+          </a>
+        }
+        {currentStatus === "view" && label === "Disposición final" && typeof infoPrecargada?.certificadoDisposicion[index] === null
+        && 
+          <a className='linkFileRow' href={infoPrecargada?.certificadoDisposicion[index]} target="_blank" rel="noopener noreferrer">
+              No se ha cargado Certificado Disposición Final
+          </a>
+        }
       </div>
+
+        {/* Vista de CREAR */}
+      {currentStatus !== 'view'  &&
+        <div {...getRootProps()} className={styles.border}>
+          <input {...getInputProps()} />
+          {replicaValues[index][label.toLowerCase().replace(/\s/g, '')] === undefined && (
+            <h6 style={{ fontSize: '12px' }}>Selecciona una foto de {label}</h6>
+          )}
+
+          {replicaValues[index][label.toLowerCase().replace(/\s/g, '')] && (
+            <h6 style={{ fontSize: '12px', width: '100%' }} className={styles.select}>
+              Archivo seleccionado para {label}:{' '}
+              <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                {replicaValues[index][label.toLowerCase().replace(/\s/g, '')]?.name?.substring(0, 25)}
+              </span>
+            
+            </h6>
+          )}
+        </div>
+      }
+      </>
+      
     );
   };
 
@@ -167,7 +193,14 @@ const obtenerBase64ParaArchivo = async (value, propiedad) => {
   useEffect(() => {
     if (infoPrecargada) {
       setReplicas(infoPrecargada.inputs.length);
-      setReplicaValues(infoPrecargada.inputs);
+      const copy = [...infoPrecargada.inputs]
+      for (let i = 0; i < copy.length; i++) {
+       copy[i].transporte = infoPrecargada.certificadoTransporte[i]
+       copy[i].disposiciónfinal = infoPrecargada.certificadoDisposicion[i]
+        
+      }
+      console.log("replicas", copy)
+      setReplicaValues(copy);
     } else {
       setReplicas(1);
       setReplicaValues([{}]);
