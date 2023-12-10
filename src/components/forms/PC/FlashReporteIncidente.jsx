@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styles from './FlashReporteIncidente.module.css';
 import Alert from '../../shared/components/Alert/Alert';
-import { flashIncidente } from '../../../services/FormsRequest';
-import { useLocation } from 'react-router';
+import { editFlashIncidente, flashIncidente } from '../../../services/FormsRequest';
+import { useLocation, useNavigate } from 'react-router';
 
 function FlashReporteIncidente() {
   const location = useLocation();
+  const navigate = useNavigate();
   const infoPrecargada = location.state?.objeto;
   const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
   const [textAlert, setTextAlert] = useState('');
@@ -116,16 +117,23 @@ function FlashReporteIncidente() {
       throw error;
     }
   };
-  
+  const convertirFileABase64 = async (file) => {
+    const base64String = await getBase64(file);
+    return  base64String ;
+  };
 
   const handleSubmit = async  () => {
     const copy = [...values.fotografias]
     const base64Array = await convertirFilesABase64(copy);
     values.fotografias = base64Array
+    
     // si no se han cargado files , no se envia la propiedad directamente 
     if (values.planilla === '' || values.planilla === undefined) {
       delete values.planilla;
+    } else {
+      values.planilla = await convertirFileABase64(values.planilla);
     }
+
     if (values.fotografias === '' || values.fotografias === undefined|| values.fotografias.length === 0 ) {
         delete values.fotografias;
     }
@@ -167,6 +175,35 @@ function FlashReporteIncidente() {
       });
   };
 
+  const handleEdit = async  () => {
+    const copy = [...values.fotografias]
+    const base64Array = await convertirFilesABase64(copy);
+    values.fotografias = base64Array
+    
+    // si no se han cargado files , no se envia la propiedad directamente 
+    if (values.planilla === '' || values.planilla === undefined) {
+      delete values.planilla;
+    } else {
+      values.planilla = await convertirFileABase64(values.planilla);
+    }
+
+    if (values.fotografias === '' || values.fotografias === undefined|| values.fotografias.length === 0 ) {
+        delete values.fotografias;
+    }
+
+    editFlashIncidente(values,  infoPrecargada._id)
+      .then((resp) => {
+        setTextAlert('¡Formulario editado exitosamente!');
+        setTypeAlert('success');
+        navigate('/formularios-cargados/flashincidente');
+
+      })
+      .catch((resp) => {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      })
+  };
+
   useEffect(() => {
     if (infoPrecargada) {
       setValues({
@@ -206,6 +243,11 @@ function FlashReporteIncidente() {
           <div className='form'>
             <div className='titleContainer'>
               <h3 className='title'>Flash Reporte de Incidente</h3>
+              { (currentStatus === 'view' || currentStatus === 'edit') &&
+                        <span style={{marginLeft:'20px', fontSize:'20px'}}>
+                            <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
+                        </span>
+                    }
             </div>
 
             <div className={styles.personal}>
@@ -340,15 +382,26 @@ function FlashReporteIncidente() {
             </div>
 
             {
-            (currentStatus === 'edit' || infoPrecargada === undefined) &&
-            <div className='btn'>
-                <Button
-                onClick={handleSubmit}
-                variant='contained'
-                >
-                Guardar
-                </Button>
-            </div>
+                (infoPrecargada === undefined) &&
+                <div className='btn'>
+                    <Button
+                        onClick={handleSubmit}
+                        variant='contained'
+                    >
+                        Guardar
+                    </Button>
+                </div>
+            }
+            {
+                (currentStatus === 'edit' ) &&
+                <div className='btn'>
+                    <Button
+                        onClick={handleEdit}
+                        variant='contained'
+                    >
+                        Editar
+                    </Button>
+                </div>
             }
           </div>
         </div>

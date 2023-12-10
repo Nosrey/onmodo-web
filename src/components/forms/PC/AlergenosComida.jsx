@@ -118,7 +118,6 @@ function AlergenosComida() {
     if (valuesToSend.certificados === '' || valuesToSend.certificados === null || valuesToSend.certificados.length === 0 ) {
       delete valuesToSend.certificados;
   }
-    console.log(valuesToSend)
     controlAlergenos(valuesToSend)
       .then((resp) => {
         if (resp.error) {
@@ -128,7 +127,7 @@ function AlergenosComida() {
           setTextAlert('¡Formulario cargado exitosamente!');
           setTypeAlert('success');
            // limpiar fomr
-        window.location.href = window.location.href;
+        // window.location.href = window.location.href;
         }
       })
       .catch((resp) => {

@@ -299,4 +299,12 @@ body {
   display: block;
   font-size: 14px;
   line-height: 18px;
+  color: #6eac00;
+}
+
+.linkFileRowNoArcchivo {
+  display: block;
+  font-size: 14px;
+  line-height: 18px;
+  color: #6eac00;
 }

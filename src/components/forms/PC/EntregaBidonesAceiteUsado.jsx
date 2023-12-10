@@ -61,36 +61,53 @@ function EntregaBidonesAceiteUsado() {
     return (
       <>
       {/* Vista de VER */}
-      <div className='campoFileRow'>
-        {currentStatus === "view" && label === "Transporte" && typeof infoPrecargada?.certificadoTransporte[index] === 'string'
-        && 
-          <a className='linkFileRow' href={infoPrecargada?.certificadoTransporte[index]} target="_blank" rel="noopener noreferrer">
-              Ver Certificado Transporte
-          </a>
-        }
-        {currentStatus === "view" && label === "Disposición final" && typeof infoPrecargada?.certificadoDisposicion[index] === 'string'
-        && 
-          <a className='linkFileRow' href={infoPrecargada?.certificadoDisposicion[index]} target="_blank" rel="noopener noreferrer">
-              Ver Certificado Disposición Final
-          </a>
-        }
-          {currentStatus === "view" && label === "Transporte" && typeof infoPrecargada?.certificadoTransporte[index] === null
-        && 
-          <a className='linkFileRow' href={infoPrecargada?.certificadoTransporte[index]} target="_blank" rel="noopener noreferrer">
-              No se ha cargado Certificado Transporte
-          </a>
-        }
-        {currentStatus === "view" && label === "Disposición final" && typeof infoPrecargada?.certificadoDisposicion[index] === null
-        && 
-          <a className='linkFileRow' href={infoPrecargada?.certificadoDisposicion[index]} target="_blank" rel="noopener noreferrer">
-              No se ha cargado Certificado Disposición Final
-          </a>
-        }
-      </div>
+      {currentStatus === 'view'  &&
+        <div className='campoFileRow'>
+          {currentStatus === "view" && label === "Transporte" && typeof infoPrecargada?.certificadoTransporte[index] === 'string'
+          && 
+            <a className='linkFileRow' href={infoPrecargada?.certificadoTransporte[index]} target="_blank" rel="noopener noreferrer">
+                Ver Certificado Transporte
+            </a>
+          }
+          {currentStatus === "view" && label === "Disposición final" && typeof infoPrecargada?.certificadoDisposicion[index] === 'string'
+          && 
+            <a className='linkFileRow' href={infoPrecargada?.certificadoDisposicion[index]} target="_blank" rel="noopener noreferrer">
+                Ver Certificado Disposición Final
+            </a>
+          }
+            {currentStatus === "view" && label === "Transporte" && typeof infoPrecargada?.certificadoTransporte[index] === null
+          && 
+            <a className='linkFileRowNoArcchivo' href={infoPrecargada?.certificadoTransporte[index]} target="_blank" rel="noopener noreferrer">
+                No se ha cargado Certificado Transporte
+            </a>
+          }
+          {currentStatus === "view" && label === "Disposición final" && typeof infoPrecargada?.certificadoDisposicion[index] === null
+          && 
+            <a className='linkFileRowNoArcchivo' href={infoPrecargada?.certificadoDisposicion[index]} target="_blank" rel="noopener noreferrer">
+                No se ha cargado Certificado Disposición Final
+            </a>
+          }
+        </div>
+      }
 
         {/* Vista de CREAR */}
       {currentStatus !== 'view'  &&
-        <div {...getRootProps()} className={styles.border}>
+      <>
+        {
+          currentStatus === 'edit' && label === "Transporte" && typeof infoPrecargada?.certificadoTransporte[index] === 'string'
+          && 
+            <a className='linkFileRow' style={{marginTop: '-10px', marginBottom: '10px'}} href={infoPrecargada?.certificadoTransporte[index]} target="_blank" rel="noopener noreferrer">
+                Ver Certificado Transporte
+            </a>
+          }
+          {currentStatus === 'edit' && label === "Disposición final" && typeof infoPrecargada?.certificadoDisposicion[index] === 'string'
+          && 
+            <a className='linkFileRow' style={{marginTop: '-10px', marginBottom: '10px'}}  href={infoPrecargada?.certificadoDisposicion[index]} target="_blank" rel="noopener noreferrer">
+                Ver Certificado Disposición Final
+            </a>
+          }
+             
+        <div {...getRootProps()} className={styles.border} >
           <input {...getInputProps()} />
           {replicaValues[index][label.toLowerCase().replace(/\s/g, '')] === undefined && (
             <h6 style={{ fontSize: '12px' }}>Selecciona una foto de {label}</h6>
@@ -99,13 +116,14 @@ function EntregaBidonesAceiteUsado() {
           {replicaValues[index][label.toLowerCase().replace(/\s/g, '')] && (
             <h6 style={{ fontSize: '12px', width: '100%' }} className={styles.select}>
               Archivo seleccionado para {label}:{' '}
-              <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
-                {replicaValues[index][label.toLowerCase().replace(/\s/g, '')]?.name?.substring(0, 25)}
-              </span>
+                <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                  {replicaValues[index][label.toLowerCase().replace(/\s/g, '')]?.name?.substring(0, 25)}
+                </span>         
             
             </h6>
           )}
         </div>
+      </>
       }
       </>
       

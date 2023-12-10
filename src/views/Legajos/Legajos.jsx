@@ -7,13 +7,15 @@ import { useNavigate } from 'react-router-dom';
 import Alert from '../../components/shared/components/Alert/Alert';
 import { useMedia } from '../../utils/hooks/UseMedia';
 
-const Legajos = () => {
+const Legajos = ({filterByKey}) => {
   const navigate = useNavigate();
   const media = useMedia();
   const [legajos, setLegajos] = useState([]);
   const [legajosFiltrados, setLegajosFiltrados] = useState(legajos.map(legajo => ({ ...legajo, openMobileMenu: false })));
   const [fileSelected, setFileSelected] = useState(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [showEmptyMsg, setShowEmptyMsg] = useState(false);
+  const [noResultMsg, setNoResultMsg] = useState(false);
 
   //** ALERTA */
   const [textAlert, setTextAlert] = useState("");
@@ -117,6 +119,30 @@ const Legajos = () => {
     });
   };
 
+  
+  useEffect(() => {
+    console.log("filter", filterByKey)
+    // if (filterByKey && filterByKey.trim() !== '') {
+    //   setIsLoading(true)
+    //  const copy = [...sortedForms];
+    //  const results = copy.filter((form)=>form.title.toLowerCase().includes(filterByKey.toLowerCase()))
+
+    //  if (results.length !== 0) {
+    //    setSortedForms(results);
+    //    setIsLoading(false)
+
+    //  } else {
+    //   setNoResultMsg(true);
+    //    setIsLoading(false)
+    //  }
+
+    // }
+    // if (filterByKey === '') {
+    //   setIsLoading(true)
+    //   // fetchData()
+    //   setNoResultMsg(false);
+    // }
+  }, [filterByKey])
   return (
     <>
       {isLoading ? (

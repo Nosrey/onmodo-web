@@ -205,10 +205,6 @@ function RegistroCapacitacion() {
         if (valuesToSend.firma === ''  || valuesToSend.firma === undefined) {
             delete valuesToSend.firma;
         }
-        if (valuesToSend.firma === ''  || valuesToSend.firma === undefined) {
-            delete valuesToSend.firma;
-        }
-        
         editRegistroCapacitacion(valuesToSend, infoPrecargada._id).then((resp) => {
             
             if (resp.error) {

@@ -14,7 +14,7 @@ function Header({search}) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentLocation === '/formularios' || currentLocation === '/formularios-cargados') setShowSearch(true);
+    if (currentLocation === '/formularios' || currentLocation === '/formularios-cargados' || currentLocation === '/legajos') setShowSearch(true);
     else setShowSearch(false);
   }, [currentLocation]);
 

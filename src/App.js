@@ -56,6 +56,7 @@ function App() {
   const isLoggedIn = !!localStorage.getItem('rol');
   const [keySearchForms, setKeySearchForms] = useState();
   const [keySearchHistorial, setKeySearchHistorial] = useState();
+  const [keySearchLegajo, setKeySearchLegajo] = useState();
 
   const handleSearchData = (value) => {
     switch (currentLocation) {
@@ -65,9 +66,9 @@ function App() {
       case '/formularios-cargados':
         setKeySearchHistorial(value);
         break;
-      // case '/formularios':
-      // setKeySearchForms(value)
-      // break;
+      case '/legajos':
+      setKeySearchLegajo(value)
+      break;
       // case '/formularios':
       // setKeySearchForms(value)
       // break;
@@ -80,6 +81,7 @@ function App() {
   useEffect(() => {
     setKeySearchForms('');
     setKeySearchHistorial('');
+    setKeySearchLegajo('');
   }, [currentLocation]);
 
 
@@ -130,7 +132,7 @@ function App() {
             <Route path='/formularios-legajos/:legajo' element={<FormCargado />} />
             
             <Route path='/solicitudes-edicion' element={<SolicitudesDeEdicion filterByKey={keySearchHistorial} />} />
-            <Route path='/legajos' element={<Legajos />} />
+            <Route path='/legajos' filterByKey={keySearchLegajo}  element={<Legajos />} />
             <Route path='/estadisticas' element={<Estadisticas />} />
               
             <Route path='/crear-cuenta' element={<CrearCuenta />} />
