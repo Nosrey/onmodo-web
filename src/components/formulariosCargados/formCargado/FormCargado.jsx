@@ -46,10 +46,8 @@ function FormCargado() {
         materialEntregado: JSON.parse(form?.materialEntregado),
         materialExpuesto: JSON.parse(form?.materialExpuesto),
       }
-      console.log("form: ", form2)
       navigate(url, { state: { objeto: form2, status } });
     } else if (url === "/registro-simulacro") {
-      console.log("FORM", form)
       let form2 = {
         ...form,
         personas: JSON.parse(form?.personas),
@@ -57,7 +55,6 @@ function FormCargado() {
       navigate(url, { state: { objeto: form2, status } });
     }
     else {
-      console.log("form: ", form)
       navigate(url, { state: { objeto: form, status } });
     }
   };
@@ -70,8 +67,6 @@ function FormCargado() {
 
 
   async function getTitle() {
-    console.log('entre a getTitle')
-
     if (form == "controlalergenos") {
       setTitulo("Control de comensales con dietas Especiales")
       setUrl("/dietas-especiales")
@@ -294,10 +289,9 @@ function FormCargado() {
                       <span 
                         onClick={() =>{
                           if (formulario.status === 'free'|| (formulario.status === 'approved' && formulario.editEnabled === true)) {
-                            console.log("AAAAAAAAVAAAA")
+                  
                             goToForm(formulario, 'edit')
                           } else {
-                            console.log("VIEJAA")
                             openModalEdit(formulario)}
 
                           }

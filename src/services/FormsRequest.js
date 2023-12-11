@@ -127,7 +127,26 @@ export const controlAlergenos = async (values) => {
     throw error;
   }
 };
+export const editControlAlergenos = async (values, formId) => {
+  try {
+    const response = await fetch(`${URL_API}/api/dietasespecialesedit/${formId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...values,
+        businessName: localStorage.getItem('business'),
+        rol: localStorage.getItem('rol'),
+        nombre: localStorage.getItem('userName'),
+      }),
+    });
 
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
 export const entregaBidones = async (values) => {
   try {
     const response = await fetch(`${URL_API}/api/entregabidones`, {
