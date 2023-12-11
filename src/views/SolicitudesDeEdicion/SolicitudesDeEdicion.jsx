@@ -248,18 +248,28 @@ function SolicitudesDeEdicion() {
                         {media === 'mobile' ? (
                           <>
                             <tr key={index} className={styles.fila}>
-                              <td style={{ borderBottom: 'none' }}>
+                              <td
+                                style={{
+                                  borderBottom: openInfo[index] ? 'none' : '1px solid #ccc',
+                                }}
+                              >
                                 {argentinaTime.getDate()}/{argentinaTime.getMonth() + 1}/
                                 {argentinaTime.getFullYear()}
                               </td>
 
-                              <td style={{ borderBottom: 'none' }}>
+                              <td
+                                style={{
+                                  borderBottom: openInfo[index] ? 'none' : '1px solid #ccc',
+                                }}
+                              >
                                 {argentinaTime.getHours()}:
                                 {String(argentinaTime.getMinutes()).padStart(2, '0')}
                               </td>
 
                               <td
-                                style={{ borderBottom: 'none' }}
+                                style={{
+                                  borderBottom: openInfo[index] ? 'none' : '1px solid #ccc',
+                                }}
                                 className={
                                   formulario.status === ''
                                     ? ''
