@@ -293,7 +293,7 @@ function FormCargado() {
                       :
                       <span 
                         onClick={() =>{
-                          if (formulario.status === 'free' && formulario.editEnabled === true) {
+                          if (formulario.status === 'free'|| (formulario.status === 'approved' && formulario.editEnabled === true)) {
                             console.log("AAAAAAAAVAAAA")
                             goToForm(formulario, 'edit')
                           } else {

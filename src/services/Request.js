@@ -194,7 +194,7 @@ export const deleteLegajo = async (legajo) => {
 export const getStats = async () => {
   const businessName = localStorage.getItem('business');
   try {
-    const res = await fetch(`${URL_API}/api/users/stats/${businessName}`);
+    const res = await fetch(`${URL_API}/api/statsusers/${businessName}`);
     const data = await res.json();
     return data;
   } catch (error) {

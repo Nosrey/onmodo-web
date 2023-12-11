@@ -63,12 +63,12 @@ function App() {
       case '/formularios':
         setKeySearchForms(value);
         break;
-      case '/formularios-cargados':
-        setKeySearchHistorial(value);
+        case '/formularios-cargados':
+          setKeySearchHistorial(value);
+          break;
+        case '/legajos':
+        setKeySearchLegajo(value)
         break;
-      case '/legajos':
-      setKeySearchLegajo(value)
-      break;
       // case '/formularios':
       // setKeySearchForms(value)
       // break;
@@ -132,7 +132,7 @@ function App() {
             <Route path='/formularios-legajos/:legajo' element={<FormCargado />} />
             
             <Route path='/solicitudes-edicion' element={<SolicitudesDeEdicion filterByKey={keySearchHistorial} />} />
-            <Route path='/legajos' filterByKey={keySearchLegajo}  element={<Legajos />} />
+            <Route path='/legajos'  element={<Legajos filterByKey={keySearchLegajo}  />} />
             <Route path='/estadisticas' element={<Estadisticas />} />
               
             <Route path='/crear-cuenta' element={<CrearCuenta />} />

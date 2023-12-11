@@ -3,14 +3,16 @@ import { Button, TextField } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import { useDropzone } from 'react-dropzone';
-import { entregaBidones } from '../../../services/FormsRequest';
+import { editEntregaBidones, entregaBidones } from '../../../services/FormsRequest';
 import Alert from '../../shared/components/Alert/Alert';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import styles from './EntregaBidonesAceiteUsado.module.css';
 import { v4 as uuidv4 } from 'uuid';
 
 function EntregaBidonesAceiteUsado() {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const infoPrecargada = location.state?.objeto;
   const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
   
@@ -75,17 +77,17 @@ function EntregaBidonesAceiteUsado() {
                 Ver Certificado Disposición Final
             </a>
           }
-            {currentStatus === "view" && label === "Transporte" && typeof infoPrecargada?.certificadoTransporte[index] === null
+            {currentStatus === "view" && label === "Transporte" && infoPrecargada?.certificadoTransporte[index] === null
           && 
-            <a className='linkFileRowNoArcchivo' href={infoPrecargada?.certificadoTransporte[index]} target="_blank" rel="noopener noreferrer">
+            <span className='linkFileRowNoArcchivo' target="_blank" rel="noopener noreferrer">
                 No se ha cargado Certificado Transporte
-            </a>
+            </span>
           }
-          {currentStatus === "view" && label === "Disposición final" && typeof infoPrecargada?.certificadoDisposicion[index] === null
+          {currentStatus === "view" && label === "Disposición final" && infoPrecargada?.certificadoDisposicion[index] === null
           && 
-            <a className='linkFileRowNoArcchivo' href={infoPrecargada?.certificadoDisposicion[index]} target="_blank" rel="noopener noreferrer">
+            <span className='linkFileRowNoArcchivo'  target="_blank" rel="noopener noreferrer">
                 No se ha cargado Certificado Disposición Final
-            </a>
+            </span>
           }
         </div>
       }
@@ -105,6 +107,18 @@ function EntregaBidonesAceiteUsado() {
             <a className='linkFileRow' style={{marginTop: '-10px', marginBottom: '10px'}}  href={infoPrecargada?.certificadoDisposicion[index]} target="_blank" rel="noopener noreferrer">
                 Ver Certificado Disposición Final
             </a>
+          }
+             {currentStatus === 'edit' && label === "Transporte" && infoPrecargada?.certificadoTransporte[index] === null
+          && 
+            <span className='linkFileRowNoArcchivo' target="_blank" rel="noopener noreferrer">
+                Click para cargar Certificado Transporte
+            </span>
+          }
+          {currentStatus === 'edit' && label === "Disposición final" && infoPrecargada?.certificadoDisposicion[index] === null
+          && 
+            <span className='linkFileRowNoArcchivo'  target="_blank" rel="noopener noreferrer">
+                Click para cargar Certificado Disposición Final
+            </span>
           }
              
         <div {...getRootProps()} className={styles.border} >
@@ -156,12 +170,17 @@ const getBase64 = (file) => {
 };
 
 const obtenerBase64ParaArchivo = async (value, propiedad) => {
-  try {
+  if (typeof value[propiedad] === 'object') {
+    try {
       return value[propiedad] ? await getBase64(value[propiedad]) : null;
-  } catch (error) {
-      console.error('Error al obtener Base64:', error);
-      throw error;
+    } catch (error) {
+        console.error('Error al obtener Base64:', error);
+        throw error;
+    }
+  } else {
+    return value[propiedad]
   }
+ 
 };
   const handleSubmit = async () => {
     const propiedades = ['transporte', 'disposiciónfinal'];
@@ -189,7 +208,7 @@ const obtenerBase64ParaArchivo = async (value, propiedad) => {
             setTextAlert('¡Formulario cargado exitosamente!');
             setTypeAlert('success');
            // limpiar fomr
-          // window.location.href = window.location.href;
+          window.location.href = window.location.href;
           }
       })
       .catch((resp) => {
@@ -207,7 +226,41 @@ const obtenerBase64ParaArchivo = async (value, propiedad) => {
         }, 7000);
       });
   };
+  const handleEdit = async () => {
+    const propiedades = ['transporte', 'disposiciónfinal'];
+    
+    const arraysBase64 = await Promise.all(
+        propiedades.map((propiedad) =>
+            Promise.all(replicaValues.map((value) => obtenerBase64ParaArchivo(value, propiedad)))
+        )
+    );
 
+    const [arrayFilesTransporte, arrayFilesDisposicion] = arraysBase64;
+
+    const data = {
+      certificadoTransporte : arrayFilesTransporte,
+      certificadoDisposicion: arrayFilesDisposicion,
+      inputs : replicaValues,
+      idUser : localStorage.getItem('idUser'),
+    }
+
+    editEntregaBidones(data, infoPrecargada._id)
+      .then((resp) => {
+       if (resp.error) {
+            setTextAlert('Ocurrió un error');
+            setTypeAlert('error');
+          } else {
+            setTextAlert('¡Formulario editado exitosamente!');
+            setTypeAlert('success');
+            navigate('/formularios-cargados/entregabidones');
+
+          }
+      })
+      .catch((resp) => {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      })
+  };
   useEffect(() => {
     if (infoPrecargada) {
       setReplicas(infoPrecargada.inputs.length);
@@ -231,6 +284,11 @@ const obtenerBase64ParaArchivo = async (value, propiedad) => {
         <div className='form'>
           <div className='titleContainer'>
             <h3 className='title'>Circuito de Aceite Usado</h3>
+            { (currentStatus === 'view' || currentStatus === 'edit') &&
+                        <span style={{marginLeft:'20px', fontSize:'20px'}}>
+                            <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
+                        </span>
+                    }
           </div>
           <div className='table'>
             <div className='tableSection'>
@@ -305,16 +363,27 @@ const obtenerBase64ParaArchivo = async (value, propiedad) => {
             </div>
           </div>
           {
-            (currentStatus === 'edit' || infoPrecargada === undefined) &&
-            <div className='btn'>
-                <Button
-                onClick={handleSubmit}
-                variant='contained'
-                >
-                Guardar
-                </Button>
-            </div>
-            }
+              (infoPrecargada === undefined) &&
+              <div className='btn'>
+                  <Button
+                      onClick={handleSubmit}
+                      variant='contained'
+                  >
+                      Guardar
+                  </Button>
+              </div>
+          }
+          {
+              (currentStatus === 'edit' ) &&
+              <div className='btn'>
+                  <Button
+                      onClick={handleEdit}
+                      variant='contained'
+                  >
+                      Editar
+                  </Button>
+              </div>
+          }
         </div>
       </div>
       {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}

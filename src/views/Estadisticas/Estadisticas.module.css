@@ -209,6 +209,8 @@
 @media screen and (max-width: 835px){
   .simpleInfoCard {
     height: 140px;
+    margin-left: auto;
+    margin-right: auto;
   }
   .complexInfoCard {
     width: 260px;
@@ -216,7 +218,7 @@
   }
   .titleCard {
     padding: 8px;
-    font-size: 1rem;
+    font-size: 14px;
     
   }
   .infoCard {
@@ -242,7 +244,7 @@
   }
   .titleCard {
     padding: 5px;
-    font-size: 1rem;
+    font-size: 14px;
   }
   .infoCard {
     font-size: 1.5rem;
@@ -262,9 +264,13 @@
   .simpleInfoCard {
     width: 100%;
   }
+  .graphTitle {
+   margin-top: 30px;
+  
+  }
   .titleCard {
     padding-left: 10px;
-    font-size: 0.6rem;
+    font-size: 14px;
   }
   .simpleInfoCard p {
     font-size: 1rem;
@@ -277,6 +283,7 @@
   }
   #select {
     width: 30%;
+    min-width: 190px;
     padding: 0;
   }
   .fromsContainerMobile {
@@ -315,14 +322,17 @@
     width: 180px;
     height: 100px;
   }
+  .cardMainContainer {
+    margin-top: 30px;
+  }
 }
 @media screen and (max-width: 435px){
   .complexInfoCard {
-    width: 120px;
-    height: 100px;
+    width: 100%;
+    height: 140px;
   }
   .complexDescriptionContainer p, .complexDescriptionContainer span {
-    font-size: 0.8rem;
+    font-size: 18px;
   }
 
   @media screen and (max-width: 392px) {

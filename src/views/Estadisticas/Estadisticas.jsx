@@ -127,99 +127,104 @@ const Estadisticas = () => {
         strokeWidth={5}
         strokeWidthSecondary={2}
       />
-    ) : (
-      <div className='form'>
-          <h2 className={styles.screenTitle}> Panel de Estadísticas </h2>
-          <div className='titleContainer'>
-            <h3 className='title'>Personal</h3>
-          </div>
-          <div className={styles.infoSection}>
-            <div className={styles.panelContainer}>
-              <div className={styles.panelInfo}>
-                <SimpleInfoCard title={'Cantidad Total'} info={totalUsers} />
-              </div>
-              <div className={styles.panelPie}>
-                <h3 className={styles.graphTitle}>Distribución por niveles</h3>
-                  {distributionPerLevel.length > 0 && <PieChart
-                    series={[
-                      {
-                        data: distributionPerLevel,
-                        highlightScope: { faded: 'global', highlighted: 'item' },
-                        faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
-                      },
-                    ]}
-                    height={230}
-                  />}
-              </div>
+    ) : 
+    <>
+      {
+        formsData &&
+        <div className='form'>
+        <h2 className={styles.screenTitle}> Panel de Estadísticas </h2>
+        <div className='titleContainer'>
+          <h3 className='title'>Personal</h3>
+        </div>
+        <div className={styles.infoSection}>
+          <div className={styles.panelContainer}>
+            <div className={styles.panelInfo}>
+              <SimpleInfoCard title={'Cantidad Total'} info={totalUsers} />
             </div>
-          </div>
-          <div className={styles.infoSection}>
-            <div className='titleContainer'>
-              <h3 className='title'>Distribución geográfica</h3>
-            </div>
-            <div className={styles.orderContainer}>
-                <span className={styles.spanOrder}>Ordenar por:</span>
-                <select name='' id={styles.select} onChange={handleSortChange}>
-                  <option className={styles.spanOption} value='Cantidad de Personas'>Cantidad de Personas</option>
-                  <option className={styles.spanOption} value='Cantidad de Formularios'>Cantidad de Formularios</option>
-                </select>
-            </div>
-            <div className={styles.cardGrid}>
-              {provinceInfo.map((obj, i) => (
-                <ComplexInfoCard key={i} provincia={obj.provincia} personas={obj.usersCount} formularios={obj.formulariosCount} />
-              ))}
-            </div>
-          </div>
-          <div className={styles.infoSection}>
-            <div className='titleContainer'>
-              <h3 className='title'>Formularios</h3>
-            </div>
-            <div className={`${styles.formsContainer} ${styles.fromsContainerMobile}`}>
-              <SimpleInfoCard title={'Cantidad Total'} info={formsData.total} />
-              <div className={styles.mostUsed}>
-                <h3 className={styles.graphTitle}>Más utilizados</h3>
-                <div className={styles.mostUsedInfo}>
-                  <div className={styles.mostUsedContainer}>
-                    <span className={styles.mostUsedNumber}>1</span>
-                    <p>{FORMS_TITLES[formsData.top3[0]]}</p>
-                  </div>
-                  <div className={styles.mostUsedContainer}>
-                    <span className={styles.mostUsedNumber}>2</span>
-                    <p>{FORMS_TITLES[formsData.top3[1]]}</p>
-                  </div>
-                  <div className={styles.mostUsedContainer}>
-                    <span className={styles.mostUsedNumber}>3</span>
-                    <p>{FORMS_TITLES[formsData.top3[2]]}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={styles.infoSection}>
-            <div className='titleContainer'>
-              <h3 className='title'>Solicitudes de Edición</h3>
-            </div>
-            <div className={styles.editionContainer}>
-              <div className={styles.editionRequestsContainer}>
-                {editRequests.cardsData.map((obj, i) => (
-                  <SimpleInfoCard key={i} title={obj.title} info={obj.qty} />
-                ))}
-              </div>
-              <div className={styles.editionRequestsPie}>
-                <h3 className={styles.graphTitle}>Estado de solicitud</h3>
-                {editRequests.pieData.length > 0 && <PieChart
+            <div className={styles.panelPie}>
+              <h3 className={styles.graphTitle}>Distribución por niveles</h3>
+                {distributionPerLevel.length > 0 && <PieChart
                   series={[
                     {
-                      data: editRequests.pieData,
+                      data: distributionPerLevel,
+                      highlightScope: { faded: 'global', highlighted: 'item' },
+                      faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
                     },
                   ]}
                   height={230}
                 />}
+            </div>
+          </div>
+        </div>
+        <div className={styles.infoSection}>
+          <div className='titleContainer'>
+            <h3 className='title'>Distribución geográfica</h3>
+          </div>
+          <div className={styles.orderContainer}>
+              <span className={styles.spanOrder}>Ordenar por:</span>
+              <select name='' id={styles.select} onChange={handleSortChange}>
+                <option className={styles.spanOption} value='Cantidad de Personas'>Cantidad de Personas</option>
+                <option className={styles.spanOption} value='Cantidad de Formularios'>Cantidad de Formularios</option>
+              </select>
+          </div>
+          <div className={styles.cardGrid}>
+            {provinceInfo.map((obj, i) => (
+              <ComplexInfoCard key={i} provincia={obj.provincia} personas={obj.usersCount} formularios={obj.formulariosCount} />
+            ))}
+          </div>
+        </div>
+        <div className={styles.infoSection}>
+          <div className='titleContainer'>
+            <h3 className='title'>Formularios</h3>
+          </div>
+          <div className={`${styles.formsContainer} ${styles.fromsContainerMobile}`}>
+            <SimpleInfoCard title={'Cantidad Total'} info={formsData.total} />
+            <div className={styles.mostUsed}>
+              <h3 className={styles.graphTitle}>Más utilizados</h3>
+              <div className={styles.mostUsedInfo}>
+                <div className={styles.mostUsedContainer}>
+                  <span className={styles.mostUsedNumber}>1</span>
+                  <p>{FORMS_TITLES[formsData.top3[0]]}</p>
+                </div>
+                <div className={styles.mostUsedContainer}>
+                  <span className={styles.mostUsedNumber}>2</span>
+                  <p>{FORMS_TITLES[formsData.top3[1]]}</p>
+                </div>
+                <div className={styles.mostUsedContainer}>
+                  <span className={styles.mostUsedNumber}>3</span>
+                  <p>{FORMS_TITLES[formsData.top3[2]]}</p>
+                </div>
               </div>
             </div>
           </div>
-      </div> 
-    )}
+        </div>
+        <div className={styles.infoSection}>
+          <div className='titleContainer'>
+            <h3 className='title'>Solicitudes de Edición</h3>
+          </div>
+          <div className={styles.editionContainer}>
+            <div className={styles.editionRequestsContainer}>
+              {editRequests.cardsData.map((obj, i) => (
+                <SimpleInfoCard key={i} title={obj.title} info={obj.qty} />
+              ))}
+            </div>
+            <div className={styles.editionRequestsPie}>
+              <h3 className={styles.graphTitle}>Estado de solicitud</h3>
+              {editRequests.pieData.length > 0 && <PieChart
+                series={[
+                  {
+                    data: editRequests.pieData,
+                  },
+                ]}
+                height={230}
+              />}
+            </div>
+          </div>
+        </div>
+    </div> 
+      }
+      </>
+    }
     </>
   )
 }

@@ -179,11 +179,11 @@ function Cuenta() {
   };
 
   const showAlertAnimation = () => {
+    setShowlert(true);
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
-    setShowlert(true);
     setTimeout(() => {
       setShowlert(false);
     }, 7000);

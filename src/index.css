@@ -308,3 +308,10 @@ body {
   line-height: 18px;
   color: #6eac00;
 }
+
+@media screen and (max-width: 525px){
+  .form {
+    padding-bottom: 100px;
+  }
+}
+

@@ -146,7 +146,24 @@ export const entregaBidones = async (values) => {
     throw error;
   }
 };
-
+export const editEntregaBidones = async (values, formId) => {
+  try {
+    const response = await fetch(`${URL_API}/api/entregabidonesedit/${formId}`, {
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...values,
+        businessName: localStorage.getItem('business'),
+        rol: localStorage.getItem('rol'),
+        nombre: localStorage.getItem('userName'),
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
 export const flashIncidente = async (values) => {
   try {
     const response = await fetch(`${URL_API}/api/flashincidente`, {
@@ -450,6 +467,7 @@ export const deleteForm = async (idForm, form) => {
 
 // PARA EDITAR
 export const sendEditApplication = async ({ values, formId, form }) => {
+  form = form === 'controlalergenos' ? 'dietasespeciales' : form
   try {
     const response = await fetch(`${URL_API}/api/${form}/${formId}`, {
       method: 'PUT',

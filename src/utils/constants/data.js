@@ -16,7 +16,7 @@ export const FORMS_TITLES = {
   entregaropa: "Entrega de ropa de trabajo y EPP",
 }
 
-export const FORMS_URLS_ENDPOINTS = ['controlalergenos','entregabidones','flashincidente', 'informeintaccidente',
+export const FORMS_URLS_ENDPOINTS = ['dietasespeciales','entregabidones','flashincidente', 'informeintaccidente',
 'registrocapacitacion', 'registrosimulacro',"registrodecomiso","reporterechazo","verificacionbalanza","verificaciontermometros", "entregaropa"]
 
 const urlMapping = {

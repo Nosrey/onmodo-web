@@ -66,6 +66,7 @@ function FlashReporteIncidente() {
         <h2 style={{ fontSize: '18px', textAlign: 'left', width: '100%', fontWeight: 'bold' }}>
           Planilla Firmada
         </h2>
+        
         {!planillaFile && (
           <h6 style={{ fontSize: '12px' }}>
             Suelta la planilla aquí, o haz clic para seleccionar una.

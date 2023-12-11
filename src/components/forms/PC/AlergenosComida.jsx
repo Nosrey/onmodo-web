@@ -85,6 +85,7 @@ function AlergenosComida() {
   };
   
   const convertirFilesABase64 = async (files) => {
+
     try {
       const base64Array = await Promise.all(files.map(async (fileObject) => {
         const path = fileObject ?  fileObject.path : 'archivo';
@@ -127,7 +128,7 @@ function AlergenosComida() {
           setTextAlert('¡Formulario cargado exitosamente!');
           setTypeAlert('success');
            // limpiar fomr
-        // window.location.href = window.location.href;
+        window.location.href = window.location.href;
         }
       })
       .catch((resp) => {
@@ -146,6 +147,34 @@ function AlergenosComida() {
       });
   };
   
+  const handleEdit = async () => {
+    const valuesToSend = {...values, inputs: objValues}
+    const arrayFiles = []
+    for (let i = 0; i < objValues.length; i++) {
+      arrayFiles.push(objValues[i].certificado);
+    }
+    const base64Array = await convertirFilesABase64(arrayFiles);
+    valuesToSend.certificados = base64Array
+    if (valuesToSend.certificados === '' || valuesToSend.certificados === null || valuesToSend.certificados.length === 0 ) {
+      delete valuesToSend.certificados;
+  }
+    // editControlAlergenos(valuesToSend, infoPrecargada._id)
+    //   .then((resp) => {
+    //     if (resp.error) {
+    //       setTextAlert('Ocurrió un error');
+    //       setTypeAlert('error');
+    //     } else {
+    //       setTextAlert('¡Formulario editado exitosamente!');
+    //       setTypeAlert('success');
+    //       navigate('/formularios-cargados/controlalergenos');
+    //     }
+    //   })
+    //   .catch((resp) => {
+    //     setTextAlert('Ocurrió un error');
+    //     setTypeAlert('error');
+    //   })
+  };
+  
   const DropCertificado = ({index, input}) => {
     const onDrop = (acceptedFiles) => {
         // Solo permitir un archivo, puedes ajustar según tus necesidades
@@ -158,6 +187,34 @@ function AlergenosComida() {
     const { getRootProps, getInputProps } = useDropzone({ onDrop });    
 
     return (
+      <>
+       {currentStatus === 'view'  && 
+        <div className='campoFileRow'>
+          
+          {console.log(infoPrecargada.certificados[index])}
+        {currentStatus === "view" && typeof infoPrecargada.certificados[index] === 'string'
+          && 
+            <a className='linkFileRow' href={infoPrecargada.certificados[index]} target="_blank" rel="noopener noreferrer">
+                Ver Certificado
+            </a>
+          }
+        {currentStatus === "view" && !infoPrecargada.certificados[index]
+          && 
+            <a className='linkFileRowNoArcchivo'  target="_blank" rel="noopener noreferrer">
+              No se ha cargado Certificado 
+
+            </a>
+          }
+        </div>
+       }
+ {currentStatus !== 'view'  &&
+      <>
+       {currentStatus === "edit" && typeof infoPrecargada.certificados[index] === 'string'
+          && 
+            <a className='linkFileRow' href={infoPrecargada.certificados[index]} target="_blank" rel="noopener noreferrer">
+                Ver Certificado
+            </a>
+          }
         <div {...getRootProps()} className={styles.border}>
         <input {...getInputProps()} />
         {!input.certificado && (
@@ -170,13 +227,23 @@ function AlergenosComida() {
             style={{ fontSize: '12px', width: '100%' }}
             className={styles.select}
           >
+            {input.certificado.name ?
+            <>
             Archivo seleccionado:{' '}
             <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
-              {input.certificado.name.substring(0, 25)}
-            </span>{' '}
+              input.certificado.name.substring(0, 25) 
+            </span>{' '}</>
+            :
+            <>Click para modificar el archivo</>
+            }
           </h6>
         )}
       </div>
+      </>
+  }
+  
+      </>
+       
     )
   }
 
@@ -187,6 +254,11 @@ function AlergenosComida() {
           <div className='form'>
             <div className='titleContainer'>
               <h3 className='title'>Control de comensales con dietas especiales</h3>
+              { (currentStatus === 'view' || currentStatus === 'edit') &&
+                        <span style={{marginLeft:'20px', fontSize:'20px'}}>
+                            <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
+                        </span>
+                    }
             </div>
             <div className={styles.personal}>
               <TextField
@@ -312,19 +384,28 @@ function AlergenosComida() {
                   ))}
               </div>
             </div>
-           
-          
             {
-              (currentStatus === 'edit' || infoPrecargada === undefined) &&
+              (infoPrecargada === undefined) &&
               <div className='btn'>
-                <Button
-                  onClick={handleSubmit}
-                  variant='contained'
-                >
-                  Guardar
-                </Button>
+                  <Button
+                      onClick={handleSubmit}
+                      variant='contained'
+                  >
+                      Guardar
+                  </Button>
               </div>
-            }
+          }
+          {
+              (currentStatus === 'edit' ) &&
+              <div className='btn'>
+                  <Button
+                      onClick={handleEdit}
+                      variant='contained'
+                  >
+                      Editar
+                  </Button>
+              </div>
+          }
        
           </div>
         </div>
