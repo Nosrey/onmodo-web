@@ -221,6 +221,7 @@ export const editFlashIncidente = async (values, formId) => {
 };
 export const informeIntAccidente = async (values) => {
   try {
+    console.log('values: ', values)
     const formData = new FormData();
     for (const key in values) {
       if (Array.isArray(values[key])) {
@@ -237,6 +238,34 @@ export const informeIntAccidente = async (values) => {
 
     const response = await fetch(`${URL_API}/api/informeintaccidente`, {
       method: 'POST',
+      body: formData,
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
+
+export const informeIntAccidenteEdit = async (values, id) => {
+  try {
+    const formData = new FormData();
+    for (const key in values) {
+      if (Array.isArray(values[key])) {
+        formData.append(key, JSON.stringify(values[key]));
+      } else {
+        formData.append(key, values[key]);
+      }
+    }
+
+    formData.append('businessName', localStorage.getItem('business'));
+    formData.append('rol', localStorage.getItem('rol'));
+    formData.append('nombre', localStorage.getItem('userName'));
+
+
+    const response = await fetch(`${URL_API}/api/informeintaccidenteedit/${id}`, {
+      method: 'PUT',
       body: formData,
     });
     const data = await response.json();
