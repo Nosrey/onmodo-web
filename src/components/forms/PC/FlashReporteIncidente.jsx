@@ -6,11 +6,12 @@ import Alert from '../../shared/components/Alert/Alert';
 import { editFlashIncidente, flashIncidente } from '../../../services/FormsRequest';
 import { useLocation, useNavigate } from 'react-router';
 
+
 function FlashReporteIncidente() {
   const location = useLocation();
   const navigate = useNavigate();
   const infoPrecargada = location.state?.objeto;
-  const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
+  const currentStatus = location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
   const [textAlert, setTextAlert] = useState('');
   const [typeAlert, setTypeAlert] = useState('');
   const [showAlert, setShowlert] = useState(false);
@@ -45,7 +46,7 @@ function FlashReporteIncidente() {
         <h2 style={{ fontSize: '18px', textAlign: 'left', width: '100%', fontWeight: 'bold' }}>
           Fotografias
         </h2>
-        <h6 style={{ fontSize: '14px', textAlign: 'left', width: '100%' }}>
+        <h6 style={{ fontSize: '14px', textAlign: 'left', width: '100%', display: (infoPrecargada?.fotografias?.length && blobUrls && currentStatus === 'view' ? 'none' : 'flex') }}>
           Arrastra y suelta las fotografias aquí o hace clic para seleccionar archivos.
         </h6>
       </div>
@@ -57,31 +58,116 @@ function FlashReporteIncidente() {
       onDrop: (acceptedFiles) => {
         const file = acceptedFiles[0];
         setPlanillaFile(file);
+        console.log('entered')
         setValues({ ...values, planilla: file });
       },
     });
-    return (
-      <div {...getRootProps()} className={styles.border}>
-        <input {...getInputProps()} />
-        <h2 style={{ fontSize: '18px', textAlign: 'left', width: '100%', fontWeight: 'bold' }}>
-          Planilla Firmada
-        </h2>
-        
-        {!planillaFile && (
-          <h6 style={{ fontSize: '12px' }}>
-            Suelta la planilla aquí, o haz clic para seleccionar una.
-          </h6>
-        )}
-        {planillaFile && (
-          <h6 style={{ fontSize: '12px', width: '100%' }} className={styles.select}>
-            Archivo seleccionado:{' '}
-            <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
-              {planillaFile.name.substring(0, 25)}
-            </span>{' '}
-          </h6>
-        )}
-      </div>
-    );
+    if (currentStatus === 'view') {
+      return (
+        <div className={styles.border}>
+
+          <h2 style={{ fontSize: '18px', textAlign: 'left', width: '100%', fontWeight: 'bold' }}>
+            Planilla Firmada
+          </h2>
+
+          {values?.planilla && (
+            <h6>
+              {typeof values?.planilla === 'string' &&
+                <a href={values?.planilla} target="_blank" rel="noopener noreferrer" download> Descargar Archivo</a>}
+            </h6>
+          )}
+
+          {!values?.planilla && (
+            <h6 style={{ fontSize: '12px' }}>
+              No se ha cargado la planilla firmada.
+            </h6>
+          )}
+          {values?.planilla && (
+            // pongo la imagen de la planilla firmada
+            <img
+              src={values?.planilla}
+              alt={`Preview-Planilla`}
+              className={styles.previewImage}
+              style={{
+                width: '50%',
+                height: '50%',
+                objectFit: 'contain',
+                objectPosition: 'center',
+                marginVertical: '10px',
+              }}
+            />
+          )}
+        </div>
+      );
+    } else if (currentStatus === 'edit') {
+      return (
+        <div {...getRootProps()} className={styles.border}>
+          <input {...getInputProps()} />
+          <h2 style={{ fontSize: '18px', textAlign: 'left', width: '100%', fontWeight: 'bold' }}>
+            Planilla Firmada
+          </h2>
+
+          {!values.planilla && (
+            <h6 style={{ fontSize: '12px' }}>
+              Suelta la planilla aquí, o haz clic para seleccionar una.
+            </h6>
+          )}
+          {values.planilla && (
+            <>
+              <h6 style={{ fontSize: '12px', width: '100%', textAlign: 'center' }} className={styles.select}>
+                Archivo seleccionado
+              </h6>
+
+              {(!planillaFile?.path) ? (
+                <img
+                  id='aa2b3c4d5e6f7g8h9i11'
+                  src={values?.planilla}
+                  alt={`Preview-Planilla`}
+                  className={styles.previewImage}
+                  style={{
+                    width: '25%',
+                    height: '25%',
+                    objectFit: 'contain',
+                    objectPosition: 'center',
+                    marginVertical: '10px',
+                  }}
+                />
+              )
+                : (
+                  <h3 style={{ fontSize: '14px', textAlign: 'center', width: '100%', fontWeight: 'bold' }}>
+                    {planillaFile.name.substring(0, 25)}
+                  </h3>
+                )}
+
+            </>
+          )}
+        </div>
+      );
+    }
+    else {
+      return (
+        <div {...getRootProps()} className={styles.border}>
+          <input {...getInputProps()} />
+          <h2 style={{ fontSize: '18px', textAlign: 'left', width: '100%', fontWeight: 'bold' }}>
+            Planilla Firmada
+          </h2>
+
+          {!planillaFile && (
+            <h6 style={{ fontSize: '12px' }}>
+              Suelta la planilla aquí, o haz clic para seleccionar una.
+            </h6>
+          )}
+          {planillaFile && (
+            <h6 style={{ fontSize: '12px', width: '100%' }} className={styles.select}>
+              Archivo seleccionado:{' '}
+              <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
+                {planillaFile.name.substring(0, 25)}
+              </span>{' '}
+            </h6>
+          )}
+        </div>
+      )
+    }
   };
 
   const getBase64 = (file) => {
@@ -95,23 +181,23 @@ function FlashReporteIncidente() {
       };
     });
   };
-  
+
   const convertirFilesABase64 = async (files) => {
     try {
       const base64Array = await Promise.all(files.map(async (fileObject) => {
         const path = fileObject.path;
         const file = fileObject /* Obtener el archivo, por ejemplo, mediante una llamada a la API o desde algún otro lugar */;
-  
+
         if (file) {
           const base64String = await getBase64(file);
-          return  base64String ;
+          return base64String;
         } else {
           // Manejar el caso en que el archivo no se pueda encontrar o cargar
           console.warn(`No se pudo cargar el archivo para ${path}`);
-          return   null ;
+          return null;
         }
       }));
-  
+
       return base64Array;
     } catch (error) {
       console.error('Error al convertir files a Base64:', error);
@@ -120,14 +206,14 @@ function FlashReporteIncidente() {
   };
   const convertirFileABase64 = async (file) => {
     const base64String = await getBase64(file);
-    return  base64String ;
+    return base64String;
   };
 
-  const handleSubmit = async  () => {
+  const handleSubmit = async () => {
     const copy = [...values.fotografias]
     const base64Array = await convertirFilesABase64(copy);
     values.fotografias = base64Array
-    
+
     // si no se han cargado files , no se envia la propiedad directamente 
     if (values.planilla === '' || values.planilla === undefined) {
       delete values.planilla;
@@ -135,8 +221,8 @@ function FlashReporteIncidente() {
       values.planilla = await convertirFileABase64(values.planilla);
     }
 
-    if (values.fotografias === '' || values.fotografias === undefined|| values.fotografias.length === 0 ) {
-        delete values.fotografias;
+    if (values.fotografias === '' || values.fotografias === undefined || values.fotografias.length === 0) {
+      delete values.fotografias;
     }
 
     flashIncidente(values)
@@ -176,11 +262,11 @@ function FlashReporteIncidente() {
       });
   };
 
-  const handleEdit = async  () => {
+  const handleEdit = async () => {
     const copy = [...values.fotografias]
     const base64Array = await convertirFilesABase64(copy);
     values.fotografias = base64Array
-    
+
     // si no se han cargado files , no se envia la propiedad directamente 
     if (values.planilla === '' || values.planilla === undefined) {
       delete values.planilla;
@@ -188,11 +274,11 @@ function FlashReporteIncidente() {
       values.planilla = await convertirFileABase64(values.planilla);
     }
 
-    if (values.fotografias === '' || values.fotografias === undefined|| values.fotografias.length === 0 ) {
-        delete values.fotografias;
+    if (values.fotografias === '' || values.fotografias === undefined || values.fotografias.length === 0) {
+      delete values.fotografias;
     }
 
-    editFlashIncidente(values,  infoPrecargada._id)
+    editFlashIncidente(values, infoPrecargada._id)
       .then((resp) => {
         setTextAlert('¡Formulario editado exitosamente!');
         setTypeAlert('success');
@@ -207,6 +293,7 @@ function FlashReporteIncidente() {
 
   useEffect(() => {
     if (infoPrecargada) {
+      console.log('infoPrecargada', infoPrecargada)
       setValues({
         fecha: infoPrecargada.fecha,
         hora: infoPrecargada.hora,
@@ -244,11 +331,11 @@ function FlashReporteIncidente() {
           <div className='form'>
             <div className='titleContainer'>
               <h3 className='title'>Flash Reporte de Incidente</h3>
-              { (currentStatus === 'view' || currentStatus === 'edit') &&
-                        <span style={{marginLeft:'20px', fontSize:'20px'}}>
-                            <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
-                        </span>
-                    }
+              {(currentStatus === 'view' || currentStatus === 'edit') &&
+                <span style={{ marginLeft: '20px', fontSize: '20px' }}>
+                  <i className={currentStatus === 'view' ? 'ri-eye-line' : 'ri-pencil-line'}></i>
+                </span>
+              }
             </div>
 
             <div className={styles.personal}>
@@ -339,17 +426,32 @@ function FlashReporteIncidente() {
               </div>
               {/* Área de dropzone */}
               <div className={styles.border}>
-                <PhotoFile />
+                {
+                  (currentStatus === 'view') ?
+                    <h2 style={{ fontSize: '18px', textAlign: 'left', width: '100%', fontWeight: 'bold' }}>Fotografia</h2>
+                    :
+                    <PhotoFile />
+                }
                 <div style={{ display: 'flex', width: '100%' }}>
-                  {/* Previsualización de imágenes */}
-                  {blobUrls.map((url, index) => (
+                  { }
+                  {(blobUrls.length > 0) ? (
                     <img
-                      key={index}
-                      src={url}
-                      alt={`Preview-${index}`}
+                      key={0}
+                      src={blobUrls[0]}
+                      alt={`Preview-${0}`}
                       className={styles.previewImage}
                     />
-                  ))}
+                  ) : (
+                    values.fotografias.map((file, index) => (
+                      <img
+                        key={index}
+                        src={file}
+                        alt={`Preview-${index}`}
+                        className={styles.previewImage}
+                      />
+                    ))
+                  )}
+
                 </div>
               </div>
             </div>
@@ -383,26 +485,26 @@ function FlashReporteIncidente() {
             </div>
 
             {
-                (infoPrecargada === undefined) &&
-                <div className='btn'>
-                    <Button
-                        onClick={handleSubmit}
-                        variant='contained'
-                    >
-                        Guardar
-                    </Button>
-                </div>
+              (infoPrecargada === undefined) &&
+              <div className='btn'>
+                <Button
+                  onClick={handleSubmit}
+                  variant='contained'
+                >
+                  Guardar
+                </Button>
+              </div>
             }
             {
-                (currentStatus === 'edit' ) &&
-                <div className='btn'>
-                    <Button
-                        onClick={handleEdit}
-                        variant='contained'
-                    >
-                        Editar
-                    </Button>
-                </div>
+              (currentStatus === 'edit') &&
+              <div className='btn'>
+                <Button
+                  onClick={handleEdit}
+                  variant='contained'
+                >
+                  Editar
+                </Button>
+              </div>
             }
           </div>
         </div>
