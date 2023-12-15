@@ -7,6 +7,7 @@ import Alert from '../../shared/components/Alert/Alert';
 import { editEntregaRopa, entregaRopa, sendEditApplication } from '../../../services/FormsRequest';
 import { v4 as uuidv4 } from 'uuid';
 import { useLocation , useNavigate} from 'react-router-dom';
+import { useDropzone } from 'react-dropzone';
 
 function ConstanciaEntrega() {
     const location = useLocation();
@@ -60,6 +61,13 @@ function ConstanciaEntrega() {
         check5: false,
         check6: false
     })
+
+    const onDrop = (acceptedFiles) => {
+        // Solo toma el primer archivo si hay varios
+        setValues({ ...values, firma: acceptedFiles[0] });
+    };
+
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
     const [trigger, setTrigger] = useState(false)
     useEffect(() => {
@@ -153,6 +161,9 @@ function ConstanciaEntrega() {
         
         let objetoFinal = { ...values, inputs: replicaValues, checkboxes: checkboxes }
 
+        if (objetoFinal.firma === '' || objetoFinal.firma === undefined || objetoFinal.firma === null) {
+            delete objetoFinal.firma;
+        }
         entregaRopa(objetoFinal).then((resp) => {
             if (resp.error) {
                 setTextAlert('Ocurrió un error');
@@ -602,6 +613,58 @@ function ConstanciaEntrega() {
                         disabled={currentStatus === 'view'}
                         />
                     </div>
+
+                    <div className={styles.responsableCont}>
+                    <div className={styles.subtitleCont}>
+                        <p className={styles.subtitle}>Firmas</p>
+                    </div>
+
+                    {(currentStatus === 'view' || currentStatus === 'edit') ?
+                        <>
+                            {
+                                currentStatus === 'edit' &&
+                                <div className={styles.border} {...getRootProps()}>
+                                    <input {...getInputProps()} />
+                                    {values.firma ? (
+                                        <h6>{typeof values?.firma === 'string' ? 'Editar Archivo' : `Archivo cargado:  ${values.firma.name}`}</h6>
+
+                                    ) : (
+                                        <h6>Arrastra y suelta o haz clic para adjuntar documento</h6>
+                                    )}
+                                </div>
+                            }
+                            <div style={{ marginTop: '10px' }} >
+                                {values?.firma ?
+                                    <h6>
+                                        {typeof values?.firma === 'string' && <a href={values?.firma} target="_blank" rel="noopener noreferrer"> Descargar Archivo</a>}
+                                    </h6>
+                                    :
+                                    <h6>No se han cargado documentos.</h6>
+                                }
+                            </div>
+                            {
+                                typeof values?.firma === 'string' && // ste seria el caso en que tengo la url de amazon
+                                <a href={values?.firma} target="_blank" rel="noopener noreferrer">
+                                    <img src={values?.firma} alt="planilla" srcSet="" style={{ marginTop: '30px', width: 'fit-content', maxWidth: '60%', minWidth: '250px' }} />
+                                </a>
+                            }
+
+                        </>
+                        :
+                        <>
+                            <p>Una vez guardada esta planilla, es necesario imprimirla desde la sección Formularios Cargados para ser firmada por las personas involucradas. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado.</p>
+                            <div className={styles.border} {...getRootProps()}>
+                                <input {...getInputProps()} />
+                                {values.firma ? (
+                                    <h6>Archivo cargado: {values.firma.name}</h6>
+                                ) : (
+                                    <h6>Arrastra y suelta o haz clic para adjuntar documento</h6>
+                                )}
+                            </div>
+                        </>
+                    }
+
+                </div>
 
                     {
                             (infoPrecargada === undefined) &&
