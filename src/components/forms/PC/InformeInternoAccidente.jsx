@@ -596,6 +596,9 @@ function InformeInternoAccidente() {
                                     <Select
                                         labelId="select-label-1"
                                         id="select-1"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                          }}
                                         value={values.checkboxesAccidente[0]?.check ? 'SI' : 'NO'}
                                         onChange={(e) => { checkboxValuesConstructor('¿Era su trabajo habitual?', e.target.value === "SI" ? true : false) }}
                                     >
