@@ -160,9 +160,9 @@ function ControlEquiposDeFrio() {
                         label="turno"
                         onChange={handleChangeTurno}
                         >
-                        <MenuItem value={"tm"}>Turno Mañana</MenuItem>
-                        <MenuItem value={"tt"}>Turno Tarde</MenuItem>
-                        <MenuItem value={"tn"}>Turno Noche</MenuItem>
+                        <MenuItem value={"Turno Mañana"}>Turno Mañana</MenuItem>
+                        <MenuItem value={"Turno Tarde"}>Turno Tarde</MenuItem>
+                        <MenuItem value={"Turno Noche"}>Turno Noche</MenuItem>
                         </Select>
                     </FormControl>
                </div>

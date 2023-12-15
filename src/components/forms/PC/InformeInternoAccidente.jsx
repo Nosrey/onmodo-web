@@ -53,10 +53,6 @@ function InformeInternoAccidente() {
     var idUser = localStorage.getItem("idUser");
     const [values, setValues] = useState()
     const [checkboxesValues] = useState([
-        { label: "CDR", check: false },
-        { label: "CMS", check: false },
-        { label: "Laboral", check: false },
-        { label: "In Itinere", check: false },
         { label: "Se adjunta denuncia policial", check: false },
     ])
     const [checkboxesAccidenteValues, setCheckboxesAccidenteValues] = useState(
@@ -81,25 +77,8 @@ function InformeInternoAccidente() {
 
 
     const checkboxValuesConstructor = (label, value) => {
-        console.log('values', values)
-        if (label === 'CDR') {
+         if (label === "Se adjunta denuncia policial") {
             checkboxesValues[0].check = value
-            setValues({ ...values, checkboxes: checkboxesValues })
-        }
-        else if (label === "CMS") {
-            checkboxesValues[1].check = value
-            setValues({ ...values, checkboxes: checkboxesValues })
-        }
-        else if (label === "Laboral") {
-            checkboxesValues[2].check = value
-            setValues({ ...values, checkboxes: checkboxesValues })
-        }
-        else if (label === "In Itinere") {
-            checkboxesValues[3].check = value
-            setValues({ ...values, checkboxes: checkboxesValues })
-        }
-        else if (label === "Se adjunta denuncia policial") {
-            checkboxesValues[4].check = value
             setValues({ ...values, checkboxes: checkboxesValues })
 
         }
@@ -495,15 +474,29 @@ function InformeInternoAccidente() {
                                 value={values.fecha}
                                 name="fecha"
                             />
-                            <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} value={values.tipo} id="outlined-basic" label="Tipo de accidente" variant="outlined" />
-
+                            {/* <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} value={values.tipo} id="outlined-basic" label="Tipo de accidente" variant="outlined" /> */}
+                            <FormControl disabled={currentStatus === 'view'} style={{  width: "20%" }}>
+                                    <InputLabel id="select-label-1">Tipo de accidente</InputLabel>
+                                    <Select
+                                        labelId="select-label-1"
+                                        id="select-1"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                          }}
+                                        onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }}
+                                        value={values.tipo} 
+                                    >
+                                        <MenuItem value={'Laboral'}>Laboral</MenuItem>
+                                        <MenuItem value={'In itinere'}>In itinere</MenuItem>
+                                    </Select>
+                                </FormControl>
                         </div>
 
                         <div className={styles.personal}>
-                            <FormControlLabel checked={values.checkboxes[0]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CDR', e.target.checked) }} />} label="CDR" />
+                            {/* <FormControlLabel checked={values.checkboxes[0]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CDR', e.target.checked) }} />} label="CDR" />
                             <FormControlLabel checked={values.checkboxes[1]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CMS', e.target.checked) }} />} label="CMS" />
                             <FormControlLabel checked={values.checkboxes[2]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Laboral', e.target.checked) }} />} label="Laboral" />
-                            <FormControlLabel checked={values.checkboxes[3]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('In Itinere', e.target.checked) }} />} label="In Itinere" />
+                            <FormControlLabel checked={values.checkboxes[3]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('In Itinere', e.target.checked) }} />} label="In Itinere" /> */}
                             <FormControlLabel checked={values.checkboxes[4]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Se adjunta denuncia policial', e.target.checked); setFiles(e.target.checked) }} />} label="Se adjunta denuncia policial" />
                             {files ? (
                                 currentStatus === 'view' ?
@@ -525,7 +518,6 @@ function InformeInternoAccidente() {
                                 null
                             }
 
-                            )
                         </div>
 
 
@@ -664,9 +656,9 @@ function InformeInternoAccidente() {
 
 
                                 <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
-                                    <InputLabel id="select-label-condition">
+                                    <label className={styles.label} id="select-label-condition">
                                         ¿Hubo alguna acción o condición insegura que fuera la causante del accidente?
-                                    </InputLabel>
+                                    </label>
                                     <Select
                                         labelId="select-label-condition"
                                         id="select-condition"

@@ -308,6 +308,7 @@ const obtenerBase64ParaArchivo = async (value, propiedad) => {
                             InputLabelProps={{
                               shrink: true,
                             }}
+                            label="Fecha"
                             onChange={(e) => {
                               let replicaCopy = [...replicaValues];
                               replicaCopy[index].fecha = e.target.value;
