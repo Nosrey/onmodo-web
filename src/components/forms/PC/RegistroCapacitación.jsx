@@ -306,6 +306,7 @@ function RegistroCapacitacion() {
                     <TextField
                         onChange={(e) => { setValues({ ...values, tiempoDuracion: e.target.value }); }}
                         type="time"
+                        label="Hora"
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -427,6 +428,7 @@ function RegistroCapacitacion() {
                                                 id={`input-${input.id}-${index}`}
                                                 name={input.prop}
                                                 label={`${input.label}`}
+                                                className='input'
                                                 variant="outlined"
                                                 InputLabelProps={{
                                                     shrink: true,
