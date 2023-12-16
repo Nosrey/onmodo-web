@@ -63,11 +63,16 @@
     display: flex;
     gap: 16px;
     margin: 16px 0;
-    justify-content: center;
+    /* justify-content: center; */
+    align-items: center;
+}
+.inputRowCheck {
+    display: flex;
+    gap: 16px;
     align-items: center;
 }
 
-.inputRow p {
+.inputRowCheck p {
     width: 200px;
 }
 
@@ -84,3 +89,17 @@
     color: black;
     text-align: left;
 }
+
+@media screen and (max-width: 525px){
+    .personal {
+        flex-direction: column;
+    }
+    .inputRow {
+       flex-direction: column;
+       align-items: unset;
+       margin-bottom: 25px;
+    }
+    .inputRow p {
+        width: 100%;
+     }
+  }
