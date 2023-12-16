@@ -27,7 +27,6 @@ function ConstanciaEntrega() {
 
     const [showTextField, setShowTextField] = useState(false);
     const [values, setValues] = useState({
-        nombre: "",
         contrato: "",
         dni: "",
         direcciosetObjValuesn: "",
@@ -83,7 +82,7 @@ function ConstanciaEntrega() {
     }, [inputValues, check])
 
     useEffect(() => {
-        if ((values?.nombre !== "" && values?.contrato !== "" && values?.dni !== "" && values?.direccion !== "" && values?.localidad !== "" && values?.cp !== "" && values?.provincia !== "" && values?.descripcion !== "")) {
+        if (( values?.contrato !== "" && values?.dni !== "" && values?.direccion !== "" && values?.localidad !== "" && values?.cp !== "" && values?.provincia !== "" && values?.descripcion !== "")) {
             let confirmado = false
             for (let i = 0; i < replicaValues.length; i++) {
                 if (replicaValues[i]?.["Tipo / modelo"]?.length && replicaValues[i]?.["Producto"]?.length && replicaValues[i]?.["Posee certificacion"]?.length && replicaValues[i]?.["Marca"]?.length && replicaValues[i]?.["Cantidad"]?.length && replicaValues[i]?.["fecha"]?.length) {
@@ -172,7 +171,7 @@ function ConstanciaEntrega() {
                 setTextAlert('¡Formulario cargado exitosamente!');
                 setTypeAlert('success');
                  // limpiar fomr
-              window.location.href = window.location.href;
+            //   window.location.href = window.location.href;
               }
         }).catch((resp) => {
             setTextAlert("Ocurrió un error")
@@ -583,6 +582,7 @@ function ConstanciaEntrega() {
                                                 id={`input-${input.id}-${index}`}
                                                 name={`input-${input.id}-${index}`}
                                                 disabled={currentStatus === 'view'}
+                                                label='Fecha'
                                             />
                                         </div>
 

@@ -182,6 +182,7 @@ const obtenerBase64ParaArchivo = async (value, propiedad) => {
   }
  
 };
+
   const handleSubmit = async () => {
     const propiedades = ['transporte', 'disposiciónfinal'];
     

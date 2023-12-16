@@ -88,7 +88,6 @@ export const entregaRopa = async (values) => {
     formData.append('businessName', localStorage.getItem('business'));
     formData.append('rol', localStorage.getItem('rol'));
     formData.append('nombre', localStorage.getItem('userName'));
-
     const response = await fetch(`${URL_API}/api/entregaropa`, {
       method: 'POST',
       body: formData,
