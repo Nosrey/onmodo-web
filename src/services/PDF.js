@@ -363,7 +363,7 @@ export const generatePDF = (formulario, form) => {
 
     const pdfContent = [
       { text: 'Formulario ONMODO', style: 'header', alignment: 'center' },
-      { text: 'Informe de Incidente o Accidente', style: 'subheader', alignment: 'center' },
+      { text: 'Informe interno de accidente', style: 'subheader', alignment: 'center' },
       {
         table: {
           widths: ['25%', '25%', '25%', '25%'],

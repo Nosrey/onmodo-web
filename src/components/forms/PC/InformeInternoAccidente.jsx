@@ -459,7 +459,7 @@ function InformeInternoAccidente() {
 
                         <div className={styles.personal}>
 
-                            <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }} value={values.comedor} id="outlined-basic" style={{ width: "50%" }} label="Comedor donde ocurrió" variant="outlined" />
+                            <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }} value={values.comedor} id="outlined-basic" className={styles.campo} label="Comedor" variant="outlined" />
 
                             <TextField
                                 label="Fecha"
@@ -475,10 +475,11 @@ function InformeInternoAccidente() {
                                 name="fecha"
                             />
                             {/* <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} value={values.tipo} id="outlined-basic" label="Tipo de accidente" variant="outlined" /> */}
-                            <FormControl disabled={currentStatus === 'view'} style={{  width: "20%" }}>
+                            <FormControl disabled={currentStatus === 'view'}  className={styles.selectTipo}>
                                     <InputLabel id="select-label-1">Tipo de accidente</InputLabel>
                                     <Select
                                         labelId="select-label-1"
+                                       
                                         id="select-1"
                                         InputLabelProps={{
                                             shrink: true,
@@ -583,7 +584,7 @@ function InformeInternoAccidente() {
                             </div>
 
                             <div className={styles.listContainer}>
-                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} className={styles.selectTipo}  style={{ marginBottom: "1rem", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-1">¿Era su trabajo habitual?</InputLabel>
                                     <Select
                                         labelId="select-label-1"
@@ -599,7 +600,7 @@ function InformeInternoAccidente() {
                                     </Select>
                                 </FormControl>
 
-                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} className={styles.selectTipo} style={{ marginBottom: "1rem", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-2">¿Conocía la tarea asignada?</InputLabel>
                                     <Select
                                         labelId="select-label-2"
@@ -612,8 +613,7 @@ function InformeInternoAccidente() {
                                     </Select>
                                 </FormControl>
 
-
-                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} className={styles.selectTipo} style={{ marginBottom: "1rem", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-machine">
                                         ¿Una máquina le causó la lesión?
                                     </InputLabel>
@@ -644,7 +644,7 @@ function InformeInternoAccidente() {
                                             }
                                             id="outlined-basic"
                                             multiline
-                                            style={{ width: "50%" }}
+                                            className={styles.campo}
                                             rows={2}
                                             name="textField"
                                             variant="outlined"
@@ -655,7 +655,7 @@ function InformeInternoAccidente() {
 
 
 
-                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} className={styles.selectTipo} style={{ marginBottom: "1rem", paddingTop: "0.4rem" }}>
                                     <label className={styles.label} id="select-label-condition">
                                         ¿Hubo alguna acción o condición insegura que fuera la causante del accidente?
                                     </label>
@@ -686,7 +686,7 @@ function InformeInternoAccidente() {
                                             }
                                             id="outlined-basic"
                                             multiline
-                                            style={{ width: "50%" }}
+                                            className={styles.campo}
                                             rows={2}
                                             name="textField"
                                             variant="outlined"
@@ -697,7 +697,7 @@ function InformeInternoAccidente() {
 
 
 
-                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} className={styles.selectTipo} style={{ marginBottom: "1rem", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-epp">
                                         ¿Estaba usando su E.P.P.?
                                     </InputLabel>
@@ -729,7 +729,7 @@ function InformeInternoAccidente() {
                                             }
                                             id="outlined-basic"
                                             multiline
-                                            style={{ width: "50%" }}
+                                            className={styles.campo}
                                             rows={2}
                                             name="textField"
                                             variant="outlined"
@@ -754,7 +754,7 @@ function InformeInternoAccidente() {
                                 />
                             </div>
                             <div className={styles.personalText}>
-
+                                <label className={styles.label}>¿Qué medidas cree conveniente adoptar para evitar futuros accidentes de este tipo?</label>
                                 <TextField
                                     onChange={(e) => { setValues({ ...values, medidas: e.target.value }) }}
                                     fullWidth
