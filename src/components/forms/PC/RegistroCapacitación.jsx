@@ -80,6 +80,7 @@ function RegistroCapacitacion() {
             }
         })
         setAsistentes(newValues)
+        setValues({ ...values, asistentes: newValues })
     };
 
     const checkboxValuesConstructor = (label, value, desc) => {
@@ -240,6 +241,7 @@ function RegistroCapacitacion() {
 
     useEffect(() => {
         if (infoPrecargada) { // muestro un form del historial
+            console.log('infoPrecargada', infoPrecargada)
             setValues({
                 fecha: infoPrecargada.fecha,
                 tiempoDuracion: infoPrecargada.tiempoDuracion,
@@ -254,11 +256,11 @@ function RegistroCapacitacion() {
                 idUser: idUser,
             });
             setObjValues(infoPrecargada.asistentes);
-
+            setAsistentes(infoPrecargada.asistentes.length !== 0 ? infoPrecargada.asistentes : [valorInicialAsistentes]);
         } else { // creo un form desde cero
 
         }
-    }, [location.state?.objeto]);
+    }, []);
 
 
     const onDrop = (acceptedFiles) => {
@@ -408,7 +410,7 @@ function RegistroCapacitacion() {
 
 
 
-                <div className={styles.subtitleCont}>
+                <div className={styles.subtitleCont} onClick={() => console.log('asistentes: ', asistentes)}>
                     <p className={styles.subtitle}>ASISTENTES</p>
                 </div>
                 <div className="table">
@@ -416,7 +418,7 @@ function RegistroCapacitacion() {
                         {asistentes.map((_, index) => (
                             <div className="tableRow" key={index}>
                                 <p className="index">{index + 1} </p>
-                                {inputs.map((input) => (
+                                {inputs.map((input, index2) => (
                                     <div key={input.id}>
                                         {input.label !== "Metodo de Evaluacion" ? (
                                             <TextField
@@ -437,10 +439,10 @@ function RegistroCapacitacion() {
                                                     <InputLabel id={`metodo-evaluacion-label-${index}`}>Método de Evaluación</InputLabel>
                                                     <Select
                                                         disabled={currentStatus === 'view'}
-                                                        labelId={`metodo-evaluacion-label-${index}`}
-                                                        id={`metodo-evaluacion-${index}`}
+                                                        labelId={`metodo-evaluacion-label-${index + index2}`}
+                                                        id={`metodo-evaluacion-${index + index2}`}
                                                         onChange={(e) => handleInputChange(index, e)}
-                                                        value={(currentStatus === 'view' ? infoPrecargada?.asistentes?.[index]?.[input.prop] : values.asistentes[index][input.prop])}
+                                                        value={(currentStatus === 'view' ? infoPrecargada?.asistentes?.[index]?.[input.prop] : asistentes?.[index]?.[input.prop])}
                                                         name={input.prop}
                                                         label="Método de Evaluación"
                                                         InputLabelProps={{

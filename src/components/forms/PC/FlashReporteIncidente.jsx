@@ -434,21 +434,25 @@ function FlashReporteIncidente() {
                 }
                 <div style={{ display: 'flex', width: '100%' }}>
                   { }
-                  {(blobUrls.length > 0) ? (
-                    <img
-                      key={0}
-                      src={blobUrls[0]}
-                      alt={`Preview-${0}`}
-                      className={styles.previewImage}
-                    />
-                  ) : (
-                    values.fotografias.map((file, index) => (
+                  {(blobUrls.length > 0) ? 
+                  // mapeo las imagenes que se cargaron
+                    blobUrls.map((file, index) => (
                       <img
                         key={index}
                         src={file}
                         alt={`Preview-${index}`}
                         className={styles.previewImage}
                       />
+                    ))
+                    : (
+                      values.fotografias.map((file, index) => (
+                        <a key={index} href={file} download={`Preview-${index}`}>
+                          <img
+                            src={file}
+                            alt={`Preview-${index}`}
+                            className={styles.previewImage}
+                          />
+                        </a>
                     ))
                   )}
 

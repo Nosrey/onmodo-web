@@ -354,6 +354,7 @@ export const generatePDF = (formulario, form) => {
       firmaEmpleado,
       encargado,
       date,
+      denuncia,
       nombreapellido,
     } = formulario;
 
@@ -380,18 +381,18 @@ export const generatePDF = (formulario, form) => {
               { text: nombreapellido || '', style: 'value' },
             ],
 
-            [
-              { text: 'CDR:', style: 'label' },
-              { text: 'CMS:', style: 'label' },
-              { text: 'Laboral:', style: 'label' },
-              { text: 'In Itinere:', style: 'label' },
-            ],
-            [
-              { text: checkboxes[0]?.check ? 'Sí' : 'No', style: 'value' },
-              { text: checkboxes[1]?.check ? 'Sí' : 'No', style: 'value' },
-              { text: checkboxes[2]?.check ? 'Sí' : 'No', style: 'value' },
-              { text: checkboxes[3]?.check ? 'Sí' : 'No', style: 'value' },
-            ],
+            // [
+            //   { text: 'CDR:', style: 'label' },
+            //   { text: 'CMS:', style: 'label' },
+            //   { text: 'Laboral:', style: 'label' },
+            //   { text: 'In Itinere:', style: 'label' },
+            // ],
+            // [
+            //   { text: checkboxes[0]?.check ? 'Sí' : 'No', style: 'value' },
+            //   { text: checkboxes[1]?.check ? 'Sí' : 'No', style: 'value' },
+            //   { text: checkboxes[2]?.check ? 'Sí' : 'No', style: 'value' },
+            //   { text: checkboxes[3]?.check ? 'Sí' : 'No', style: 'value' },
+            // ],
 
             [
               { text: 'N° de CUIL:', style: 'label' },
@@ -481,6 +482,22 @@ export const generatePDF = (formulario, form) => {
                   medidas
                   || '', style: 'value'
               },
+            ],
+            [
+              { text: '¿Se adjuntó denuncia policial?:', style: 'label' },
+              { text: '', style: 'label' },
+              { text: '', style: 'label' },
+              { text: '', style: 'label' },
+            ],
+            [
+              {
+                text:
+                  (denuncia ? 'Sí' : 'No')
+                  || '', style: 'value'
+              },
+              { text: '', style: 'label' },
+              { text: '', style: 'label' },
+              { text: '', style: 'label' },
             ],
           ],
         },
