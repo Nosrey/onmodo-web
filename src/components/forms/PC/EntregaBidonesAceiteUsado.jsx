@@ -348,7 +348,7 @@ const obtenerBase64ParaArchivo = async (value, propiedad) => {
                         )}
                       </div>
                     ))}
-                    {infoPrecargada ? (
+                    {currentStatus === 'view' ? (
                       <div></div>
                     ) : (
                       <div className="icon">
