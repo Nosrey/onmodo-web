@@ -52,7 +52,5 @@ const urlMapping = {
     
   };
 export const getUrlForm = (key) => {
-    console.log(key)
-    console.log(urlMapping[key])
     return urlMapping[key];
 }

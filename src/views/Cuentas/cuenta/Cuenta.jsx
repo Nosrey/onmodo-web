@@ -463,7 +463,7 @@ function Cuenta() {
           </div>
         </div>
       )}
-      <footer className={styles.footer}>
+      {/* <footer className={styles.footer}>
         <div className={styles.footerWrapper}>
           <i class='ri-home-5-fill' style={{ color: 'white', fontSize: '24px' }}></i>
           <span style={{ color: 'white' }}>Inicio</span>
@@ -475,7 +475,7 @@ function Cuenta() {
           <i class='ri-user-fill' style={{ color: 'white', fontSize: '24px' }}></i>
           <span style={{ color: 'white', fontWeight: '600' }}>Mi perfil</span>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }

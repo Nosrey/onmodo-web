@@ -70,7 +70,26 @@ function SolicitudesDeEdicion() {
   const [isLoading, setIsLoading] = useState(true);
 
   const goToForm = (form, status) => {
-    navigate(form.url, { state: { objeto: form, status } });
+    console.log('s')
+    // if (form.url === "/registro-de-capacitacion") {
+    //   let form2 = {
+    //     ...form,
+    //     asistentes: JSON.parse(form?.asistentes),
+    //     checkboxes: JSON.parse(form?.checkboxes),
+    //     materialEntregado: JSON.parse(form?.materialEntregado),
+    //     materialExpuesto: JSON.parse(form?.materialExpuesto),
+    //   }
+    //   navigate(form.url, { state: { objeto: form2, status } });
+    // } else if (form.url === "/registro-simulacro") {
+    //   let form2 = {
+    //     ...form,
+    //     personas: JSON.parse(form?.personas),
+    //   }
+    //   navigate(form.url, { state: { objeto: form2, status } });
+    // }
+    // else {
+    //   navigate(form.url, { state: { objeto: form, status } });
+    // }
   };
 
   useEffect(() => {
@@ -130,7 +149,7 @@ function SolicitudesDeEdicion() {
                 user: item.nombre,
                 rol: item.rol,
                 id: item._id,
-                date: item.createdAt,
+                date: item.updatedAt,
                 url: getUrl(key),
                 status: item.status,
                 motivoPeticion: item.motivoPeticion,
@@ -207,8 +226,8 @@ function SolicitudesDeEdicion() {
               <div className={styles.orderContainer}>
                 <span className={styles.spanOrder}>Ordenar por:</span>
                 <select name='' id={styles.select} onChange={(e) => handleOrder(e.target.value)}>
-                  <option value='Más reciente'>Más reciente creado</option>
-                  <option value='Más antiguo'>Más antiguo creado</option>
+                  <option value='Más reciente'>Más reciente solicitado</option>
+                  <option value='Más antiguo'>Más antiguo solicitado</option>
                 </select>
               </div>
               <table className={styles.table}>
@@ -235,8 +254,8 @@ function SolicitudesDeEdicion() {
                 </thead>
                 <tbody>
                   {formularios.map((formulario, index) => {
-                    const createdAtUTC = new Date(formulario.date);
-                    const argentinaTime = new Date(createdAtUTC.getTime());
+                    const updatedAtUTC = new Date(formulario.date);
+                    const argentinaTime = new Date(updatedAtUTC.getTime());
 
                     return (
                       <>

@@ -38,6 +38,7 @@
   padding: 5px 15px;
   outline: none;
   width: 15%;
+  min-width: 160px;
 }
 
 .table {
