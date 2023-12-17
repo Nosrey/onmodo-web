@@ -1,4 +1,4 @@
-import { Button, TextField } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
@@ -241,8 +241,70 @@ function RegistroDeDecomiso() {
                             InputLabelProps={{
                               shrink: true,
                             }}
+                            label="Fecha"
                           />
-                        ) :
+                        ) :(
+
+                          input.label === 'Turno' ? (
+                            <FormControl fullWidth   disabled={currentStatus === 'view'}
+                            >
+                              <InputLabel id="demo-simple-select-label">Turno</InputLabel>
+                              <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                              className='input'
+                              label="turno"
+                              value={
+                                replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
+                              }
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                              onChange={(e) => {
+                                let replicaCopy = [...replicaValues];
+                                replicaCopy[index][
+                                  input.label.toLowerCase().replace(/\s/g, '')
+                                ] = e.target.value;
+                                setReplicaValues(replicaCopy);
+                              }}
+                              >
+                              <MenuItem value={"Turno Mañana"}>Turno Mañana</MenuItem>
+                              <MenuItem value={"Turno Tarde"}>Turno Tarde</MenuItem>
+                              <MenuItem value={"Turno Noche"}>Turno Noche</MenuItem>
+                              </Select>
+                          </FormControl>
+                          ): (
+                            input.label === 'Causa' ? (
+                              <FormControl fullWidth disabled={currentStatus === 'view'}
+                              >
+                                <InputLabel id="demo-simple-select-label">Causa</InputLabel>
+                                <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                className='input'
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                label="causa"
+                                value={
+                                  replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
+                                }
+                                onChange={(e) => {
+                                  let replicaCopy = [...replicaValues];
+                                  replicaCopy[index][
+                                    input.label.toLowerCase().replace(/\s/g, '')
+                                  ] = e.target.value;
+                                  setReplicaValues(replicaCopy);
+                                }}
+                                >
+                                <MenuItem value={"Recall"}>Recall</MenuItem>
+                                <MenuItem value={"Desvíos de Proceso"}>Desvíos de Proceso</MenuItem>
+                                <MenuItem value={"Fuera fecha de vida útil"}>Fuera fecha de vida útil</MenuItem>
+                                <MenuItem value={"Fuera de aptitud"}>Fuera de aptitud</MenuItem>
+                                <MenuItem value={"Otras causas"}>Otras causas</MenuItem>
+                                </Select>
+                            </FormControl>
+                            ): (
                           <TextField
                             id={`input-${input.id}-${index}`}
                             name={`input-${input.id}-${index}`}
@@ -263,7 +325,9 @@ function RegistroDeDecomiso() {
                             InputLabelProps={{
                               shrink: true,
                             }}
-                          />
+                          />)
+                          )
+                          )
                         }
                       </div>
                     ))}

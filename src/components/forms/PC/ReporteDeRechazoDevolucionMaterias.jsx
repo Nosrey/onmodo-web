@@ -399,9 +399,7 @@ function ReporteDeRechazoDevolucionMaterias() {
                         </div>
                         {section[Object.keys(section)].map((value, indexSection) => (
                           <div className={styles.inputRow} key={value.id}>
-                            {console.log("values", values)}
-                            {console.log("info", values?.checksNoConformidades[indexInputs]?.checked)}
-
+                          <div className={styles.inputRowCheck}>
                             <Checkbox
                               onChange={(e) => {
                                 let newValues = { ...values };
@@ -427,6 +425,8 @@ function ReporteDeRechazoDevolucionMaterias() {
                               checked={values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.checked}
                             />
                             <p className={styles.itemText}>{value.label}</p>
+                          </div>
+                            
                             <TextField
                               id={`sectionInput-${value.id}-${index}`}
                               name={`sectionInput-${value.id}-${index}`}
@@ -473,26 +473,29 @@ function ReporteDeRechazoDevolucionMaterias() {
                     <div className={styles.sectionsContainer} key={index}>
                       {secondInputs.map((input, indexInputs) => (
                         <div className={styles.inputRow} key={input.id}>
-                          <Checkbox
-                            label={`${input.label}`}
-                            key={(currentStatus === 'view' ? infoPrecargada?.checksMedidas?.[indexInputs]?.name : values?.checksMedidas?.[indexInputs]?.name)}
-                            checked={values?.checksMedidas?.[indexInputs]?.checked}
-                            disabled={currentStatus === 'view'}
-                            onChange={(e) => {
-                              let newValues = { ...values };
-                              if (newValues.checksMedidas && newValues.checksMedidas[indexInputs]) {
-                                newValues.checksMedidas[indexInputs].checked = e.target.checked;
-                                newValues.checksMedidas[indexInputs].name = secondInputs[indexInputs].label;
-                              } else {
-                                // lo creo entonces
-                                newValues.checksMedidas = newValues.checksMedidas || [];
-                                newValues.checksMedidas[indexInputs] = newValues.checksMedidas[indexInputs] || {};
-                                newValues.checksMedidas[indexInputs].checked = e.target.checked;
-                                newValues.checksMedidas[indexInputs].name = secondInputs[indexInputs].label;
-                              }
-                            }}
-                          />
-                          <p className={styles.itemText}>{input.label}</p>
+                          <div className={styles.inputRowCheck}>
+                            <Checkbox
+                              label={`${input.label}`}
+                              key={(currentStatus === 'view' ? infoPrecargada?.checksMedidas?.[indexInputs]?.name : values?.checksMedidas?.[indexInputs]?.name)}
+                              checked={values?.checksMedidas?.[indexInputs]?.checked}
+                              disabled={currentStatus === 'view'}
+                              onChange={(e) => {
+                                let newValues = { ...values };
+                                if (newValues.checksMedidas && newValues.checksMedidas[indexInputs]) {
+                                  newValues.checksMedidas[indexInputs].checked = e.target.checked;
+                                  newValues.checksMedidas[indexInputs].name = secondInputs[indexInputs].label;
+                                } else {
+                                  // lo creo entonces
+                                  newValues.checksMedidas = newValues.checksMedidas || [];
+                                  newValues.checksMedidas[indexInputs] = newValues.checksMedidas[indexInputs] || {};
+                                  newValues.checksMedidas[indexInputs].checked = e.target.checked;
+                                  newValues.checksMedidas[indexInputs].name = secondInputs[indexInputs].label;
+                                }
+                              }}
+                            />
+                            <p className={styles.itemText}>{input.label}</p>
+                          </div>
+                          
                           <TextField
                             disabled={currentStatus === 'view'}
                             value={values?.checksMedidas?.[indexInputs]?.description}

@@ -298,6 +298,31 @@ function VerificacionTermometros() {
                               </Select>
                             </FormControl>
                           ) : (
+                            input.label === 'Acciones de corrección' ? (
+                              <FormControl variant='outlined'>
+                                <InputLabel>Acciones de corrección</InputLabel>
+                                <Select
+                                  value={replicaValues[index]?.["Acciones de corrección"]}
+                                  onChange={(e) => {
+                                    let replicaCopy = [...replicaValues];
+                                    replicaCopy[index]["Acciones de corrección"] = e.target.value;
+                                    setReplicaValues(replicaCopy);
+                                  }}
+                                  className='input'
+                                  id={`input-${input.id}-${index}`}
+                                  label={`${input.label}`}
+                                  variant='outlined'
+                                  disabled={currentStatus === 'view'}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                >
+                                  <MenuItem value='Calibrar'>Calibrar</MenuItem>
+                                  <MenuItem value='Reemplazar'>Reemplazar</MenuItem>
+
+                                </Select>
+                              </FormControl>
+                            ) : (
                             <TextField
                               // value={
                               //   replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
@@ -320,7 +345,7 @@ function VerificacionTermometros() {
                               id={`input-${input.id}-${index}`}
                               placeholder={`${input.label}`}
                               variant='outlined'
-                            />
+                            />)
                           )}
                         </div>
                       ))}
@@ -374,6 +399,31 @@ function VerificacionTermometros() {
 
                     {inputs2.map((input, index2) => (
                       <div key={replicaValues2[index].id + index2}>
+                         {input.label === 'Acciones de corrección' ? (
+                              <FormControl variant='outlined'>
+                                <InputLabel>Acciones de corrección</InputLabel>
+                                <Select
+                                  value={replicaValues2[index]?.["Acciones de corrección"]}
+                                  onChange={(e) => {
+                                    let replicaCopy = [...replicaValues2];
+                                    replicaCopy[index]["Acciones de corrección"] = e.target.value;
+                                    setReplicaValues2(replicaCopy);
+                                  }}
+                                  className='input'
+                                  id={`input-${input.id}-${index}`}
+                                  label={`${input.label}`}
+                                  variant='outlined'
+                                  disabled={currentStatus === 'view'}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                >
+                                  <MenuItem value='Calibrar'>Calibrar</MenuItem>
+                                  <MenuItem value='Reemplazar'>Reemplazar</MenuItem>
+
+                                </Select>
+                              </FormControl>
+                            ) : (
                         <TextField
                           // value={
                           //   replicaValues2[index][input.label.toLowerCase().replace(/\s/g, '')]
@@ -396,7 +446,8 @@ function VerificacionTermometros() {
                           name={`${input.prop}`}
                           placeholder={`${input.label}`}
                           variant='outlined'
-                        />
+                        />)
+                        }
                       </div>
                     ))}
                    {infoPrecargada && currentStatus === 'view' ? (

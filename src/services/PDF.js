@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import jsPDF from 'jspdf';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -11,7 +12,6 @@ function cambiarFecha(value) {
 }
 
 export const generatePDF = (formulario, form) => {
-  console.log(formulario)
   let pdfContent = [];
 
   if (form == "flashincidente") {
@@ -363,7 +363,7 @@ export const generatePDF = (formulario, form) => {
 
     const pdfContent = [
       { text: 'Formulario ONMODO', style: 'header', alignment: 'center' },
-      { text: 'Informe de Incidente o Accidente', style: 'subheader', alignment: 'center' },
+      { text: 'Informe interno de accidente', style: 'subheader', alignment: 'center' },
       {
         table: {
           widths: ['25%', '25%', '25%', '25%'],
@@ -1263,7 +1263,7 @@ export const generatePDF = (formulario, form) => {
         paddingLeft: 5,
         paddingRight: 5,
         borderRadius: [5, 5, 5, 5],
-        color: 'red'
+        color: 'black'
       },
       table: {
         margin: [0, 5, 0, 5],

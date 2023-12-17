@@ -313,5 +313,8 @@ body {
   .form {
     padding-bottom: 100px;
   }
+  .titleContainer {
+    height: 55px
+  }
 }
 

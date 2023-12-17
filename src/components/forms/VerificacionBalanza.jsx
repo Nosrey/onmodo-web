@@ -309,6 +309,29 @@ function VerificacionBalanza() {
                             </Select>
                           </FormControl>
                         ) : (
+                          input.label === 'Acciones de corrección' ? (
+                            <FormControl variant='outlined'>
+                              <InputLabel>Acciones de corrección</InputLabel>
+                              <Select
+                                value={replicaValues[index]?.["Acciones de corrección"]}
+                                onChange={(e) => {
+                                  let replicaCopy = [...replicaValues];
+                                  replicaCopy[index]["Acciones de corrección"] = e.target.value;
+                                  setReplicaValues(replicaCopy);
+                                }}
+                                className='input'
+                                id={`input-${input.id}-${index}`}
+                                label={`${input.label}`}
+                                variant='outlined'
+                                disabled={currentStatus === 'view'}
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                              >
+                                <MenuItem value='Enviar a calibrar'>Enviar a calibrar</MenuItem>
+                              </Select>
+                            </FormControl>
+                          ) : (
                           <TextField
                             className='input'
                             id={`input-${input.id}-${index}`}
@@ -329,7 +352,7 @@ function VerificacionBalanza() {
                               ] = e.target.value;
                               setReplicaValues(replicaCopy);
                             }}
-                          />
+                          />)
                         )}
                       </div>
                     ))}

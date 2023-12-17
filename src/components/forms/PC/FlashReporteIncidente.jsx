@@ -1,4 +1,4 @@
-import { Button, TextField, Grid } from '@mui/material';
+import { Button, TextField, Grid, Select, InputLabel, FormControl, MenuItem } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styles from './FlashReporteIncidente.module.css';
@@ -189,8 +189,13 @@ function FlashReporteIncidente() {
         const file = fileObject /* Obtener el archivo, por ejemplo, mediante una llamada a la API o desde algún otro lugar */;
 
         if (file) {
-          const base64String = await getBase64(file);
-          return base64String;
+          if (typeof file === 'string') {
+            return file;
+          } else {
+            const base64String = await getBase64(file);
+            return base64String;
+          }
+          
         } else {
           // Manejar el caso en que el archivo no se pueda encontrar o cargar
           console.warn(`No se pudo cargar el archivo para ${path}`);
@@ -205,8 +210,19 @@ function FlashReporteIncidente() {
     }
   };
   const convertirFileABase64 = async (file) => {
-    const base64String = await getBase64(file);
-    return base64String;
+    if (file) {
+      if (typeof file === 'string') {
+        console.log("es un string")
+        return file;
+      } else { 
+        const base64String = await getBase64(file);
+        return base64String;
+      }
+    } else {
+      return null
+    }
+    
+    
   };
 
   const handleSubmit = async () => {
@@ -341,6 +357,10 @@ function FlashReporteIncidente() {
             <div className={styles.personal}>
               <TextField
                 type='date'
+                label='Fecha'
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 onChange={(e) => {
                   setValues({ ...values, fecha: e.target.value });
                 }}
@@ -349,8 +369,12 @@ function FlashReporteIncidente() {
               />
               <TextField
                 type='time'
+                label='Hora'
                 onChange={(e) => {
                   setValues({ ...values, hora: e.target.value });
+                }}
+                InputLabelProps={{
+                  shrink: true,
                 }}
                 value={values.hora}
                 disabled={currentStatus === 'view'}
@@ -378,16 +402,23 @@ function FlashReporteIncidente() {
                 label='Responsable del contrato'
                 variant='outlined'
               />
-              <TextField
-                onChange={(e) => {
-                  setValues({ ...values, incidentePotencial: e.target.value });
-                }}
-                disabled={currentStatus === 'view'}
-                value={values.incidentePotencial}
-                id='outlined-basic'
-                label='Incidente Potencial/Real'
-                variant='outlined'
-              />
+              <FormControl disabled={currentStatus === 'view'} style={{  width: "20%" }}>
+                  <InputLabel id="select-label-1">Incidente</InputLabel>
+                  <Select
+                      labelId="select-label-1"
+                      id="select-1"
+                      className={styles.selectTipo}
+                      value={values.incidentePotencial}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onChange={(e) => {
+                        setValues({ ...values, incidentePotencial: e.target.value });
+                      }}                  >
+                      <MenuItem value={'Potencial'}>Potencial</MenuItem>
+                      <MenuItem value={'Real'}>Real</MenuItem>
+                  </Select>
+              </FormControl>
             </div>
 
             <div className={styles.personalText}>
@@ -408,7 +439,7 @@ function FlashReporteIncidente() {
               <div className={styles.descripcion}>
                 <TextField
                   fullWidth
-                  style={{ width: '450px' }}
+                  className={styles.descipcionArea}
                   id='outlined-multiline-static'
                   label='Descripción del Incidente'
                   multiline
@@ -446,7 +477,7 @@ function FlashReporteIncidente() {
                     ))
                     : (
                       values.fotografias.map((file, index) => (
-                        <a key={index} href={file} download={`Preview-${index}`}>
+                        <a key={index} href={file} target="_blank"  download={`Preview-${index}`}>
                           <img
                             src={file}
                             alt={`Preview-${index}`}

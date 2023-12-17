@@ -50,4 +50,25 @@
     padding: 5px;
     padding-inline: 15px;
 }
-
+.descipcionArea {
+    width: 450px;
+}
+@media screen and (max-width: 525px){
+    .personal {
+        flex-direction: column;
+        row-gap: 16px;
+        margin-bottom: 16px;
+    }
+    .personalText {
+        width: 100%;
+        min-width: unset;
+        flex-direction: column;
+        column-gap: 16px;
+    }
+    .selectTipo {
+        width: 90vw !important;
+    }
+    .descipcionArea {
+        width: 100%;
+    }
+  } 

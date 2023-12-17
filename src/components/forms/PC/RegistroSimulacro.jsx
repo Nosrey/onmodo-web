@@ -353,6 +353,7 @@ function RegistroSimulacro() {
                             InputLabelProps={{
                               shrink: true,
                             }}
+                            className='input'
                           />
                         </div>
                       ))}

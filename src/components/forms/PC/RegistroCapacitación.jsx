@@ -175,6 +175,7 @@ function RegistroCapacitacion() {
         if (valuesToSend.firma === '' || valuesToSend.firma === undefined || valuesToSend.firma === null) {
             delete valuesToSend.firma;
         }
+        console.log(valuesToSend)
         registroCapacitacion(valuesToSend).then((resp) => {
             if (resp.error) {
                 setTextAlert('Ocurrió un error');
