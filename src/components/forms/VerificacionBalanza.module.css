@@ -62,3 +62,15 @@
 span {
     font-size: 12px;
 }
+.selectIns {
+    width: 200px;
+}
+@media screen and (max-width: 525px){
+    .personal, .personalText {
+       flex-direction: column;
+       row-gap: 16px;
+    }
+    .selectIns {
+        width: 100% ;
+    }
+  } 

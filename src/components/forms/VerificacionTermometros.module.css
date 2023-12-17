@@ -61,3 +61,16 @@ span {
     min-width: 700px;
     min-height: 250px;
 }
+
+.selectIns {
+    width: 200px;
+}
+@media screen and (max-width: 525px){
+    .personal, .personalText {
+       flex-direction: column;
+       row-gap: 16px;
+    }
+    .selectIns {
+        width: 100% ;
+    }
+  } 

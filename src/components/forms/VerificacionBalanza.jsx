@@ -231,7 +231,6 @@ function VerificacionBalanza() {
           <div className={styles.personal}>
             <TextField
               type='date'
-              className='input'
               onChange={(e) => {
                 setValues({ ...values, fecha: e.target.value });
               }}
@@ -240,11 +239,12 @@ function VerificacionBalanza() {
               value={values.fecha || ''}
               disabled={currentStatus === 'view'}
               required
+              label='Fecha'
               InputLabelProps={{
                 shrink: true,
               }}
             />
-            <FormControl variant='outlined' disabled={currentStatus === 'view'}>
+            <FormControl variant='outlined'  className={styles.selectIns} disabled={currentStatus === 'view'}>
               <InputLabel>Instrumento</InputLabel>
               <Select
                 onChange={(e) => {
@@ -254,7 +254,6 @@ function VerificacionBalanza() {
                 }}
                 value={values.balanza}
                 defaultValue={'Báscula'}
-                className='input'
                 label={`Instrumento`}
                 variant='outlined'
                 InputLabelProps={{

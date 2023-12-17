@@ -231,6 +231,7 @@ function VerificacionTermometros() {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                label='Fecha'
                 disabled={currentStatus === 'view'}
               />
               <TextField
