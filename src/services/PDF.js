@@ -1291,13 +1291,32 @@ export const generatePDF = (formulario, form) => {
 
       // Iterar sobre las claves de los datos de la balanza y formatearlas
       Object.keys(input).forEach((key) => {
-        const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'); // Formato de título
-        inputTableBody.push(
-          [
-            { text: `${formattedKey}:`, style: 'label' },
-            { text: input[key], style: 'value' },
-          ]
-        );
+        if (key !== 'id') {
+          let formattedKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'); // Formato de título
+          // un switch de formattedKey para cambiar el nombre de las claves
+          switch (formattedKey) {
+            // si es Responsabledeluso, cambiar a Responsable del uso
+            case 'Responsabledeluso':
+              formattedKey = 'Responsable del uso';
+              break;
+            // si es Pesomasaref/ptobalanza:, cambiar a Peso masa ref/pto balanza:
+            case 'Pesomasaref/ptobalanza':
+              formattedKey = 'Peso masa ref/pto balanza:';
+              break;
+            case 'Pesoreal':
+              formattedKey = 'Peso real';
+              break;
+            default:
+              break;
+          }
+
+          inputTableBody.push(
+            [
+              { text: `${formattedKey}:`, style: 'label' },
+              { text: input[key], style: 'value' },
+            ]
+          );
+        }
       });
     });
 
@@ -1325,7 +1344,7 @@ export const generatePDF = (formulario, form) => {
           [
             { text: 'Fecha:', style: 'label' },
             { text: fecha, style: 'value' },
-            { text: 'Balanza/ Báscula:', style: 'label' },
+            { text: 'Balanza/Báscula:', style: 'label' },
             { text: balanza, style: 'value' },
           ],
         ],
@@ -1357,9 +1376,10 @@ export const generatePDF = (formulario, form) => {
     pdfMake.createPdf(documentDefinition).download(`verificacionbalanza_formulario.pdf`);
   }
   else if (form === "verificaciontermometros") {
+    console.log('formulario: ', formulario)
     const pdfContent = [];
 
-    const styles = {
+    const styles2 = {
       header: {
         fontSize: 18,
         bold: true,
@@ -1368,12 +1388,12 @@ export const generatePDF = (formulario, form) => {
       subheader: {
         fontSize: 14,
         bold: true,
-        margin: [0, 10, 0, 20],
+        margin: [5, 20, 5, 20],
       },
-      subheader1: {
+      subheader2: {
         fontSize: 14,
         bold: true,
-        margin: [0, 40, 0, 20],
+        margin: [5, 10, 5, 10],
       },
       label: {
         fontSize: 12,
@@ -1381,11 +1401,18 @@ export const generatePDF = (formulario, form) => {
         margin: [0, 5, 0, 0],
         color: 'rgb(37, 35, 35)',
       },
+      label1: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 0, 40, 10],
+        paddingTop: 30,
+        color: 'rgb(37, 35, 35)',
+      },
       value: {
         fontSize: 12,
         margin: [0, 0, 0, 10],
         border: [0.5, 0.5, 0.5, 0.5],
-        fillColor: '#EAFFDC',
+
         paddingLeft: 5,
         paddingRight: 5,
         borderRadius: [5, 5, 5, 5],
@@ -1393,7 +1420,7 @@ export const generatePDF = (formulario, form) => {
     };
 
     pdfContent.push({ text: 'Formulario ONMODO', style: 'header', alignment: 'center' });
-    pdfContent.push({ text: 'Verificación de Instrumentos de Medición: Termometros', style: 'subheader', alignment: 'center' });
+    pdfContent.push({ text: 'Verificación de Instrumentos de Medición: Termómetros', style: 'subheader', alignment: 'center' });
 
     const {
       fecha,
@@ -1406,8 +1433,8 @@ export const generatePDF = (formulario, form) => {
       table: {
         widths: ['50%', '50%'],
         body: [
-          [{ text: 'fecha:', style: 'subheader' }, { text: cambiarFecha(fecha), style: 'subheader' }],
-          [{ text: 'responsable:', style: 'subheader' }, { text: responsable, style: 'subheader' }],
+          [{ text: 'Fecha:', style: 'subheader2' }, { text: cambiarFecha(fecha), style: 'subheader2' }],
+          [{ text: 'Responsable:', style: 'subheader2' }, { text: responsable, style: 'subheader2' }],
         ],
       }
     })
@@ -1415,29 +1442,29 @@ export const generatePDF = (formulario, form) => {
     const columnWidths = ['50%', '50%'];
 
     inputsTrimestral.forEach((input, index) => {
-      pdfContent.push({ text: `Trimestre ${index + 1}:`, style: 'subheader' });
+      pdfContent.push({ text: `TERMÓMETRO DE PINCHE/INFRARROJOS ${index + 1}:`, style: 'subheader' });
       pdfContent.push({
         table: {
           widths: columnWidths,
           body: [
 
-            [{ text: 'código:', style: 'label' }, { text: input?.["código"], style: 'value' }],
+            [{ text: 'Código:', style: 'label' }, { text: input?.["código"], style: 'value' }],
 
             [{ text: 'Tipo (PIN/IR):', style: 'label' }, { text: input?.["Tipo (PIN/IR)"], style: 'value' }],
 
             [{ text: 'Responsable del uso:', style: 'label' }, { text: input?.["responsabledeluso"], style: 'value' }],
 
-            [{ text: 'área:', style: 'label' }, { text: input?.["área"], style: 'value' }],
+            [{ text: 'Área:', style: 'label' }, { text: input?.["área"], style: 'value' }],
 
-            [{ text: 'punto 0:', style: 'label' }, { text: input?.["punto0"], style: 'value' }],
+            [{ text: 'Punto 0:', style: 'label' }, { text: input?.["punto0"], style: 'value' }],
 
-            [{ text: 'desvío 0:', style: 'label' }, { text: input?.["desvío0"], style: 'value' }],
+            [{ text: 'Desvío 0:', style: 'label' }, { text: input?.["desvío0"], style: 'value' }],
 
-            [{ text: 'punto 100:', style: 'label' }, { text: input?.["punto100"], style: 'value' }],
+            [{ text: 'Punto 100:', style: 'label' }, { text: input?.["punto100"], style: 'value' }],
 
-            [{ text: 'desvío 100:', style: 'label' }, { text: input?.["desvío100"], style: 'value' }],
+            [{ text: 'Desvío 100:', style: 'label' }, { text: input?.["desvío100"], style: 'value' }],
 
-            [{ text: 'Acciones de corrección:', style: 'label' }, { text: input?.["accionesdecorrección"], style: 'value' }],
+            [{ text: 'Acciones de corrección:', style: 'label' }, { text: input?.["Acciones de corrección"], style: 'value' }],
 
           ],
         },
@@ -1454,17 +1481,24 @@ export const generatePDF = (formulario, form) => {
 
     // lo  mismo de arriba  pero con inputsSemestral
     inputsSemestral.forEach((input, index) => {
-      pdfContent.push({ text: `Semestre ${index + 1}:`, style: 'subheader' });
+      pdfContent.push({ text: `TERMÓMETROS DE CÁMARAS, ANTECAMARAS, HELADERAS Y FREEZER ${index + 1}:`, style: 'subheader' });
       pdfContent.push({
         table: {
           widths: columnWidths,
           body: [
 
-            [{ text: 'código:', style: 'label' }, { text: input?.["código"], style: 'value' }],
+            [{ text: 'Código:', style: 'label' }, { text: input?.["código"], style: 'value' }],
 
-            [{ text: 'área:', style: 'label' }, { text: input?.["área"], style: 'value' }],
+            [{ text: 'Área:', style: 'label' }, { text: input?.["área"], style: 'value' }],
 
-            [{ text: 'Temp. termóm referencia:', style: 'label' }, { text: input?.["temp.termómreferencia"], style: 'value' }],
+            [{ text: 'Temp. termóm referencia:', style: 'label' }, { text: input?.["Acciones de corrección"], style: 'value' }],
+
+            [{ text: 'Temp. Termómetro evaluado:', style: 'label' }, { text: input?.["temp.termómevaluado"], style: 'value' }],
+
+            [{ text: 'Desvío:', style: 'label' }, { text: input?.["desvío"], style: 'value' }],
+
+            [{ text: 'Acciones de corrección:', style: 'label' }, { text: input?.["Acciones de corrección"], style: 'value' }],
+
 
           ],
         },
@@ -1478,38 +1512,14 @@ export const generatePDF = (formulario, form) => {
         },
       });
 
-      pdfContent.push({ text: ` `, style: 'subheader' });
-      pdfContent.push({ text: ` `, style: 'subheader' });
 
-      pdfContent.push({
-        table: {
-          widths: columnWidths,
-          body: [
-
-            [{ text: 'Temp. termóm evaluado:', style: 'label' }, { text: input?.["temp.termómevaluado"], style: 'value' }],
-
-            [{ text: 'desvío:', style: 'label' }, { text: input?.["desvío"], style: 'value' }],
-
-            [{ text: 'Acciones de corrección:', style: 'label' }, { text: input?.["accionesdecorrección"], style: 'value' }],
-
-          ],
-        },
-        layout: {
-          hLineWidth: () => 1,
-          vLineWidth: () => 1,
-          hLineColor: () => 'black',
-          vLineColor: () => 'black',
-          paddingTop: (i) => (i === 0 ? 10 : 10),
-          paddingBottom: (i) => (i === 1 ? 0 : 5),
-        },
-      });
     });
 
 
 
     const documentDefinition = {
       content: pdfContent,
-      styles,
+      styles: styles2,
     };
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);

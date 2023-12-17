@@ -28,7 +28,7 @@ function RegistroDeDecomiso() {
     { id: 5, label: 'Causa' },
   ]);
   const [replicas, setReplicas] = useState(1);
-  const [replicaValues, setReplicaValues] = useState([{ id: 0 }]);
+  const [replicaValues, setReplicaValues] = useState([{ id: 0, fecha: '', turno: 'Turno Mañana', productodecomisado: '', cantidad: '', causa: '' }]);
 
   const [values, setValues] = useState({
     inputs: [{}],
@@ -251,7 +251,7 @@ function RegistroDeDecomiso() {
                               <InputLabel id="demo-simple-select-label">Turno</InputLabel>
                               <Select
                               labelId="demo-simple-select-label"
-                              id="demo-simple-select"
+                              id={"demo-simple-select" + index}
                               className='input'
                               label="turno"
                               value={
@@ -260,14 +260,12 @@ function RegistroDeDecomiso() {
                               InputLabelProps={{
                                 shrink: true,
                               }}
-                              onChange={(e) => {
-                                let replicaCopy = [...replicaValues];
-                                replicaCopy[index][
-                                  input.label.toLowerCase().replace(/\s/g, '')
-                                ] = e.target.value;
-                                setReplicaValues(replicaCopy);
-                              }}
-                              >
+                                  onChange={(e) => {
+                                    let replicaCopy = [...replicaValues];
+                                    replicaCopy[index][input.label.toLowerCase().replace(/\s/g, '')] = e.target.value;
+                                    setReplicaValues(replicaCopy);
+                                  }}
+                                >
                               <MenuItem value={"Turno Mañana"}>Turno Mañana</MenuItem>
                               <MenuItem value={"Turno Tarde"}>Turno Tarde</MenuItem>
                               <MenuItem value={"Turno Noche"}>Turno Noche</MenuItem>
