@@ -268,13 +268,15 @@ function AlergenosComida() {
             <div className={styles.personal}>
               <TextField
                 onChange={(e) => {
-                  setValues({ ...values, comedor: e.target.value });
+                  let valuesCopy = { ...values };
+                  valuesCopy.comedor = e.target.value;
+                  setValues(valuesCopy);
                 }}
                 fullWidth
                 id='outlined-basic'
                 label='Comedor'
                 variant='outlined'
-                value={infoPrecargada?.comedor}
+                value={values?.comedor}
                 disabled={currentStatus === 'view'}
               />
             </div>
