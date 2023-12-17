@@ -3,11 +3,8 @@ import styles from './SolicitudesDeEdicion.module.css';
 import 'moment-timezone';
 
 import { Oval } from 'react-loader-spinner';
-import ModalEdicion from '../../components/modalEdicion/ModalEdicion';
-import ModalBorrar from '../../components/modalBorrar/ModalBorrar';
 import Alert from '../../components/shared/components/Alert/Alert';
-import { FORMS_DE_VARIAS_ETAPAS, getUrlForm } from '../../utils/constants/data';
-import { generatePDF } from '../../services/PDF';
+import { getUrlForm } from '../../utils/constants/data';
 import { getSolicitudesDeEdicion } from '../../services/Request';
 import { useNavigate, useParams } from 'react-router-dom';
 import ModalEdicionRespuesta from '../../components/modalEdicionRespuesta/ModalEdicionRespuesta';
@@ -98,13 +95,11 @@ function SolicitudesDeEdicion() {
   };
 
   const handleOrder = (value) => {
-    console.log(value);
     switch (value) {
       case 'Más reciente':
         setFormularios(() => [...ordenReciente(formularios)]);
         break;
       case 'Más antiguo':
-        console.log('entro aca');
         setFormularios(() => [...ordenAntiguo(formularios)]);
         break;
       default:
@@ -129,7 +124,7 @@ function SolicitudesDeEdicion() {
             const items = resp[key];
             for (const item of items) {
               // creo mi objeto solo con la info que voy a necesitar
-              console.log(key, getUrlForm(item.key));
+ 
               const newItem = {
                 form: key,
                 user: item.nombre,
@@ -308,7 +303,6 @@ function SolicitudesDeEdicion() {
                                 </span>
                               </td>
                             </tr>
-                            {console.log(openInfo)}
                             {openInfo[index] && (
                               <>
                                 <tr>
