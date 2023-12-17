@@ -652,7 +652,7 @@ export const generatePDF = (formulario, form) => {
       [
         { text: 'Fecha:', style: 'label' },
         { text: cambiarFecha(fecha), style: 'value' },
-        { text: 'Duración:', style: 'label' },
+        { text: 'Hora:', style: 'label' },
         { text: tiempoDuracion, style: 'value' },
       ]
     );
@@ -731,14 +731,14 @@ export const generatePDF = (formulario, form) => {
 
       content[2].table.body.push(
         [
-          { text: 'Firma:', style: 'label' },
-          { text: asistente.firma, style: 'value' },
+          { text: 'Método:', style: 'label' },
+          { text: asistente.metodo, style: 'value' },
           { text: `Resultado:`, style: 'label' },
           { text: asistente.resultado, style: 'value' },
         ],
         [
-          { text: `Método:`, style: 'label' },
-          { text: asistente.metodo, style: 'value', colSpan: 3 },
+          { text: `Firma:`, style: 'label' },
+          { text: asistente.firma, style: 'value', colSpan: 3 },
           {},
           {},
         ],
@@ -756,18 +756,18 @@ export const generatePDF = (formulario, form) => {
     content[2].table.body.push(
       [
         { text: 'Instructor:', style: 'label' },
-        { text: instructor, style: 'value' },
-        { text: 'Cargo:', style: 'label' },
-        { text: cargo, style: 'value' },
+        { text: instructor, style: 'value', colSpan: 3 },
+        {},
+        {},
       ]
     );
 
     content[2].table.body.push(
       [
-        { text: 'Firma:', style: 'label' },
-        { text: firma, style: 'value' },
-        { text: 'Fecha del Registro:', style: 'label' },
-        { text: date, style: 'value' },
+        { text: 'Firma:', style: 'label' },        
+        { text: firma, style: 'value', colSpan: 3 },
+        {},
+        {},
       ]
     );
 

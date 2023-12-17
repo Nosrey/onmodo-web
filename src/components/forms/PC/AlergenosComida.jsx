@@ -370,7 +370,7 @@ function AlergenosComida() {
                         </div>
                       ))}
 
-                      {infoPrecargada ? (
+                      {currentStatus === 'view' ? (
                         <div></div>
                       ) : (
                         <div className='icon'>
