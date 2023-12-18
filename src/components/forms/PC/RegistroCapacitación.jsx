@@ -410,9 +410,7 @@ function RegistroCapacitacion() {
                     </div>
                 </div>
 
-
-
-                <div className={styles.subtitleCont} onClick={() => console.log('asistentes: ', asistentes)}>
+                <div className={styles.subtitleCont}>
                     <p className={styles.subtitle}>ASISTENTES</p>
                 </div>
                 <div className="table">
