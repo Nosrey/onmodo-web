@@ -194,15 +194,43 @@
   margin-top: 20px;
 }
 
+.orderContainerChild {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.customizedSelects {
+  width: 22rem !important;
+}
+
+@media screen and (max-width: 1200px) {
+  .customizedSelects {
+    width: 17rem !important;
+  }
+}
+
+@media screen and (max-width: 1070px) {
+  .customizedSelects {
+    width: 14rem !important;
+  }
+}
+
 @media screen and (max-width: 925px) {
   .cardGrid {
     grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
+  }
+  .customizedSelects {
+    width: 11rem !important;
   }
 }
 
 @media screen and (max-width: 747px) {
   .cardGrid {
     grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
+  }
+  .customizedSelects {
+    width: 9rem !important;
   }
 }
 
@@ -251,6 +279,21 @@
   }
   .complexDescriptionContainer p, .complexDescriptionContainer span {
     font-size: 1rem;
+  }
+  .orderContainer:nth-child(2) {
+    flex-direction: column;
+  }
+  .orderContainerChild {
+    width: 100% !important;
+  }
+  .customizedSelects {
+    width: 12rem !important;
+  }
+  .firstCustomizedSelect {
+    width: 80% !important;
+  }
+  .fromsContainerBarMobile {
+    flex-direction: column;
   }
 }
 @media screen and (max-width: 576px) {
@@ -306,7 +349,6 @@
     font-size: 0.8rem;
   }
   .mostUsedNumber {
-    font-size: 0.7rem;
     width: 25px;
     padding: 3px;
   }
