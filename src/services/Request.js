@@ -203,6 +203,18 @@ export const getStats = async () => {
   }
 }
 
+export const getStatsForms = async () => {
+  const businessName = localStorage.getItem('business');
+  try {
+    const res = await fetch(`${URL_API}/api/statsforms/${businessName}`);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+}
+
 //** REMINDERS */
 export const createReminder = async ({
   tarea,
