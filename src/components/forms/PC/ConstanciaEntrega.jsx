@@ -23,7 +23,16 @@ function ConstanciaEntrega() {
     var idUser = localStorage.getItem("idUser");
 
     const [replicas, setReplicas] = useState(1);
-    const [replicaValues, setReplicaValues] = useState([{ id: 0 }]);
+    // {
+    //     "id": 0,
+    //     "Producto": "10",
+    //     "Tipo / modelo": "11",
+    //     "Posee certificacion": "12",
+    //     "Marca": "13",
+    //     "Cantidad": "14",
+    //     "fecha": "2023-12-18"
+    // }
+    const [replicaValues, setReplicaValues] = useState([{ id: 0, "Producto": '', "Tipo / modelo": '', "Marca": '', "Posee certificacion": '', "Cantidad": '', "fecha": '' }]);
 
     const [showTextField, setShowTextField] = useState(false);
     const [values, setValues] = useState({
@@ -108,6 +117,7 @@ function ConstanciaEntrega() {
 
     useEffect(() => {
         if (infoPrecargada) { // muestro un form del historial
+            console.log('infoPrecargada: ', infoPrecargada)
             setValues({
                 nombreUsuario: infoPrecargada.nombreUsuario,
                 contrato: infoPrecargada.contrato,
@@ -118,14 +128,15 @@ function ConstanciaEntrega() {
                 provincia: infoPrecargada.provincia,
                 descripcion: infoPrecargada.descripcion,
                 infoAdicional: infoPrecargada.infoAdicional,
-                inputs: infoPrecargada.inputs,
-                checkboxes: infoPrecargada.checkboxes,
+                inputs: JSON.parse(infoPrecargada.inputs),
+                checkboxes: JSON.parse(infoPrecargada.checkboxes),
                 date: infoPrecargada.date,
-                otrosCheck6:infoPrecargada.checkboxes[0].textInputCheck6 ,
-                idUser: idUser
+                otrosCheck6: JSON.parse(infoPrecargada.checkboxes)[0].textInputCheck6 ,
+                idUser: idUser,
+                firma: infoPrecargada.firma
             });
-            setCheckValues(infoPrecargada.checkboxes[0])
-            setReplicaValues(infoPrecargada.inputs);
+            setCheckValues(JSON.parse(infoPrecargada.checkboxes)[0])
+            setReplicaValues(JSON.parse(infoPrecargada.inputs));
         }
     }, [location.state?.objeto]);
 
@@ -163,6 +174,8 @@ function ConstanciaEntrega() {
         if (objetoFinal.firma === '' || objetoFinal.firma === undefined || objetoFinal.firma === null) {
             delete objetoFinal.firma;
         }
+
+        console.log('objetoFinal: ', objetoFinal)
         entregaRopa(objetoFinal).then((resp) => {
             if (resp.error) {
                 setTextAlert('Ocurrió un error');
@@ -239,7 +252,7 @@ function ConstanciaEntrega() {
             <div>
                 <div className="form">
                     <div className="titleContainer">
-                        <h3 className="title">Constancia de Entrega de Ropa de Trabajo y de E.P.P</h3>
+                        <h3 className="title" >Constancia de Entrega de Ropa de Trabajo y de E.P.P</h3>
                         { (currentStatus === 'view' || currentStatus === 'edit') &&
                         <span style={{marginLeft:'20px', fontSize:'20px'}}>
                             <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
@@ -346,6 +359,8 @@ function ConstanciaEntrega() {
                         }}
                         />
                     </div>
+
+                    <p onClick={() => console.log('replicaValues: ', replicaValues)}>hola</p>
 
                     <div className={styles.personal}>
                         <FormControlLabel

@@ -33,7 +33,8 @@ function VerificacionBalanza() {
     { id: 8, label: 'Acciones de corrección' },
   ]);
   const [replicas, setReplicas] = useState(1);
-  const [replicaValues, setReplicaValues] = useState([{ id: 0 }]);
+
+  const [replicaValues, setReplicaValues] = useState([{ id: 0, "Código": '', "Responsable del uso": '', "Área": '', "Peso Masa ref/Pto balanza": '', "Peso real": '', "Desvío": '', "Acciones de corrección": '', "Tipo (BP/BR)": '' }]);
   const [showModal, setShowModal] = useState(false);
   var idUser = localStorage.getItem('idUser');
   const [values, setValues] = useState({
