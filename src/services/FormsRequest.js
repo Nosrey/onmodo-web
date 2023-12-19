@@ -101,12 +101,24 @@ export const entregaRopa = async (values) => {
 };
 export const editEntregaRopa = async (values, formId) => {
   try {
+    const formData = new FormData();
+
+    for (const key in values) {
+      if (Array.isArray(values[key])) {
+        formData.append(key, JSON.stringify(values[key]));
+      }  else {
+        formData.append(key, values[key]);
+      }
+    }
+
+    // Agregar otras propiedades como businessName, rol, nombre, etc., al FormData
+    formData.append('businessName', localStorage.getItem('business'));
+    formData.append('rol', localStorage.getItem('rol'));
+    formData.append('nombre', localStorage.getItem('userName'));
+
     const response = await fetch(`${URL_API}/api/entregaropaedit/${formId}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...values,
-      }),
+      body: formData,
     });
     const data = await response.json();
     return data;
