@@ -337,12 +337,12 @@ function SolicitudesDeEdicion() {
                                 </tr>
                                 <tr style={{ borderBottom: '1px solid #ccc' }}>
                                   <td style={{ borderBottom: 'none' }}>
-                                    <span
+                                    {/* <span 
                                       onClick={() => goToForm(formulario, 'view')}
                                       className={styles.actionIcon}
                                     >
                                       <i className='ri-eye-line'></i>
-                                    </span>
+                                    </span>*/}
 
                                     {formulario.status === 'pending' ? (
                                       <span
@@ -401,12 +401,12 @@ function SolicitudesDeEdicion() {
                                 : ''}
                             </td>
                             <td className={styles.contEdicion}>
-                              <span
+                              {/* <span
                                 onClick={() => goToForm(formulario, 'view')}
                                 className={styles.actionIcon}
                               >
                                 <i className='ri-eye-line'></i>
-                              </span>
+                              </span> */}
 
                               {formulario.status === 'pending' ? (
                                 <span

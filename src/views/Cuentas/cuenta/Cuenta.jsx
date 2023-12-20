@@ -62,7 +62,12 @@ function Cuenta() {
   };
 
   const handleChange = (e) => {
-    setInputValue({ ...inputValue, [e.target.name]: e.target.value });
+    if (e.target.name === 'nivel' && myRol === "4") {
+      setInputValue({ ...inputValue, [e.target.name]: e.target.value , puesto: 'sin asignar'} );
+    } else {
+      setInputValue({ ...inputValue, [e.target.name]: e.target.value });
+
+    }
     if (e.target.name === 'provincia') {
       const idProvSeleccionada = provinciasOptions.find(
         (item) => item.nombre === e.target.value
