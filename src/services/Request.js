@@ -62,6 +62,25 @@ export const createNewUSer = async (values) => {
   }
 };
 
+export const editUser = async (values) => {
+  const id = localStorage.getItem('idUser');
+  try {
+    const formData = new FormData();
+    for (const key in values) {
+      formData.append(key, values[key]);
+    }
+    const response = await fetch(`${URL_API}/api/user/${id}`,{
+      method: 'PUT',
+      body: formData,
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
 export const setPassword = async (password) => {
   try {
     const response = await fetch(`${URL_API}/api/login`, {
@@ -69,6 +88,23 @@ export const setPassword = async (password) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         password,
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+};
+
+export const restablecerPassword = async (email) => {
+  try {
+    const response = await fetch(`${URL_API}/api/restablecer-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
       }),
     });
     const data = await response.json();
@@ -143,10 +179,34 @@ export const getLegajosPorRol = async (nivel) => {
 export const deleteLegajo = async (legajo) => {
   const businessName = localStorage.getItem('business');
   try {
-    const res = await fetch(`${URL_API}/api/${legajo}/${businessName}`, {
+    const res = await fetch(`${URL_API}/api/users/${legajo}/${businessName}`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
     });
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+}
+
+export const getStats = async () => {
+  const businessName = localStorage.getItem('business');
+  try {
+    const res = await fetch(`${URL_API}/api/statsusers/${businessName}`);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error('Error', error);
+    throw error;
+  }
+}
+
+export const getStatsForms = async () => {
+  const businessName = localStorage.getItem('business');
+  try {
+    const res = await fetch(`${URL_API}/api/statsforms/${businessName}`);
     const data = await res.json();
     return data;
   } catch (error) {
@@ -233,3 +293,35 @@ export const editReminder = async ({ values, recordatorioId }) => {
 };
 
 //** FIN REMINDERS */
+
+//** BUSINESS INFO */
+
+export const getBusinessInfo = async (name) => {
+  try {
+    const resp = await fetch(`${URL_API}/api/newbusiness/${name}`);
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    throw new Error('No se pudo obtener los datos del usuario.');
+  }
+};
+
+  export const editBusinessInfo  = async (values, idBusiness ) => {
+    try {
+      const formData = new FormData();
+    for (const key in values) {
+      formData.append(key, values[key]);
+    }
+      const response = await fetch(`${URL_API}/api/newbusiness/${idBusiness}`, {
+        method: 'PUT',
+        body: formData,
+      });
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error', error);
+      throw error;
+    }
+  };
+//** FIN BUSINESS INFO */

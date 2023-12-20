@@ -4,9 +4,10 @@ import styles from './ConstanciaEntrega.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import Alert from '../../shared/components/Alert/Alert';
-import { editEntregaRopa, entregaRopa } from '../../../services/FormsRequest';
+import { editEntregaRopa, entregaRopa, sendEditApplication } from '../../../services/FormsRequest';
 import { v4 as uuidv4 } from 'uuid';
 import { useLocation , useNavigate} from 'react-router-dom';
+import { useDropzone } from 'react-dropzone';
 
 function ConstanciaEntrega() {
     const location = useLocation();
@@ -22,11 +23,19 @@ function ConstanciaEntrega() {
     var idUser = localStorage.getItem("idUser");
 
     const [replicas, setReplicas] = useState(1);
-    const [replicaValues, setReplicaValues] = useState([{ id: 0 }]);
+    // {
+    //     "id": 0,
+    //     "Producto": "10",
+    //     "Tipo / modelo": "11",
+    //     "Posee certificacion": "12",
+    //     "Marca": "13",
+    //     "Cantidad": "14",
+    //     "fecha": "2023-12-18"
+    // }
+    const [replicaValues, setReplicaValues] = useState([{ id: 0, "Producto": '', "Tipo / modelo": '', "Marca": '', "Posee certificacion": '', "Cantidad": '', "fecha": '' }]);
 
     const [showTextField, setShowTextField] = useState(false);
     const [values, setValues] = useState({
-        nombre: "",
         contrato: "",
         dni: "",
         direcciosetObjValuesn: "",
@@ -61,6 +70,13 @@ function ConstanciaEntrega() {
         check6: false
     })
 
+    const onDrop = (acceptedFiles) => {
+        // Solo toma el primer archivo si hay varios
+        setValues({ ...values, firma: acceptedFiles[0] });
+    };
+
+    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
     const [trigger, setTrigger] = useState(false)
     useEffect(() => {
         if (replicas === 1 && objValues.producto !== "" && objValues.tipo !== "" && objValues.marca !== "" && objValues.certificacion !== "" && objValues.cantidad !== "" && objValues.fecha !== "" && objValues.id !== "") {
@@ -75,7 +91,7 @@ function ConstanciaEntrega() {
     }, [inputValues, check])
 
     useEffect(() => {
-        if ((values?.nombre !== "" && values?.contrato !== "" && values?.dni !== "" && values?.direccion !== "" && values?.localidad !== "" && values?.cp !== "" && values?.provincia !== "" && values?.descripcion !== "")) {
+        if (( values?.contrato !== "" && values?.dni !== "" && values?.direccion !== "" && values?.localidad !== "" && values?.cp !== "" && values?.provincia !== "" && values?.descripcion !== "")) {
             let confirmado = false
             for (let i = 0; i < replicaValues.length; i++) {
                 if (replicaValues[i]?.["Tipo / modelo"]?.length && replicaValues[i]?.["Producto"]?.length && replicaValues[i]?.["Posee certificacion"]?.length && replicaValues[i]?.["Marca"]?.length && replicaValues[i]?.["Cantidad"]?.length && replicaValues[i]?.["fecha"]?.length) {
@@ -101,6 +117,7 @@ function ConstanciaEntrega() {
 
     useEffect(() => {
         if (infoPrecargada) { // muestro un form del historial
+            console.log('infoPrecargada: ', infoPrecargada)
             setValues({
                 nombreUsuario: infoPrecargada.nombreUsuario,
                 contrato: infoPrecargada.contrato,
@@ -111,14 +128,15 @@ function ConstanciaEntrega() {
                 provincia: infoPrecargada.provincia,
                 descripcion: infoPrecargada.descripcion,
                 infoAdicional: infoPrecargada.infoAdicional,
-                inputs: infoPrecargada.inputs,
-                checkboxes: infoPrecargada.checkboxes,
+                inputs: JSON.parse(infoPrecargada.inputs),
+                checkboxes: JSON.parse(infoPrecargada.checkboxes),
                 date: infoPrecargada.date,
-                otrosCheck6:infoPrecargada.checkboxes[0].textInputCheck6 ,
-                idUser: idUser
+                otrosCheck6: JSON.parse(infoPrecargada.checkboxes)[0].textInputCheck6 ,
+                idUser: idUser,
+                firma: infoPrecargada.firma
             });
-            setCheckValues(infoPrecargada.checkboxes[0])
-            setReplicaValues(infoPrecargada.inputs);
+            setCheckValues(JSON.parse(infoPrecargada.checkboxes)[0])
+            setReplicaValues(JSON.parse(infoPrecargada.inputs));
         }
     }, [location.state?.objeto]);
 
@@ -153,6 +171,11 @@ function ConstanciaEntrega() {
         
         let objetoFinal = { ...values, inputs: replicaValues, checkboxes: checkboxes }
 
+        if (objetoFinal.firma === '' || objetoFinal.firma === undefined || objetoFinal.firma === null) {
+            delete objetoFinal.firma;
+        }
+
+        console.log('objetoFinal: ', objetoFinal)
         entregaRopa(objetoFinal).then((resp) => {
             if (resp.error) {
                 setTextAlert('Ocurrió un error');
@@ -161,7 +184,7 @@ function ConstanciaEntrega() {
                 setTextAlert('¡Formulario cargado exitosamente!');
                 setTypeAlert('success');
                  // limpiar fomr
-              window.location.href = window.location.href;
+            //   window.location.href = window.location.href;
               }
         }).catch((resp) => {
             setTextAlert("Ocurrió un error")
@@ -199,7 +222,13 @@ function ConstanciaEntrega() {
               } else {
                 setTextAlert('¡Formulario editado exitosamente!');
                 setTypeAlert('success');
-                navigate('/formularios-cargados/entregaropa');
+                const data = {
+                    editEnabled: false,
+                    status:"",
+                  }
+                  sendEditApplication({values: data, formId:  infoPrecargada._id, form: '/entregaropa'}).finally((resp)=>{
+                    navigate('/formularios-cargados/entregaropa');
+                  })
 
               }
         }).catch((resp) => {
@@ -223,7 +252,7 @@ function ConstanciaEntrega() {
             <div>
                 <div className="form">
                     <div className="titleContainer">
-                        <h3 className="title">Constancia de Entrega de Ropa de Trabajo y de E.P.P</h3>
+                        <h3 className="title" >Constancia de Entrega de Ropa de Trabajo y de E.P.P</h3>
                         { (currentStatus === 'view' || currentStatus === 'edit') &&
                         <span style={{marginLeft:'20px', fontSize:'20px'}}>
                             <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
@@ -330,6 +359,8 @@ function ConstanciaEntrega() {
                         }}
                         />
                     </div>
+
+                    <p onClick={() => console.log('replicaValues: ', replicaValues)}>hola</p>
 
                     <div className={styles.personal}>
                         <FormControlLabel
@@ -566,6 +597,7 @@ function ConstanciaEntrega() {
                                                 id={`input-${input.id}-${index}`}
                                                 name={`input-${input.id}-${index}`}
                                                 disabled={currentStatus === 'view'}
+                                                label='Fecha'
                                             />
                                         </div>
 
@@ -596,6 +628,58 @@ function ConstanciaEntrega() {
                         disabled={currentStatus === 'view'}
                         />
                     </div>
+
+                    <div className={styles.responsableCont}>
+                    <div className={styles.subtitleCont}>
+                        <p className={styles.subtitle}>Firmas</p>
+                    </div>
+
+                    {(currentStatus === 'view' || currentStatus === 'edit') ?
+                        <>
+                            {
+                                currentStatus === 'edit' &&
+                                <div className={styles.border} {...getRootProps()}>
+                                    <input {...getInputProps()} />
+                                    {values.firma ? (
+                                        <h6>{typeof values?.firma === 'string' ? 'Editar Archivo' : `Archivo cargado:  ${values.firma.name}`}</h6>
+
+                                    ) : (
+                                        <h6>Arrastra y suelta o haz clic para adjuntar documento</h6>
+                                    )}
+                                </div>
+                            }
+                            <div style={{ marginTop: '10px' }} >
+                                {values?.firma ?
+                                    <h6>
+                                        {typeof values?.firma === 'string' && <a href={values?.firma} target="_blank" rel="noopener noreferrer"> Descargar Archivo</a>}
+                                    </h6>
+                                    :
+                                    <h6>No se han cargado documentos.</h6>
+                                }
+                            </div>
+                            {
+                                typeof values?.firma === 'string' && // ste seria el caso en que tengo la url de amazon
+                                <a href={values?.firma} target="_blank" rel="noopener noreferrer">
+                                    <img src={values?.firma} alt="planilla" srcSet="" style={{ marginTop: '30px', width: 'fit-content', maxWidth: '60%', minWidth: '250px' }} />
+                                </a>
+                            }
+
+                        </>
+                        :
+                        <>
+                            <p>Una vez guardada esta planilla, es necesario imprimirla desde la sección Formularios Cargados para ser firmada por las personas involucradas. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado.</p>
+                            <div className={styles.border} {...getRootProps()}>
+                                <input {...getInputProps()} />
+                                {values.firma ? (
+                                    <h6>Archivo cargado: {values.firma.name}</h6>
+                                ) : (
+                                    <h6>Arrastra y suelta o haz clic para adjuntar documento</h6>
+                                )}
+                            </div>
+                        </>
+                    }
+
+                </div>
 
                     {
                             (infoPrecargada === undefined) &&

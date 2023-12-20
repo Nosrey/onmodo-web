@@ -4,12 +4,18 @@
     column-gap: 16px;
     margin-bottom: 5vh;
 }
+.personalText {
+    flex-direction: column;
+}
 
 .personalText {
     width: 61vw;
     min-width: 300px;
 }
-
+.label{
+    font-size: 12px;
+    color: grey;
+}
 .subtitleCont {
     border-bottom: 2px solid rgb(37, 35, 35);
     margin-bottom: 24px;
@@ -57,3 +63,41 @@ min-width: 300px;
 max-height: 400px;
 
 }
+.selectTipo {
+    width: 20%;
+}
+.campo {
+    width: 50%;
+}
+@media screen and (max-width: 525px){
+    .personal {
+        flex-direction: column;
+        row-gap: 16px;
+        margin-bottom: 16px;
+    }
+    .selectTipo {
+        width:100%;
+    }
+    .campo {
+        width: 100%;
+    }
+    .personalText {
+        width: 100%;
+        min-width: unset;
+        flex-direction: column;
+        column-gap: 16px;
+    }
+    .listContainer {
+        width: 100%;
+        /* display: flex;
+        flex-direction: column; */
+        /* padding-left: 24px;
+        margin-bottom: 32px; */
+        
+    }
+    /* 
+    
+    .descipcionArea {
+        width: 100%;
+    } */
+  } 

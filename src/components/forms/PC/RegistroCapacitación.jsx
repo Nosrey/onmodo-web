@@ -4,8 +4,8 @@ import styles from './RegistroCapacitacion.module.css'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import Alert from '../../shared/components/Alert/Alert';
-import { editRegistroCapacitacion, registroCapacitacion } from '../../../services/FormsRequest';
-import { useLocation,useNavigate } from 'react-router-dom';
+import { editRegistroCapacitacion, registroCapacitacion, sendEditApplication } from '../../../services/FormsRequest';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 
 function RegistroCapacitacion() {
@@ -80,6 +80,7 @@ function RegistroCapacitacion() {
             }
         })
         setAsistentes(newValues)
+        setValues({ ...values, asistentes: newValues })
     };
 
     const checkboxValuesConstructor = (label, value, desc) => {
@@ -171,15 +172,18 @@ function RegistroCapacitacion() {
 
     const handleSubmit = () => {
         const valuesToSend = { ...values, asistentes: deleteEmptyRows(asistentes) }
-        
+        if (valuesToSend.firma === '' || valuesToSend.firma === undefined || valuesToSend.firma === null) {
+            delete valuesToSend.firma;
+        }
+        console.log(valuesToSend)
         registroCapacitacion(valuesToSend).then((resp) => {
             if (resp.error) {
                 setTextAlert('Ocurrió un error');
                 setTypeAlert('error');
-              } else {
+            } else {
                 setTextAlert('¡Formulario cargado exitosamente!');
                 setTypeAlert('success');
-                 // limpiar fomr
+                // limpiar fomr
                 window.location.href = window.location.href;
             }
         }).catch((resp) => {
@@ -200,20 +204,25 @@ function RegistroCapacitacion() {
 
     const handleEdit = () => {
         const valuesToSend = { ...values, asistentes: deleteEmptyRows(asistentes) }
-        if (valuesToSend.firma === ''  || valuesToSend.firma === undefined) {
+        if (valuesToSend.firma === '' || valuesToSend.firma === undefined) {
             delete valuesToSend.firma;
         }
-        
         editRegistroCapacitacion(valuesToSend, infoPrecargada._id).then((resp) => {
-            
+
             if (resp.error) {
                 setTextAlert('Ocurrió un error');
                 setTypeAlert('error');
-              } else {
+            } else {
                 setTextAlert('¡Formulario editado exitosamente!');
                 setTypeAlert('success');
-                navigate('/formularios-cargados/registrocapacitacion');
-              }
+                const data = {
+                    editEnabled: false,
+                    status: "",
+                }
+                sendEditApplication({ values: data, formId: infoPrecargada._id, form: '/registrocapacitacion' }).finally((resp) => {
+                    navigate('/formularios-cargados/registrocapacitacion');
+                })
+            }
         }).catch((resp) => {
             setTextAlert("Ocurrió un error")
             setTypeAlert("error");
@@ -233,6 +242,7 @@ function RegistroCapacitacion() {
 
     useEffect(() => {
         if (infoPrecargada) { // muestro un form del historial
+            console.log('infoPrecargada', infoPrecargada)
             setValues({
                 fecha: infoPrecargada.fecha,
                 tiempoDuracion: infoPrecargada.tiempoDuracion,
@@ -240,18 +250,18 @@ function RegistroCapacitacion() {
                 temas: infoPrecargada.temas,
                 materialEntregado: infoPrecargada.materialEntregado,
                 materialExpuesto: infoPrecargada.materialExpuesto,
-                asistentes: infoPrecargada.asistentes,
+                asistentes: infoPrecargada.asistentes.length !== 0 ? infoPrecargada.asistentes : [valorInicialAsistentes],
                 observaciones: infoPrecargada.observaciones,
                 instructor: infoPrecargada.instructor,
                 firma: infoPrecargada.firma,
                 idUser: idUser,
             });
             setObjValues(infoPrecargada.asistentes);
-
+            setAsistentes(infoPrecargada.asistentes.length !== 0 ? infoPrecargada.asistentes : [valorInicialAsistentes]);
         } else { // creo un form desde cero
 
         }
-    }, [location.state?.objeto]);
+    }, []);
 
 
     const onDrop = (acceptedFiles) => {
@@ -273,9 +283,9 @@ function RegistroCapacitacion() {
                 <div className="titleContainer">
                     <h3 className="title">Registro de Capacitación </h3>
 
-                    { (currentStatus === 'view' || currentStatus === 'edit') &&
-                        <span style={{marginLeft:'20px', fontSize:'20px'}}>
-                            <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
+                    {(currentStatus === 'view' || currentStatus === 'edit') &&
+                        <span style={{ marginLeft: '20px', fontSize: '20px' }}>
+                            <i className={currentStatus === 'view' ? 'ri-eye-line' : 'ri-pencil-line'}></i>
                         </span>
                     }
                 </div>
@@ -296,6 +306,7 @@ function RegistroCapacitacion() {
                     <TextField
                         onChange={(e) => { setValues({ ...values, tiempoDuracion: e.target.value }); }}
                         type="time"
+                        label="Hora"
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -399,8 +410,6 @@ function RegistroCapacitacion() {
                     </div>
                 </div>
 
-
-
                 <div className={styles.subtitleCont}>
                     <p className={styles.subtitle}>ASISTENTES</p>
                 </div>
@@ -409,7 +418,7 @@ function RegistroCapacitacion() {
                         {asistentes.map((_, index) => (
                             <div className="tableRow" key={index}>
                                 <p className="index">{index + 1} </p>
-                                {inputs.map((input) => (
+                                {inputs.map((input, index2) => (
                                     <div key={input.id}>
                                         {input.label !== "Metodo de Evaluacion" ? (
                                             <TextField
@@ -417,12 +426,13 @@ function RegistroCapacitacion() {
                                                 id={`input-${input.id}-${index}`}
                                                 name={input.prop}
                                                 label={`${input.label}`}
+                                                className='input'
                                                 variant="outlined"
                                                 InputLabelProps={{
                                                     shrink: true,
                                                 }}
                                                 disabled={currentStatus === 'view'}
-                                                value={currentStatus === 'view' ? infoPrecargada?.asistentes?.[index]?.[input.prop] : values.asistentes[index][input.prop]}
+                                                value={currentStatus === 'view' ? infoPrecargada?.asistentes?.[index]?.[input.prop] : values.asistentes[index] && values.asistentes[index][input.prop]}
                                             />
                                         ) : (
                                             <>
@@ -430,10 +440,10 @@ function RegistroCapacitacion() {
                                                     <InputLabel id={`metodo-evaluacion-label-${index}`}>Método de Evaluación</InputLabel>
                                                     <Select
                                                         disabled={currentStatus === 'view'}
-                                                        labelId={`metodo-evaluacion-label-${index}`}
-                                                        id={`metodo-evaluacion-${index}`}
+                                                        labelId={`metodo-evaluacion-label-${index + index2}`}
+                                                        id={`metodo-evaluacion-${index + index2}`}
                                                         onChange={(e) => handleInputChange(index, e)}
-                                                        value={(currentStatus === 'view' ? infoPrecargada?.asistentes?.[index]?.[input.prop] : values.asistentes[index][input.prop])}
+                                                        value={(currentStatus === 'view' ? infoPrecargada?.asistentes?.[index]?.[input.prop] : asistentes?.[index]?.[input.prop])}
                                                         name={input.prop}
                                                         label="Método de Evaluación"
                                                         InputLabelProps={{
@@ -472,87 +482,87 @@ function RegistroCapacitacion() {
 
                 <div className={styles.personal}>
                     <TextField InputLabelProps={{
-                            shrink: true,
-                        }} value={values.observaciones || ''} disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, observaciones: e.target.value }); }} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
+                        shrink: true,
+                    }} value={values.observaciones || ''} disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, observaciones: e.target.value }); }} fullWidth id="outlined-basic" label="Observaciones" variant="outlined" />
                 </div>
                 <div className={styles.personal}>
                     <TextField InputLabelProps={{
-                            shrink: true,
-                        }} value={values.instructor || ''} disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, instructor: e.target.value }); }} id="outlined-basic" label="Instructor" variant="outlined" />
+                        shrink: true,
+                    }} value={values.instructor || ''} disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, instructor: e.target.value }); }} id="outlined-basic" label="Instructor" variant="outlined" />
                 </div>
                 <div className={styles.responsableCont}>
                     <div className={styles.subtitleCont}>
                         <p className={styles.subtitle}>Firma de los participantes</p>
                     </div>
-                    
-                        { (currentStatus === 'view' || currentStatus === 'edit') ?
-                            <>
-                                {
-                                    currentStatus === 'edit' &&
-                                    <div className={styles.border} {...getRootProps()}>
-                                        <input {...getInputProps()} />
-                                        {values.firma  ? (
-                                        <h6>{ typeof values?.firma === 'string'  ? 'Editar Archivo' : `Archivo cargado:  ${values.firma.name}`}</h6>
-                                         
-                                        ) : (
-                                            <h6>Arrastra y suelta o haz clic para adjuntar documento</h6>
-                                        )}
-                                    </div>
-                                }
-                                <div style={{marginTop:'10px'}} >
-                                    {values?.firma ?
-                                        <h6>
-                                            {typeof values?.firma === 'string'  && <a href={values?.firma} target="_blank" rel="noopener noreferrer"> Descargar Archivo</a>}
-                                        </h6>
-                                        :
-                                        <h6>No se han cargado documentos.</h6>
-                                    }
-                                </div>
-                                {
-                                    typeof values?.firma === 'string' && // ste seria el caso en que tengo la url de amazon
-                                    <a href={values?.firma} target="_blank" rel="noopener noreferrer">
-                                        <img src={values?.firma} alt="planilla" srcSet="" style={{ marginTop: '30px', width:'fit-content', maxWidth:'60%', minWidth:'250px' }} />
-                                    </a>
-                                }
-                                
-                            </>
-                            :
-                            <>
-                                <p>Una vez guardada esta planilla, es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado.</p>
+
+                    {(currentStatus === 'view' || currentStatus === 'edit') ?
+                        <>
+                            {
+                                currentStatus === 'edit' &&
                                 <div className={styles.border} {...getRootProps()}>
                                     <input {...getInputProps()} />
-                                    {values.firma  ? (
-                                        <h6>Archivo cargado: {values.firma.name}</h6>
+                                    {values.firma ? (
+                                        <h6>{typeof values?.firma === 'string' ? 'Editar Archivo' : `Archivo cargado:  ${values.firma.name}`}</h6>
+
                                     ) : (
                                         <h6>Arrastra y suelta o haz clic para adjuntar documento</h6>
                                     )}
                                 </div>
-                            </>
-                        }
+                            }
+                            <div style={{ marginTop: '10px' }} >
+                                {values?.firma ?
+                                    <h6>
+                                        {typeof values?.firma === 'string' && <a href={values?.firma} target="_blank" rel="noopener noreferrer"> Descargar Archivo</a>}
+                                    </h6>
+                                    :
+                                    <h6>No se han cargado documentos.</h6>
+                                }
+                            </div>
+                            {
+                                typeof values?.firma === 'string' && // ste seria el caso en que tengo la url de amazon
+                                <a href={values?.firma} target="_blank" rel="noopener noreferrer">
+                                    <img src={values?.firma} alt="planilla" srcSet="" style={{ marginTop: '30px', width: 'fit-content', maxWidth: '60%', minWidth: '250px' }} />
+                                </a>
+                            }
+
+                        </>
+                        :
+                        <>
+                            <p>Una vez guardada esta planilla, es necesario imprimirla desde la sección Formularios Cargados para ser firmada por los participantes. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado.</p>
+                            <div className={styles.border} {...getRootProps()}>
+                                <input {...getInputProps()} />
+                                {values.firma ? (
+                                    <h6>Archivo cargado: {values.firma.name}</h6>
+                                ) : (
+                                    <h6>Arrastra y suelta o haz clic para adjuntar documento</h6>
+                                )}
+                            </div>
+                        </>
+                    }
 
                 </div>
                 {
-                            (infoPrecargada === undefined) &&
-                            <div className='btn'>
-                                <Button
-                                    onClick={handleSubmit}
-                                    variant='contained'
-                                >
-                                    Guardar
-                                </Button>
-                            </div>
-                        }
-                        {
-                            (currentStatus === 'edit' ) &&
-                            <div className='btn'>
-                                <Button
-                                    onClick={handleEdit}
-                                    variant='contained'
-                                >
-                                    Editar
-                                </Button>
-                            </div>
-                        }
+                    (infoPrecargada === undefined) &&
+                    <div className='btn'>
+                        <Button
+                            onClick={handleSubmit}
+                            variant='contained'
+                        >
+                            Guardar
+                        </Button>
+                    </div>
+                }
+                {
+                    (currentStatus === 'edit') &&
+                    <div className='btn'>
+                        <Button
+                            onClick={handleEdit}
+                            variant='contained'
+                        >
+                            Editar
+                        </Button>
+                    </div>
+                }
 
             </div>
         </div>

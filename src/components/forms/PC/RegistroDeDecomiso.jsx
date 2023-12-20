@@ -1,9 +1,9 @@
-import { Button, TextField } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import Alert from '../../shared/components/Alert/Alert';
-import { editRegistroDecomiso, registroDecomiso } from '../../../services/FormsRequest';
+import { editRegistroDecomiso, registroDecomiso, sendEditApplication } from '../../../services/FormsRequest';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -28,7 +28,7 @@ function RegistroDeDecomiso() {
     { id: 5, label: 'Causa' },
   ]);
   const [replicas, setReplicas] = useState(1);
-  const [replicaValues, setReplicaValues] = useState([{ id: 0 }]);
+  const [replicaValues, setReplicaValues] = useState([{ id: 0, fecha: '', turno: 'Turno Mañana', productodecomisado: '', cantidad: '', causa: '' }]);
 
   const [values, setValues] = useState({
     inputs: [{}],
@@ -158,7 +158,13 @@ function RegistroDeDecomiso() {
         } else {
           setTextAlert('¡Formulario editado exitosamente!');
           setTypeAlert('success');
-          navigate('/formularios-cargados/registrodecomiso');
+          const data = {
+            editEnabled: false,
+            status:"",
+          }
+          sendEditApplication({values: data, formId:  infoPrecargada._id, form: '/registrodecomiso'}).finally((resp)=>{
+            navigate('/formularios-cargados/registrodecomiso');
+          })
 
         }
       })
@@ -235,8 +241,68 @@ function RegistroDeDecomiso() {
                             InputLabelProps={{
                               shrink: true,
                             }}
+                            label="Fecha"
                           />
-                        ) :
+                        ) :(
+
+                          input.label === 'Turno' ? (
+                            <FormControl fullWidth   disabled={currentStatus === 'view'}
+                            >
+                              <InputLabel id="demo-simple-select-label">Turno</InputLabel>
+                              <Select
+                              labelId="demo-simple-select-label"
+                              id={"demo-simple-select" + index}
+                              className='input'
+                              label="turno"
+                              value={
+                                replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
+                              }
+                              InputLabelProps={{
+                                shrink: true,
+                              }}
+                                  onChange={(e) => {
+                                    let replicaCopy = [...replicaValues];
+                                    replicaCopy[index][input.label.toLowerCase().replace(/\s/g, '')] = e.target.value;
+                                    setReplicaValues(replicaCopy);
+                                  }}
+                                >
+                              <MenuItem value={"Turno Mañana"}>Turno Mañana</MenuItem>
+                              <MenuItem value={"Turno Tarde"}>Turno Tarde</MenuItem>
+                              <MenuItem value={"Turno Noche"}>Turno Noche</MenuItem>
+                              </Select>
+                          </FormControl>
+                          ): (
+                            input.label === 'Causa' ? (
+                              <FormControl fullWidth disabled={currentStatus === 'view'}
+                              >
+                                <InputLabel id="demo-simple-select-label">Causa</InputLabel>
+                                <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                className='input'
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                label="causa"
+                                value={
+                                  replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
+                                }
+                                onChange={(e) => {
+                                  let replicaCopy = [...replicaValues];
+                                  replicaCopy[index][
+                                    input.label.toLowerCase().replace(/\s/g, '')
+                                  ] = e.target.value;
+                                  setReplicaValues(replicaCopy);
+                                }}
+                                >
+                                <MenuItem value={"Recall"}>Recall</MenuItem>
+                                <MenuItem value={"Desvíos de Proceso"}>Desvíos de Proceso</MenuItem>
+                                <MenuItem value={"Fuera fecha de vida útil"}>Fuera fecha de vida útil</MenuItem>
+                                <MenuItem value={"Fuera de aptitud"}>Fuera de aptitud</MenuItem>
+                                <MenuItem value={"Otras causas"}>Otras causas</MenuItem>
+                                </Select>
+                            </FormControl>
+                            ): (
                           <TextField
                             id={`input-${input.id}-${index}`}
                             name={`input-${input.id}-${index}`}
@@ -257,7 +323,9 @@ function RegistroDeDecomiso() {
                             InputLabelProps={{
                               shrink: true,
                             }}
-                          />
+                          />)
+                          )
+                          )
                         }
                       </div>
                     ))}

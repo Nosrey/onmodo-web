@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionTermometros.module.css';
 import Termometros from '../modales/Termometros';
-import { editVerificacionTermometros, verificacionTermometros } from '../../services/FormsRequest';
+import { editVerificacionTermometros, sendEditApplication, verificacionTermometros } from '../../services/FormsRequest';
 
 import Modal from '../shared/Modal';
 import Alert from '../shared/components/Alert/Alert';
@@ -139,7 +139,13 @@ function VerificacionTermometros() {
         } else {
           setTextAlert('¡Formulario editado exitosamente!');
           setTypeAlert('success');
-          navigate('/formularios-cargados/verificaciontermometros');
+          const data = {
+            editEnabled: false,
+            status:"",
+          }
+          sendEditApplication({values: data, formId:  infoPrecargada._id, form: '/verificaciontermometros'}).finally((resp)=>{
+            navigate('/formularios-cargados/verificaciontermometros');
+          })
 
         }
       })
@@ -225,6 +231,7 @@ function VerificacionTermometros() {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                label='Fecha'
                 disabled={currentStatus === 'view'}
               />
               <TextField
@@ -292,6 +299,31 @@ function VerificacionTermometros() {
                               </Select>
                             </FormControl>
                           ) : (
+                            input.label === 'Acciones de corrección' ? (
+                              <FormControl variant='outlined'>
+                                <InputLabel>Acciones de corrección</InputLabel>
+                                <Select
+                                  value={replicaValues[index]?.["Acciones de corrección"]}
+                                  onChange={(e) => {
+                                    let replicaCopy = [...replicaValues];
+                                    replicaCopy[index]["Acciones de corrección"] = e.target.value;
+                                    setReplicaValues(replicaCopy);
+                                  }}
+                                  className='input'
+                                  id={`input-${input.id}-${index}`}
+                                  label={`${input.label}`}
+                                  variant='outlined'
+                                  disabled={currentStatus === 'view'}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                >
+                                  <MenuItem value='Calibrar'>Calibrar</MenuItem>
+                                  <MenuItem value='Reemplazar'>Reemplazar</MenuItem>
+
+                                </Select>
+                              </FormControl>
+                            ) : (
                             <TextField
                               // value={
                               //   replicaValues[index][input.label.toLowerCase().replace(/\s/g, '')]
@@ -314,7 +346,7 @@ function VerificacionTermometros() {
                               id={`input-${input.id}-${index}`}
                               placeholder={`${input.label}`}
                               variant='outlined'
-                            />
+                            />)
                           )}
                         </div>
                       ))}
@@ -368,6 +400,31 @@ function VerificacionTermometros() {
 
                     {inputs2.map((input, index2) => (
                       <div key={replicaValues2[index].id + index2}>
+                         {input.label === 'Acciones de corrección' ? (
+                              <FormControl variant='outlined'>
+                                <InputLabel>Acciones de corrección</InputLabel>
+                                <Select
+                                  value={replicaValues2[index]?.["Acciones de corrección"]}
+                                  onChange={(e) => {
+                                    let replicaCopy = [...replicaValues2];
+                                    replicaCopy[index]["Acciones de corrección"] = e.target.value;
+                                    setReplicaValues2(replicaCopy);
+                                  }}
+                                  className='input'
+                                  id={`input-${input.id}-${index}`}
+                                  label={`${input.label}`}
+                                  variant='outlined'
+                                  disabled={currentStatus === 'view'}
+                                  InputLabelProps={{
+                                    shrink: true,
+                                  }}
+                                >
+                                  <MenuItem value='Calibrar'>Calibrar</MenuItem>
+                                  <MenuItem value='Reemplazar'>Reemplazar</MenuItem>
+
+                                </Select>
+                              </FormControl>
+                            ) : (
                         <TextField
                           // value={
                           //   replicaValues2[index][input.label.toLowerCase().replace(/\s/g, '')]
@@ -390,7 +447,8 @@ function VerificacionTermometros() {
                           name={`${input.prop}`}
                           placeholder={`${input.label}`}
                           variant='outlined'
-                        />
+                        />)
+                        }
                       </div>
                     ))}
                    {infoPrecargada && currentStatus === 'view' ? (

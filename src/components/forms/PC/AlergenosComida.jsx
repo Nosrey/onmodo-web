@@ -5,13 +5,14 @@ import styles from './AlergenosComida.module.css';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckboxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import Alert from '../../shared/components/Alert/Alert';
-import { controlAlergenos } from '../../../services/FormsRequest';
-import { useLocation } from 'react-router';
+import { controlAlergenos, editControlAlergenos } from '../../../services/FormsRequest';
+import { useLocation , useNavigate } from 'react-router';
 import { useDropzone } from 'react-dropzone';
 
 function AlergenosComida() {
   const location = useLocation();
-  const infoPrecargada = location.state?.objeto;
+  const navigate = useNavigate();
+  let infoPrecargada = location.state?.objeto;
   const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
 
   var idUser = localStorage.getItem('idUser');
@@ -29,6 +30,7 @@ function AlergenosComida() {
       setValues({
         comedor: '',
         inputs: [{}],
+        certificados: null,
         idUser: idUser,
       });
     }
@@ -49,7 +51,7 @@ function AlergenosComida() {
     { id: 7, label: 'Presenta Certificado', prop: 'presentaCertificado' },
     { id: 8, label: 'Certificado', prop: 'certificado' },
   ]);
-  const [values, setValues] = useState({ idUser: idUser });
+  const [values, setValues] = useState({ idUser: idUser, certificados: null });
   const initialObjValues = {fecha: '', nombre: '', diagnostico: '', requiereRenovacion: 'NO', fechaRenovacion: '', listado: '', presentaCertificado: 'NO', certificado: null}
   const [objValues, setObjValues] = useState([initialObjValues]);
 
@@ -71,10 +73,58 @@ function AlergenosComida() {
     const objValuesFiltered = objValues.filter((_, index) => index !== idToDelete);
     setObjValues(objValuesFiltered);
   };
+  const getBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => {
+        console.log('Error: ', error);
+        reject(error);
+      };
+    });
+  };
+  
+  const convertirFilesABase64 = async (files) => {
 
-  const handleSubmit = () => {
+    try {
+      const base64Array = await Promise.all(files.map(async (fileObject) => {
+     
+        if (typeof fileObject === 'object') {
+          const path = fileObject ?  fileObject.path : 'archivo';
+          const file = fileObject /* Obtener el archivo, por ejemplo, mediante una llamada a la API o desde algún otro lugar */;
+          if (file) {
+            const base64String = await getBase64(file);
+            return  base64String ;
+          } else {
+            // Manejar el caso en que el archivo no se pueda encontrar o cargar
+            console.warn(`No se pudo cargar el archivo para ${path}`);
+            return   null ;
+          }
+        } else {
+          return fileObject
+        }
+        
+      }));
+  
+      return base64Array;
+    } catch (error) {
+      console.error('Error al convertir files a Base64:', error);
+      throw error;
+    }
+  };
+
+  const handleSubmit = async () => {
     const valuesToSend = {...values, inputs: objValues}
-
+    const arrayFiles = []
+    for (let i = 0; i < objValues.length; i++) {
+      arrayFiles.push(objValues[i].certificado);
+    }
+    const base64Array = await convertirFilesABase64(arrayFiles);
+    valuesToSend.certificados = base64Array
+    if (valuesToSend.certificados === '' || valuesToSend.certificados === null || valuesToSend.certificados.length === 0 ) {
+      delete valuesToSend.certificados;
+  }
     controlAlergenos(valuesToSend)
       .then((resp) => {
         if (resp.error) {
@@ -103,18 +153,73 @@ function AlergenosComida() {
       });
   };
   
+  const handleEdit = async () => {
+    let valuesToSend = {...values, inputs: objValues}
+    const arrayFiles = []
+    for (let i = 0; i < objValues.length; i++) {
+      arrayFiles.push(objValues[i].certificado);
+    }
+    const base64Array = await convertirFilesABase64(infoPrecargada.certificados);
+  
+    valuesToSend = {...valuesToSend, certificados: base64Array}
+  
+    editControlAlergenos(valuesToSend, infoPrecargada._id)
+      .then((resp) => {
+        if (resp.error) {
+          setTextAlert('Ocurrió un error');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('¡Formulario editado exitosamente!');
+          setTypeAlert('success');
+          navigate('/formularios-cargados/controlalergenos');
+        }
+      })
+      .catch((resp) => {
+        setTextAlert('Ocurrió un error');
+        setTypeAlert('error');
+      })
+  };
+  
   const DropCertificado = ({index, input}) => {
     const onDrop = (acceptedFiles) => {
         // Solo permitir un archivo, puedes ajustar según tus necesidades
         const file = acceptedFiles[0];
         const newValues = [...objValues];
         newValues[index].certificado = file;
+        infoPrecargada.certificados[index]=file;
         setObjValues(newValues);
       };
     
     const { getRootProps, getInputProps } = useDropzone({ onDrop });    
 
     return (
+      <>
+       {currentStatus === 'view'  && 
+        <div className='campoFileRow'>
+          
+        {currentStatus === "view" && typeof infoPrecargada.certificados[index] === 'string'
+          && 
+            <a className='linkFileRow' href={infoPrecargada.certificados[index]} target="_blank" rel="noopener noreferrer">
+                Ver Certificado
+            </a>
+          }
+        {currentStatus === "view" && !infoPrecargada.certificados[index]
+          && 
+            <a className='linkFileRowNoArcchivo'  target="_blank" rel="noopener noreferrer">
+              No se ha cargado Certificado 
+
+            </a>
+          }
+        </div>
+       }
+ {currentStatus !== 'view'  &&
+      <>
+       {currentStatus === "edit" && typeof infoPrecargada.certificados[index] === 'string'
+          && 
+            <a className='linkFileRow' href={infoPrecargada.certificados[index]} target="_blank" rel="noopener noreferrer">
+                Ver Certificado
+            </a>
+          }
         <div {...getRootProps()} className={styles.border}>
         <input {...getInputProps()} />
         {!input.certificado && (
@@ -127,13 +232,23 @@ function AlergenosComida() {
             style={{ fontSize: '12px', width: '100%' }}
             className={styles.select}
           >
+            {input.certificado.name ?
+            <>
             Archivo seleccionado:{' '}
             <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
-              {input.certificado.name.substring(0, 25)}
-            </span>{' '}
+              {input.certificado.name.substring(0, 25) }
+            </span>{' '}</>
+            :
+            <>Click para modificar el archivo</>
+            }
           </h6>
         )}
       </div>
+      </>
+  }
+  
+      </>
+       
     )
   }
 
@@ -144,17 +259,24 @@ function AlergenosComida() {
           <div className='form'>
             <div className='titleContainer'>
               <h3 className='title'>Control de comensales con dietas especiales</h3>
+              { (currentStatus === 'view' || currentStatus === 'edit') &&
+                        <span style={{marginLeft:'20px', fontSize:'20px'}}>
+                            <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
+                        </span>
+                    }
             </div>
             <div className={styles.personal}>
               <TextField
                 onChange={(e) => {
-                  setValues({ ...values, comedor: e.target.value });
+                  let valuesCopy = { ...values };
+                  valuesCopy.comedor = e.target.value;
+                  setValues(valuesCopy);
                 }}
                 fullWidth
                 id='outlined-basic'
                 label='Comedor'
                 variant='outlined'
-                value={infoPrecargada?.comedor}
+                value={values?.comedor}
                 disabled={currentStatus === 'view'}
               />
             </div>
@@ -250,7 +372,7 @@ function AlergenosComida() {
                         </div>
                       ))}
 
-                      {infoPrecargada ? (
+                      {currentStatus === 'view' ? (
                         <div></div>
                       ) : (
                         <div className='icon'>
@@ -269,19 +391,28 @@ function AlergenosComida() {
                   ))}
               </div>
             </div>
-           
-          
             {
-              (currentStatus === 'edit' || infoPrecargada === undefined) &&
+              (infoPrecargada === undefined) &&
               <div className='btn'>
-                <Button
-                  onClick={handleSubmit}
-                  variant='contained'
-                >
-                  Guardar
-                </Button>
+                  <Button
+                      onClick={handleSubmit}
+                      variant='contained'
+                  >
+                      Guardar
+                  </Button>
               </div>
-            }
+          }
+          {
+              (currentStatus === 'edit' ) &&
+              <div className='btn'>
+                  <Button
+                      onClick={handleEdit}
+                      variant='contained'
+                  >
+                      Editar
+                  </Button>
+              </div>
+          }
        
           </div>
         </div>

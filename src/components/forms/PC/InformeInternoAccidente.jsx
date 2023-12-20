@@ -2,15 +2,17 @@ import { Button, TextField, Checkbox, FormControlLabel, FormControl, InputLabel,
 import React, { useEffect, useState } from 'react'
 import styles from './InformeInternoAccidente.module.css'
 import { useSelector } from 'react-redux';
-import { informeIntAccidente } from '../../../services/FormsRequest';
+import { informeIntAccidente, informeIntAccidenteEdit } from '../../../services/FormsRequest';
 import Alert from '../../shared/components/Alert/Alert';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { useDropzone } from 'react-dropzone';
+import { current } from 'immer';
 
 function InformeInternoAccidente() {
+    const navigate = useNavigate();
     const location = useLocation();
     const infoPrecargada = location.state?.objeto;
-    const currentStatus= location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
+    const currentStatus = location.state?.status; // ('view' o 'edit' segun si vengo del icono del ojito o  de editar)
     //** ALERTA */
     const [textAlert, setTextAlert] = useState("");
     const [typeAlert, setTypeAlert] = useState("");
@@ -23,7 +25,7 @@ function InformeInternoAccidente() {
             fecha: "",
             tipo: "",
             checkboxes: [{}],
-            nombreApellido: "",
+            nombreapellido: "",
             cuil: "",
             fechaIngreso: "",
             puesto: "",
@@ -51,40 +53,32 @@ function InformeInternoAccidente() {
     var idUser = localStorage.getItem("idUser");
     const [values, setValues] = useState()
     const [checkboxesValues] = useState([
-        { label: "CDR", check: false },
-        { label: "CMS", check: false },
-        { label: "Laboral", check: false },
-        { label: "In Itinere", check: false },
         { label: "Se adjunta denuncia policial", check: false },
     ])
-    const [checkboxesAccidenteValues] = useState([
-        { label: "¿Era su trabajo habitual?", check: false },
-        { label: "¿Conocía la tarea asignada?", check: false },
-        { label: "¿Una máquina le causó la lesión?", check: false, cualMaquina: "" },
-        { label: "¿Hubo alguna acción o condición insegura que fuera la causante del accidente?", check: false, cualAccion: "" },
-        { label: "¿Estaba usando su E.P.P.?", check: false }
-    ])
+    const [checkboxesAccidenteValues, setCheckboxesAccidenteValues] = useState(
+        [
+            {
+                label: "¿Era su trabajo habitual?", check: false
+            },
+            {
+                label: "¿Conocía la tarea asignada?", check: false
+            },
+            {
+                label: "¿Una máquina le causó la lesión?", check: false, cualMaquina: ''
+            },
+            {
+                label: "¿Hubo alguna acción o condición insegura que fuera la causante del accidente?", check: false, cualAccion: ''
+            },
+            {
+                label: "¿Estaba usando su E.P.P.?", check: false, razon: ''
+            }
+        ]
+    )
 
 
     const checkboxValuesConstructor = (label, value) => {
-        if (label === 'CDR') {
+         if (label === "Se adjunta denuncia policial") {
             checkboxesValues[0].check = value
-            setValues({ ...values, checkboxes: checkboxesValues })
-        }
-        else if (label === "CMS") {
-            checkboxesValues[1].check = value
-            setValues({ ...values, checkboxes: checkboxesValues })
-        }
-        else if (label === "Laboral") {
-            checkboxesValues[2].check = value
-            setValues({ ...values, checkboxes: checkboxesValues })
-        }
-        else if (label === "In Itinere") {
-            checkboxesValues[3].check = value
-            setValues({ ...values, checkboxes: checkboxesValues })
-        }
-        else if (label === "Se adjunta denuncia policial") {
-            checkboxesValues[4].check = value
             setValues({ ...values, checkboxes: checkboxesValues })
 
         }
@@ -157,16 +151,124 @@ function InformeInternoAccidente() {
                 {
                     label: checkboxesValues[4]?.label,
                     check: values?.checkboxes[4]?.check,
-                    
+
                 }
             ],
             denuncia: values?.denuncia,
-            nombreApellido: values?.nombreApellido,
+            nombreapellido: values?.nombreapellido,
             cuil: values?.cuil,
             fechaIngreso: values?.fechaIngreso,
             puesto: values?.puesto,
             hora: values?.hora,
             lugar: values?.lugar,
+            descripcion: values?.descripcion,
+            razon: checkboxesAccidenteValues[4]?.razon,
+            checkboxesAccidente: [
+                {
+                    label: checkboxesAccidenteValues[0]?.label,
+                    check: values?.checkboxesAccidente[0]?.check
+                },
+                {
+                    label: checkboxesAccidenteValues[1]?.label,
+                    check: values?.checkboxesAccidente[1]?.check
+                },
+                {
+                    label: checkboxesAccidenteValues[2]?.label,
+                    check: values?.checkboxesAccidente[2]?.check,
+                    cualMaquina: values?.checkboxesAccidente[2]?.cualMaquina
+                },
+                {
+                    label: checkboxesAccidenteValues[3].label,
+                    check: values?.checkboxesAccidente[3]?.check,
+                    cualAccion: values?.checkboxesAccidente[3]?.cualAccion
+                },
+                {
+                    label: checkboxesAccidenteValues[4].label,
+                    check: eppCheck,
+                    razon: checkboxesAccidenteValues[4]?.razon,
+                }
+            ],
+            lugarLesion: values?.lugarLesion,
+            medidas: values?.medidas,
+            firma: values?.firma,
+            date: values?.date,
+            idUser: values?.idUser,
+        }
+
+        // si no se han cargado files , no se envia la propiedad directamente 
+        if (objetoFinal.firma === '' || objetoFinal.firma === undefined) {
+            delete objetoFinal.firma;
+        }
+        if (objetoFinal.denuncia === '' || objetoFinal.denuncia === undefined) {
+            delete objetoFinal.denuncia;
+        }
+
+        informeIntAccidente(objetoFinal).then((resp) => {
+            if (resp.error) {
+                setTextAlert('Ocurrió un error');
+                setTypeAlert('error');
+            } else {
+                setTextAlert('¡Formulario cargado exitosamente!');
+                setTypeAlert('success');
+                // limpiar fomr
+                window.location.href = window.location.href;
+            }
+        }).catch((resp) => {
+            setTextAlert("Ocurrió un error")
+            setTypeAlert("error");
+        }).finally(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+            });
+            setShowlert(true);
+            setTimeout(() => {
+                setShowlert(false);
+
+            }, 7000);
+        }
+        )
+    };
+
+    const handleEdit = () => {
+        let eppCheck = false
+        if (values.checkboxesAccidente[4]?.check === true) eppCheck = true
+
+        let objetoFinal = {
+            comedor: values?.comedor,
+            fecha: values?.fecha,
+            tipo: values?.tipo,
+            checkboxes: [
+                {
+                    label: checkboxesValues[0]?.label,
+                    check: values?.checkboxes[0]?.check
+                },
+                {
+                    label: checkboxesValues[1]?.label,
+                    check: values?.checkboxes[1]?.check
+                },
+                {
+                    label: checkboxesValues[2]?.label,
+                    check: values?.checkboxes[2]?.check
+                },
+                {
+                    label: checkboxesValues[3]?.label,
+                    check: values?.checkboxes[3]?.check
+                },
+                {
+                    label: checkboxesValues[4]?.label,
+                    check: values?.checkboxes[4]?.check,
+
+                }
+            ],
+            denuncia: values?.denuncia,
+            nombreapellido: values?.nombreapellido,
+            cuil: values?.cuil,
+            fechaIngreso: values?.fechaIngreso,
+            puesto: values?.puesto,
+            hora: values?.hora,
+            lugar: values?.lugar,
+            razon: checkboxesAccidenteValues[4]?.razon,
             descripcion: values?.descripcion,
             checkboxesAccidente: [
                 {
@@ -190,7 +292,7 @@ function InformeInternoAccidente() {
                 {
                     label: checkboxesAccidenteValues[4].label,
                     check: eppCheck,
-                    razon: values?.razon,
+                    razon: checkboxesAccidenteValues[4]?.razon,
                 }
             ],
             lugarLesion: values?.lugarLesion,
@@ -199,7 +301,7 @@ function InformeInternoAccidente() {
             date: values?.date,
             idUser: values?.idUser,
         }
-        
+
         // si no se han cargado files , no se envia la propiedad directamente 
         if (objetoFinal.firma === '' || objetoFinal.firma === undefined) {
             delete objetoFinal.firma;
@@ -208,65 +310,101 @@ function InformeInternoAccidente() {
             delete objetoFinal.denuncia;
         }
 
-        informeIntAccidente(objetoFinal).then((resp) => {
+        informeIntAccidenteEdit(objetoFinal, infoPrecargada._id).then((resp) => {
             if (resp.error) {
                 setTextAlert('Ocurrió un error');
                 setTypeAlert('error');
-              } else {
+            } else {
                 setTextAlert('¡Formulario cargado exitosamente!');
                 setTypeAlert('success');
-                 // limpiar fomr
-              window.location.href = window.location.href;
-              }
+                navigate('/formularios-cargados/informeintaccidente', { replace: true })
+            }
         }).catch((resp) => {
             setTextAlert("Ocurrió un error")
             setTypeAlert("error");
         }).finally(() => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth',
-            });
-            setShowlert(true);
-            setTimeout(() => {
-                setShowlert(false);
+            // window.scrollTo({
+            //     top: 0,
+            //     behavior: 'smooth',
+            // });
+            // setShowlert(true);
+            // setTimeout(() => {
+            //     setShowlert(false);
 
-            }, 7000);
+            // }, 7000);
+            // voy a /formularios-cargados/informeintaccidente
         }
         )
     };
-   
+
     useEffect(() => {
+        console.log('infoPrecargada', infoPrecargada)
+        console.log('currentStatus es view: ', currentStatus === 'view')
         if (infoPrecargada) { // muestro un form del historial
             setValues({
                 comedor: infoPrecargada.comedor,
                 fecha: infoPrecargada.fecha,
                 tipo: infoPrecargada.tipo,
-                checkboxes: infoPrecargada.checkboxes,
-                nombreApellido: infoPrecargada.nombreApellido,
+                // parseo checkboxes
+                checkboxes: JSON.parse(infoPrecargada.checkboxes),
+                nombreapellido: infoPrecargada.nombreapellido,
                 cuil: infoPrecargada.cuil,
                 fechaIngreso: infoPrecargada.fechaIngreso,
                 puesto: infoPrecargada.puesto,
                 hora: infoPrecargada.hora,
                 lugar: infoPrecargada.lugar,
                 descripcion: infoPrecargada.descripcion,
-                checkboxesAccidente: infoPrecargada.checkboxesAccidente,
+                checkboxesAccidente: JSON.parse(infoPrecargada.checkboxesAccidente),
                 lugarLesion: infoPrecargada.lugarLesion,
                 medidas: infoPrecargada.medidas,
-                razon: infoPrecargada.razon,
-                firmaEmpleado: infoPrecargada.firmaEmpleado,
-                firmaAdm: infoPrecargada.firmaAdm,
+                razon: infoPrecargada?.razon,
+                denuncia: infoPrecargada.denuncia,
+                firma: infoPrecargada.firma,
                 encargado: infoPrecargada.encargado,
                 date: infoPrecargada.date,
                 idUser: idUser
             })
-        } else { // creo un form desde cero
+            setFiles(JSON.parse(infoPrecargada?.checkboxes)?.[4]?.check)
+            setUploadedFile1(infoPrecargada?.denuncia)
+            setUploadedFile2(infoPrecargada?.firma)
 
+            let checkAccidenteArray = JSON.parse(infoPrecargada?.checkboxesAccidente)
+            setCheckboxesAccidenteValues([
+                {
+                    label: "¿Era su trabajo habitual?", check: checkAccidenteArray[0]?.check
+                },
+                {
+                    label: "¿Conocía la tarea asignada?", check: checkAccidenteArray[1]?.check
+                },
+                {
+                    label: "¿Una máquina le causó la lesión?", check: checkAccidenteArray[2]?.check, cualMaquina: checkAccidenteArray[2]?.cualMaquina
+                },
+                {
+                    label: "¿Hubo alguna acción o condición insegura que fuera la causante del accidente?", check: checkAccidenteArray[3]?.check, cualAccion: checkAccidenteArray[3]?.cualAccion
+                },
+                {
+                    label: "¿Estaba usando su E.P.P.?", check: checkAccidenteArray[4]?.check, razon: infoPrecargada?.razon
+                }
+            ])
+
+            // seteo los handleCheckboxChange
+            if (JSON.parse(infoPrecargada?.checkboxesAccidente)?.[2]?.check) {
+                setShowTextField1(true)
+            }
+            if (JSON.parse(infoPrecargada?.checkboxesAccidente)?.[3]?.check) {
+                setShowTextField2(true)
+            }
+            if (JSON.parse(infoPrecargada?.checkboxesAccidente)?.[4]?.check) {
+                setShowTextField3(true)
+            }
+
+        } else { // creo un form desde cero
             setValues({
                 comedor: "",
                 fecha: "",
                 tipo: "",
                 checkboxes: [{}],
-                nombreApellido: "",
+                nombreapellido: "",
                 cuil: "",
                 fechaIngreso: "",
                 puesto: "",
@@ -312,14 +450,20 @@ function InformeInternoAccidente() {
                     <div className="form">
                         <div className="titleContainer">
                             <h3 className="title">Informe Interno de Accidente</h3>
+                            {(currentStatus === 'view' || currentStatus === 'edit') &&
+                                <span style={{ marginLeft: '20px', fontSize: '20px' }}>
+                                    <i className={currentStatus === 'view' ? 'ri-eye-line' : 'ri-pencil-line'}></i>
+                                </span>
+                            }
                         </div>
 
                         <div className={styles.personal}>
 
-                            <TextField onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }} value={values.comedor} id="outlined-basic" style={{ width: "50%" }} label="Comedor donde ocurrió" variant="outlined" />
+                            <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, comedor: e.target.value }) }} value={values.comedor} id="outlined-basic" className={styles.campo} label="Comedor" variant="outlined" />
 
                             <TextField
                                 label="Fecha"
+                                disabled={currentStatus === 'view'}
                                 variant="outlined"
                                 type="date"
                                 InputLabelProps={{
@@ -330,25 +474,51 @@ function InformeInternoAccidente() {
                                 value={values.fecha}
                                 name="fecha"
                             />
-                            <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} value={values.tipo} id="outlined-basic" label="Tipo de accidente" variant="outlined" />
-
+                            {/* <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }} value={values.tipo} id="outlined-basic" label="Tipo de accidente" variant="outlined" /> */}
+                            <FormControl disabled={currentStatus === 'view'}  className={styles.selectTipo}>
+                                    <InputLabel id="select-label-1">Tipo de accidente</InputLabel>
+                                    <Select
+                                        labelId="select-label-1"
+                                       
+                                        id="select-1"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                          }}
+                                        onChange={(e) => { setValues({ ...values, tipo: e.target.value }) }}
+                                        value={values.tipo} 
+                                    >
+                                        <MenuItem value={'Laboral'}>Laboral</MenuItem>
+                                        <MenuItem value={'In itinere'}>In itinere</MenuItem>
+                                    </Select>
+                                </FormControl>
                         </div>
 
                         <div className={styles.personal}>
-                            <FormControlLabel checked={values.checkboxes[0]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CDR', e.target.checked) }} />} label="CDR" />
+                            {/* <FormControlLabel checked={values.checkboxes[0]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CDR', e.target.checked) }} />} label="CDR" />
                             <FormControlLabel checked={values.checkboxes[1]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CMS', e.target.checked) }} />} label="CMS" />
                             <FormControlLabel checked={values.checkboxes[2]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Laboral', e.target.checked) }} />} label="Laboral" />
-                            <FormControlLabel checked={values.checkboxes[3]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('In Itinere', e.target.checked) }} />} label="In Itinere" />
+                            <FormControlLabel checked={values.checkboxes[3]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('In Itinere', e.target.checked) }} />} label="In Itinere" /> */}
                             <FormControlLabel checked={values.checkboxes[4]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Se adjunta denuncia policial', e.target.checked); setFiles(e.target.checked) }} />} label="Se adjunta denuncia policial" />
-                            {files && (
-                                <div {...getRootProps1()} className={styles.fileInput}>
-                                    <input {...getInputProps1()} />
-                                    <h6>Arrastra y suelta una imagen aquí, o haz clic para seleccionarla</h6>
-                                    {uploadedFile1 && (
-                                        <img style={{ width: '30%', marginLeft: "8rem" }} src={URL.createObjectURL(uploadedFile1)} alt="Previsualización" />
-                                    )}
-                                </div>
-                            )}
+                            {files ? (
+                                currentStatus === 'view' ?
+                                    (
+                                        <div className={styles.fileInput}>
+                                            {uploadedFile1 && (
+                                                <img style={{ width: '30%', marginLeft: "8rem" }} src={(infoPrecargada && (currentStatus === 'view' || (currentStatus === 'edit' && typeof values.denuncia === 'string')) ? values.denuncia : URL.createObjectURL(values.denuncia))} alt="Previsualización" />
+                                            )}
+                                        </div>
+                                    ) :
+                                    <div {...getRootProps1()} className={styles.fileInput}>
+                                        <input {...getInputProps1()} />
+                                        <h6>Arrastra y suelta una imagen aquí, o haz clic para seleccionarla</h6>
+                                        {uploadedFile1 && (
+                                            <img style={{ width: '30%', marginLeft: "8rem" }} src={(infoPrecargada && (currentStatus === 'view' || (currentStatus === 'edit' && typeof values.denuncia === 'string')) ? values.denuncia : URL.createObjectURL(values.denuncia))} alt="Previsualización" />
+                                        )}
+                                    </div>
+                            ) :
+                                null
+                            }
+
                         </div>
 
 
@@ -358,7 +528,8 @@ function InformeInternoAccidente() {
                             </div>
                             <div className={styles.personal}>
 
-                                <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, nombreApellido: e.target.value }) }} value={values.nombreApellido} id="outlined-basic" label="Nombre y Apellido" variant="outlined" />
+                                <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, nombreapellido: e.target.value }) }} value={values.nombreapellido} id="outlined-basic" label="Nombre y Apellido" variant="outlined" />
+
                                 <TextField disabled={currentStatus === 'view'} onChange={(e) => { setValues({ ...values, cuil: e.target.value }) }} value={values.cuil} id="outlined-basic" label="Nº de CUIL" variant="outlined" />
 
 
@@ -386,6 +557,7 @@ function InformeInternoAccidente() {
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
+                                    disabled={(currentStatus === 'view') ? true : false}
                                     onChange={(e) => { setValues({ ...values, hora: e.target.value }) }}
                                     id="hora-accidente"
                                     name="hora-accidente"
@@ -412,11 +584,14 @@ function InformeInternoAccidente() {
                             </div>
 
                             <div className={styles.listContainer}>
-                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} className={styles.selectTipo}  style={{ marginBottom: "1rem", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-1">¿Era su trabajo habitual?</InputLabel>
                                     <Select
                                         labelId="select-label-1"
                                         id="select-1"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                          }}
                                         value={values.checkboxesAccidente[0]?.check ? 'SI' : 'NO'}
                                         onChange={(e) => { checkboxValuesConstructor('¿Era su trabajo habitual?', e.target.value === "SI" ? true : false) }}
                                     >
@@ -425,7 +600,7 @@ function InformeInternoAccidente() {
                                     </Select>
                                 </FormControl>
 
-                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} className={styles.selectTipo} style={{ marginBottom: "1rem", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-2">¿Conocía la tarea asignada?</InputLabel>
                                     <Select
                                         labelId="select-label-2"
@@ -438,8 +613,7 @@ function InformeInternoAccidente() {
                                     </Select>
                                 </FormControl>
 
-
-                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} className={styles.selectTipo} style={{ marginBottom: "1rem", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-machine">
                                         ¿Una máquina le causó la lesión?
                                     </InputLabel>
@@ -465,9 +639,12 @@ function InformeInternoAccidente() {
                                             onChange={(e) => {
                                                 checkboxValuesConstructor("Cual Maquina", e.target.value);
                                             }}
+                                            value={
+                                                values.checkboxesAccidente[2]?.cualMaquina
+                                            }
                                             id="outlined-basic"
                                             multiline
-                                            style={{ width: "50%" }}
+                                            className={styles.campo}
                                             rows={2}
                                             name="textField"
                                             variant="outlined"
@@ -478,10 +655,10 @@ function InformeInternoAccidente() {
 
 
 
-                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
-                                    <InputLabel id="select-label-condition">
+                                <FormControl disabled={currentStatus === 'view'} className={styles.selectTipo} style={{ marginBottom: "1rem", paddingTop: "0.4rem" }}>
+                                    <label className={styles.label} id="select-label-condition">
                                         ¿Hubo alguna acción o condición insegura que fuera la causante del accidente?
-                                    </InputLabel>
+                                    </label>
                                     <Select
                                         labelId="select-label-condition"
                                         id="select-condition"
@@ -504,9 +681,12 @@ function InformeInternoAccidente() {
                                             onChange={(e) => {
                                                 checkboxValuesConstructor("Cual Accion", e.target.value);
                                             }}
+                                            value={
+                                                values.checkboxesAccidente[3]?.cualAccion
+                                            }
                                             id="outlined-basic"
                                             multiline
-                                            style={{ width: "50%" }}
+                                            className={styles.campo}
                                             rows={2}
                                             name="textField"
                                             variant="outlined"
@@ -517,7 +697,7 @@ function InformeInternoAccidente() {
 
 
 
-                                <FormControl disabled={currentStatus === 'view'} style={{ marginBottom: "1rem", width: "20%", paddingTop: "0.4rem" }}>
+                                <FormControl disabled={currentStatus === 'view'} className={styles.selectTipo} style={{ marginBottom: "1rem", paddingTop: "0.4rem" }}>
                                     <InputLabel id="select-label-epp">
                                         ¿Estaba usando su E.P.P.?
                                     </InputLabel>
@@ -542,14 +722,14 @@ function InformeInternoAccidente() {
                                         <TextField
                                             disabled={currentStatus === 'view'}
                                             onChange={(e) => {
-                                                let valuesCopy = { ...values };
-                                                valuesCopy.razon = e.target.value;
-                                                setValues(valuesCopy);
+                                                checkboxValuesConstructor("Razon", e.target.value);
                                             }}
-                                            value={values.checkboxesAccidente[4]?.razon}
+                                            value={
+                                                values.checkboxesAccidente[4]?.razon
+                                            }
                                             id="outlined-basic"
                                             multiline
-                                            style={{ width: "50%" }}
+                                            className={styles.campo}
                                             rows={2}
                                             name="textField"
                                             variant="outlined"
@@ -574,7 +754,7 @@ function InformeInternoAccidente() {
                                 />
                             </div>
                             <div className={styles.personalText}>
-
+                                <label className={styles.label}>¿Qué medidas cree conveniente adoptar para evitar futuros accidentes de este tipo?</label>
                                 <TextField
                                     onChange={(e) => { setValues({ ...values, medidas: e.target.value }) }}
                                     fullWidth
@@ -588,31 +768,89 @@ function InformeInternoAccidente() {
                             </div>
                         </div>
 
-                        <div className={styles.responsableCont}>
-                            <div className={styles.subtitleCont}>
-                                <p className={styles.subtitle}>Firma de involucrados</p>
-                            </div>
-                            <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por las partes involucradas. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
-                            <div className={styles.firma}>
-                                <div   {...getRootProps2()} className={styles.file} >
-                                    <input disabled={currentStatus === 'view'} {...getInputProps2()} />
-                                    <h6 >Arrastra y suelta la firma aqui, o haz clic para seleccionarla</h6>
-                                    {values.firma && <h6>Archivo seleccionado: {values.firma.name}</h6>}
+                        {(currentStatus !== 'view') ?
+                            <div className={styles.responsableCont}>
+                                <div className={styles.subtitleCont}>
+                                    <p className={styles.subtitle}>Firma de involucrados</p>
                                 </div>
-                            </div>
+                                <p>Una vez guardada esta planilla ,  es necesario imprimirla desde la sección Formularios Cargados para ser firmada por las partes involucradas. Con todas las firmas listas, desde la misma sección de Formularios Cargados, edite esta planilla adjuntando en el siguiente campo el documento firmado. </p>
+                                <div className={styles.firma}>
+                                    {(currentStatus === 'view') ?
+                                        <div className={styles.file} >
+                                            <input disabled={currentStatus === 'view'} {...getInputProps2()} />
+                                        </div>
+                                        :
+                                        <div {...getRootProps2()} className={styles.file} >
+                                            <input disabled={currentStatus === 'view'} {...getInputProps2()} />
+                                            <h6 >Arrastra y suelta la firma aqui, o haz clic para seleccionarla</h6>
 
-                        </div>
+                                            {values.firma &&
+                                                <h6>{(typeof values?.firma !== 'string' ? "Archivo seleccionado:" : '')} {
+                                                    typeof values?.firma === 'string' ?
+                                                        <img
+                                                            src={values?.firma}
+                                                            alt="planilla"
+                                                            srcSet=""
+                                                            style={{ marginTop: '30px', width: 'fit-content', maxWidth: '60%', minWidth: '250px' }}
+                                                        />
+                                                        :
+                                                        values?.firma?.name
+                                                }</h6>}
+                                        </div>
+                                    }
+                                </div>
+
+                            </div>
+                            :
+                            <div className={styles.responsableCont}>
+                                <div className={styles.subtitleCont}>
+                                    <p className={styles.subtitle}>Firma de involucrados</p>
+                                </div>
+
+                                <div className={styles.firma}>
+                                    <div style={{ marginTop: '10px' }} >
+                                        {values?.firma ?
+                                            <h6>
+                                                {typeof values?.firma === 'string' && <a href={values?.firma} target="_blank" rel="noopener noreferrer"> Descargar Archivo</a>}
+                                            </h6>
+                                            :
+                                            <h6>No se han cargado documentos.</h6>
+                                        }
+                                    </div>
+
+                                </div>
+
+                                {
+                                    typeof values?.firma === 'string' && // ste seria el caso en que tengo la url de amazon
+                                    <a href={values?.firma} target="_blank" rel="noopener noreferrer">
+                                        <img src={values?.firma} alt="planilla" srcSet="" style={{ marginTop: '30px', width: 'fit-content', maxWidth: '60%', minWidth: '250px' }} />
+                                    </a>
+                                }
+
+                            </div>
+                        }
 
                         {
-                        (currentStatus === 'edit' || infoPrecargada === undefined) &&
-                        <div className='btn'>
-                            <Button
-                            onClick={handleSubmit}
-                            variant='contained'
-                            >
-                            Guardar
-                            </Button>
-                        </div>
+                            (infoPrecargada === undefined) &&
+                            <div className='btn'>
+                                <Button
+                                    onClick={handleSubmit}
+                                    variant='contained'
+                                >
+                                    Guardar
+                                </Button>
+                            </div>
+                        }
+                        {
+                            (currentStatus === 'edit') &&
+                            <div className='btn'>
+                                <Button
+                                    onClick={handleEdit}
+                                    variant='contained'
+                                >
+                                    Editar
+                                </Button>
+                            </div>
                         }
 
                     </div>

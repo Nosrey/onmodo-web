@@ -41,12 +41,13 @@ import Footer from './components/footer/Footer';
 import FormulariosContainer from './components/formularios/FormulariosContainer';
 import FormulariosCargados from './components/formulariosCargados/FormulariosCargados';
 import FormCargado from './components/formulariosCargados/formCargado/FormCargado';
-import CrearCuenta from './components/crearCuenta/CrearCuenta';
 import CrearContraseña from './components/CrearContraseña/CrearContraseña';
 import Cuentas from './views/Cuentas/Cuentas';
 import RecordatoriosContainer from './views/Recordatorios/RecordatoriosContainer';
 import SolicitudesDeEdicion from './views/SolicitudesDeEdicion/SolicitudesDeEdicion';
 import Legajos from './views/Legajos/Legajos';
+import Estadisticas from './views/Estadisticas/Estadisticas';
+import InfoBusiness from './components/InfoBusiness/InfoBusiness';
 
 function App() {
   const location = useLocation();
@@ -54,18 +55,19 @@ function App() {
   const isLoggedIn = !!localStorage.getItem('rol');
   const [keySearchForms, setKeySearchForms] = useState();
   const [keySearchHistorial, setKeySearchHistorial] = useState();
+  const [keySearchLegajo, setKeySearchLegajo] = useState();
 
   const handleSearchData = (value) => {
     switch (currentLocation) {
       case '/formularios':
         setKeySearchForms(value);
         break;
-      case '/formularios-cargados':
-        setKeySearchHistorial(value);
+        case '/formularios-cargados':
+          setKeySearchHistorial(value);
+          break;
+        case '/legajos':
+        setKeySearchLegajo(value)
         break;
-      // case '/formularios':
-      // setKeySearchForms(value)
-      // break;
       // case '/formularios':
       // setKeySearchForms(value)
       // break;
@@ -78,7 +80,11 @@ function App() {
   useEffect(() => {
     setKeySearchForms('');
     setKeySearchHistorial('');
+    setKeySearchLegajo('');
   }, [currentLocation]);
+
+
+
 
   return (
     <div className='App'>
@@ -100,7 +106,7 @@ function App() {
             />
 
             <Route path='/registro' element={<Register />} />
-            <Route path='/forgotpassword' element={<RecoverPassword />} />
+            <Route path='/restablecer-contrasena' element={<RecoverPassword />} />
             <Route path='/inicio-de-sesion' element={<Login />} />
             <Route path='/restablecer-contrasena/:token' element={<CrearContraseña />} />
 
@@ -109,6 +115,7 @@ function App() {
             <Route path='/cuentas' element={<Cuentas />} />
             <Route path='/cuenta' element={<Cuenta />} />
             <Route path='/crear-cuenta' element={<Cuenta />} />
+            <Route path='/perfil-legajo/:legajo' element={<Cuenta />} />
 
             <Route path='/recordatorios' element={<RecordatoriosContainer />} />
 
@@ -121,11 +128,12 @@ function App() {
               element={<FormulariosCargados filterByKey={keySearchHistorial} />}
             />
             <Route path='/formularios-cargados/:form' element={<FormCargado />} />
-
+            <Route path='/formularios-legajos/:legajo' element={<FormCargado />} />
+            
             <Route path='/solicitudes-edicion' element={<SolicitudesDeEdicion filterByKey={keySearchHistorial} />} />
-            <Route path='/legajos' element={<Legajos />} />
+            <Route path='/legajos'  element={<Legajos filterByKey={keySearchLegajo}  />} />
+            <Route path='/estadisticas' element={<Estadisticas />} />
               
-            <Route path='/crear-cuenta' element={<CrearCuenta />} />
 
             {/* Forms */}
             <Route path='/dietas-especiales' element={<AlergenosComida />} />
@@ -158,7 +166,10 @@ function App() {
             <Route path='/distribucion-expedicion' element={<DistribucionExpedicion />} />
             <Route path='/recepcion' element={<Recepcion />} />
             <Route path='/sanitizacion' element={<Sanitizacion />} />
+          <Route path='/info-business' element={<InfoBusiness />} />
           </Routes>
+
+
           {currentLocation !== '/inicio-de-sesion' &&
           currentLocation !== '/crear-contraseña' &&
           currentLocation !== '/registro' &&

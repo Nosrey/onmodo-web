@@ -4,6 +4,7 @@ import perfil from '../../../assets/image/perfil.png';
 import placeholder from '../../../assets/image/download.png';
 import {
   createNewUSer,
+  editUser,
   getLocalidades,
   getProvincias,
   getUserInfo,
@@ -12,11 +13,13 @@ import { useLocation } from 'react-router-dom';
 import { PUESTOS_N1, PUESTOS_N2 } from '../../../components/shared/constants/Puestos';
 import ImageUploader from '../../../components/ImgUploader/ImgUploader';
 import Alert from '../../../components/shared/components/Alert/Alert';
+import { useParams } from 'react-router-dom';
 
 function Cuenta() {
   const idUser = localStorage.getItem('idUser');
   const myRol = localStorage.getItem('rol');
   const location = useLocation();
+  const { legajo } = useParams();
 
   const [errors, setErrors] = useState({});
   const [editInput, setEditInput] = useState(true);
@@ -30,6 +33,7 @@ function Cuenta() {
   const [hidePuestos, setHidePuestos] = useState(false);
   const [nivelOptions, setNivelOptions] = useState();
   const [cleanImageInput, setCleanImageInput] = useState(false);
+  const [hideOptions, setHideOptions] = useState(false);
 
   //** ALERTA */
   const [textAlert, setTextAlert] = useState('');
@@ -58,7 +62,12 @@ function Cuenta() {
   };
 
   const handleChange = (e) => {
-    setInputValue({ ...inputValue, [e.target.name]: e.target.value });
+    if (e.target.name === 'nivel' && myRol === "4") {
+      setInputValue({ ...inputValue, [e.target.name]: e.target.value , puesto: 'sin asignar'} );
+    } else {
+      setInputValue({ ...inputValue, [e.target.name]: e.target.value });
+
+    }
     if (e.target.name === 'provincia') {
       const idProvSeleccionada = provinciasOptions.find(
         (item) => item.nombre === e.target.value
@@ -74,41 +83,37 @@ function Cuenta() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const validationErrors = validate(inputValue);
-    console.log(inputValue.imgProfile);
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      setErrors({});
-      const data = {
-        email: inputValue.email,
-        fullName: inputValue.nombre,
-        legajo: inputValue.legajo,
+    if (location.pathname === '/cuenta') {
+      const dataEdited = {
         number: inputValue.celular,
-        puesto: inputValue.puesto,
-        contratoComedor: inputValue.contrato,
-        rol: inputValue.nivel,
-        business: localStorage.getItem('business'),
-        provincia: inputValue.provincia,
-        localidad: inputValue.localidad,
-        // idChief,
-        // imgProfile: inputValue.imgProfile
+        email: inputValue.email
       };
-      if (inputValue.imgProfile !== undefined) {
-        data['imgProfile'] = inputValue.imgProfile;
+      if (inputValue.imgProfile) {
+        dataEdited['imgProfile'] = inputValue.imgProfile;
       }
-
-      createNewUSer(data)
-        .then((resp) => {
-          if (!resp.success) {
-            setTextAlert('Ocurrió un problema');
-            setTypeAlert('error');
-          } else {
-            setTextAlert('Cuenta creada con éxito');
-            setTypeAlert('success');
-            setBtnEdit(!btnEdit);
-            setEditInput(true);
-          }
+      editUser(dataEdited)
+      .then((resp) => {
+        if (!resp.message.includes('successfully')) {
+          setTextAlert('Ocurrió un problema');
+          setTypeAlert('error');
+        } else {
+          setTextAlert('Cuenta actualizada con éxito');
+          setTypeAlert('success');
+          setBtnEdit(!btnEdit);
+          setInputValue({
+            nombre: resp.updatedForm.fullName,
+            legajo: resp.updatedForm.legajo,
+            email: resp.updatedForm.email,
+            celular: resp.updatedForm.number,
+            nivel: resp.updatedForm.rol,
+            puesto: resp.updatedForm.puesto,
+            localidad: resp.updatedForm.localidad,
+            provincia: resp.updatedForm.provincia,
+            contrato: resp.updatedForm.contratoComedor,
+            imgProfile: resp.updatedForm.imgProfile,
+          });
+          setEditInput(true);
+        }
         })
         .catch((error) => {
           setTextAlert('Ocurrió un problema');
@@ -117,58 +122,111 @@ function Cuenta() {
         .finally(() => {
           showAlertAnimation();
         });
-      setCleanImageInput(true);
-      setInputValue({
-        nombre: '',
-        legajo: '',
-        email: '',
-        celular: '',
-        nivel: myRol === '2' ? '1' : '',
-        puesto: '',
-        localidad: '',
-        provincia: '',
-        contrato: '',
-      });
-      setLocalidadesOptions([]);
+    } else {
+      const validationErrors = validate(inputValue);
+      console.log(inputValue.imgProfile);
+      if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+      } else {
+        setErrors({});
+        const data = {
+          email: inputValue.email,
+          fullName: inputValue.nombre,
+          legajo: inputValue.legajo,
+          number: inputValue.celular,
+          puesto: inputValue.puesto,
+          contratoComedor: inputValue.contrato,
+          rol: inputValue.nivel,
+          business: localStorage.getItem('business'),
+          provincia: inputValue.provincia,
+          localidad: inputValue.localidad,
+          // idChief,
+          // imgProfile: inputValue.imgProfile
+        };
+        if (inputValue.imgProfile !== undefined) {
+          data['imgProfile'] = inputValue.imgProfile;
+        }
+
+        createNewUSer(data)
+          .then((resp) => {
+            if (!resp.success) {
+              setTextAlert('Ocurrió un problema');
+              setTypeAlert('error');
+            } else {
+              setTextAlert('Cuenta creada con éxito');
+              setTypeAlert('success');
+              setBtnEdit(!btnEdit);
+              setEditInput(true);
+            }
+          })
+          .catch((error) => {
+            setTextAlert('Ocurrió un problema');
+            setTypeAlert('error');
+          })
+          .finally(() => {
+            showAlertAnimation();
+          });
+        setCleanImageInput(true);
+        setInputValue({
+          nombre: '',
+          legajo: '',
+          email: '',
+          celular: '',
+          nivel: myRol === '2' ? '1' : '',
+          puesto: '',
+          localidad: '',
+          provincia: '',
+          contrato: '',
+        });
+        setLocalidadesOptions([]);
+      }
     }
   };
 
   const showAlertAnimation = () => {
+    setShowlert(true);
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
-    setShowlert(true);
     setTimeout(() => {
       setShowlert(false);
     }, 7000);
   };
 
+  const getInfo = (idUser) => {
+    getUserInfo(idUser).then((resp) => {
+      setInputValue({
+        nombre: resp[0].fullName,
+        legajo: resp[0].legajo,
+        email: resp[0].email,
+        celular: resp[0].number,
+        nivel: resp[0].rol,
+        puesto: resp[0].puesto,
+        localidad: resp[0].localidad,
+        provincia: resp[0].provincia,
+        contrato: resp[0].contratoComedor,
+        imgProfile: resp[0].imgProfile,
+      });
+      getProvincias().then((provs) => {
+        setProvinciasOptions(provs);
+        const idProvSeleccionada = provs.find((item) => item.nombre === resp[0].provincia).id;
+        getLocalidades(idProvSeleccionada).then((resp) => setLocalidadesOptions(resp));
+      });
+      setSrcImage(perfil);
+      setIsANewProfile(false);
+    });
+  }
+
   useEffect(() => {
     if (location.pathname === '/crear-cuenta')
       getProvincias().then((resp) => setProvinciasOptions(resp));
+    if(location.pathname.includes('perfil-legajo') && legajo) {
+      getInfo(legajo);
+      setHideOptions(true);
+    }
     if (location.pathname === '/cuenta') {
-      getUserInfo(idUser).then((resp) => {
-        setInputValue({
-          nombre: resp[0].fullName,
-          legajo: resp[0].legajo,
-          email: resp[0].email,
-          celular: resp[0].number,
-          nivel: resp[0].rol,
-          puesto: resp[0].puesto,
-          localidad: resp[0].localidad,
-          provincia: resp[0].provincia,
-          contrato: resp[0].contratoComedor,
-          imgProfile: resp[0].imgProfile,
-        });
-        getProvincias().then((provs) => {
-          setProvinciasOptions(provs);
-          const idProvSeleccionada = provs.find((item) => item.nombre === resp[0].provincia).id;
-          getLocalidades(idProvSeleccionada).then((resp) => setLocalidadesOptions(resp));
-        });
-        setSrcImage(perfil);
-        setIsANewProfile(false);
-      });
+      getInfo(idUser)
     } else {
       setInputValue({
         nombre: '',
@@ -210,6 +268,7 @@ function Cuenta() {
             photo={inputValue.imgProfile}
             cleanImageInput={cleanImageInput}
             setCleanImageInput={setCleanImageInput}
+            disabled={editInput}
           />
           <div className={styles.formContainer}>
             <form onSubmit={handleSubmit} action='' className={styles.formulario}>
@@ -384,7 +443,7 @@ function Cuenta() {
                   </button>
                 </div>
               ) : (
-                <div className={styles.btnContainer}>
+                !hideOptions && <div className={styles.btnContainer}>
                   <button
                     disabled={btnEdit}
                     type='button'
@@ -409,7 +468,7 @@ function Cuenta() {
           </div>
         </div>
       )}
-      <footer className={styles.footer}>
+      {/* <footer className={styles.footer}>
         <div className={styles.footerWrapper}>
           <i class='ri-home-5-fill' style={{ color: 'white', fontSize: '24px' }}></i>
           <span style={{ color: 'white' }}>Inicio</span>
@@ -421,7 +480,7 @@ function Cuenta() {
           <i class='ri-user-fill' style={{ color: 'white', fontSize: '24px' }}></i>
           <span style={{ color: 'white', fontWeight: '600' }}>Mi perfil</span>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }

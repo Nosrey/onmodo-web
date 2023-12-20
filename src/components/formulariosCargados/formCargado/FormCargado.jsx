@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './FormCargado.module.css';
 import ModalEdicion from '../../modalEdicion/ModalEdicion';
 import ModalBorrar from '../../modalBorrar/ModalBorrar';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { setFormulario } from '../../../redux/actions/formulariosActions';
@@ -12,20 +12,26 @@ import 'moment-timezone';
 import { generatePDF } from '../../../services/PDF';
 import { Oval } from 'react-loader-spinner';
 import ModalEdicionInfo from '../../modalEdicionInfo/ModalEdicionInfo';
+import { FORMS_WEB, FORMS_TITLES } from '../../../utils/constants/data';
+import { useMedia } from '../../../utils/hooks/UseMedia';
 
 
 function FormCargado() {
+  const location = useLocation();
+
   const [openModal, setOpenModal] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [openModalInfo, setOpenModalInfo] = useState(false);
   const [formSelected, setFormSelected] = useState();
   const [formularios, setFormularios] = useState([]);
   const [name, setName] = useState("");
-  const { form } = useParams()
+  const { form, legajo } = useParams()
   const [titulo, setTitulo] = useState("");
   const [url, setUrl] = useState("");
   const idUser = localStorage.getItem("idUser");
   const navigate = useNavigate();
+  const [openInfo, setOpenInfo] = useState([]);
+  const media = useMedia();
 
   //** ALERTA */
   const [textAlert, setTextAlert] = useState("");
@@ -43,10 +49,8 @@ function FormCargado() {
         materialEntregado: JSON.parse(form?.materialEntregado),
         materialExpuesto: JSON.parse(form?.materialExpuesto),
       }
-      console.log("form: ", form2)
       navigate(url, { state: { objeto: form2, status } });
     } else if (url === "/registro-simulacro") {
-      console.log("FORM", form)
       let form2 = {
         ...form,
         personas: JSON.parse(form?.personas),
@@ -54,7 +58,6 @@ function FormCargado() {
       navigate(url, { state: { objeto: form2, status } });
     }
     else {
-      console.log("form: ", form)
       navigate(url, { state: { objeto: form, status } });
     }
   };
@@ -67,8 +70,6 @@ function FormCargado() {
 
 
   async function getTitle() {
-    console.log('entre a getTitle')
-
     if (form == "controlalergenos") {
       setTitulo("Control de comensales con dietas Especiales")
       setUrl("/dietas-especiales")
@@ -118,9 +119,9 @@ function FormCargado() {
     }
   }
 
-  async function fetchDataAndAccessData() {
+  async function fetchDataAndAccessData(id) {
     try {
-      const response = await axios.get(`https://api.onmodoapp.com/api/business/${idUser}`);
+      const response = await axios.get(`https://api.onmodoapp.com/api/business/${id}`);
       const datae = response.data.response[0];
       return datae;
     } catch (error) {
@@ -129,20 +130,41 @@ function FormCargado() {
     }
   }
 
+  const getAllWebForms = (data) =>{
+    return FORMS_WEB.reduce((acumulador, form) => {
+      if (data.hasOwnProperty(form)) {
+        const dataWithTitle = data[form].map(obj => ({...obj, title: FORMS_TITLES[form]}))
+        return acumulador.concat(dataWithTitle);
+      }
+      return acumulador;
+    }, []);
+  }
+
+  const handleSetForms = (forms) => {
+    setFormularios(forms.reverse());
+    setIsLoading(false)
+  }
+
   async function getData() {
-    const data = await fetchDataAndAccessData();
+    let data;
+    if(location.pathname.includes('formularios-legajos') && legajo) {
+      const allForms = await fetchDataAndAccessData(legajo);
+      data = getAllWebForms(allForms);
+      handleSetForms(data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)));
+    }else {
+      data = await fetchDataAndAccessData(idUser);
+    }
 
     if (data.hasOwnProperty(form)) {
       const info = data[form];
-      setFormularios(info.reverse());
-      setIsLoading(false)
+      handleSetForms(info);
     } else {
       console.log("error");
     }
   }
 
   async function getName() {
-    const data = await fetchDataAndAccessData();
+    const data = await fetchDataAndAccessData(legajo ? legajo : idUser);
     setName(data.fullName)
   }
 
@@ -156,10 +178,10 @@ function FormCargado() {
     if (form.status !== "pending" && form.status !== "denied") {
       setOpenModal(true);
     }
-    if(form.status === "approved"){
-      goToForm(form, 'edit')
-      // abrir modal con mensaje y enviar a editar
-    }
+    // if(form.status === "approved"){
+    //   goToForm(form, 'edit')
+    //   // abrir modal con mensaje y enviar a editar
+    // }
   }
 
   const handleViewInfo = (formulario) => {
@@ -218,6 +240,13 @@ function FormCargado() {
           </div>
           <table className={styles.table}>
             <thead>
+            {media === 'mobile' ? (
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Hora</th>
+                      <th>Usuario</th>
+                    </tr>
+                  ) : (
               <tr>
                 <th>Formulario</th>
                 <th>Año</th>
@@ -228,6 +257,7 @@ function FormCargado() {
                 <th>Edición</th>
                 <th className={styles.accion}>Acción</th>
               </tr>
+               )}
             </thead>
             <tbody>
             {formularios.map((formulario, index) => {
@@ -235,8 +265,83 @@ function FormCargado() {
               const argentinaTime = new Date(createdAtUTC.getTime() );
 
               return (
+                <>
+                  {media === 'mobile' ? (
+                    <>
+                   <tr key={index} className={styles.fila}>
+
+                      <td
+                                style={{
+                                  borderBottom: openInfo[index] ? 'none' : '1px solid #ccc',
+                                }}
+                              >
+                                {argentinaTime.getDate()}/{argentinaTime.getMonth() + 1}/
+                                {argentinaTime.getFullYear()}
+                              </td>                      <td
+                          style={{
+                            borderBottom: openInfo[index] ? 'none' : '1px solid #ccc',
+                          }}
+                        >
+                          {argentinaTime.getHours()}:
+                          {String(argentinaTime.getMinutes()).padStart(2, '0')}
+                        </td>
+                      <td style={{textTransform:'capitalize', borderBottom: openInfo[index] ? 'none' : '1px solid #ccc' }}>{name}</td>
+                      <td style={{ borderBottom: 'none' }}>
+                          <span
+                            onClick={() => {
+                              const copy = [...openInfo];
+                              copy[index] = !copy[index];
+                              setOpenInfo(copy);
+                            }}
+                          >
+                            {openInfo[index] ? (
+                              <i class='ri-arrow-up-s-line'></i>
+                            ) : (
+                              <i class='ri-arrow-down-s-line'></i>
+                            )}
+                          </span>
+                        </td>
+                    </tr>
+                     {openInfo[index] && (
+                      <>
+                        <tr style={{ borderBottom: '1px solid #ccc' }}>
+                        <td className={styles.contEdicion}>
+                        <span onClick={() => goToForm(formulario, 'view')} className={styles.actionIcon}>
+                          <i className='ri-eye-line' ></i>
+                        </span>
+                        {
+                          formulario.status === 'denied' ?
+                            <span onClick={() => handleViewInfo(formulario)} className={styles.actionIcon}>
+                              <i class="ri-information-line"></i>
+                            </span>
+                          :
+                          <span 
+                            onClick={() =>{
+                              if (formulario.status === 'free'|| (formulario.status === 'approved' && formulario.editEnabled === true)) {
+                      
+                                goToForm(formulario, 'edit')
+                              } else {
+                                openModalEdit(formulario)}
+
+                              }
+                            }
+                            className={styles.actionIcon}>
+                            <i className='ri-pencil-line'></i>
+                          </span>
+                        }
+                        
+                        <span onClick={() => openDeleteModal(formulario._id)} className={styles.actionIcon}>
+                          <i className='ri-delete-bin-line'></i>
+                        </span>
+                        
+                      </td>
+                        </tr>
+                      </>
+                      )}
+                    </>
+                  ) : (
                 <tr key={index} className={styles.fila}>
-                  <td className={styles.titulo}>{titulo}</td>
+                  <td className={styles.titulo}>{formulario.title ? formulario.title : titulo}</td>
                   <td>{argentinaTime.getFullYear()}</td>
                   <td>{argentinaTime.getMonth() + 1}</td>
                   <td>{argentinaTime.getDate()}</td>
@@ -269,9 +374,13 @@ function FormCargado() {
                       :
                       <span 
                         onClick={() =>{
-                          formulario.status === 'free' ?
-                          goToForm(formulario, 'edit') :
-                          openModalEdit(formulario)}
+                          if (formulario.status === 'free'|| (formulario.status === 'approved' && formulario.editEnabled === true)) {
+                  
+                            goToForm(formulario, 'edit')
+                          } else {
+                            openModalEdit(formulario)}
+
+                          }
                         }
                         className={styles.actionIcon}>
                         <i className='ri-pencil-line'></i>
@@ -286,6 +395,8 @@ function FormCargado() {
                     </span>
                   </td>
                 </tr>
+                )}
+                </>
               );
             })}
             {formularios.length === 0 && <p className={styles.placeholder}>No se encontraron formularios cargados en su historial.</p>}

@@ -1,34 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Legajos.module.css';
 import ModalBorrar from '../../components/modalBorrar/ModalBorrar';
-import { useDispatch } from 'react-redux';
 import { getLegajosPorRol } from '../../services/Request';
 import { Oval } from 'react-loader-spinner';
+import { useNavigate } from 'react-router-dom';
+import Alert from '../../components/shared/components/Alert/Alert';
+import { useMedia } from '../../utils/hooks/UseMedia';
 
-const Legajos = () => {
+const Legajos = ({filterByKey}) => {
+  const navigate = useNavigate();
+  const media = useMedia();
   const [legajos, setLegajos] = useState([]);
-  const dispatch = useDispatch();
-  const mock = [
-    {_id: 1, legajo: 14523, nombre: 'Carla Perez', nivel: 1},
-    {_id: 2, legajo: 14550, nombre: 'María Guevara', nivel: 1},
-    {_id: 3, legajo: 14586, nombre: 'Miguel Lattanzi', nivel: 1}
-  ];
+  const [legajosFiltrados, setLegajosFiltrados] = useState(legajos.map(legajo => ({ ...legajo, openMobileMenu: false })));
   const [fileSelected, setFileSelected] = useState(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [showEmptyMsg, setShowEmptyMsg] = useState(false);
+  const [noResultMsg, setNoResultMsg] = useState(false);
 
   //** ALERTA */
   const [textAlert, setTextAlert] = useState("");
   const [typeAlert, setTypeAlert] = useState("");
   const [showAlert, setShowlert] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const level = localStorage.getItem("rol");
 
   useEffect(() => {
     if (openDeleteModal === false) {
-      const level = localStorage.getItem("rol");
       setIsLoading(true);
       cargarLegajos(level).then((res) => {
         setIsLoading(false);
-        return setLegajos(res);
+        setLegajosFiltrados(res
+          .map(legajo => ({ ...legajo, openMobileMenu: false }))
+          .sort((a, b) => a.fullName.localeCompare(b.fullName)));
+        return setLegajos(res.map(legajo => ({ ...legajo, openMobileMenu: false })));
       })
       .catch((error) => console.error('Error:', error));
     }
@@ -52,6 +56,28 @@ const Legajos = () => {
     setOpenDeleteModal(true);
   };
 
+  const handleSortChange = (event) => {
+    const value = event.target.value;
+    setIsLoading(true)
+    if (value === 'A-Z') {
+      const sorted = [...legajosFiltrados].sort((a, b) => a.fullName.localeCompare(b.fullName));
+      setLegajosFiltrados(sorted);
+    } else if (value === 'Z-A') {
+      const sorted = [...legajosFiltrados].sort((a, b) => b.fullName.localeCompare(a.fullName));
+      setLegajosFiltrados(sorted);
+    } else if (value === 'Nivel 1') {
+      const sorted = legajos.filter((legajo) => legajo.rol === 1);
+      setLegajosFiltrados(sorted)
+    } else if (value === 'Nivel 2'){
+      const sorted = legajos.filter((legajo) => legajo.rol === 2);
+      setLegajosFiltrados(sorted)
+    } else if (value === 'Nivel 3'){
+      const sorted = legajos.filter((legajo) => legajo.rol === 3);
+      setLegajosFiltrados(sorted)
+    }
+    setIsLoading(false)
+  };
+
   const showAlertNotif = (type, msg) => {
     setTextAlert(msg);
     setTypeAlert(type);
@@ -68,6 +94,61 @@ const Legajos = () => {
       // getData();
     }
   }
+
+  const renderMobileMenuAction = (legajo) => {
+    return (
+      <tr key={legajo._id} >
+        <td className={styles.actionIcon} onClick={() => navigate(`/perfil-legajo/${legajo._id}`)}>
+          <i className="ri-eye-line"></i>
+        </td>
+        <td className={styles.actionIcon} onClick={() => navigate(`/formularios-legajos/${legajo._id}`)}>
+          <i className="ri-file-reduce-line"></i>
+        </td>
+        <td onClick={() => handleOpenDeleteModal(legajo.legajo)} className={styles.actionIcon} style={{paddingLeft: '0px'}}>
+          <i className='ri-delete-bin-line'></i>
+        </td>
+      </tr>
+    )
+  }
+
+  const handleOpenMobileMenu = (index) => {
+    setLegajosFiltrados(prevLegajos => {
+      const newLegajos = [...prevLegajos];
+      newLegajos[index].openMobileMenu = !newLegajos[index].openMobileMenu;
+      return newLegajos;
+    });
+  };
+
+  
+  useEffect(() => {
+    if (filterByKey && filterByKey.trim() !== '') {
+      setIsLoading(true)
+     const copy = [...legajosFiltrados];
+     const results = copy.filter((legajo)=>legajo.fullName.toLowerCase().includes(filterByKey.toLowerCase()) || legajo.legajo.toLowerCase().includes(filterByKey.toLowerCase()))
+
+     if (results.length !== 0) {
+       setLegajosFiltrados(results);
+       setIsLoading(false)
+
+     } else {
+      setNoResultMsg(true);
+       setIsLoading(false)
+     }
+
+    }
+   
+    if (filterByKey === '') {
+      setIsLoading(true)
+      cargarLegajos(level).then((res) => {
+        setIsLoading(false);
+        setLegajosFiltrados(res
+          .map(legajo => ({ ...legajo, openMobileMenu: false }))
+          .sort((a, b) => a.fullName.localeCompare(b.fullName)));
+        return setLegajos(res.map(legajo => ({ ...legajo, openMobileMenu: false })));
+      })
+      setNoResultMsg(false);
+    }
+  }, [filterByKey])
   return (
     <>
       {isLoading ? (
@@ -94,47 +175,72 @@ const Legajos = () => {
           <div className={styles.wrapper}>
             <div className={styles.orderContainer}>
               <span className={styles.spanOrder}>Ordenar por:</span>
-              <select name='' id={styles.select} >
+              <select name='' id={styles.select} onChange={handleSortChange}>
+                <option value='A-Z'>A - Z</option>
+                <option value='Z-A'>Z - A</option>
+                  {level >= 2 && <option value='Nivel 1'>Nivel 1</option>}
+                  {level >= 3 && <option value='Nivel 2'>Nivel 2</option>}
+                  {level >= 4 && <option value='Nivel 3'>Nivel 3</option>}
               </select>
             </div>
-            <table className={styles.table}>
-                <thead className={styles.head} style={{ cursor: 'default'}}>
-                  <tr>
-                    <th>Legajos</th>
-                    <th>Nombre</th>
-                    <th>Nivel</th>
-                    <th className={styles.accion}>Acción</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {legajos.length > 0 && legajos.map((legajo, index) => (
-                    <tr key={index} className={styles.fila}  style={{ cursor: 'default'}}>
-                      <td>{legajo.legajo}</td>
-                      <td>{legajo.fullName}</td>
-                      <td>{legajo.rol}</td>
-                      <td>
-                        <div className={styles.contEdicion}>
-                        <span onClick={() => handleOpenDeleteModal(legajo.legajo)} className={styles.actionIcon} style={{fontSize: '18px'}}>
-                          <i className='ri-delete-bin-line'></i>
-                        </span>
-                        <span>
-                          Ver perfil
-                        </span>
-                        <span>
-                          Ver formularios cargados
-                        </span>
-                        </div>
-                      </td>
-                    </tr>
-                  )
-                )}
-                </tbody>
-              </table>      
+            {filterByKey && filterByKey.length !== 0 && !noResultMsg && legajosFiltrados.length !== 0 && <div><span>Resultados para:  "{filterByKey}"</span></div>}
+
+            {noResultMsg ?
+                  <span>No hay resultados para su búsqueda</span>
+                  :
+                  <>
+                  <table className={styles.table}>
+                    <thead className={styles.head} style={{ cursor: 'default'}}>
+                      <tr>
+                        <th>Legajos</th>
+                        <th>Nombre</th>
+                        <th>Nivel</th>
+                        {media !== 'mobile' && <th className={styles.accion}>Acción</th>}
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {legajosFiltrados.length > 0 && legajosFiltrados.map((legajo, index) => (
+                      <>
+                        <tr key={index} className={`${styles.fila} ${(legajo.openMobileMenu && media === 'mobile') && styles.tableMobile}`} style={{ cursor: 'default'}}>
+                          <td>{legajo.legajo}</td>
+                          <td>{legajo.fullName}</td>
+                          <td>{legajo.rol}</td>
+                          <td style={{textAlign: 'center', borderTop: '1px solid #ccc'}}>
+                            {media === 'mobile' 
+                            ? <i className={legajo.openMobileMenu ? `ri-arrow-up-s-line ${styles.actionIcon}` : `ri-arrow-down-s-line ${styles.actionIcon}`} onClick={()=> handleOpenMobileMenu(index)} ></i> : 
+                            <div className={styles.contEdicion}>
+                              <span onClick={() => handleOpenDeleteModal(legajo.legajo)} className={styles.actionIcon} style={{fontSize: '18px'}}>
+                                <i className='ri-delete-bin-line'></i>
+                              </span>
+                              <span style={{cursor: 'pointer'}} onClick={() => navigate(`/perfil-legajo/${legajo._id}`)}>
+                                Ver perfil
+                              </span>
+                              <span style={{cursor: 'pointer'}} onClick={() => navigate(`/formularios-legajos/${legajo._id}`)}>
+                                Ver formularios cargados
+                              </span>
+                            </div>
+                            }
+                          </td>
+                        </tr>
+                        {legajo.openMobileMenu 
+                        && media === 'mobile' 
+                        && renderMobileMenuAction(legajo)
+                        }
+                        </>
+
+                      )
+                    )}
+                    </tbody>
+                  </table>  
+                  </>
+            }
+                
               {legajos.length === 0 && <p className={styles.placeholder}>No se encontraron formularios cargados en su historial.</p>}
               <ModalBorrar fileToDelete={'legajo'} modalDelete={openDeleteModal} setModalDelete={setOpenDeleteModal} idForm={fileSelected} showAlert={(type, msg) => showAlertNotif(type, msg)} />
             </div>
         </div>
       )}
+      {showAlert && <Alert type={typeAlert} text={textAlert}></Alert>}
     </>
   )
 }

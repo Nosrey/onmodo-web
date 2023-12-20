@@ -1,0 +1,385 @@
+.screenTitle {
+  font-size: 21px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  margin-top: 0px;
+}
+.graphTitle {
+  font-size: 18px !important;
+  cursor: default;
+
+}
+
+.infoSection {
+  margin-bottom: 120px;
+  cursor: default;
+
+} 
+
+.panelContainer, .editionContainer {
+  display: flex;
+  justify-content: space-around;
+}
+
+.panelInfo, .editionRequestsContainer {
+  width: 30%;
+  display: flex;
+  row-gap: 20px;
+}
+
+.panelInfo .simpleInfoCard, .editionRequestsContainer .simpleInfoCard {
+  width: 80%;
+  height: 150px;
+ 
+}
+
+.panelPie, .editionRequestsPie {
+  width: 60%;
+  max-width: 580px;
+}
+
+.panelPie h3, .editionRequestsPie h3 {
+  font-size: 1.5rem;
+}
+
+.orderContainer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 0 34px;
+  gap: 10px;
+  align-items: center;
+}
+
+.spanOrder {
+  font-weight: 325;
+  font-size: 16px;
+  line-height: 18px;
+}
+.spanOption {
+  font-size: 14px;
+  line-height: 18px;
+}
+#select {
+  box-sizing: border-box;
+  border: 1px solid #c3c3c3;
+  border-radius: 10px;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 18px;
+  padding: 5px;
+  outline: none;
+  width: 17%;
+}
+
+.simpleInfoCard, .complexInfoCard {
+  width: 240px;
+  height: 170px;
+  border: 1px solid #646161;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.complexInfoCard {
+  height: 130px;
+}
+
+.titleCard {
+  margin: 0;
+  padding: 15px;
+  font-size: 14px;
+}
+
+.infoCard {
+  align-self: center;
+  margin: 0;
+  font-weight: bold;
+  font-size: 30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cardGrid {
+  /* display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(25em, 1fr));
+  gap: 2em;
+  place-items: center;
+  grid-gap: 2em; */
+  display: flex;
+  row-gap: 30px;
+  column-gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardMainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-self: center;
+  width: 90%;
+}
+
+.complexDescriptionContainer {
+  display: flex;
+  align-items: center;
+}
+
+.complexDescriptionContainer p {
+  width: 30%;
+  text-align: center;
+}
+
+.complexDescriptionContainer p, .complexDescriptionContainer span {
+  margin: 0;
+  font-size: 18px;
+}
+.descriptionCard {
+  margin-left: 0;
+}
+.formsContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mostUsed {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+.mostUsedInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 16px;
+  padding-top: 30px;
+}
+
+.mostUsedContainer {
+  display: flex;
+  align-items: center;
+}
+
+.mostUsedNumber {
+  font-size: 14px;
+  width: 30px;
+  height: 30px;
+  background-color: var(--verde-oscuro);
+  text-align: center;
+  border-radius: 50%;
+  padding: 5px;
+  color: #fff;
+  cursor: default;
+}
+
+.mostUsedContainer p {
+  margin: 0;
+  margin-left: 10px;
+  cursor: default;
+
+}
+
+.editionRequestsContainer {
+  display: flex;
+  row-gap: 20px;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.editionRequestsPie {
+  margin-top: 20px;
+}
+
+.orderContainerChild {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.customizedSelects {
+  width: 22rem !important;
+}
+
+@media screen and (max-width: 1200px) {
+  .customizedSelects {
+    width: 17rem !important;
+  }
+}
+
+@media screen and (max-width: 1070px) {
+  .customizedSelects {
+    width: 14rem !important;
+  }
+}
+
+@media screen and (max-width: 925px) {
+  .cardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(20em, 1fr));
+  }
+  .customizedSelects {
+    width: 11rem !important;
+  }
+}
+
+@media screen and (max-width: 747px) {
+  .cardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
+  }
+  .customizedSelects {
+    width: 9rem !important;
+  }
+}
+
+@media screen and (max-width: 835px){
+  .simpleInfoCard {
+    height: 140px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .complexInfoCard {
+    width: 260px;
+    height: 140px;
+  }
+  .titleCard {
+    padding: 8px;
+    font-size: 14px;
+    
+  }
+  .infoCard {
+    font-size: 2rem;
+  }
+  .complexDescriptionContainer p, .complexDescriptionContainer span {
+    font-size: 1.3rem;
+  }
+  .mostUsedContainer > * {
+    font-size: 1rem;
+  }
+  .mostUsedNumber {
+    width: 35px;
+  }
+}
+@media screen and (max-width: 620px){
+  .simpleInfoCard {
+    height: 130px;
+  }
+  .complexInfoCard {
+    width: 220px;
+    height: 100px;
+  }
+  .titleCard {
+    padding: 5px;
+    font-size: 14px;
+  }
+  .infoCard {
+    font-size: 1.5rem;
+  }
+  .complexDescriptionContainer p, .complexDescriptionContainer span {
+    font-size: 1rem;
+  }
+  .orderContainer:nth-child(2) {
+    flex-direction: column;
+  }
+  .orderContainerChild {
+    width: 100% !important;
+  }
+  .customizedSelects {
+    width: 12rem !important;
+  }
+  .firstCustomizedSelect {
+    width: 80% !important;
+  }
+  .fromsContainerBarMobile {
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 576px) {
+  .panelContainer, .editionContainer {
+    flex-direction: column;
+  }
+  .panelInfo, .panelPie, .editionRequestsContainer, .editionRequestsPie {
+    width: 100%;
+    margin: 10px 0;
+  }
+  .simpleInfoCard {
+    width: 100%;
+  }
+  .graphTitle {
+   margin-top: 30px;
+  
+  }
+  .titleCard {
+    padding-left: 10px;
+    font-size: 14px;
+  }
+  .simpleInfoCard p {
+    font-size: 1rem;
+  }
+  .infoCard {
+    font-size: 2.6rem !important;
+  }
+  .spanOrder {
+    font-size: 0.7rem;
+  }
+  #select {
+    width: 30%;
+    min-width: 190px;
+    padding: 0;
+  }
+  .fromsContainerMobile {
+    flex-direction: column;
+  }
+  .mostUsed {
+    width: 100%;
+    margin-top: 30px;
+  }
+  .mostUsed h3, .panelPie h3, .editionRequestsPie h3{
+    font-size: 1rem;
+  }
+  .pie{
+    height: 250px;
+  }
+  .mostUsedContainer {
+    margin-bottom: 10px;
+  }
+  .mostUsedContainer {
+    font-size: 0.8rem;
+  }
+  .mostUsedNumber {
+    width: 25px;
+    padding: 3px;
+  }
+  .editionRequestsContainer {
+    height: 420px;
+  }
+  .cardGrid {
+    grid-template-columns: repeat(auto-fit, minmax(10em, 1fr));
+  }
+}
+@media screen and (max-width: 525px){
+  .complexInfoCard {
+    width: 180px;
+    height: 100px;
+  }
+  .cardMainContainer {
+    margin-top: 30px;
+  }
+}
+@media screen and (max-width: 435px){
+  .complexInfoCard {
+    width: 100%;
+    height: 140px;
+  }
+  .complexDescriptionContainer p, .complexDescriptionContainer span {
+    font-size: 18px;
+  }
+
+  @media screen and (max-width: 392px) {
+    .cardGrid {
+      grid-template-columns: repeat(auto-fit, minmax(6em, 1fr));
+    }
+  }
+}

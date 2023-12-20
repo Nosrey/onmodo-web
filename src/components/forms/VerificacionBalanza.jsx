@@ -4,7 +4,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import styles from './VerificacionBalanza.module.css';
 import Modal from '../shared/Modal';
 import Balanzas from '../modales/Balanzas';
-import { editVerificacionBalanza, verificacionBalanza } from '../../services/FormsRequest';
+import { editVerificacionBalanza, sendEditApplication, verificacionBalanza } from '../../services/FormsRequest';
 import Alert from '../shared/components/Alert/Alert';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -33,7 +33,8 @@ function VerificacionBalanza() {
     { id: 8, label: 'Acciones de corrección' },
   ]);
   const [replicas, setReplicas] = useState(1);
-  const [replicaValues, setReplicaValues] = useState([{ id: 0 }]);
+
+  const [replicaValues, setReplicaValues] = useState([{ id: 0, "Código": '', "Responsable del uso": '', "Área": '', "Peso Masa ref/Pto balanza": '', "Peso real": '', "Desvío": '', "Acciones de corrección": '', "Tipo (BP/BR)": '' }]);
   const [showModal, setShowModal] = useState(false);
   var idUser = localStorage.getItem('idUser');
   const [values, setValues] = useState({
@@ -157,7 +158,13 @@ function VerificacionBalanza() {
         } else {
           setTextAlert('¡Formulario editado exitosamente!');
           setTypeAlert('success');
-          navigate('/formularios-cargados/verificacionbalanza');
+          const data = {
+            editEnabled: false,
+            status:"",
+          }
+          sendEditApplication({values: data, formId:  infoPrecargada._id, form: '/verificacionbalanza'}).finally((resp)=>{
+            navigate('/formularios-cargados/verificacionbalanza');
+          })
         }
       })
       .catch((resp) => {
@@ -225,7 +232,6 @@ function VerificacionBalanza() {
           <div className={styles.personal}>
             <TextField
               type='date'
-              className='input'
               onChange={(e) => {
                 setValues({ ...values, fecha: e.target.value });
               }}
@@ -234,11 +240,12 @@ function VerificacionBalanza() {
               value={values.fecha || ''}
               disabled={currentStatus === 'view'}
               required
+              label='Fecha'
               InputLabelProps={{
                 shrink: true,
               }}
             />
-            <FormControl variant='outlined' disabled={currentStatus === 'view'}>
+            <FormControl variant='outlined'  className={styles.selectIns} disabled={currentStatus === 'view'}>
               <InputLabel>Instrumento</InputLabel>
               <Select
                 onChange={(e) => {
@@ -248,7 +255,6 @@ function VerificacionBalanza() {
                 }}
                 value={values.balanza}
                 defaultValue={'Báscula'}
-                className='input'
                 label={`Instrumento`}
                 variant='outlined'
                 InputLabelProps={{
@@ -303,6 +309,29 @@ function VerificacionBalanza() {
                             </Select>
                           </FormControl>
                         ) : (
+                          input.label === 'Acciones de corrección' ? (
+                            <FormControl variant='outlined'>
+                              <InputLabel>Acciones de corrección</InputLabel>
+                              <Select
+                                value={replicaValues[index]?.["Acciones de corrección"]}
+                                onChange={(e) => {
+                                  let replicaCopy = [...replicaValues];
+                                  replicaCopy[index]["Acciones de corrección"] = e.target.value;
+                                  setReplicaValues(replicaCopy);
+                                }}
+                                className='input'
+                                id={`input-${input.id}-${index}`}
+                                label={`${input.label}`}
+                                variant='outlined'
+                                disabled={currentStatus === 'view'}
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                              >
+                                <MenuItem value='Enviar a calibrar'>Enviar a calibrar</MenuItem>
+                              </Select>
+                            </FormControl>
+                          ) : (
                           <TextField
                             className='input'
                             id={`input-${input.id}-${index}`}
@@ -323,7 +352,7 @@ function VerificacionBalanza() {
                               ] = e.target.value;
                               setReplicaValues(replicaCopy);
                             }}
-                          />
+                          />)
                         )}
                       </div>
                     ))}
