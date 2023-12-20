@@ -46,7 +46,7 @@ function ItemRecordatorio({ data, updateInfo }) {
       }
       setEjecutado('no'); // para que cuando edito una fecha y al pongo en ejecutada cuando me traiga la nueva se reinicie el selec
     } else {
-      setNextDate(data.fechas[0].fecha);
+      setNextDate(data.fechas[0]?.fecha);
       setClassCard('card-normal');
       setClassDate('date-normal');
     }
