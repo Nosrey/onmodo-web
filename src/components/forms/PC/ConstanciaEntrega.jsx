@@ -360,8 +360,6 @@ function ConstanciaEntrega() {
                         />
                     </div>
 
-                    <p onClick={() => console.log('replicaValues: ', replicaValues)}>hola</p>
-
                     <div className={styles.personal}>
                         <FormControlLabel
                             control={
