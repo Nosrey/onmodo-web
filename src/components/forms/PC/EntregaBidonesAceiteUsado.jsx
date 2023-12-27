@@ -129,7 +129,7 @@ function EntregaBidonesAceiteUsado() {
 
           {replicaValues[index][label.toLowerCase().replace(/\s/g, '')] && (
             <h6 style={{ fontSize: '12px', width: '100%' }} className={styles.select}>
-              Archivo seleccionado para {label}:{' '}
+              Click para modificar. Archivo seleccionado para {label}:{' '}
                 <span style={{ fontSize: '12px', fontWeight: 'bold' }}>
                   {replicaValues[index][label.toLowerCase().replace(/\s/g, '')]?.name?.substring(0, 25)}
                 </span>         
@@ -244,7 +244,6 @@ const obtenerBase64ParaArchivo = async (value, propiedad) => {
       inputs : replicaValues,
       idUser : localStorage.getItem('idUser'),
     }
-
     editEntregaBidones(data, infoPrecargada._id)
       .then((resp) => {
        if (resp.error) {
