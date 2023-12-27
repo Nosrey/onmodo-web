@@ -364,7 +364,7 @@ function InformeInternoAccidente() {
                 date: infoPrecargada.date,
                 idUser: idUser
             })
-            setFiles(JSON.parse(infoPrecargada?.checkboxes)?.[4]?.check)
+            setFiles(JSON.parse(infoPrecargada?.checkboxes)?.[0]?.check)
             setUploadedFile1(infoPrecargada?.denuncia)
             setUploadedFile2(infoPrecargada?.firma)
 
@@ -498,13 +498,16 @@ function InformeInternoAccidente() {
                             <FormControlLabel checked={values.checkboxes[1]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('CMS', e.target.checked) }} />} label="CMS" />
                             <FormControlLabel checked={values.checkboxes[2]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Laboral', e.target.checked) }} />} label="Laboral" />
                             <FormControlLabel checked={values.checkboxes[3]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('In Itinere', e.target.checked) }} />} label="In Itinere" /> */}
-                            <FormControlLabel checked={values.checkboxes[4]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Se adjunta denuncia policial', e.target.checked); setFiles(e.target.checked) }} />} label="Se adjunta denuncia policial" />
+                            <FormControlLabel checked={values.checkboxes[0]?.check} disabled={currentStatus === 'view'} control={<Checkbox onChange={(e) => { checkboxValuesConstructor('Se adjunta denuncia policial', e.target.checked); setFiles(e.target.checked) }} />} label="Se adjunta denuncia policial" />
                             {files ? (
                                 currentStatus === 'view' ?
                                     (
                                         <div className={styles.fileInput}>
+                                        {console.log(values)}
                                             {uploadedFile1 && (
+                                                <a href={typeof infoPrecargada.denuncia === 'string' ? values.denuncia : null}  target="_blank" rel="noopener noreferrer"> 
                                                 <img style={{ width: '30%', marginLeft: "8rem" }} src={(infoPrecargada && (currentStatus === 'view' || (currentStatus === 'edit' && typeof values.denuncia === 'string')) ? values.denuncia : URL.createObjectURL(values.denuncia))} alt="Previsualización" />
+                                               </a>
                                             )}
                                         </div>
                                     ) :
@@ -512,11 +515,14 @@ function InformeInternoAccidente() {
                                         <input {...getInputProps1()} />
                                         <h6>Arrastra y suelta una imagen aquí, o haz clic para seleccionarla</h6>
                                         {uploadedFile1 && (
-                                            <img style={{ width: '30%', marginLeft: "8rem" }} src={(infoPrecargada && (currentStatus === 'view' || (currentStatus === 'edit' && typeof values.denuncia === 'string')) ? values.denuncia : URL.createObjectURL(values.denuncia))} alt="Previsualización" />
+                                            <><a href={typeof infoPrecargada.denuncia === 'string' ? values.denuncia : null} target='_blank'> Descargar </a>
+                                            <img style={{ width: '30%', marginLeft: "8rem" }} src={(infoPrecargada && (currentStatus === 'view' || (currentStatus === 'edit' && typeof values.denuncia === 'string')) ? values.denuncia : URL.createObjectURL(values.denuncia))} alt="Previsualización" /></>
+                                           
                                         )}
                                     </div>
                             ) :
                                 null
+                                
                             }
 
                         </div>
