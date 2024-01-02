@@ -515,7 +515,7 @@ function InformeInternoAccidente() {
                                         <input {...getInputProps1()} />
                                         <h6>Arrastra y suelta una imagen aquí, o haz clic para seleccionarla</h6>
                                         {uploadedFile1 && (
-                                            <><a href={typeof infoPrecargada.denuncia === 'string' ? values.denuncia : null} target='_blank'> Descargar </a>
+                                            <><a href={typeof infoPrecargada?.denuncia === 'string' ? values?.denuncia : null} target='_blank'> Descargar </a>
                                             <img style={{ width: '30%', marginLeft: "8rem" }} src={(infoPrecargada && (currentStatus === 'view' || (currentStatus === 'edit' && typeof values.denuncia === 'string')) ? values.denuncia : URL.createObjectURL(values.denuncia))} alt="Previsualización" /></>
                                            
                                         )}
