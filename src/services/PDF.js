@@ -310,6 +310,7 @@ export const generatePDF = (formulario, form) => {
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
   else if (form === "informeintaccidente") {
+
     const styles = {
       header: {
         fontSize: 18,
@@ -319,25 +320,33 @@ export const generatePDF = (formulario, form) => {
       subheader: {
         fontSize: 14,
         bold: true,
-        margin: [0, 10, 0, 20],
+        margin: [5, 10, 0, 5],
       },
       label: {
         fontSize: 12,
         bold: true,
-        margin: [0, 0, 10, 10],
+        margin: [0, 5, 0, 0],
+        color: 'rgb(37, 35, 35)',
+      },
+      label1: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 0, 40, 10],
+        paddingTop: 30,
         color: 'rgb(37, 35, 35)',
       },
       value: {
         fontSize: 12,
         margin: [0, 0, 0, 10],
         border: [0.5, 0.5, 0.5, 0.5],
-        fillColor: '#EAFFDC',
+  
         paddingLeft: 5,
         paddingRight: 5,
         borderRadius: [5, 5, 5, 5],
       },
     };
-
+  
+    console.log('formulario: ', formulario)
     const {
       comedor,
       fecha,
@@ -361,156 +370,43 @@ export const generatePDF = (formulario, form) => {
     const checkboxes = JSON.parse(formulario?.checkboxes);
     const checkboxesAccidente = JSON.parse(formulario?.checkboxesAccidente);
 
-    const pdfContent = [
-      { text: 'Formulario ONMODO', style: 'header', alignment: 'center' },
-      { text: 'Informe interno de accidente', style: 'subheader', alignment: 'center' },
-      {
-        table: {
-          widths: ['25%', '25%', '25%', '25%'],
-          body: [
-            [
-              { text: 'Comedor:', style: 'label' },
-              { text: 'Fecha:', style: 'label' },
-              { text: 'Tipo:', style: 'label' },
-              { text: 'Nombre y Apellido:', style: 'label' },
-            ],
-            [
-              { text: comedor || '', style: 'value' },
-              { text: fecha || '', style: 'value' },
-              { text: tipo || '', style: 'value' },
-              { text: nombreapellido || '', style: 'value' },
-            ],
+    const pdfContent = [];
 
-            // [
-            //   { text: 'CDR:', style: 'label' },
-            //   { text: 'CMS:', style: 'label' },
-            //   { text: 'Laboral:', style: 'label' },
-            //   { text: 'In Itinere:', style: 'label' },
-            // ],
-            // [
-            //   { text: checkboxes[0]?.check ? 'Sí' : 'No', style: 'value' },
-            //   { text: checkboxes[1]?.check ? 'Sí' : 'No', style: 'value' },
-            //   { text: checkboxes[2]?.check ? 'Sí' : 'No', style: 'value' },
-            //   { text: checkboxes[3]?.check ? 'Sí' : 'No', style: 'value' },
-            // ],
+    pdfContent.push({ text: 'Formulario ONMODO', style: 'header', alignment: 'center' });
+    pdfContent.push({ text: 'Informe interno de accidente', style: 'subheader', alignment: 'center' });
 
-            [
-              { text: 'N° de CUIL:', style: 'label' },
-              { text: 'Fecha de Ingreso:', style: 'label' },
-              { text: 'Puesto de trabajo:', style: 'label' },
-              { text: 'Hora:', style: 'label' },
-            ],
-            [
-              { text: cuil || '', style: 'value' },
-              { text: fechaIngreso || '', style: 'value' },
-              { text: puesto || '', style: 'value' },
-              { text: hora || '', style: 'value' },
-            ],
-
-            [
-              { text: 'Lugar del accidente:', style: 'label' },
-              { text: 'Descripción del accidente:', style: 'label' },
-              { text: '¿Era su trabajo habitual?:', style: 'label' },
-              { text: '¿Conocía la tarea asignada?:', style: 'label' },
-            ],
-            [
-              { text: lugar || '', style: 'value' },
-              { text: descripcion || '', style: 'value' },
-              {
-                text:
-                  (checkboxesAccidente[0]?.check ? 'Sí' : 'No')
-                  || '', style: 'value'
-              },
-              {
-                text:
-                  (checkboxesAccidente[1]?.check ? 'Sí' : 'No')
-                  || '', style: 'value'
-              },
-            ],
-            [
-              { text: '¿Una máquina le causó la lesión?:', style: 'label' },
-              { text: '¿Cuál?:', style: 'label' },
-              { text: '¿Hubo alguna acción o condición insegura?:', style: 'label' },
-              { text: '¿Cual acción?:', style: 'label' },
-            ],
-            [
-              {
-                text:
-                  (checkboxesAccidente[2]?.check ? 'Sí' : 'No')
-                  || '', style: 'value'
-              },
-              {
-                text:
-                  checkboxesAccidente[2]?.cualMaquina
-                  || '', style: 'value'
-              },
-              {
-                text:
-                  (checkboxesAccidente[3]?.check ? 'Sí' : 'No')
-                  || '', style: 'value'
-              },
-              {
-                text:
-                  checkboxesAccidente[3]?.cualAccion
-                  || '', style: 'value'
-              },
-            ],
-            [
-              { text: '¿Estaba usando su E.P.P.?:', style: 'label' },
-              { text: '¿Por qué razón no lo usaba?:', style: 'label' },
-              { text: '¿En qué lugar del cuerpo se produjo la lesión?:', style: 'label' },
-              { text: '¿Qué medidas cree conveniente adoptar para evitar accidentes?:', style: 'label' },
-            ],
-            [
-              {
-                text:
-                  (checkboxesAccidente[4]?.check ? 'Sí' : 'No')
-                  || '', style: 'value'
-              },
-              {
-                text:
-                  checkboxesAccidente[4]?.razon
-                  || '', style: 'value'
-              },
-              {
-                text:
-                lugarLesion
-                  || '', style: 'value'
-              },
-              {
-                text:
-                  medidas
-                  || '', style: 'value'
-              },
-            ],
-            [
-              { text: '¿Se adjuntó denuncia policial?:', style: 'label' },
-              { text: '', style: 'label' },
-              { text: '', style: 'label' },
-              { text: '', style: 'label' },
-            ],
-            [
-              {
-                text:
-                  (denuncia ? 'Sí' : 'No')
-                  || '', style: 'value'
-              },
-              { text: '', style: 'label' },
-              { text: '', style: 'label' },
-              { text: '', style: 'label' },
-            ],
-          ],
-        },
-        layout: {
-          hLineWidth: () => 1,
-          vLineWidth: () => 1,
-          hLineColor: () => 'black',
-          vLineColor: () => 'black',
-          paddingTop: (i) => (i === 0 ? 10 : 10),
-          paddingBottom: (i) => (i === 1 ? 0 : 5),
-        },
+    pdfContent.push({
+      table: {
+        widths: ['50%', '50%'],
+        body: [
+          [{ text: 'Comedor:', style: 'subheader' }, { text: comedor || '', style: 'subheader' }],
+          [{ text: 'Fecha:', style: 'subheader' }, { text: fecha || '', style: 'subheader' }],
+          [{ text: 'Tipo:', style: 'subheader' }, { text: tipo || '', style: 'subheader' }],
+          [{ text: 'Nombre y Apellido:', style: 'subheader' }, { text: nombreapellido || '', style: 'subheader' }],
+          [{ text: 'comedor:', style: 'subheader' }, { text: comedor || '', style: 'subheader' }],
+          [{ text: 'Fecha:', style: 'subheader' }, { text: fecha || '', style: 'subheader' }],
+          [{ text: 'Tipo:', style: 'subheader' }, { text: tipo || '', style: 'subheader' }],
+          [{ text: 'Nombre y Apellido:', style: 'subheader' }, { text: nombreapellido || '', style: 'subheader' }],
+          [{ text: 'N° de CUIL:', style: 'subheader' }, { text: cuil || '', style: 'subheader' }],
+          [{ text: 'Fecha de Ingreso:', style: 'subheader' }, { text: fechaIngreso || '', style: 'subheader' }],
+          [{ text: 'Puesto de trabajo:', style: 'subheader' }, { text: puesto || '', style: 'subheader' }],
+          [{ text: 'Hora:', style: 'subheader' }, { text: hora || '', style: 'subheader' }],
+          [{ text: 'Lugar del accidente:', style: 'subheader' }, { text: lugar || '', style: 'subheader' }],
+          [{ text: 'Descripción del accidente:', style: 'subheader' }, { text: descripcion || '', style: 'subheader' }],
+          [{ text: '¿Era su trabajo habitual?:', style: 'subheader' }, { text: (checkboxesAccidente[0]?.check ? 'Sí' : 'No') || '', style: 'subheader' }],
+          [{ text: '¿Conocía la tarea asignada?:', style: 'subheader' }, { text: (checkboxesAccidente[1]?.check ? 'Sí' : 'No') || '', style: 'subheader' }],
+          [{ text: '¿Una máquina le causó la lesión?:', style: 'subheader' }, { text: (checkboxesAccidente[2]?.check ? 'Sí' : 'No') || '', style: 'subheader' }],
+          [{ text: '¿Cuál?:', style: 'subheader' }, { text: checkboxesAccidente[2]?.cualMaquina || '', style: 'subheader' }],
+          [{ text: '¿Hubo alguna acción o condición insegura?:', style: 'subheader' }, { text: (checkboxesAccidente[3]?.check ? 'Sí' : 'No') || '', style: 'subheader' }],
+          [{ text: '¿Cual acción?:', style: 'subheader' }, { text: checkboxesAccidente[3]?.cualAccion || '', style: 'subheader' }],
+          [{ text: '¿Estaba usando su E.P.P.?:', style: 'subheader' }, { text: (checkboxesAccidente[4]?.check ? 'Sí' : 'No') || '', style: 'subheader' }],
+          [{ text: '¿Por qué razón no lo usaba?:', style: 'subheader' }, { text: checkboxesAccidente[4]?.razon || '', style: 'subheader' }],
+          [{ text: '¿En qué lugar del cuerpo se produjo la lesión?:', style: 'subheader' }, { text: lugarLesion || '', style: 'subheader' }],
+          [{ text: '¿Qué medidas cree conveniente adoptar para evitar accidentes?:', style: 'subheader' }, { text: medidas || '', style: 'subheader' }],
+          [{ text: '¿Se adjuntó denuncia policial?:', style: 'subheader' }, { text: (denuncia ? 'Sí' : 'No') || '', style: 'subheader' }],
+        ]
       },
-    ];
+    })
 
     // const checkboxesTable = {
     //   table: {
@@ -568,6 +464,7 @@ export const generatePDF = (formulario, form) => {
 
     pdfMake.createPdf(documentDefinition).download(`${form}_formulario.pdf`);
   }
+
   else if (form === "registrocapacitacion") {
     const styles = {
       header: {
@@ -602,6 +499,15 @@ export const generatePDF = (formulario, form) => {
         paddingRight: 5,
         borderRadius: [5, 5, 5, 5],
       },
+      valueHidden: {
+        fontSize: 12,
+        margin: [0, 0, 0, 10],
+        border: [0.5, 0.5, 0.5, 0.5],
+        display: 'none',
+        paddingLeft: 5,
+        paddingRight: 5,
+        borderRadius: [5, 5, 5, 5],
+      },
     };
 
     formulario = {
@@ -612,7 +518,7 @@ export const generatePDF = (formulario, form) => {
       materialExpuesto: JSON.parse(formulario?.materialExpuesto),
     }
 
-    console.log('formulario', formulario)
+    console.log('Formulario capacsss', formulario)
     const {
       fecha,
       tiempoDuracion,
@@ -649,24 +555,55 @@ export const generatePDF = (formulario, form) => {
     ];
 
     content[2].table.body.push(
-      [
-        { text: 'Fecha:', style: 'label' },
-        { text: cambiarFecha(fecha), style: 'value' },
-        { text: 'Hora:', style: 'label' },
+      [            
+        { text: 'Fecha', style: 'subHeader' },            
+        { text: fecha, style: 'value' },
+        { text: 'Hora', style: 'value' },
         { text: tiempoDuracion, style: 'value' },
+      ]
+    )
+    content[2].table.body.push(
+      [            
+        { text: '', style: 'subHeader', colSpan: 4 },            
+        { text: "", style: 'value' },
+        { text: '', style: 'value' },
+        { text: "", style: 'value' },
       ]
     );
 
     if (checkboxes.length > 1) {
-      checkboxes.forEach((checkbox) => {
+      checkboxes.forEach((checkbox, index) => {
+       if (index === 0) {
         content[2].table.body.push(
-          [
-            { text: `${checkbox.label}:`, style: 'label' },
-            { text: checkbox.check ? 'Sí' : 'No', style: 'value', colSpan: 3 },
-            { text: '', style: 'label' },
+          [            
+            { text: 'Tipo de capacitación', style: 'subHeader', colSpan: 4 },            
+            { text: '', style: 'value' },
+            { text: '', style: 'value' },
             { text: '', style: 'value' },
           ]
         );
+        (checkbox.check ?
+          content[2].table.body.push(
+            [
+              { text: `${checkbox.label}:`, style: 'label' },
+              { text: checkbox.check ? 'Sí' : 'No', style: 'value', colSpan: 3 },
+              { text: '', style: 'label' },
+              { text: '', style: 'value' },
+            ]
+          )
+          : null)
+        } else {
+          (checkbox.check ?
+            content[2].table.body.push(
+              [
+                { text: `${checkbox.label}:`, style: 'label' },
+                { text: checkbox.check ? 'Sí' : 'No', style: 'value', colSpan: 3 },
+                { text: '', style: 'label' },
+                { text: '', style: 'value' },
+              ]
+            )
+            : null)
+        }
       });
     }
 
@@ -678,28 +615,75 @@ export const generatePDF = (formulario, form) => {
     );
 
     if (materialEntregado.length > 1) {
-      materialEntregado.forEach((item) => {
-        content[2].table.body.push(
-          [
-            { text: (item.label === "Otros1" ? (item.label.slice(0, item.label.length - 1) + ":") : item.label + ":"), style: 'label' },
-            { text: item.check ? 'Sí' : 'No', style: 'value' },
-            { text: (item?.desc ? `¿Que otro?:` : ''), style: 'label' },
-            { text: (item?.desc ? item?.desc : ''), style: 'value' }
-          ]
-        );
+      materialEntregado.forEach((item, index) => {
+        if (index === 0) {
+          content[2].table.body.push(
+            [
+              { text: 'Material didáctico Entregado', style: 'subHeader', colSpan: 4 },
+              { text: '', style: 'value' },
+              { text: '', style: 'value' },
+              { text: '', style: 'value' },
+            ]
+          );
+
+          (item.check ?
+            content[2].table.body.push(
+              [
+                { text: (item.label === "Otros1" ? (item.label.slice(0, item.label.length - 1) + ":") : item.label + ":"), style: 'label' },
+                { text: item.check ? 'Sí' : 'No', style: 'value' },
+                { text: (item?.desc ? `¿Que otro?:` : ''), style: 'label' },
+                { text: (item?.desc ? item?.desc : ''), style: 'value' }
+              ]
+            )
+            : null)
+        } else {
+          (item.check ?
+            content[2].table.body.push(
+              [
+                { text: (item.label === "Otros1" ? (item.label.slice(0, item.label.length - 1) + ":") : item.label + ":"), style: 'label' },
+                { text: item.check ? 'Sí' : 'No', style: 'value' },
+                { text: (item?.desc ? `¿Que otro?:` : ''), style: 'label' },
+                { text: (item?.desc ? item?.desc : ''), style: 'value' }
+              ]
+            )
+            : null)
+        }
       });
     }
 
     if (materialExpuesto.length > 1) {
-      materialExpuesto.forEach((item) => {
-        content[2].table.body.push(
-          [
-            { text: (item.label === "Otros2" ? (item.label.slice(0, item.label.length - 1) + ":") : item.label + ":"), style: 'label' },
-            { text: item.check ? 'Sí' : 'No', style: 'value' },
-            { text: (item?.desc ? `¿Que otro?:` : ''), style: 'label' },
-            { text: (item?.desc ? item?.desc : ''), style: 'value' }
-          ]
-        );
+      materialExpuesto.forEach((item, index) => {
+        if (index === 0) {
+          content[2].table.body.push(
+            [
+              { text: 'Material didáctico Expuesto', style: 'subHeader', colSpan: 4 },
+              { text: '', style: 'value' },
+              { text: '', style: 'value' },
+              { text: '', style: 'value' },
+            ]
+          );
+          (item.check ?
+            content[2].table.body.push(
+              [
+                { text: (item.label === "Otros2" ? (item.label.slice(0, item.label.length - 1) + ":") : item.label + ":"), style: 'label' },
+                { text: item.check ? 'Sí' : 'No', style: 'value' },
+                { text: (item?.desc ? `¿Que otro?:` : ''), style: 'label' },
+                { text: (item?.desc ? item?.desc : ''), style: 'value' }
+              ]
+            )
+            : null)
+        } else {
+          (item.check ?
+            content[2].table.body.push(
+              [
+                { text: (item.label === "Otros2" ? (item.label.slice(0, item.label.length - 1) + ":") : item.label + ":"), style: 'label' },
+                { text: item.check ? 'Sí' : 'No', style: 'value' },
+                { text: (item?.desc ? `¿Que otro?:` : ''), style: 'label' },
+                { text: (item?.desc ? item?.desc : ''), style: 'value' }
+              ]
+            )
+            : null)
+        }
       });
     }
 
@@ -839,7 +823,7 @@ export const generatePDF = (formulario, form) => {
         ],
         [
           { text: `Cantidad: ${input.cantidad}`, style: 'value', colSpan: 1 },
-          { text: `Producto Decomisado: ${input.productoDecomisado}`, style: 'value', colSpan: 3 },
+          { text: `Producto Decomisado: ${input.productodecomisado}`, style: 'value', colSpan: 3 },
           { text: '' },
           { text: '' },
         ],
@@ -1537,12 +1521,7 @@ export const generatePDF = (formulario, form) => {
       subheader: {
         fontSize: 14,
         bold: true,
-        margin: [0, 10, 0, 20],
-      },
-      subheader1: {
-        fontSize: 14,
-        bold: true,
-        margin: [0, 40, 0, 20],
+        margin: [5, 10, 0, 5],
       },
       label: {
         fontSize: 12,
@@ -1550,11 +1529,18 @@ export const generatePDF = (formulario, form) => {
         margin: [0, 5, 0, 0],
         color: 'rgb(37, 35, 35)',
       },
+      label1: {
+        fontSize: 12,
+        bold: true,
+        margin: [0, 0, 40, 10],
+        paddingTop: 30,
+        color: 'rgb(37, 35, 35)',
+      },
       value: {
         fontSize: 12,
         margin: [0, 0, 0, 10],
         border: [0.5, 0.5, 0.5, 0.5],
-        fillColor: '#EAFFDC',
+
         paddingLeft: 5,
         paddingRight: 5,
         borderRadius: [5, 5, 5, 5],
@@ -1572,12 +1558,13 @@ export const generatePDF = (formulario, form) => {
       cp,
       provincia,
       descripcion,
-      checkboxes,
-      inputs,
       infoAdicional,
       createdAt,
-      nombreUsuario
+      nombreUsuario,
     } = formulario;
+
+    const checkboxes = JSON.parse(formulario.checkboxes);
+    const inputs = JSON.parse(formulario.inputs);
 
     pdfContent.push({
       table: {
@@ -1613,25 +1600,9 @@ export const generatePDF = (formulario, form) => {
             [{ text: 'Tipo / modelo:', style: 'label' }, { text: input?.["Tipo / modelo"], style: 'value' }],
 
             [{ text: 'Posee certificacion:', style: 'label' }, { text: input?.["Posee certificacion"], style: 'value' }],
-          ],
-        },
-        layout: {
-          hLineWidth: () => 1,
-          vLineWidth: () => 1,
-          hLineColor: () => 'black',
-          vLineColor: () => 'black',
-          paddingTop: (i) => (i === 0 ? 10 : 10),
-          paddingBottom: (i) => (i === 1 ? 0 : 5),
-        },
-      });
-      pdfContent.push({ text: ` `, style: 'subheader' });
-      pdfContent.push({ text: ` `, style: 'subheader' });
-      pdfContent.push({
-        table: {
-          widths: columnWidths,
-          body: [
+            [{ text: 'Cantidad:', style: 'label' }, { text: input?.["Cantidad"], style: 'value' }],
+            // ahora con "Cantidad"
             [{ text: 'Marca:', style: 'label' }, { text: input?.Marca, style: 'value' }],
-
           ],
         },
         layout: {
@@ -1643,6 +1614,7 @@ export const generatePDF = (formulario, form) => {
           paddingBottom: (i) => (i === 1 ? 0 : 5),
         },
       });
+      pdfContent.push({ text: ` `, style: 'subheader' });
     });
 
 
