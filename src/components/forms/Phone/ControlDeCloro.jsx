@@ -92,9 +92,11 @@ function ControlDeCloro() {
                         <div>
                             <Chip label="2-Definir fecha inmediata de lavado y desinfección de reservorios de agua." />
 
+                        </div>  
+
+                        <div>
+                            <Chip label="2-Sin Acción Correctiva." />
                         </div>
-
-
                     </div>
                 </div>
                 <div className="table">

@@ -24,7 +24,7 @@ function VerificacionBalanza() {
 
   const [inputs] = useState([
     { id: 1, label: 'Código' },
-    { id: 2, label: 'Tipo (BP/BR)' },
+    { id: 2, label: 'Instrumento' },
     { id: 3, label: 'Responsable del uso' },
     { id: 4, label: 'Área' },
     { id: 5, label: 'Peso Masa ref/Pto balanza' },
@@ -34,7 +34,7 @@ function VerificacionBalanza() {
   ]);
   const [replicas, setReplicas] = useState(1);
 
-  const [replicaValues, setReplicaValues] = useState([{ id: 0, "Código": '', "Responsable del uso": '', "Área": '', "Peso Masa ref/Pto balanza": '', "Peso real": '', "Desvío": '', "Acciones de corrección": '', "Tipo (BP/BR)": '' }]);
+  const [replicaValues, setReplicaValues] = useState([{ id: 0, "Código": '', "Responsable del uso": '', "Área": '', "Peso Masa ref/Pto balanza": '', "Peso real": '', "Desvío": '', "Acciones de corrección": '', "Instrumento": '' }]);
   const [showModal, setShowModal] = useState(false);
   var idUser = localStorage.getItem('idUser');
   const [values, setValues] = useState({
@@ -245,7 +245,7 @@ function VerificacionBalanza() {
                 shrink: true,
               }}
             />
-            <FormControl variant='outlined'  className={styles.selectIns} disabled={currentStatus === 'view'}>
+            {/* <FormControl variant='outlined'  className={styles.selectIns} disabled={currentStatus === 'view'}>
               <InputLabel>Instrumento</InputLabel>
               <Select
                 onChange={(e) => {
@@ -264,7 +264,7 @@ function VerificacionBalanza() {
                 <MenuItem value='Balanza'>Balanza</MenuItem>
                 <MenuItem value='Báscula'>Báscula</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
           </div>
 
           <div className='table'>
@@ -285,14 +285,14 @@ function VerificacionBalanza() {
 
                     {inputs.map((input, index2) => (
                       <div key={replicaValues[index].id + index2}>
-                        {input.label === 'Tipo (BP/BR)' ? (
+                        {input.label === 'Instrumento' ? (
                           <FormControl variant='outlined'>
-                            <InputLabel>Tipo (BP/BR)</InputLabel>
+                            <InputLabel>Instrumento</InputLabel>
                             <Select
-                              value={replicaValues[index]?.["Tipo (BP/BR)"]}
+                              value={replicaValues[index]?.["Instrumento"]}
                               onChange={(e) => {
                                 let replicaCopy = [...replicaValues];
-                                replicaCopy[index]["Tipo (BP/BR)"] = e.target.value;
+                                replicaCopy[index]["Instrumento"] = e.target.value;
                                 setReplicaValues(replicaCopy);
                               }}
                               className='input'
@@ -304,8 +304,9 @@ function VerificacionBalanza() {
                                 shrink: true,
                               }}
                             >
-                              <MenuItem value='BP'>BP</MenuItem>
-                              <MenuItem value='BR'>BR</MenuItem>
+                                <MenuItem value='Balanza de producción'>Balanza de producción</MenuItem>
+                                <MenuItem value='Balanza de recepción'>Balanza de recepción</MenuItem>
+                                <MenuItem value='Báscula'>Báscula</MenuItem>
                             </Select>
                           </FormControl>
                         ) : (
@@ -329,6 +330,8 @@ function VerificacionBalanza() {
                                 }}
                               >
                                 <MenuItem value='Enviar a calibrar'>Enviar a calibrar</MenuItem>
+                                <MenuItem value='Sin Acción Correctiva'>Sin Acción Correctiva</MenuItem>
+
                               </Select>
                             </FormControl>
                           ) : (
@@ -376,9 +379,7 @@ function VerificacionBalanza() {
                 ))}
             </div>
           </div>
-          <span>
-            <b>*</b> BP(Balanza de producción) - BR (Balanza de recepción)
-          </span>
+         
           <br />
           <br />
 
