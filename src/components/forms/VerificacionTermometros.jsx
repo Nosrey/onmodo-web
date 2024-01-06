@@ -320,6 +320,7 @@ function VerificacionTermometros() {
                                 >
                                   <MenuItem value='Calibrar'>Calibrar</MenuItem>
                                   <MenuItem value='Reemplazar'>Reemplazar</MenuItem>
+                                  <MenuItem value='Sin Acción Correctiva'>Sin Acción Correctiva</MenuItem>
 
                                 </Select>
                               </FormControl>
@@ -421,7 +422,7 @@ function VerificacionTermometros() {
                                 >
                                   <MenuItem value='Calibrar'>Calibrar</MenuItem>
                                   <MenuItem value='Reemplazar'>Reemplazar</MenuItem>
-
+                                  <MenuItem value='Sin Acción Correctiva'>Sin Acción Correctiva</MenuItem>
                                 </Select>
                               </FormControl>
                             ) : (
