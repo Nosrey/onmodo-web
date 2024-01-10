@@ -6,6 +6,7 @@ import RechazoInfo from "../../modales/RechazoInfo";
 import Alert from "../../shared/components/Alert/Alert";
 import { editReporteRechazo, reporteRechazo, sendEditApplication } from "../../../services/FormsRequest";
 import { useLocation, useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 function ReporteDeRechazoDevolucionMaterias() {
   const location = useLocation();
@@ -218,8 +219,8 @@ function ReporteDeRechazoDevolucionMaterias() {
       } else {
         setTextAlert('¡Formulario cargado exitosamente!');
         setTypeAlert('success');
-         // limpiar fomr
-       window.location.href = window.location.href;
+        // limpiar fomr
+        window.location.href = window.location.href;
       }
     }).catch((resp) => {
       setTextAlert("Ocurrió un error")
@@ -249,9 +250,9 @@ function ReporteDeRechazoDevolucionMaterias() {
         setTypeAlert('success');
         const data = {
           editEnabled: false,
-          status:"",
+          status: "",
         }
-        sendEditApplication({values: data, formId:  infoPrecargada._id, form: '/reporterechazo'}).finally((resp)=>{
+        sendEditApplication({ values: data, formId: infoPrecargada._id, form: '/reporterechazo' }).finally((resp) => {
           navigate('/formularios-cargados/reporterechazo');
         })
       }
@@ -287,10 +288,10 @@ function ReporteDeRechazoDevolucionMaterias() {
         // medidasTomadas: infoPrecargada.medidasTomadas,
         date: infoPrecargada.date,
         idUser: idUser,
-        checksNoConformidades:[
-          infoPrecargada.condicionesEntrega,infoPrecargada.calidad,infoPrecargada.diferencias,infoPrecargada.transporte,
+        checksNoConformidades: [
+          infoPrecargada.condicionesEntrega, infoPrecargada.calidad, infoPrecargada.diferencias, infoPrecargada.transporte,
         ],
-        checksMedidas:infoPrecargada.medidasTomadas
+        checksMedidas: infoPrecargada.medidasTomadas
       })
 
     } else { // creo un form desde cero
@@ -307,10 +308,10 @@ function ReporteDeRechazoDevolucionMaterias() {
             <h3 className="title">
               Reporte de Rechazo/Devolución de Materias Primas
             </h3>
-            { (currentStatus === 'view' || currentStatus === 'edit') &&
-                <span style={{marginLeft:'20px', fontSize:'20px'}}>
-                    <i className={ currentStatus === 'view' ? 'ri-eye-line':'ri-pencil-line' }></i>
-                </span>
+            {(currentStatus === 'view' || currentStatus === 'edit') &&
+              <span style={{ marginLeft: '20px', fontSize: '20px' }}>
+                <i className={currentStatus === 'view' ? 'ri-eye-line' : 'ri-pencil-line'}></i>
+              </span>
             }
           </div>
           {showModal ? (
@@ -389,7 +390,7 @@ function ReporteDeRechazoDevolucionMaterias() {
               {Array(replicas)
                 .fill(0)
                 .map((_, index) => (
-                  <div className={styles.sectionsContainer} key={index}>
+                  <div className={styles.sectionsContainer} key={uuidv4()}>
                     {inputs.map((section, indexInputs) => (
                       <div >
                         <div className={styles.subtitleCont} key={section}>
@@ -399,41 +400,41 @@ function ReporteDeRechazoDevolucionMaterias() {
                         </div>
                         {section[Object.keys(section)].map((value, indexSection) => (
                           <div className={styles.inputRow} key={value.id}>
-                          <div className={styles.inputRowCheck}>
-                            <Checkbox
-                              onChange={(e) => {
-                                let newValues = { ...values };
-                                // newValues.checksNoConformidades[indexInputs][indexSection].checked = e.target.checked
-                                if (newValues.checksNoConformidades && newValues.checksNoConformidades[indexInputs] && newValues.checksNoConformidades[indexInputs][indexSection]) {
-                                  newValues.checksNoConformidades[indexInputs][indexSection].checked = e.target.checked;
-                                  newValues.checksNoConformidades[indexInputs][indexSection].name = value.label;
-                                } else {
-                                  // lo creo entonces
-                                  newValues.checksNoConformidades = newValues.checksNoConformidades || [];
-                                  newValues.checksNoConformidades[indexInputs] = newValues.checksNoConformidades[indexInputs] || [];
-                                  newValues.checksNoConformidades[indexInputs][indexSection] = newValues.checksNoConformidades[indexInputs][indexSection] || {};
-                                  newValues.checksNoConformidades[indexInputs][indexSection].checked = e.target.checked;
-                                  newValues.checksNoConformidades[indexInputs][indexSection].name = value.label;
-                                }
-                                setValues(newValues);
-                              }}
+                            <div className={styles.inputRowCheck}>
+                              <Checkbox
+                                onChange={(e) => {
+                                  let newValues = { ...values };
+                                  // newValues.checksNoConformidades[indexInputs][indexSection].checked = e.target.checked
+                                  if (newValues.checksNoConformidades && newValues.checksNoConformidades[indexInputs] && newValues.checksNoConformidades[indexInputs][indexSection]) {
+                                    newValues.checksNoConformidades[indexInputs][indexSection].checked = e.target.checked;
+                                    newValues.checksNoConformidades[indexInputs][indexSection].name = value.label;
+                                  } else {
+                                    // lo creo entonces
+                                    newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                                    newValues.checksNoConformidades[indexInputs] = newValues.checksNoConformidades[indexInputs] || [];
+                                    newValues.checksNoConformidades[indexInputs][indexSection] = newValues.checksNoConformidades[indexInputs][indexSection] || {};
+                                    newValues.checksNoConformidades[indexInputs][indexSection].checked = e.target.checked;
+                                    newValues.checksNoConformidades[indexInputs][indexSection].name = value.label;
+                                  }
+                                  setValues(newValues);
+                                }}
 
-                              // value={values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.checked || false}
-                              label={`${value.label}`}
-                              key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[indexInputs]?.[indexSection]?.label : values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.label)}
-                              disabled={currentStatus === 'view'}
-                              checked={values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.checked}
-                            />
-                            <p className={styles.itemText}>{value.label}</p>
-                          </div>
-                            
+                                // value={values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.checked || false}
+                                label={`${value.label}`}
+                                key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[indexInputs]?.[indexSection]?.label : values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.label)}
+                                disabled={currentStatus === 'view'}
+                                checked={values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.checked}
+                              />
+                              <p className={styles.itemText}>{value.label}</p>
+                            </div>
+
                             <TextField
                               id={`sectionInput-${value.id}-${index}`}
                               name={`sectionInput-${value.id}-${index}`}
                               label={currentStatus !== 'view' && "Descripción de no conformidad"}
                               variant="outlined"
                               disabled={currentStatus === 'view'}
-                              value={values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.description }
+                              value={values?.checksNoConformidades?.[indexInputs]?.[indexSection]?.description}
                               onChange={(e) => {
                                 let newValues = { ...values };
                                 if (newValues.checksNoConformidades && newValues.checksNoConformidades[indexInputs] && newValues.checksNoConformidades[indexInputs][indexSection]) {
@@ -465,12 +466,14 @@ function ReporteDeRechazoDevolucionMaterias() {
             <br />
             <br />
             <div>
-              <h2 className={styles.sectionTitle}>MEDIDAS TOMADAS</h2>
+              <h2 className={styles.sectionTitle} onProgress={() => {
+                console.log('values.checksMedidas: ', values?.checksMedidas)
+              }}>MEDIDAS TOMADAS</h2>
               <div>
                 {Array(replicas)
                   .fill(0)
                   .map((_, index) => (
-                    <div className={styles.sectionsContainer} key={index}>
+                    <div className={styles.sectionsContainer} key={uuidv4()}>
                       {secondInputs.map((input, indexInputs) => (
                         <div className={styles.inputRow} key={input.id}>
                           <div className={styles.inputRowCheck}>
@@ -491,11 +494,12 @@ function ReporteDeRechazoDevolucionMaterias() {
                                   newValues.checksMedidas[indexInputs].checked = e.target.checked;
                                   newValues.checksMedidas[indexInputs].name = secondInputs[indexInputs].label;
                                 }
+                                setValues(newValues);
                               }}
                             />
                             <p className={styles.itemText}>{input.label}</p>
                           </div>
-                          
+
                           <TextField
                             disabled={currentStatus === 'view'}
                             value={values?.checksMedidas?.[indexInputs]?.description}
@@ -535,26 +539,26 @@ function ReporteDeRechazoDevolucionMaterias() {
           <br />
           {
             (infoPrecargada === undefined) &&
-                <div className='btn'>
-                    <Button
-                        onClick={handleSubmit}
-                        variant='contained'
-                    >
-                        Guardar
-                    </Button>
-                </div>
-            }
-            {
-                (currentStatus === 'edit' ) &&
-                <div className='btn'>
-                    <Button
-                        onClick={handleEdit}
-                        variant='contained'
-                    >
-                        Editar
-                    </Button>
-                </div>
-            }
+            <div className='btn'>
+              <Button
+                onClick={handleSubmit}
+                variant='contained'
+              >
+                Guardar
+              </Button>
+            </div>
+          }
+          {
+            (currentStatus === 'edit') &&
+            <div className='btn'>
+              <Button
+                onClick={handleEdit}
+                variant='contained'
+              >
+                Editar
+              </Button>
+            </div>
+          }
         </div>
         <div></div>
       </div>
