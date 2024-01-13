@@ -392,14 +392,14 @@ function ReporteDeRechazoDevolucionMaterias() {
                 .map((_, index) => (
                   <div className={styles.sectionsContainer} key={uuidv4()}>
                     {inputs.map((section, indexInputs) => (
-                      <div >
+                      <div key={uuidv4()}>
                         <div className={styles.subtitleCont} key={section}>
                           <p className={styles.subtitle}>
                             {Object.keys(section)}
                           </p>
                         </div>
                         {section[Object.keys(section)].map((value, indexSection) => (
-                          <div className={styles.inputRow} key={value.id}>
+                          <div className={styles.inputRow} key={uuidv4()}>
                             <div className={styles.inputRowCheck}>
                               <Checkbox
                                 onChange={(e) => {
@@ -475,7 +475,7 @@ function ReporteDeRechazoDevolucionMaterias() {
                   .map((_, index) => (
                     <div className={styles.sectionsContainer} key={uuidv4()}>
                       {secondInputs.map((input, indexInputs) => (
-                        <div className={styles.inputRow} key={input.id}>
+                        <div className={styles.inputRow} key={uuidv4()}>
                           <div className={styles.inputRowCheck}>
                             <Checkbox
                               label={`${input.label}`}
