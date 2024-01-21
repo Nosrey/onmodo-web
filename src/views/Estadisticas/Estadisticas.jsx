@@ -63,15 +63,14 @@ const Estadisticas = () => {
 
   const [selectedMonth, setSelectedMonth] = useState(parseInt(months[0].month));
   const [formDates, setFormDates] = useState([]);
-  const [selectedFormDate, setSelectedFormDate] = useState(0);
-  const [currentYear, setCurrentYear] = useState('');
+  const currentYear = new Date().getFullYear();
+  const [selectedFormDate, setSelectedFormDate] = useState(currentYear);
   const [numberOfForms, setNumberOfForms] = useState(0);
   const [allFormStats, setAllFormStats] = useState([]);
   const [barData, setBarData] = useState([]);
   
   useEffect(() => {
     setIsLoading(true);
-    setCurrentYear(new Date().getFullYear());
     getStats().then(res => {
     setTotalUsers(res.response.totalUsers);
     setProvinceInfo(res.response.provinciaCounts.sort((a, b) => b.usersCount - a.usersCount));
@@ -81,7 +80,7 @@ const Estadisticas = () => {
       setAllFormStats(res.formsPerYear);
       formatFormStats(res.formsPerYear);
       handleNumberOfForms(res.formsPerYear);
-      fillMonthCounts(res.formsPerYear);
+      fillMonthCounts(res.formsPerYear, currentYear);
     });
     getLegajosPorRol('1-2-3').then(res => {
       numberPerRol(res);
@@ -146,9 +145,11 @@ const Estadisticas = () => {
   const formatFormStats = (data) => {
     const uniqueYearsSet = new Set();
     data.forEach((item) => {
-      if (item.totalFormsPerYear && item.totalFormsPerYear.yearReference) {
-        uniqueYearsSet.add(item.totalFormsPerYear.yearReference);
-      }
+      item.totalFormsPerYear?.map((forms) => {
+        if (forms.year) {
+          uniqueYearsSet.add(forms.year);
+        }
+      })
     });
     setFormDates(Array.from(uniqueYearsSet).sort((a, b) => b - a));
   }
@@ -159,20 +160,22 @@ const Estadisticas = () => {
 
   const handleNumberOfForms = (data) => {
     const formSelectedInfo = findForm(data);
-    setNumberOfForms(formSelectedInfo?.totalFormsPerYear.count);
+    const form = formSelectedInfo.totalFormsPerYear?.find((el) => el.year === currentYear);
+    setNumberOfForms(form?.count ? form.count : 0);
   };
 
   useEffect(() => {
     handleFormSelectChanges();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[selectedForm, selectedMonth])
+  },[selectedForm, selectedMonth, selectedFormDate])
 
   const handleFormSelectChanges = () => {
     const formSelected = findForm(allFormStats);
     if(formSelected) {
       if(selectedMonth === 0) {
-        fillMonthCounts(formSelected);
-        setNumberOfForms(formSelected.totalFormsPerYear?.count);
+        fillMonthCounts(formSelected, selectedFormDate);
+        const form = formSelected.totalFormsPerYear?.find((el) => el.year === selectedFormDate);
+        setNumberOfForms(form?.count ? form.count : 0);
       }else {
         const monthInfo = formSelected.formsPerMonth.find((el) => el.month === selectedMonth)
         setNumberOfForms(monthInfo ? monthInfo.count : 0)
@@ -182,14 +185,16 @@ const Estadisticas = () => {
     }
   }
 
-  const fillMonthCounts = (formSelected) => {
+  const fillMonthCounts = (formSelected, selectedYear) => {
     let form = Array.isArray(formSelected) 
       ? findForm(formSelected) 
       : formSelected;
     const monthCounts = Array.from({length: 12}, () => 0);
     form.formsPerMonth?.forEach((item) => {
-      const index = item.month - 1;
-      monthCounts[index] = item.count;
+      if(item.year === selectedYear){
+        const index = item.month - 1;
+        monthCounts[index] = item.count;
+      }
     })
     return setBarData(monthCounts);
   }
@@ -335,7 +340,7 @@ const Estadisticas = () => {
                   ))}
                 </select>
               </div>
-              <select name='' id={styles.select} onChange={setSelectedFormDate} className={styles.customizedSelects}>
+              <select name='' id={styles.select} onChange={(e) => setSelectedFormDate(parseInt(e.target.value))} className={styles.customizedSelects}>
                 <option className={styles.spanOption} value={currentYear}>{currentYear}</option>
                 {formDates.map((year, i) => (
                   currentYear !== year && <option key={i} className={styles.spanOption} value={year}>{year}</option>
