@@ -387,7 +387,7 @@ function ReporteDeRechazoDevolucionMaterias() {
                 Marcar la casilla y completar con la descripción de la no
                 conformidad.
               </p>
-              {Array(replicas)
+              {/* {Array(replicas)
                 .fill(0)
                 .map((_, index) => (
                   <div className={styles.sectionsContainer} key={uuidv4()}>
@@ -460,9 +460,1044 @@ function ReporteDeRechazoDevolucionMaterias() {
                       </div>
                     ))}
                   </div>
-                ))}
-            </div>
+                ))} */}
 
+
+              {/* agrego cada uno manualmente iniciando por Atrasado */}
+
+              <div className={styles.sectionsContainer}>
+                <div>
+                  <div className={styles.subtitleCont}>
+                    <p className={styles.subtitle}>Condiciones de entrega</p>
+                  </div>
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Atrasado"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[0]?.[0]?.label : values?.checksNoConformidades?.[0]?.[0]?.label)}
+                        checked={values?.checksNoConformidades?.[0]?.[0]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[0] && newValues.checksNoConformidades[0][0]) {
+                            newValues.checksNoConformidades[0][0].checked = e.target.checked;
+                            newValues.checksNoConformidades[0][0].name = inputs[0]['Condiciones de entrega'][0].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[0] = newValues.checksNoConformidades[0] || [];
+                            newValues.checksNoConformidades[0][0] = newValues.checksNoConformidades[0][0] || {};
+                            newValues.checksNoConformidades[0][0].checked = e.target.checked;
+                            newValues.checksNoConformidades[0][0].name = inputs[0]['Condiciones de entrega'][0].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Atrasado</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-1-0"
+                      name="sectionInput-1-0"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[0]?.[0]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[0] && newValues.checksNoConformidades[0][0]) {
+                          newValues.checksNoConformidades[0][0].description = e.target.value;
+                          newValues.checksNoConformidades[0][0].name = inputs[0]['Condiciones de entrega'][0].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[0] = newValues.checksNoConformidades[0] || [];
+                          newValues.checksNoConformidades[0][0] = newValues.checksNoConformidades[0][0] || {};
+                          newValues.checksNoConformidades[0][0].description = e.target.value;
+                          newValues.checksNoConformidades[0][0].name = inputs[0]['Condiciones de entrega'][0].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+
+
+
+                  </div>
+
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Adelantado"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[0]?.[1]?.label : values?.checksNoConformidades?.[0]?.[1]?.label)}
+                        checked={values?.checksNoConformidades?.[0]?.[1]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[0] && newValues.checksNoConformidades[0][1]) {
+                            newValues.checksNoConformidades[0][1].checked = e.target.checked;
+                            newValues.checksNoConformidades[0][1].name = inputs[0]['Condiciones de entrega'][1].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[0] = newValues.checksNoConformidades[0] || [];
+                            newValues.checksNoConformidades[0][1] = newValues.checksNoConformidades[0][1] || {};
+                            newValues.checksNoConformidades[0][1].checked = e.target.checked;
+                            newValues.checksNoConformidades[0][1].name = inputs[0]['Condiciones de entrega'][1].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Atrasado</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-1-1"
+                      name="sectionInput-1-1"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[0]?.[1]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[0] && newValues.checksNoConformidades[0][1]) {
+                          newValues.checksNoConformidades[0][1].description = e.target.value;
+                          newValues.checksNoConformidades[0][1].name = inputs[0]['Condiciones de entrega'][1].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[0] = newValues.checksNoConformidades[0] || [];
+                          newValues.checksNoConformidades[0][1] = newValues.checksNoConformidades[0][1] || {};
+                          newValues.checksNoConformidades[0][1].description = e.target.value;
+                          newValues.checksNoConformidades[0][1].name = inputs[0]['Condiciones de entrega'][1].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+
+                  </div>
+                </div>
+              </div>
+
+              {/* Calidad */}
+              <div className={styles.sectionsContainer}>
+                <div>
+                  <div className={styles.subtitleCont}>
+                    <p className={styles.subtitle}>Calidad</p>
+                  </div>
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Temperatura"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[1]?.[0]?.label : values?.checksNoConformidades?.[1]?.[0]?.label)}
+                        checked={values?.checksNoConformidades?.[1]?.[0]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][0]) {
+                            newValues.checksNoConformidades[1][0].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][0].name = inputs[1]['Calidad'][0].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                            newValues.checksNoConformidades[1][0] = newValues.checksNoConformidades[1][0] || {};
+                            newValues.checksNoConformidades[1][0].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][0].name = inputs[1]['Calidad'][0].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Temperatura</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-2-0"
+                      name="sectionInput-2-0"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[1]?.[0]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][0]) {
+                          newValues.checksNoConformidades[1][0].description = e.target.value;
+                          newValues.checksNoConformidades[1][0].name = inputs[1]['Calidad'][0].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                          newValues.checksNoConformidades[1][0] = newValues.checksNoConformidades[1][0] || {};
+                          newValues.checksNoConformidades[1][0].description = e.target.value;
+                          newValues.checksNoConformidades[1][0].name = inputs[1]['Calidad'][0].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Vida útil"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[1]?.[1]?.label : values?.checksNoConformidades?.[1]?.[1]?.label)}
+                        checked={values?.checksNoConformidades?.[1]?.[1]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][1]) {
+                            newValues.checksNoConformidades[1][1].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][1].name = inputs[1]['Calidad'][1].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                            newValues.checksNoConformidades[1][1] = newValues.checksNoConformidades[1][1] || {};
+                            newValues.checksNoConformidades[1][1].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][1].name = inputs[1]['Calidad'][1].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Vida útil</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-2-1"
+                      name="sectionInput-2-1"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[1]?.[1]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][1]) {
+                          newValues.checksNoConformidades[1][1].description = e.target.value;
+                          newValues.checksNoConformidades[1][1].name = inputs[1]['Calidad'][1].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                          newValues.checksNoConformidades[1][1] = newValues.checksNoConformidades[1][1] || {};
+                          newValues.checksNoConformidades[1][1].description = e.target.value;
+                          newValues.checksNoConformidades[1][1].name = inputs[1]['Calidad'][1].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Embalaje"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[1]?.[2]?.label : values?.checksNoConformidades?.[1]?.[2]?.label)}
+                        checked={values?.checksNoConformidades?.[1]?.[2]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][2]) {
+                            newValues.checksNoConformidades[1][2].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][2].name = inputs[1]['Calidad'][2].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                            newValues.checksNoConformidades[1][2] = newValues.checksNoConformidades[1][2] || {};
+                            newValues.checksNoConformidades[1][2].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][2].name = inputs[1]['Calidad'][2].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Embalaje</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-2-2"
+                      name="sectionInput-2-2"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[1]?.[2]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][2]) {
+                          newValues.checksNoConformidades[1][2].description = e.target.value;
+                          newValues.checksNoConformidades[1][2].name = inputs[1]['Calidad'][2].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                          newValues.checksNoConformidades[1][2] = newValues.checksNoConformidades[1][2] || {};
+                          newValues.checksNoConformidades[1][2].description = e.target.value;
+                          newValues.checksNoConformidades[1][2].name = inputs[1]['Calidad'][2].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+                  {/* ahora creamos Rótulo  */}
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Rótulo"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[1]?.[3]?.label : values?.checksNoConformidades?.[1]?.[3]?.label)}
+                        checked={values?.checksNoConformidades?.[1]?.[3]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][3]) {
+                            newValues.checksNoConformidades[1][3].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][3].name = inputs[1]['Calidad'][3].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                            newValues.checksNoConformidades[1][3] = newValues.checksNoConformidades[1][3] || {};
+                            newValues.checksNoConformidades[1][3].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][3].name = inputs[1]['Calidad'][3].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Rótulo</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-2-3"
+                      name="sectionInput-2-3"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[1]?.[3]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][3]) {
+                          newValues.checksNoConformidades[1][3].description = e.target.value;
+                          newValues.checksNoConformidades[1][3].name = inputs[1]['Calidad'][3].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                          newValues.checksNoConformidades[1][3] = newValues.checksNoConformidades[1][3] || {};
+                          newValues.checksNoConformidades[1][3].description = e.target.value;
+                          newValues.checksNoConformidades[1][3].name = inputs[1]['Calidad'][3].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+                  {/* ahora creamos Calibre  */}
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Calibre"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[1]?.[4]?.label : values?.checksNoConformidades?.[1]?.[4]?.label)}
+                        checked={values?.checksNoConformidades?.[1]?.[4]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][4]) {
+                            newValues.checksNoConformidades[1][4].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][4].name = inputs[1]['Calidad'][4].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                            newValues.checksNoConformidades[1][4] = newValues.checksNoConformidades[1][4] || {};
+                            newValues.checksNoConformidades[1][4].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][4].name = inputs[1]['Calidad'][4].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Calibre</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-2-4"
+                      name="sectionInput-2-4"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[1]?.[4]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][4]) {
+                          newValues.checksNoConformidades[1][4].description = e.target.value;
+                          newValues.checksNoConformidades[1][4].name = inputs[1]['Calidad'][4].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                          newValues.checksNoConformidades[1][4] = newValues.checksNoConformidades[1][4] || {};
+                          newValues.checksNoConformidades[1][4].description = e.target.value;
+                          newValues.checksNoConformidades[1][4].name = inputs[1]['Calidad'][4].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+                  {/* ahora creamos Color  */}
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Color"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[1]?.[5]?.label : values?.checksNoConformidades?.[1]?.[5]?.label)}
+                        checked={values?.checksNoConformidades?.[1]?.[5]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][5]) {
+                            newValues.checksNoConformidades[1][5].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][5].name = inputs[1]['Calidad'][5].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                            newValues.checksNoConformidades[1][5] = newValues.checksNoConformidades[1][5] || {};
+                            newValues.checksNoConformidades[1][5].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][5].name = inputs[1]['Calidad'][5].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Color</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-2-5"
+                      name="sectionInput-2-5"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[1]?.[5]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][5]) {
+                          newValues.checksNoConformidades[1][5].description = e.target.value;
+                          newValues.checksNoConformidades[1][5].name = inputs[1]['Calidad'][5].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                          newValues.checksNoConformidades[1][5] = newValues.checksNoConformidades[1][5] || {};
+                          newValues.checksNoConformidades[1][5].description = e.target.value;
+                          newValues.checksNoConformidades[1][5].name = inputs[1]['Calidad'][5].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+                  {/* ahora creamos Signos de maduración  */}
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Signos de maduración"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[1]?.[6]?.label : values?.checksNoConformidades?.[1]?.[6]?.label)}
+                        checked={values?.checksNoConformidades?.[1]?.[6]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][6]) {
+                            newValues.checksNoConformidades[1][6].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][6].name = inputs[1]['Calidad'][6].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                            newValues.checksNoConformidades[1][6] = newValues.checksNoConformidades[1][6] || {};
+                            newValues.checksNoConformidades[1][6].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][6].name = inputs[1]['Calidad'][6].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Signos de maduración</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-2-6"
+                      name="sectionInput-2-6"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[1]?.[6]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][6]) {
+                          newValues.checksNoConformidades[1][6].description = e.target.value;
+                          newValues.checksNoConformidades[1][6].name = inputs[1]['Calidad'][6].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                          newValues.checksNoConformidades[1][6] = newValues.checksNoConformidades[1][6] || {};
+                          newValues.checksNoConformidades[1][6].description = e.target.value;
+                          newValues.checksNoConformidades[1][6].name = inputs[1]['Calidad'][6].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+                  {/* ahora creamos Consistencia/Textura  */}
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Consistencia/Textura"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[1]?.[7]?.label : values?.checksNoConformidades?.[1]?.[7]?.label)}
+                        checked={values?.checksNoConformidades?.[1]?.[7]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][7]) {
+                            newValues.checksNoConformidades[1][7].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][7].name = inputs[1]['Calidad'][7].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                            newValues.checksNoConformidades[1][7] = newValues.checksNoConformidades[1][7] || {};
+                            newValues.checksNoConformidades[1][7].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][7].name = inputs[1]['Calidad'][7].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Consistencia/Textura</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-2-7"
+                      name="sectionInput-2-7"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[1]?.[7]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][7]) {
+                          newValues.checksNoConformidades[1][7].description = e.target.value;
+                          newValues.checksNoConformidades[1][7].name = inputs[1]['Calidad'][7].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                          newValues.checksNoConformidades[1][7] = newValues.checksNoConformidades[1][7] || {};
+                          newValues.checksNoConformidades[1][7].description = e.target.value;
+                          newValues.checksNoConformidades[1][7].name = inputs[1]['Calidad'][7].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+                  {/* ahora creamos Olor  */}
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Olor"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[1]?.[8]?.label : values?.checksNoConformidades?.[1]?.[8]?.label)}
+                        checked={values?.checksNoConformidades?.[1]?.[8]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][8]) {
+                            newValues.checksNoConformidades[1][8].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][8].name = inputs[1]['Calidad'][8].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                            newValues.checksNoConformidades[1][8] = newValues.checksNoConformidades[1][8] || {};
+                            newValues.checksNoConformidades[1][8].checked = e.target.checked;
+                            newValues.checksNoConformidades[1][8].name = inputs[1]['Calidad'][8].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Olor</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-2-8"
+                      name="sectionInput-2-8"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[1]?.[8]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[1] && newValues.checksNoConformidades[1][8]) {
+                          newValues.checksNoConformidades[1][8].description = e.target.value;
+                          newValues.checksNoConformidades[1][8].name = inputs[1]['Calidad'][8].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[1] = newValues.checksNoConformidades[1] || [];
+                          newValues.checksNoConformidades[1][8] = newValues.checksNoConformidades[1][8] || {};
+                          newValues.checksNoConformidades[1][8].description = e.target.value;
+                          newValues.checksNoConformidades[1][8].name = inputs[1]['Calidad'][8].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+                  {/* hasta aca van las filas */}
+                </div>
+              </div>
+
+              {/* Diferencias */}
+              <div className={styles.sectionsContainer}>
+                <div>
+                  <div className={styles.subtitleCont}>
+                    <p className={styles.subtitle}>Diferencias</p>
+                  </div>
+                  {/* ahora Precio */}
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Precio"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[2]?.[0]?.label : values?.checksNoConformidades?.[2]?.[0]?.label)}
+                        checked={values?.checksNoConformidades?.[2]?.[0]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[2] && newValues.checksNoConformidades[2][0]) {
+                            newValues.checksNoConformidades[2][0].checked = e.target.checked;
+                            newValues.checksNoConformidades[2][0].name = inputs[2]['Diferencias'][0].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[2] = newValues.checksNoConformidades[2] || [];
+                            newValues.checksNoConformidades[2][0] = newValues.checksNoConformidades[2][0] || {};
+                            newValues.checksNoConformidades[2][0].checked = e.target.checked;
+                            newValues.checksNoConformidades[2][0].name = inputs[2]['Diferencias'][0].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Precio</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-3-0"
+                      name="sectionInput-3-0"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[2]?.[0]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[2] && newValues.checksNoConformidades[2][0]) {
+                          newValues.checksNoConformidades[2][0].description = e.target.value;
+                          newValues.checksNoConformidades[2][0].name = inputs[2]['Diferencias'][0].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[2] = newValues.checksNoConformidades[2] || [];
+                          newValues.checksNoConformidades[2][0] = newValues.checksNoConformidades[2][0] || {};
+                          newValues.checksNoConformidades[2][0].description = e.target.value;
+                          newValues.checksNoConformidades[2][0].name = inputs[2]['Diferencias'][0].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+
+                  {/* ahora Cantidad */}
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Cantidad"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[2]?.[1]?.label : values?.checksNoConformidades?.[2]?.[1]?.label)}
+                        checked={values?.checksNoConformidades?.[2]?.[1]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[2] && newValues.checksNoConformidades[2][1]) {
+                            newValues.checksNoConformidades[2][1].checked = e.target.checked;
+                            newValues.checksNoConformidades[2][1].name = inputs[2]['Diferencias'][1].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[2] = newValues.checksNoConformidades[2] || [];
+                            newValues.checksNoConformidades[2][1] = newValues.checksNoConformidades[2][1] || {};
+                            newValues.checksNoConformidades[2][1].checked = e.target.checked;
+                            newValues.checksNoConformidades[2][1].name = inputs[2]['Diferencias'][1].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Cantidad</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-3-1"
+                      name="sectionInput-3-1"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[2]?.[1]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[2] && newValues.checksNoConformidades[2][1]) {
+                          newValues.checksNoConformidades[2][1].description = e.target.value;
+                          newValues.checksNoConformidades[2][1].name = inputs[2]['Diferencias'][1].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[2] = newValues.checksNoConformidades[2] || [];
+                          newValues.checksNoConformidades[2][1] = newValues.checksNoConformidades[2][1] || {};
+                          newValues.checksNoConformidades[2][1].description = e.target.value;
+                          newValues.checksNoConformidades[2][1].name = inputs[2]['Diferencias'][1].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+
+                  {/* hasta aca van las filas */}
+                </div>
+              </div>
+
+              {/* ahora Transporte */}
+              <div className={styles.sectionsContainer}>
+                <div>
+                  <div className={styles.subtitleCont}>
+                    <p className={styles.subtitle}>Transporte</p>
+                  </div>
+
+                  {/* ahora Temperatura de la caja */}
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Temperatura de la caja"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[3]?.[0]?.label : values?.checksNoConformidades?.[3]?.[0]?.label)}
+                        checked={values?.checksNoConformidades?.[3]?.[0]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[3] && newValues.checksNoConformidades[3][0]) {
+                            newValues.checksNoConformidades[3][0].checked = e.target.checked;
+                            newValues.checksNoConformidades[3][0].name = inputs[3]['Transporte'][0].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[3] = newValues.checksNoConformidades[3] || [];
+                            newValues.checksNoConformidades[3][0] = newValues.checksNoConformidades[3][0] || {};
+                            newValues.checksNoConformidades[3][0].checked = e.target.checked;
+                            newValues.checksNoConformidades[3][0].name = inputs[3]['Transporte'][0].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Temperatura de la caja</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-4-0"
+                      name="sectionInput-4-0"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[3]?.[0]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[3] && newValues.checksNoConformidades[3][0]) {
+                          newValues.checksNoConformidades[3][0].description = e.target.value;
+                          newValues.checksNoConformidades[3][0].name = inputs[3]['Transporte'][0].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[3] = newValues.checksNoConformidades[3] || [];
+                          newValues.checksNoConformidades[3][0] = newValues.checksNoConformidades[3][0] || {};
+                          newValues.checksNoConformidades[3][0].description = e.target.value;
+                          newValues.checksNoConformidades[3][0].name = inputs[3]['Transporte'][0].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+
+                  </div>
+
+                  {/* ahora Uniforme del proveedor */}
+
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Uniforme del proveedor"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[3]?.[1]?.label : values?.checksNoConformidades?.[3]?.[1]?.label)}
+                        checked={values?.checksNoConformidades?.[3]?.[1]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[3] && newValues.checksNoConformidades[3][1]) {
+                            newValues.checksNoConformidades[3][1].checked = e.target.checked;
+                            newValues.checksNoConformidades[3][1].name = inputs[3]['Transporte'][1].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[3] = newValues.checksNoConformidades[3] || [];
+                            newValues.checksNoConformidades[3][1] = newValues.checksNoConformidades[3][1] || {};
+                            newValues.checksNoConformidades[3][1].checked = e.target.checked;
+                            newValues.checksNoConformidades[3][1].name = inputs[3]['Transporte'][1].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Uniforme del proveedor</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-4-1"
+                      name="sectionInput-4-1"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[3]?.[1]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[3] && newValues.checksNoConformidades[3][1]) {
+                          newValues.checksNoConformidades[3][1].description = e.target.value;
+                          newValues.checksNoConformidades[3][1].name = inputs[3]['Transporte'][1].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[3] = newValues.checksNoConformidades[3] || [];
+                          newValues.checksNoConformidades[3][1] = newValues.checksNoConformidades[3][1] || {};
+                          newValues.checksNoConformidades[3][1].description = e.target.value;
+                          newValues.checksNoConformidades[3][1].name = inputs[3]['Transporte'][1].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+                  {/* ahora Predisposición /Conducta */}
+
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Predisposición /Conducta"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[3]?.[2]?.label : values?.checksNoConformidades?.[3]?.[2]?.label)}
+                        checked={values?.checksNoConformidades?.[3]?.[2]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[3] && newValues.checksNoConformidades[3][2]) {
+                            newValues.checksNoConformidades[3][2].checked = e.target.checked;
+                            newValues.checksNoConformidades[3][2].name = inputs[3]['Transporte'][2].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[3] = newValues.checksNoConformidades[3] || [];
+                            newValues.checksNoConformidades[3][2] = newValues.checksNoConformidades[3][2] || {};
+                            newValues.checksNoConformidades[3][2].checked = e.target.checked;
+                            newValues.checksNoConformidades[3][2].name = inputs[3]['Transporte'][2].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Predisposición /Conducta</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-4-2"
+                      name="sectionInput-4-2"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[3]?.[2]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[3] && newValues.checksNoConformidades[3][2]) {
+                          newValues.checksNoConformidades[3][2].description = e.target.value;
+                          newValues.checksNoConformidades[3][2].name = inputs[3]['Transporte'][2].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[3] = newValues.checksNoConformidades[3] || [];
+                          newValues.checksNoConformidades[3][2] = newValues.checksNoConformidades[3][2] || {};
+                          newValues.checksNoConformidades[3][2].description = e.target.value;
+                          newValues.checksNoConformidades[3][2].name = inputs[3]['Transporte'][2].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+                  {/* ahora Vehículo */}
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Vehículo"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[3]?.[3]?.label : values?.checksNoConformidades?.[3]?.[3]?.label)}
+                        checked={values?.checksNoConformidades?.[3]?.[3]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[3] && newValues.checksNoConformidades[3][3]) {
+                            newValues.checksNoConformidades[3][3].checked = e.target.checked;
+                            newValues.checksNoConformidades[3][3].name = inputs[3]['Transporte'][3].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[3] = newValues.checksNoConformidades[3] || [];
+                            newValues.checksNoConformidades[3][3] = newValues.checksNoConformidades[3][3] || {};
+                            newValues.checksNoConformidades[3][3].checked = e.target.checked;
+                            newValues.checksNoConformidades[3][3].name = inputs[3]['Transporte'][3].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Vehículo</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-4-3"
+                      name="sectionInput-4-3"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[3]?.[3]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[3] && newValues.checksNoConformidades[3][3]) {
+                          newValues.checksNoConformidades[3][3].description = e.target.value;
+                          newValues.checksNoConformidades[3][3].name = inputs[3]['Transporte'][3].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[3] = newValues.checksNoConformidades[3] || [];
+                          newValues.checksNoConformidades[3][3] = newValues.checksNoConformidades[3][3] || {};
+                          newValues.checksNoConformidades[3][3].description = e.target.value;
+                          newValues.checksNoConformidades[3][3].name = inputs[3]['Transporte'][3].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+
+                  {/* ahora Otras Faltas */}
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Otras Faltas"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksNoConformidades?.[3]?.[4]?.label : values?.checksNoConformidades?.[3]?.[4]?.label)}
+                        checked={values?.checksNoConformidades?.[3]?.[4]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksNoConformidades && newValues.checksNoConformidades[3] && newValues.checksNoConformidades[3][4]) {
+                            newValues.checksNoConformidades[3][4].checked = e.target.checked;
+                            newValues.checksNoConformidades[3][4].name = inputs[3]['Transporte'][4].label;
+                          } else {
+                            // lo creo entonces
+                            newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                            newValues.checksNoConformidades[3] = newValues.checksNoConformidades[3] || [];
+                            newValues.checksNoConformidades[3][4] = newValues.checksNoConformidades[3][4] || {};
+                            newValues.checksNoConformidades[3][4].checked = e.target.checked;
+                            newValues.checksNoConformidades[3][4].name = inputs[3]['Transporte'][4].label;
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Otras Faltas</p>
+                    </div>
+
+                    <TextField
+                      id="sectionInput-4-4"
+                      name="sectionInput-4-4"
+                      label={currentStatus !== 'view' && "Descripción de no conformidad"}
+                      variant="outlined"
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksNoConformidades?.[3]?.[4]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksNoConformidades && newValues.checksNoConformidades[3] && newValues.checksNoConformidades[3][4]) {
+                          newValues.checksNoConformidades[3][4].description = e.target.value;
+                          newValues.checksNoConformidades[3][4].name = inputs[3]['Transporte'][4].label;
+                        } else {
+                          // lo creo entonces
+                          newValues.checksNoConformidades = newValues.checksNoConformidades || [];
+                          newValues.checksNoConformidades[3] = newValues.checksNoConformidades[3] || [];
+                          newValues.checksNoConformidades[3][4] = newValues.checksNoConformidades[3][4] || {};
+                          newValues.checksNoConformidades[3][4].description = e.target.value;
+                          newValues.checksNoConformidades[3][4].name = inputs[3]['Transporte'][4].label;
+                        }
+                        setValues(newValues);
+                      }
+                      }
+                      fullWidth
+                      multiline
+                    />
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div>
             <br />
             <br />
             <div>
@@ -470,7 +1505,7 @@ function ReporteDeRechazoDevolucionMaterias() {
                 console.log('values.checksMedidas: ', values?.checksMedidas)
               }}>MEDIDAS TOMADAS</h2>
               <div>
-                {Array(replicas)
+                {/* {Array(replicas)
                   .fill(0)
                   .map((_, index) => (
                     <div className={styles.sectionsContainer} key={uuidv4()}>
@@ -530,7 +1565,176 @@ function ReporteDeRechazoDevolucionMaterias() {
                         </div>
                       ))}
                     </div>
-                  ))}
+                  ))} */}
+
+                {/* agrego cada uno manualmente iniciando por Rechazo (en el momento de la recepción) */}
+                <div className={styles.sectionsContainer}>
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Rechazo (en el momento de la recepción)"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksMedidas?.[0]?.name : values?.checksMedidas?.[0]?.name)}
+                        checked={values?.checksMedidas?.[0]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksMedidas && newValues.checksMedidas[0]) {
+                            newValues.checksMedidas[0].checked = e.target.checked;
+                            newValues.checksMedidas[0].name = 'Rechazo (en el momento de la recepción)';
+                          } else {
+                            // lo creo entonces
+                            newValues.checksMedidas = newValues.checksMedidas || [];
+                            newValues.checksMedidas[0] = newValues.checksMedidas[0] || {};
+                            newValues.checksMedidas[0].checked = e.target.checked;
+                            newValues.checksMedidas[0].name = 'Rechazo (en el momento de la recepción)';
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Rechazo (en el momento de la recepción)</p>
+                    </div>
+
+                    <TextField
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksMedidas?.[0]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksMedidas && newValues.checksMedidas[0]) {
+                          newValues.checksMedidas[0].description = e.target.value;
+                          newValues.checksMedidas[0].name = 'Rechazo (en el momento de la recepción)';
+                        } else {
+                          // lo creo entonces
+                          newValues.checksMedidas = newValues.checksMedidas || [];
+                          newValues.checksMedidas[0] = newValues.checksMedidas[0] || {};
+                          newValues.checksMedidas[0].description = e.target.value;
+                          newValues.checksMedidas[0].name = 'Rechazo (en el momento de la recepción)';
+                        }
+                        setValues(newValues);
+                      }}
+                      id="sectionInput-5-0"
+                      name="sectionInput-5-0"
+                      label={currentStatus !== 'view' && "Descripción de la medida"}
+                      variant="outlined"
+                      multiline
+                      fullWidth
+                      rows={4}
+                    />
+                  </div>
+                </div>
+
+                {/* ahora Devolución (lotes ya ingresados) */}
+                <div className={styles.sectionsContainer}>
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Devolución (lotes ya ingresados)"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksMedidas?.[1]?.name : values?.checksMedidas?.[1]?.name)}
+                        checked={values?.checksMedidas?.[1]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksMedidas && newValues.checksMedidas[1]) {
+                            newValues.checksMedidas[1].checked = e.target.checked;
+                            newValues.checksMedidas[1].name = 'Devolución (lotes ya ingresados)';
+                          } else {
+                            // lo creo entonces
+                            newValues.checksMedidas = newValues.checksMedidas || [];
+                            newValues.checksMedidas[1] = newValues.checksMedidas[1] || {};
+                            newValues.checksMedidas[1].checked = e.target.checked;
+                            newValues.checksMedidas[1].name = 'Devolución (lotes ya ingresados)';
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Devolución (lotes ya ingresados)</p>
+                    </div>
+
+                    <TextField
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksMedidas?.[1]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksMedidas && newValues.checksMedidas[1]) {
+                          newValues.checksMedidas[1].description = e.target.value;
+                          newValues.checksMedidas[1].name = 'Devolución (lotes ya ingresados)';
+                        } else {
+                          // lo creo entonces
+                          newValues.checksMedidas = newValues.checksMedidas || [];
+                          newValues.checksMedidas[1] = newValues.checksMedidas[1] || {};
+                          newValues.checksMedidas[1].description = e.target.value;
+                          newValues.checksMedidas[1].name = 'Devolución (lotes ya ingresados)';
+                        }
+                        setValues(newValues);
+                      }}
+                      id="sectionInput-5-1"
+                      name="sectionInput-5-1"
+                      label={currentStatus !== 'view' && "Descripción de la medida"}
+                      variant="outlined"
+                      multiline
+                      fullWidth
+                      rows={4}
+                    />
+                  </div>
+                </div>
+
+                {/* ahora con Aceptado condicional (ante cambios de calidad de mercadería, sin peligros de inocuidad) */}
+                <div className={styles.sectionsContainer}>
+                  <div className={styles.inputRow}>
+                    <div className={styles.inputRowCheck}>
+                      <Checkbox
+                        label="Aceptado condicional (ante cambios de calidad de mercadería, sin peligros de inocuidad)"
+                        key={(currentStatus === 'view' ? infoPrecargada?.checksMedidas?.[2]?.name : values?.checksMedidas?.[2]?.name)}
+                        checked={values?.checksMedidas?.[2]?.checked}
+                        disabled={currentStatus === 'view'}
+                        onChange={(e) => {
+                          let newValues = { ...values };
+                          if (newValues.checksMedidas && newValues.checksMedidas[2]) {
+                            newValues.checksMedidas[2].checked = e.target.checked;
+                            newValues.checksMedidas[2].name = 'Aceptado condicional (ante cambios de calidad de mercadería, sin peligros de inocuidad)';
+                          } else {
+                            // lo creo entonces
+                            newValues.checksMedidas = newValues.checksMedidas || [];
+                            newValues.checksMedidas[2] = newValues.checksMedidas[2] || {};
+                            newValues.checksMedidas[2].checked = e.target.checked;
+                            newValues.checksMedidas[2].name = 'Aceptado condicional (ante cambios de calidad de mercadería, sin peligros de inocuidad)';
+                          }
+                          setValues(newValues);
+                        }}
+                      />
+                      <p className={styles.itemText}>Aceptado condicional (ante cambios de calidad de mercadería, sin peligros de inocuidad)</p>
+                    </div>
+
+                    <TextField
+                      disabled={currentStatus === 'view'}
+                      value={values?.checksMedidas?.[2]?.description}
+                      onChange={(e) => {
+                        let newValues = { ...values };
+                        if (newValues.checksMedidas && newValues.checksMedidas[2]) {
+                          newValues.checksMedidas[2].description = e.target.value;
+                          newValues.checksMedidas[2].name = 'Aceptado condicional (ante cambios de calidad de mercadería, sin peligros de inocuidad)';
+                        } else {
+                          // lo creo entonces
+                          newValues.checksMedidas = newValues.checksMedidas || [];
+                          newValues.checksMedidas[2] = newValues.checksMedidas[2] || {};
+                          newValues.checksMedidas[2].description = e.target.value;
+                          newValues.checksMedidas[2].name = 'Aceptado condicional (ante cambios de calidad de mercadería, sin peligros de inocuidad)';
+                        }
+                        setValues(newValues);
+                      }}
+                      id="sectionInput-5-2"
+                      name="sectionInput-5-2"
+                      label={currentStatus !== 'view' && "Descripción de la medida"}
+                      variant="outlined"
+                      multiline
+                      fullWidth
+                      rows={4}
+                    />
+                  </div>
+                </div>
+
+
+
+                {/* hasta aca van las filas */}
               </div>
             </div>
           </div>
